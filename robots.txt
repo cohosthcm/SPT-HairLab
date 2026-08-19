@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://rootlab.vercel.app/sitemap.xml

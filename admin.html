@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>ROOTLAB — Trang quản trị nội dung</title>
+    <script src="content.js"></script>
+    <style>
+        :root {
+            --bg: #0e1614;
+            --panel: #16211e;
+            --panel2: #1d2b27;
+            --line: #2a3c37;
+            --ink: #eaf3f0;
+            --muted: #8fa8a1;
+            --accent: #fbcfe8;
+            --accent2: #16b18c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .top {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            padding: 0 1rem;
+            background: var(--panel);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .top h1 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-right: auto;
+            letter-spacing: .3px;
+        }
+
+        .top h1 small {
+            display: block;
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--muted);
+        }
+
+        button {
+            font: inherit;
+            font-weight: 600;
+            border: 1px solid var(--line);
+            background: var(--panel2);
+            color: var(--ink);
+            padding: .5rem .9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            border-color: #3d5952;
+        }
+
+        button.pri {
+            background: var(--accent);
+            color: #10231d;
+            border-color: transparent;
+        }
+
+        button.sm {
+            padding: .25rem .5rem;
+            font-size: 12px;
+            border-radius: 6px;
+        }
+
+        button.danger:hover {
+            border-color: #a45;
+            color: #f9b3c4;
+        }
+
+        .wrap {
+            display: flex;
+            height: calc(100vh - 56px);
+        }
+
+        .side {
+            width: 46%;
+            min-width: 380px;
+            overflow-y: auto;
+            border-right: 1px solid var(--line);
+            padding: 1rem 1rem 6rem;
+        }
+
+        .prev {
+            flex: 1;
+            position: relative;
+            background: #000;
+        }
+
+        .prev iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+
+        .prev .bar {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: .5rem .8rem;
+            background: rgba(0, 0, 0, .7);
+            font-size: 12px;
+            color: var(--muted);
+            display: flex;
+            gap: .6rem;
+            align-items: center;
+        }
+
+        details {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            margin-bottom: .7rem;
+            overflow: hidden;
+        }
+
+        summary {
+            padding: .8rem 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::before {
+            content: "▸";
+            color: var(--muted);
+            transition: transform .2s;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .body {
+            padding: 0 1rem 1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin: .7rem 0 .25rem;
+        }
+
+        input[type=text],
+        textarea,
+        input[type=url] {
+            width: 100%;
+            background: #101a17;
+            border: 1px solid var(--line);
+            color: var(--ink);
+            border-radius: 8px;
+            padding: .5rem .6rem;
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 68px;
+            resize: vertical;
+            line-height: 1.45;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent2);
+        }
+
+        .row {
+            display: flex;
+            gap: .6rem;
+        }
+
+        .row>* {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item {
+            background: var(--panel2);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: .6rem .7rem;
+            margin-top: .6rem;
+        }
+
+        .item .hd {
+            display: flex;
+            align-items: center;
+            gap: .35rem;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: .2rem;
+        }
+
+        .item .hd b {
+            margin-right: auto;
+            color: var(--ink);
+        }
+
+        .colorrow {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .colorrow input[type=color] {
+            width: 42px;
+            height: 32px;
+            padding: 0;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: none;
+            cursor: pointer;
+        }
+
+        .hint {
+            font-size: 11.5px;
+            color: var(--muted);
+            margin-top: .4rem;
+            line-height: 1.45;
+        }
+
+        .thumb {
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            margin-top: .5rem;
+        }
+
+        .thumb img {
+            height: 76px;
+            width: auto;
+            background: #0a1210;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 22px;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--accent2);
+            color: #05221b;
+            font-weight: 700;
+            padding: .6rem 1.1rem;
+            border-radius: 100px;
+            opacity: 0;
+            transition: all .25s;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .toast.on {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 900px) {
+            .wrap {
+                flex-direction: column;
+                height: auto;
+            }
+
+            body {
+                overflow: auto;
+                height: auto;
+            }
+
+            .side {
+                width: 100%;
+                min-width: 0;
+                border-right: 0;
+            }
+
+            .prev {
+                height: 70vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top">
+        <h1>ROOTLAB — Quản trị nội dung<small id="state">Bản nháp tự lưu trong trình duyệt này</small></h1>
+        <button id="reload">Làm mới xem trước</button>
+        <button id="reset" class="danger">Đặt lại</button>
+        <button id="import">Nhập file</button>
+        <button id="export" class="pri">Tải content.js</button>
+    </div>
+
+    <div class="wrap">
+        <div class="side" id="form"></div>
+        <div class="prev">
+            <iframe id="preview" src="index.html?preview=1"></iframe>
+            <div class="bar">
+                <span>Xem trước · mọi thay đổi hiện ngay tại đây</span>
+                <span style="margin-left:auto">Muốn đăng lên web: bấm <b>Tải content.js</b> rồi thay file cũ</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <input type="file" id="filepick" accept="application/json,text/javascript,.js,.json" hidden>
+
+    <script>
+        /* ---------- dữ liệu ---------- */
+        const FALLBACK = { brand: 'ROOTLAB', products: [{}, {}] };
+        const BASE = window.ROOTLAB_CONTENT || FALLBACK;
+        const clone = o => JSON.parse(JSON.stringify(o));
+        let D = clone(BASE);
+        try {
+            const nhap = localStorage.getItem('rootlab_draft');
+            if (nhap) D = Object.assign(clone(BASE), JSON.parse(nhap));
+        } catch (e) { }
+
+        const get = (p) => p.split('.').reduce((v, k) => v == null ? v : v[k], D);
+        const set = (p, val) => {
+            const ks = p.split('.'); let o = D;
+            while (ks.length > 1) o = o[ks.shift()];
+            o[ks[0]] = val;
+        };
+
+        const toast = (t) => {
+            const el = document.getElementById('toast');
+            el.textContent = t; el.classList.add('on');
+            clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 1800);
+        };
+
+        let saveT;
+        function save(refresh = true) {
+            localStorage.setItem('rootlab_draft', JSON.stringify(D));
+            if (!refresh) return;
+            clearTimeout(saveT);
+            saveT = setTimeout(() => {
+                document.getElementById('preview').contentWindow.location.reload();
+            }, 450);
+        }
+
+        /* ---------- công cụ dựng form ---------- */
+        const h = (tag, attrs = {}, kids = []) => {
+            const e = document.createElement(tag);
+            for (const [k, v] of Object.entries(attrs)) {
+                if (k === 'class') e.className = v;
+                else if (k === 'html') e.innerHTML = v;
+                else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+                else e.setAttribute(k, v);
+            }
+            (Array.isArray(kids) ? kids : [kids]).forEach(k => k && e.append(k));
+            return e;
+        };
+
+        function field(labelText, path, { area = false, hint = '' } = {}) {
+            const val = get(path) ?? '';
+            const inp = h(area ? 'textarea' : 'input', { type: 'text' });
+            inp.value = val;
+            inp.addEventListener('input', () => { set(path, inp.value); save(); });
+            return h('div', {}, [h('label', { html: labelText }), inp, hint ? h('div', { class: 'hint', html: hint }) : null]);
+        }
+
+        function colorField(labelText, path) {
+            const val = get(path) || '#000000';
+            const pick = h('input', { type: 'color' }); pick.value = val;
+            const txt = h('input', { type: 'text' }); txt.value = val;
+            const sync = v => { set(path, v); pick.value = v; txt.value = v; save(); };
+            pick.addEventListener('input', () => sync(pick.value));
+            txt.addEventListener('input', () => { if (/^#[0-9a-f]{6}$/i.test(txt.value)) sync(txt.value); });
+            return h('div', {}, [h('label', { html: labelText }), h('div', { class: 'colorrow' }, [pick, txt])]);
+        }
+
+        /* danh sách sửa được: thêm / xoá / đổi thứ tự */
+        function listEditor(labelText, path, itemFields, makeNew, titleOf) {
+            const box = h('div');
+            const render = () => {
+                box.innerHTML = '';
+                box.append(h('label', { html: labelText }));
+                const arr = get(path) || [];
+                arr.forEach((it, i) => {
+                    const card = h('div', { class: 'item' });
+                    card.append(h('div', { class: 'hd' }, [
+                        h('b', { html: titleOf ? titleOf(it, i) : ('Mục ' + (i + 1)) }),
+                        h('button', {
+                            class: 'sm', title: 'Lên', onclick: () => {
+                                if (i > 0) { [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]]; save(); render(); }
+                            }, html: '↑'
+                        }),
+                        h('button', {
+                            class: 'sm', title: 'Xuống', onclick: () => {
+                                if (i < arr.length - 1) { [arr[i + 1], arr[i]] = [arr[i], arr[i + 1]]; save(); render(); }
+                            }, html: '↓'
+                        }),
+                        h('button', {
+                            class: 'sm danger', title: 'Xoá', onclick: () => {
+                                if (confirm('Xoá mục này?')) { arr.splice(i, 1); save(); render(); }
+                            }, html: '✕'
+                        })
+                    ]));
+                    if (typeof it === 'string') {
+                        const inp = h('input', { type: 'text' }); inp.value = it;
+                        inp.addEventListener('input', () => { arr[i] = inp.value; save(); });
+                        card.append(inp);
+                    } else {
+                        itemFields.forEach(f => {
+                            const inp = h(f.area ? 'textarea' : 'input', { type: 'text' });
+                            inp.value = it[f.k] ?? '';
+                            inp.addEventListener('input', () => { it[f.k] = inp.value; save(); });
+                            card.append(h('label', { html: f.l }), inp);
+                        });
+                    }
+                    box.append(card);
+                });
+                box.append(h('button', {
+                    class: 'sm', style: 'margin-top:.6rem',
+                    onclick: () => { arr.push(makeNew()); save(); render(); }, html: '+ Thêm mục'
+                }));
+            };
+            render();
+            return box;
+        }
+
+        function panel(title, kids, open = false) {
+            const d = h('details', open ? { open: '' } : {});
+            d.append(h('summary', { html: title }), h('div', { class: 'body' }, kids));
+            return d;
+        }
+
+        /* ---------- tải ảnh chai ---------- */
+        function photoField(pi) {
+            const p = D.products[pi];
+            const box = h('div');
+            const render = () => {
+                box.innerHTML = '';
+                box.append(h('label', { html: 'Ảnh chai thật (thay cho chai 3D)' }));
+                const file = h('input', { type: 'file', accept: 'image/*' });
+                file.addEventListener('change', async () => {
+                    const f = file.files[0]; if (!f) return;
+                    try {
+                        p.photo = await nenAnh(f, 900);
+                        save(); render();
+                        toast('Đã thêm ảnh chai');
+                    } catch (e) { alert('Không đọc được ảnh này'); }
+                });
+                box.append(file);
+                if (p.photo) {
+                    box.append(h('div', { class: 'thumb' }, [
+                        h('img', { src: p.photo }),
+                        h('button', {
+                            class: 'sm danger', onclick: () => { p.photo = ''; save(); render(); }, html: 'Bỏ ảnh, dùng lại chai 3D'
+                        })
+                    ]));
+                }
+                box.append(h('div', {
+                    class: 'hint',
+                    html: 'Nên dùng ảnh PNG nền trong suốt, chai đứng thẳng, cao khoảng 900px.<br>' +
+                        '<b>Lưu ý:</b> khi dùng ảnh thật, hiệu ứng xoay 360° sẽ tắt (ảnh phẳng xoay sẽ bị dẹt) — thay bằng hiệu ứng loé sáng.'
+                }));
+            };
+            render();
+            return box;
+        }
+
+        /* thu nhỏ ảnh để file content.js không phình to */
+        function nenAnh(file, maxH) {
+            return new Promise((res, rej) => {
+                const fr = new FileReader();
+                fr.onload = () => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const k = Math.min(1, maxH / img.height);
+                        const cv = document.createElement('canvas');
+                        cv.width = Math.round(img.width * k); cv.height = Math.round(img.height * k);
+                        cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+                        res(cv.toDataURL('image/png'));
+                    };
+                    img.onerror = rej;
+                    img.src = fr.result;
+                };
+                fr.onerror = rej;
+                fr.readAsDataURL(file);
+            });
+        }
+
+        /* ---------- dựng toàn bộ form ---------- */
+        function buildForm() {
+            const F = document.getElementById('form');
+            F.innerHTML = '';
+
+            F.append(panel('Chung', [
+                field('Tên thương hiệu (logo + chân trang)', 'brand'),
+                field('Chữ trên nút góc phải', 'contactBtn'),
+                field('Câu ở chân trang', 'footer.tagline'),
+                field('Dòng bản quyền', 'footer.copyright'),
+                listEditor('Các mục menu (theo đúng thứ tự 6 màn)', 'nav', null, () => 'Mục mới'),
+                h('div', { class: 'hint', html: 'Menu gắn cố định với 6 màn: Trang chủ · Thành phần · Cách dùng · Hiệu quả · Đánh giá · Giá. Đổi chữ được, đừng xoá bớt.' })
+            ], true));
+
+            F.append(panel('Màn đầu (hero)', [
+                h('div', { class: 'row' }, [field('Tiêu đề lớn — dòng 1', 'hero.title1'), field('Dòng 2', 'hero.title2')]),
+                h('div', { class: 'row' }, [field('Tiêu đề phải — dòng 1', 'hero.side1'), field('Dòng 2', 'hero.side2')]),
+                field('Chữ trên nút chính', 'hero.cta'),
+                h('div', { class: 'row' }, [field('Nhãn cam kết — dòng nhỏ', 'hero.badgeTitle'), field('Dòng đậm', 'hero.badgeSub')]),
+                field('Chữ gợi ý cuộn', 'hero.scrollHint')
+            ]));
+
+            D.products.forEach((p, i) => {
+                F.append(panel(`Sản phẩm ${i + 1} — ${p.name || ''}`, [
+                    field('Tên sản phẩm', `products.${i}.name`),
+                    field('Dòng phụ trên thẻ', `products.${i}.cardSub`),
+                    field('Dòng "Bước…" ở màn đầu', `products.${i}.tag`),
+                    field('Mô tả ở màn đầu', `products.${i}.desc`, { area: true, hint: 'Xuống dòng bằng <b>&lt;br&gt;</b>' }),
+
+                    h('label', { html: '<b style="color:#eaf3f0">Chữ in trên thân chai 3D</b>' }),
+                    h('div', { class: 'row' }, [field('Dòng lớn 1', `products.${i}.bottle.l1`), field('Dòng lớn 2', `products.${i}.bottle.l2`)]),
+                    field('Dòng chữ nhỏ tiếng Anh', `products.${i}.bottle.sub`),
+                    field('Dòng tiếng Việt', `products.${i}.bottle.vn`),
+                    field('Dung tích', `products.${i}.bottle.vol`),
+
+                    h('label', { html: '<b style="color:#eaf3f0">Màu chai 3D</b>' }),
+                    h('div', { class: 'row' }, [
+                        colorField('Thân chai', `products.${i}.bottle.body`),
+                        colorField('Nắp chai', `products.${i}.bottle.cap`),
+                        colorField('Chữ trên nhãn', `products.${i}.bottle.ink`)
+                    ]),
+
+                    h('label', { html: '<b style="color:#eaf3f0">Màu nền khi chọn sản phẩm này</b>' }),
+                    h('div', { class: 'row' }, [
+                        colorField('Giữa', `products.${i}.theme.inner`),
+                        colorField('Vòng ngoài', `products.${i}.theme.mid`),
+                        colorField('Rìa', `products.${i}.theme.outer`)
+                    ]),
+
+                    photoField(i),
+
+                    h('label', { html: '<b style="color:#eaf3f0">Bảng giá</b>' }),
+                    h('div', { class: 'row' }, [field('Giá (không cần chữ đ)', `products.${i}.price`), field('Chữ trên nút mua', `products.${i}.buyBtn`)]),
+                    field('Dòng mô tả dưới tên', `products.${i}.priceSub`),
+                    field('Link khi bấm nút mua', `products.${i}.buyLink`, { hint: 'Dán link giỏ hàng / Shopee / form đặt hàng. Để trống thì nút không làm gì.' }),
+                    listEditor('Các gạch đầu dòng', `products.${i}.features`, null, () => 'Dòng mới')
+                ]));
+            });
+
+            F.append(panel('Màn Thành phần', [
+                field('Nhãn nhỏ', 'ingredients.eyebrow'),
+                h('div', { class: 'row' }, [field('Tiêu đề dòng 1', 'ingredients.t1'), field('Dòng 2', 'ingredients.t2')]),
+                field('Câu dẫn', 'ingredients.lead', { area: true }),
+                listEditor('Danh sách thành phần', 'ingredients.items',
+                    [{ k: 'chip', l: 'Nhãn nhỏ (B1 / B2)' }, { k: 'name', l: 'Tên thành phần' }, { k: 'desc', l: 'Tác dụng', area: true }],
+                    () => ({ chip: 'B1', name: 'Thành phần mới', desc: '' }), it => it.name),
+                field('Ghi chú cuối', 'ingredients.note')
+            ]));
+
+            F.append(panel('Màn Cách dùng', [
+                field('Nhãn nhỏ', 'howto.eyebrow'),
+                h('div', { class: 'row' }, [field('Tiêu đề dòng 1', 'howto.t1'), field('Dòng 2', 'howto.t2')]),
+                field('Câu dẫn', 'howto.lead', { area: true }),
+                listEditor('Các bước', 'howto.steps',
+                    [{ k: 'no', l: 'Số thứ tự' }, { k: 'h', l: 'Tên bước' }, { k: 'p', l: 'Mô tả', area: true }, { k: 'em', l: 'Dòng tần suất' }],
+                    () => ({ no: '04', h: 'Bước mới', p: '', em: '' }), it => it.no + ' · ' + it.h)
+            ]));
+
+            F.append(panel('Màn Hiệu quả', [
+                field('Nhãn nhỏ', 'results.eyebrow'),
+                h('div', { class: 'row' }, [field('Tiêu đề dòng 1', 'results.t1'), field('Dòng 2', 'results.t2')]),
+                field('Câu dẫn', 'results.lead', { area: true }),
+                listEditor('Mốc thời gian', 'results.weeks',
+                    [{ k: 'b', l: 'Mốc' }, { k: 's', l: 'Diễn giải' }],
+                    () => ({ b: 'Tuần 16', s: '' }), it => it.b),
+                listEditor('Ô số liệu', 'results.tiles',
+                    [{ k: 'val', l: 'Con số' }, { k: 'lbl', l: 'Diễn giải' }],
+                    () => ({ val: '0%', lbl: '' }), it => it.val),
+                field('Ghi chú cuối', 'results.note')
+            ]));
+
+            F.append(panel('Màn Đánh giá', [
+                field('Nhãn nhỏ', 'reviews.eyebrow'),
+                h('div', { class: 'row' }, [field('Tiêu đề dòng 1', 'reviews.t1'), field('Dòng 2', 'reviews.t2')]),
+                listEditor('Các đánh giá', 'reviews.items',
+                    [{ k: 'stars', l: 'Số sao (1–5)' }, { k: 'text', l: 'Nội dung', area: true }, { k: 'name', l: 'Tên, tuổi' }, { k: 'meta', l: 'Đã dùng bao lâu' }],
+                    () => ({ stars: 5, text: '', name: 'Khách hàng', meta: '' }), it => it.name),
+                field('Ghi chú cuối', 'reviews.note')
+            ]));
+
+            F.append(panel('Màn Bảng giá', [
+                field('Nhãn nhỏ', 'pricing.eyebrow'),
+                h('div', { class: 'row' }, [field('Tiêu đề dòng 1', 'pricing.t1'), field('Dòng 2', 'pricing.t2')]),
+                h('div', { class: 'row' }, [field('Chữ combo', 'pricing.comboLabel'), field('Giá gạch ngang', 'pricing.comboOld')]),
+                h('div', { class: 'row' }, [field('Giá combo', 'pricing.comboNew'), field('Chữ nút combo', 'pricing.comboBtn')]),
+                field('Ghi chú cuối', 'pricing.note'),
+                h('div', { class: 'hint', html: 'Giá từng sản phẩm nằm trong mục “Sản phẩm 1 / 2” phía trên.' })
+            ]));
+        }
+        buildForm();
+
+        /* ---------- các nút trên cùng ---------- */
+        document.getElementById('reload').onclick = () => {
+            document.getElementById('preview').contentWindow.location.reload();
+            toast('Đã làm mới');
+        };
+
+        document.getElementById('reset').onclick = () => {
+            if (!confirm('Bỏ hết thay đổi, quay về nội dung trong content.js?')) return;
+            localStorage.removeItem('rootlab_draft');
+            D = clone(BASE);
+            buildForm(); save();
+            toast('Đã đặt lại');
+        };
+
+        document.getElementById('export').onclick = () => {
+            const txt = '/* Nội dung trang ROOTLAB — xuất từ admin.html lúc ' +
+                new Date().toLocaleString('vi-VN') + ' */\n' +
+                'window.ROOTLAB_CONTENT = ' + JSON.stringify(D, null, 2) + ';\n';
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([txt], { type: 'text/javascript' }));
+            a.download = 'content.js';
+            a.click();
+            const kb = Math.round(txt.length / 1024);
+            toast('Đã tải content.js (' + kb + ' KB)');
+            if (kb > 400) alert('File nặng ' + kb + ' KB vì có ảnh chai. Vẫn chạy được, nhưng trang sẽ tải chậm hơn — cân nhắc dùng ảnh nhỏ hơn.');
+        };
+
+        document.getElementById('import').onclick = () => document.getElementById('filepick').click();
+        document.getElementById('filepick').addEventListener('change', e => {
+            const f = e.target.files[0]; if (!f) return;
+            const fr = new FileReader();
+            fr.onload = () => {
+                try {
+                    let t = String(fr.result).trim();
+                    const i = t.indexOf('{');
+                    const j = t.lastIndexOf('}');
+                    D = JSON.parse(t.slice(i, j + 1));
+                    buildForm(); save();
+                    toast('Đã nạp nội dung từ file');
+                } catch (err) { alert('File không đọc được. Hãy chọn content.js đã xuất từ trang này.'); }
+            };
+            fr.readAsText(f);
+        });
+
+        save(false);
+    </script>
+</body>
+
+</html>
