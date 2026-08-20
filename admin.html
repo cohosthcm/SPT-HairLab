@@ -309,6 +309,115 @@
                 height: 70vh;
             }
         }
+
+        /* ---------- hộp Đẩy lên web ---------- */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .6);
+            display: grid;
+            place-items: center;
+            z-index: 90;
+            padding: 1rem;
+        }
+
+        .modal[hidden] {
+            display: none;
+        }
+
+        .sheet {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            width: min(620px, 100%);
+            max-height: 90vh;
+            overflow: auto;
+            padding: 1.4rem 1.5rem 1.5rem;
+        }
+
+        .sheet h2 {
+            font-size: 1.05rem;
+            margin-bottom: .3rem;
+        }
+
+        .sheet hr {
+            border: 0;
+            border-top: 1px solid var(--line);
+            margin: 1.1rem 0;
+        }
+
+        .sheet label {
+            display: block;
+            margin: .9rem 0 .35rem;
+            font-size: .78rem;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .sheet input[type=text],
+        .sheet input[type=password] {
+            width: 100%;
+            font: inherit;
+            background: var(--panel2);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: .5rem .65rem;
+        }
+
+        .sheet .row {
+            display: flex;
+            gap: .6rem;
+            flex-wrap: wrap;
+        }
+
+        .sheet .row>* {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        #ghLog {
+            margin-top: 1rem;
+            background: #0a120f;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: .7rem .8rem;
+            font: 12px/1.6 ui-monospace, Menlo, Consolas, monospace;
+            color: var(--muted);
+            max-height: 190px;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        #ghLog:empty {
+            display: none;
+        }
+
+        #ghLog .good {
+            color: #6ee7b7;
+        }
+
+        #ghLog .bad {
+            color: #fca5a5;
+        }
+
+        .sheet .foot {
+            display: flex;
+            gap: .6rem;
+            margin-top: 1.2rem;
+        }
+
+        .warn {
+            background: rgba(251, 191, 36, .1);
+            border: 1px solid rgba(251, 191, 36, .3);
+            color: #fcd34d;
+            border-radius: 8px;
+            padding: .6rem .75rem;
+            font-size: .78rem;
+            line-height: 1.55;
+            margin-top: .8rem;
+        }
     </style>
 </head>
 
@@ -318,7 +427,8 @@
         <button id="reload">Làm mới xem trước</button>
         <button id="reset" class="danger">Đặt lại</button>
         <button id="import">Nhập file</button>
-        <button id="export" class="pri">Tải content.js</button>
+        <button id="export">Tải content.js</button>
+        <button id="deploy" class="pri">Đẩy lên web</button>
     </div>
 
     <div class="wrap">
@@ -327,13 +437,52 @@
             <iframe id="preview" src="index.html?preview=1"></iframe>
             <div class="bar">
                 <span>Xem trước · mọi thay đổi hiện ngay tại đây</span>
-                <span style="margin-left:auto">Muốn đăng lên web: bấm <b>Tải content.js</b> rồi thay file cũ</span>
+                <span style="margin-left:auto">Sửa xong bấm <b>Đẩy lên web</b> là trang thật cập nhật theo</span>
             </div>
         </div>
     </div>
 
     <div class="toast" id="toast"></div>
     <input type="file" id="filepick" accept="application/json,text/javascript,.js,.json" hidden>
+
+    <!-- Hộp đẩy thẳng lên GitHub. Token nằm trong trình duyệt này, không gửi đi đâu khác
+         ngoài chính api.github.com. -->
+    <div class="modal" id="deployBox" hidden>
+        <div class="sheet">
+            <h2>Đẩy lên web</h2>
+            <div style="color:var(--muted);font-size:.82rem">Lưu thẳng lên GitHub, Vercel tự dựng lại trang sau khoảng 1 phút.</div>
+
+            <div class="row">
+                <div><label>Chủ kho (owner)</label><input type="text" id="ghOwner" placeholder="cohosthcm"></div>
+                <div><label>Tên kho (repo)</label><input type="text" id="ghRepo" placeholder="SPT-HairLab"></div>
+                <div><label>Nhánh</label><input type="text" id="ghBranch" placeholder="main"></div>
+            </div>
+
+            <label>Token GitHub</label>
+            <input type="password" id="ghToken" placeholder="github_pat_..." autocomplete="off">
+            <div class="warn">Dùng token loại <b>Fine-grained</b>, chỉ chọn đúng kho này, quyền <b>Contents: Read and write</b>, có ngày hết hạn. Token chỉ nằm trong trình duyệt này — không hiện trong khung chat, không ai khác đọc được. Máy chung thì nhớ bấm “Xoá token khỏi máy” trước khi rời đi.</div>
+
+            <div class="row" style="margin-top:.9rem">
+                <button id="ghTest">Kiểm tra kết nối</button>
+                <button id="ghForget" class="danger">Xoá token khỏi máy</button>
+            </div>
+
+            <hr>
+
+            <button id="ghPushContent" class="pri" style="width:100%">Đẩy nội dung đang sửa (content.js)</button>
+
+            <label>Hoặc đẩy file bất kỳ từ máy (index.html, admin.html…)</label>
+            <input type="file" id="ghFiles" multiple>
+            <button id="ghPushFiles" style="margin-top:.6rem;width:100%">Đẩy các file đã chọn</button>
+
+            <div id="ghLog"></div>
+
+            <div class="foot">
+                <button id="ghOpenSite">Xem lịch sử trên GitHub</button>
+                <button id="ghClose" style="margin-left:auto">Đóng</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         /* ---------- dữ liệu ---------- */
@@ -349,7 +498,13 @@
         const get = (p) => p.split('.').reduce((v, k) => v == null ? v : v[k], D);
         const set = (p, val) => {
             const ks = p.split('.'); let o = D;
-            while (ks.length > 1) o = o[ks.shift()];
+            /* Bản nháp cũ lưu trong máy có thể thiếu nhánh mới (ví dụ contact),
+               nên tự tạo nhánh rỗng thay vì báo lỗi. */
+            while (ks.length > 1) {
+                const k = ks.shift();
+                if (o[k] == null || typeof o[k] !== 'object') o[k] = {};
+                o = o[k];
+            }
             o[ks[0]] = val;
         };
 
@@ -617,8 +772,32 @@
                 h('div', { class: 'row' }, [field('Tiêu đề dòng 1', 'pricing.t1'), field('Dòng 2', 'pricing.t2')]),
                 h('div', { class: 'row' }, [field('Chữ combo', 'pricing.comboLabel'), field('Giá gạch ngang', 'pricing.comboOld')]),
                 h('div', { class: 'row' }, [field('Giá combo', 'pricing.comboNew'), field('Chữ nút combo', 'pricing.comboBtn')]),
+                field('Link khi bấm nút combo', 'pricing.comboLink', { hint: 'Để trống thì nút tự dùng Zalo / số điện thoại ở mục Liên hệ bên dưới.' }),
                 field('Ghi chú cuối', 'pricing.note'),
                 h('div', { class: 'hint', html: 'Giá từng sản phẩm nằm trong mục “Sản phẩm 1 / 2” phía trên.' })
+            ]));
+
+            F.append(panel('Liên hệ & đặt hàng', [
+                h('div', { class: 'hint', html: 'Ô nào để trống thì tự ẩn khỏi trang. Nút mua chưa có link riêng sẽ tự dùng Zalo, không có Zalo thì dùng số điện thoại.' }),
+                h('div', { class: 'row' }, [
+                    field('Số điện thoại', 'contact.phone', { hint: 'Ví dụ: 0901234567' }),
+                    field('Zalo', 'contact.zalo', { hint: 'Số Zalo hoặc link zalo.me đầy đủ' })
+                ]),
+                h('div', { class: 'row' }, [
+                    field('Shopee', 'contact.shopee', { hint: 'Link gian hàng Shopee' }),
+                    field('TikTok Shop', 'contact.tiktok', { hint: 'Link gian hàng TikTok' })
+                ]),
+                h('div', { class: 'row' }, [
+                    field('Messenger', 'contact.messenger', { hint: 'Tên trang hoặc link m.me đầy đủ' }),
+                    field('Email', 'contact.email')
+                ]),
+                field('Địa chỉ', 'contact.address'),
+                field('Giờ làm việc', 'contact.hours'),
+                h('div', { class: 'row' }, [
+                    field('Tiêu đề cột liên hệ', 'contact.heading'),
+                    field('Tiêu đề cột kênh mua', 'contact.shopLabel')
+                ]),
+                field('Câu ghi chú dưới phần liên hệ', 'contact.note', { area: true })
             ]));
         }
         buildForm();
@@ -637,10 +816,12 @@
             toast('Đã đặt lại');
         };
 
+        const contentJsText = () => '/* Nội dung trang ROOTLAB — xuất từ admin.html lúc ' +
+            new Date().toLocaleString('vi-VN') + ' */\n' +
+            'window.ROOTLAB_CONTENT = ' + JSON.stringify(D, null, 2) + ';\n';
+
         document.getElementById('export').onclick = () => {
-            const txt = '/* Nội dung trang ROOTLAB — xuất từ admin.html lúc ' +
-                new Date().toLocaleString('vi-VN') + ' */\n' +
-                'window.ROOTLAB_CONTENT = ' + JSON.stringify(D, null, 2) + ';\n';
+            const txt = contentJsText();
             const a = document.createElement('a');
             a.href = URL.createObjectURL(new Blob([txt], { type: 'text/javascript' }));
             a.download = 'content.js';
@@ -666,6 +847,164 @@
             };
             fr.readAsText(f);
         });
+
+        /* ============================================================
+           ĐẨY THẲNG LÊN GITHUB
+           Trình duyệt gọi api.github.com bằng token của chủ trang.
+           Token lưu trong localStorage của đúng máy này, không gửi đi nơi nào khác.
+           ============================================================ */
+        const GH_KEY = 'rootlab_gh';
+        const ghDoc = id => document.getElementById(id);
+
+        const ghRead = () => {
+            try { return JSON.parse(localStorage.getItem(GH_KEY) || '{}'); } catch (e) { return {}; }
+        };
+        const ghWrite = o => localStorage.setItem(GH_KEY, JSON.stringify(o));
+
+        const ghForm = () => ({
+            owner: ghDoc('ghOwner').value.trim(),
+            repo: ghDoc('ghRepo').value.trim(),
+            branch: ghDoc('ghBranch').value.trim() || 'main',
+            token: ghDoc('ghToken').value.trim()
+        });
+
+        function ghFill() {
+            const s = ghRead();
+            ghDoc('ghOwner').value = s.owner || 'cohosthcm';
+            ghDoc('ghRepo').value = s.repo || 'SPT-HairLab';
+            ghDoc('ghBranch').value = s.branch || 'main';
+            ghDoc('ghToken').value = s.token || '';
+        }
+
+        function ghSay(msg, kind) {
+            const el = ghDoc('ghLog');
+            const d = document.createElement('div');
+            if (kind) d.className = kind;
+            d.textContent = msg;
+            el.appendChild(d);
+            el.scrollTop = el.scrollHeight;
+        }
+        const ghClear = () => { ghDoc('ghLog').innerHTML = ''; };
+
+        /* base64 cho cả chữ tiếng Việt lẫn file ảnh */
+        const bytesToB64 = bytes => {
+            let bin = ''; const CH = 0x8000;
+            for (let i = 0; i < bytes.length; i += CH)
+                bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CH));
+            return btoa(bin);
+        };
+        const textToB64 = s => bytesToB64(new TextEncoder().encode(s));
+
+        async function ghApi(path, opt = {}) {
+            const s = ghForm();
+            if (!s.token) throw new Error('Chưa dán token GitHub');
+            if (!s.owner || !s.repo) throw new Error('Chưa điền chủ kho hoặc tên kho');
+            const r = await fetch('https://api.github.com' + path, {
+                method: opt.method || 'GET',
+                body: opt.body,
+                headers: {
+                    Authorization: 'Bearer ' + s.token,
+                    Accept: 'application/vnd.github+json',
+                    'X-GitHub-Api-Version': '2022-11-28',
+                    ...(opt.body ? { 'Content-Type': 'application/json' } : {})
+                }
+            });
+            const raw = await r.text();
+            let data = null;
+            try { data = JSON.parse(raw); } catch (e) { }
+            if (!r.ok) throw new Error(r.status + ' — ' + ((data && data.message) || raw.slice(0, 140)));
+            return data;
+        }
+
+        /* Ghi 1 file. Có sẵn thì phải kèm sha của bản cũ, chưa có thì tạo mới. */
+        async function ghPut(name, b64, message) {
+            const s = ghForm();
+            const base = `/repos/${s.owner}/${s.repo}/contents/${name}`;
+            let sha = null;
+            try {
+                const cur = await ghApi(`${base}?ref=${encodeURIComponent(s.branch)}`);
+                sha = cur && cur.sha;
+            } catch (e) {
+                if (!/^404/.test(e.message)) throw e;   // 404 = file mới, các lỗi khác thì dừng
+            }
+            const body = { message, content: b64, branch: s.branch };
+            if (sha) body.sha = sha;
+            await ghApi(base, { method: 'PUT', body: JSON.stringify(body) });
+            return !!sha;
+        }
+
+        const ghBusy = on => ['ghTest', 'ghPushContent', 'ghPushFiles'].forEach(id => ghDoc(id).disabled = on);
+
+        ghDoc('deploy').onclick = () => { ghFill(); ghClear(); ghDoc('deployBox').hidden = false; };
+        ghDoc('ghClose').onclick = () => { ghWrite(ghForm()); ghDoc('deployBox').hidden = true; };
+        ghDoc('deployBox').addEventListener('click', e => {
+            if (e.target.id === 'deployBox') ghDoc('ghClose').click();
+        });
+        ghDoc('ghOpenSite').onclick = () => {
+            const s = ghForm();
+            window.open(`https://github.com/${s.owner}/${s.repo}/commits/${s.branch}`, '_blank', 'noopener');
+        };
+
+        ghDoc('ghForget').onclick = () => {
+            localStorage.removeItem(GH_KEY);
+            ghDoc('ghToken').value = '';
+            ghClear(); ghSay('Đã xoá token khỏi trình duyệt này.', 'good');
+        };
+
+        ghDoc('ghTest').onclick = async () => {
+            ghClear(); ghBusy(true);
+            try {
+                const s = ghForm();
+                const repo = await ghApi(`/repos/${s.owner}/${s.repo}`);
+                ghSay('✓ Đọc được kho: ' + repo.full_name, 'good');
+                const ghi = repo.permissions && repo.permissions.push;
+                ghSay(ghi ? '✓ Token có quyền ghi.' : '✗ Token KHÔNG có quyền ghi — vào GitHub sửa lại quyền Contents thành "Read and write".', ghi ? 'good' : 'bad');
+                try {
+                    await ghApi(`/repos/${s.owner}/${s.repo}/branches/${encodeURIComponent(s.branch)}`);
+                    ghSay('✓ Có nhánh "' + s.branch + '".', 'good');
+                } catch (e) { ghSay('✗ Không thấy nhánh "' + s.branch + '" — ' + e.message, 'bad'); }
+                ghWrite(s);
+            } catch (e) {
+                ghSay('✗ ' + e.message, 'bad');
+                ghSay('Gợi ý: 401 là token sai hoặc hết hạn; 404 thường là token chưa được cấp quyền cho đúng kho này.');
+            }
+            ghBusy(false);
+        };
+
+        ghDoc('ghPushContent').onclick = async () => {
+            ghClear(); ghBusy(true);
+            try {
+                const txt = contentJsText();
+                const kb = Math.round(txt.length / 1024);
+                ghSay('Đang đẩy content.js (' + kb + ' KB)…');
+                const thay = await ghPut('content.js', textToB64(txt), 'Cập nhật nội dung từ trang admin');
+                ghSay('✓ Xong — đã ' + (thay ? 'ghi đè' : 'tạo mới') + ' content.js.', 'good');
+                ghSay('Vercel đang dựng lại. Khoảng 1 phút nữa tải lại trang web là thấy.', 'good');
+                ghWrite(ghForm());
+                toast('Đã đẩy lên web');
+            } catch (e) { ghSay('✗ ' + e.message, 'bad'); }
+            ghBusy(false);
+        };
+
+        ghDoc('ghPushFiles').onclick = async () => {
+            const fs = [...ghDoc('ghFiles').files];
+            ghClear();
+            if (!fs.length) { ghSay('Chưa chọn file nào.', 'bad'); return; }
+            ghBusy(true);
+            let ok = 0;
+            for (const f of fs) {
+                try {
+                    ghSay('Đang đẩy ' + f.name + ' (' + Math.round(f.size / 1024) + ' KB)…');
+                    const buf = await f.arrayBuffer();
+                    const thay = await ghPut(f.name, bytesToB64(new Uint8Array(buf)), 'Cập nhật ' + f.name + ' từ trang admin');
+                    ghSay('✓ ' + f.name + ' — đã ' + (thay ? 'ghi đè' : 'tạo mới') + '.', 'good');
+                    ok++;
+                } catch (e) { ghSay('✗ ' + f.name + ' — ' + e.message, 'bad'); }
+            }
+            if (ok) ghSay('Xong ' + ok + '/' + fs.length + ' file. Vercel đang dựng lại, khoảng 1 phút.', 'good');
+            ghWrite(ghForm());
+            ghBusy(false);
+        };
 
         save(false);
     </script>
