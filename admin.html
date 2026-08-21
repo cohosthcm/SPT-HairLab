@@ -103,6 +103,59 @@
             padding: 1rem 1rem 6rem;
         }
 
+        /* thanh nhay nhanh giua cac muc, dinh o dau khung ben trai khi cuon */
+        .secnav {
+            position: sticky;
+            top: 0;
+            margin: -1rem -1rem 1rem;
+            padding: .8rem 1rem .7rem;
+            background: var(--panel);
+            border-bottom: 1px solid var(--line);
+            z-index: 5;
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+            align-items: center;
+        }
+
+        .secnav .grouplbl {
+            width: 100%;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            color: var(--muted);
+            margin: .3rem 0 -.1rem;
+        }
+
+        .secnav .grouplbl:first-child {
+            margin-top: 0;
+        }
+
+        .secnav button.seclink {
+            font: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            padding: .35rem .65rem;
+            border-radius: 100px;
+            border: 1px solid var(--line);
+            background: var(--panel2);
+            color: var(--muted);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .secnav button.seclink:hover {
+            color: var(--ink);
+            border-color: #3d5952;
+        }
+
+        .secnav button.seclink.active {
+            background: var(--accent2);
+            border-color: transparent;
+            color: #05221b;
+        }
+
         .prev {
             flex: 1;
             position: relative;
@@ -432,7 +485,10 @@
     </div>
 
     <div class="wrap">
-        <div class="side" id="form"></div>
+        <div class="side">
+            <div class="secnav" id="secnav"></div>
+            <div id="form"></div>
+        </div>
         <div class="prev">
             <iframe id="preview" src="index.html?preview=1"></iframe>
             <div class="bar">
@@ -605,8 +661,11 @@
             return box;
         }
 
-        function panel(title, kids, open = false) {
-            const d = h('details', open ? { open: '' } : {});
+        function panel(title, kids, open = false, id = '') {
+            const attrs = {};
+            if (open) attrs.open = '';
+            if (id) attrs.id = id;
+            const d = h('details', attrs);
             d.append(h('summary', { html: title }), h('div', { class: 'body' }, kids));
             return d;
         }
@@ -667,6 +726,50 @@
             });
         }
 
+        /* ---------- thanh điều hướng nhanh giữa các mục ---------- */
+        const SECTIONS = [
+            { id: 'sec-chung', label: 'Chung' },
+            { id: 'sec-hero', label: 'Màn đầu' },
+            { id: 'sec-sp1', label: 'Sản phẩm 1', group: 'Sản phẩm' },
+            { id: 'sec-sp2', label: 'Sản phẩm 2', group: 'Sản phẩm' },
+            { id: 'sec-thanhphan', label: 'Thành phần' },
+            { id: 'sec-cachdung', label: 'Cách dùng' },
+            { id: 'sec-hieuqua', label: 'Hiệu quả' },
+            { id: 'sec-danhgia', label: 'Đánh giá' },
+            { id: 'sec-banggia', label: 'Bảng giá' },
+            { id: 'sec-lienhe', label: 'Liên hệ' }
+        ];
+
+        function setActiveSection(id) {
+            document.querySelectorAll('.secnav .seclink').forEach(b => {
+                b.classList.toggle('active', b.dataset.sec === id);
+            });
+        }
+
+        function goToSection(id) {
+            document.querySelectorAll('#form > details[id]').forEach(d => { d.open = (d.id === id); });
+            setActiveSection(id);
+            const el = document.getElementById(id);
+            if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function buildSecNav() {
+            const nav = document.getElementById('secnav');
+            nav.innerHTML = '';
+            let lastGroup = null;
+            SECTIONS.forEach(s => {
+                if (s.group && s.group !== lastGroup) {
+                    nav.append(h('span', { class: 'grouplbl', html: s.group }));
+                }
+                lastGroup = s.group || null;
+                nav.append(h('button', {
+                    class: 'seclink', type: 'button', 'data-sec': s.id,
+                    onclick: () => goToSection(s.id), html: s.label
+                }));
+            });
+            setActiveSection(SECTIONS[0].id);
+        }
+
         /* ---------- dựng toàn bộ form ---------- */
         function buildForm() {
             const F = document.getElementById('form');
@@ -679,7 +782,7 @@
                 field('Dòng bản quyền', 'footer.copyright'),
                 listEditor('Các mục menu (theo đúng thứ tự 6 màn)', 'nav', null, () => 'Mục mới'),
                 h('div', { class: 'hint', html: 'Menu gắn cố định với 6 màn: Trang chủ · Thành phần · Cách dùng · Hiệu quả · Đánh giá · Giá. Đổi chữ được, đừng xoá bớt.' })
-            ], true));
+            ], true, 'sec-chung'));
 
             F.append(panel('Màn đầu (hero)', [
                 h('div', { class: 'row' }, [field('Tiêu đề lớn — dòng 1', 'hero.title1'), field('Dòng 2', 'hero.title2')]),
@@ -687,7 +790,7 @@
                 field('Chữ trên nút chính', 'hero.cta'),
                 h('div', { class: 'row' }, [field('Nhãn cam kết — dòng nhỏ', 'hero.badgeTitle'), field('Dòng đậm', 'hero.badgeSub')]),
                 field('Chữ gợi ý cuộn', 'hero.scrollHint')
-            ]));
+            ], false, 'sec-hero'));
 
             D.products.forEach((p, i) => {
                 F.append(panel(`Sản phẩm ${i + 1} — ${p.name || ''}`, [
@@ -723,7 +826,7 @@
                     field('Dòng mô tả dưới tên', `products.${i}.priceSub`),
                     field('Link khi bấm nút mua', `products.${i}.buyLink`, { hint: 'Dán link giỏ hàng / Shopee / form đặt hàng. Để trống thì nút không làm gì.' }),
                     listEditor('Các gạch đầu dòng', `products.${i}.features`, null, () => 'Dòng mới')
-                ]));
+                ], false, i === 0 ? 'sec-sp1' : 'sec-sp2'));
             });
 
             F.append(panel('Màn Thành phần', [
@@ -734,7 +837,7 @@
                     [{ k: 'chip', l: 'Nhãn nhỏ (B1 / B2)' }, { k: 'name', l: 'Tên thành phần' }, { k: 'desc', l: 'Tác dụng', area: true }],
                     () => ({ chip: 'B1', name: 'Thành phần mới', desc: '' }), it => it.name),
                 field('Ghi chú cuối', 'ingredients.note')
-            ]));
+            ], false, 'sec-thanhphan'));
 
             F.append(panel('Màn Cách dùng', [
                 field('Nhãn nhỏ', 'howto.eyebrow'),
@@ -743,7 +846,7 @@
                 listEditor('Các bước', 'howto.steps',
                     [{ k: 'no', l: 'Số thứ tự' }, { k: 'h', l: 'Tên bước' }, { k: 'p', l: 'Mô tả', area: true }, { k: 'em', l: 'Dòng tần suất' }],
                     () => ({ no: '04', h: 'Bước mới', p: '', em: '' }), it => it.no + ' · ' + it.h)
-            ]));
+            ], false, 'sec-cachdung'));
 
             F.append(panel('Màn Hiệu quả', [
                 field('Nhãn nhỏ', 'results.eyebrow'),
@@ -756,7 +859,7 @@
                     [{ k: 'val', l: 'Con số' }, { k: 'lbl', l: 'Diễn giải' }],
                     () => ({ val: '0%', lbl: '' }), it => it.val),
                 field('Ghi chú cuối', 'results.note')
-            ]));
+            ], false, 'sec-hieuqua'));
 
             F.append(panel('Màn Đánh giá', [
                 field('Nhãn nhỏ', 'reviews.eyebrow'),
@@ -765,7 +868,7 @@
                     [{ k: 'stars', l: 'Số sao (1–5)' }, { k: 'text', l: 'Nội dung', area: true }, { k: 'name', l: 'Tên, tuổi' }, { k: 'meta', l: 'Đã dùng bao lâu' }],
                     () => ({ stars: 5, text: '', name: 'Khách hàng', meta: '' }), it => it.name),
                 field('Ghi chú cuối', 'reviews.note')
-            ]));
+            ], false, 'sec-danhgia'));
 
             F.append(panel('Màn Bảng giá', [
                 field('Nhãn nhỏ', 'pricing.eyebrow'),
@@ -775,7 +878,7 @@
                 field('Link khi bấm nút combo', 'pricing.comboLink', { hint: 'Để trống thì nút tự dùng Zalo / số điện thoại ở mục Liên hệ bên dưới.' }),
                 field('Ghi chú cuối', 'pricing.note'),
                 h('div', { class: 'hint', html: 'Giá từng sản phẩm nằm trong mục “Sản phẩm 1 / 2” phía trên.' })
-            ]));
+            ], false, 'sec-banggia'));
 
             F.append(panel('Liên hệ & đặt hàng', [
                 h('div', { class: 'hint', html: 'Ô nào để trống thì tự ẩn khỏi trang. Nút mua chưa có link riêng sẽ tự dùng Zalo, không có Zalo thì dùng số điện thoại.' }),
@@ -798,7 +901,12 @@
                     field('Tiêu đề cột kênh mua', 'contact.shopLabel')
                 ]),
                 field('Câu ghi chú dưới phần liên hệ', 'contact.note', { area: true })
-            ]));
+            ], false, 'sec-lienhe'));
+
+            buildSecNav();
+            document.querySelectorAll('#form > details[id]').forEach(d => {
+                d.addEventListener('toggle', () => { if (d.open) setActiveSection(d.id); });
+            });
         }
         buildForm();
 
