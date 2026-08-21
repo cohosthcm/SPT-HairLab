@@ -183,40 +183,21 @@
             align-items: center;
         }
 
-        details {
-            background: var(--panel);
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            margin-bottom: .7rem;
-            overflow: hidden;
-        }
-
-        summary {
-            padding: .8rem 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            list-style: none;
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-        }
-
-        summary::-webkit-details-marker {
+        .secbox {
             display: none;
         }
 
-        summary::before {
-            content: "▸";
-            color: var(--muted);
-            transition: transform .2s;
+        .secbox.active {
+            display: block;
+            padding-bottom: 2rem;
         }
 
-        details[open] summary::before {
-            transform: rotate(90deg);
-        }
-
-        .body {
-            padding: 0 1rem 1rem;
+        .secbox .sectitle {
+            font-size: 15px;
+            font-weight: 700;
+            margin: 0 0 1rem;
+            padding-bottom: .7rem;
+            border-bottom: 1px solid var(--line);
         }
 
         label {
@@ -662,11 +643,10 @@
         }
 
         function panel(title, kids, open = false, id = '') {
-            const attrs = {};
-            if (open) attrs.open = '';
+            const attrs = { class: 'secbox' };
             if (id) attrs.id = id;
-            const d = h('details', attrs);
-            d.append(h('summary', { html: title }), h('div', { class: 'body' }, kids));
+            const d = h('div', attrs);
+            d.append(h('h2', { class: 'sectitle', html: title }), h('div', {}, kids));
             return d;
         }
 
@@ -747,10 +727,10 @@
         }
 
         function goToSection(id) {
-            document.querySelectorAll('#form > details[id]').forEach(d => { d.open = (d.id === id); });
+            document.querySelectorAll('#form > .secbox').forEach(s => { s.classList.toggle('active', s.id === id); });
             setActiveSection(id);
-            const el = document.getElementById(id);
-            if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const sideEl = document.querySelector('.side');
+            if (sideEl) sideEl.scrollTop = 0;
         }
 
         function buildSecNav() {
@@ -904,9 +884,7 @@
             ], false, 'sec-lienhe'));
 
             buildSecNav();
-            document.querySelectorAll('#form > details[id]').forEach(d => {
-                d.addEventListener('toggle', () => { if (d.open) setActiveSection(d.id); });
-            });
+            goToSection(SECTIONS[0].id);
         }
         buildForm();
 
