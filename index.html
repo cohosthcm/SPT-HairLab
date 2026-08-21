@@ -1335,20 +1335,132 @@
         .site-footer {
             position: relative;
             z-index: 3;
-            padding: 3rem 5% 3.4rem;
+            padding: 3.4rem 5% 3.4rem;
             border-top: 1px solid rgba(255, 255, 255, .1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
             font-size: .78rem;
             color: rgba(255, 255, 255, .55);
+        }
+
+        .foot-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 2.4rem;
+            align-items: start;
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        .foot-col h4 {
+            font-size: .7rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .5);
+            margin: 0 0 1rem;
+            font-weight: 600;
+        }
+
+        .foot-brand p {
+            margin: .7rem 0 0;
+            max-width: 30ch;
+            line-height: 1.65;
         }
 
         .site-footer .logo {
             font-size: 1.2rem;
             color: #fff;
+        }
+
+        .foot-item {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            margin-bottom: .75rem;
+            color: rgba(255, 255, 255, .72);
+            text-decoration: none;
+            transition: color .25s ease;
+        }
+
+        a.foot-item:hover {
+            color: #fff;
+        }
+
+        .foot-item .ico {
+            width: 26px;
+            height: 26px;
+            flex: none;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            font-size: .68rem;
+            font-weight: 700;
+            color: var(--d1);
+        }
+
+        .foot-item b {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .foot-note {
+            margin-top: 1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, .45);
+        }
+
+        .foot-bottom {
+            max-width: 1180px;
+            margin: 2.6rem auto 0;
+            padding-top: 1.4rem;
+            border-top: 1px solid rgba(255, 255, 255, .07);
+            text-align: center;
+        }
+
+        /* ---- nút liên hệ nổi ---- */
+        .cta-dock {
+            position: fixed;
+            right: 1.4rem;
+            bottom: 1.4rem;
+            z-index: 60;
+            display: flex;
+            flex-direction: column;
+            gap: .6rem;
+            align-items: flex-end;
+        }
+
+        .cta-dock:empty {
+            display: none;
+        }
+
+        .dock-btn {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .72rem 1.15rem;
+            border-radius: 100px;
+            font-family: var(--font-main);
+            font-size: .82rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--accent-ink);
+            background: var(--accent);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, .38);
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .dock-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 34px rgba(0, 0, 0, .46);
+        }
+
+        .dock-btn.ghost {
+            background: rgba(10, 12, 12, .78);
+            color: #fff;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
         }
 
         /* Cửa sổ thấp (laptop, cửa sổ không full màn): thu gọn để mỗi màn vẫn vừa
@@ -1716,9 +1828,39 @@
             }
 
             .site-footer {
-                flex-direction: column;
                 text-align: center;
-                gap: .8rem;
+                padding-bottom: 6.4rem;
+            }
+
+            .foot-grid {
+                grid-template-columns: 1fr;
+                gap: 1.9rem;
+            }
+
+            .foot-brand p {
+                max-width: none;
+                margin-inline: auto;
+            }
+
+            .foot-item {
+                justify-content: center;
+            }
+
+            /* Điện thoại: gom thành thanh cố định dưới đáy cho dễ bấm bằng ngón cái */
+            .cta-dock {
+                right: 0;
+                left: 0;
+                bottom: 0;
+                flex-direction: row;
+                gap: .5rem;
+                padding: .6rem .8rem calc(.6rem + env(safe-area-inset-bottom));
+                background: linear-gradient(to top, rgba(0, 0, 0, .82), rgba(0, 0, 0, 0));
+            }
+
+            .dock-btn {
+                flex: 1;
+                justify-content: center;
+                padding: .82rem .6rem;
             }
         }
 
@@ -1944,18 +2086,27 @@
                     <b data-c="pricing.comboLabel">Mua cả bộ đôi</b>
                     <s data-c="pricing.comboOld">1.080.000đ</s>
                     <span class="big" data-c="pricing.comboNew">980.000đ</span>
-                    <button class="buy-btn solid" style="width:auto;padding:.7rem 1.6rem" data-c="pricing.comboBtn">Mua bộ đôi</button>
+                    <button class="buy-btn solid" id="comboBuy" style="width:auto;padding:.7rem 1.6rem" data-c="pricing.comboBtn">Mua bộ đôi</button>
                 </div>
                 <p class="note reveal d4" data-c="pricing.note">Giá minh hoạ — thay bằng giá bán thật của bạn.</p>
             </div>
         </section>
     </main>
 
-    <footer class="site-footer">
-        <div class="logo" data-c="brand">ROOTLAB</div>
-        <div data-c="footer.tagline">Chăm sóc tóc từ chân tóc — làm sạch trước, nuôi dưỡng sau.</div>
-        <div data-c="footer.copyright">© 2026 ROOTLAB</div>
+    <footer class="site-footer" id="lien-he">
+        <div class="foot-grid">
+            <div class="foot-col foot-brand">
+                <div class="logo" data-c="brand">ROOTLAB</div>
+                <p data-c="footer.tagline">Chăm sóc tóc từ chân tóc — làm sạch trước, nuôi dưỡng sau.</p>
+            </div>
+            <div class="foot-col" data-list="contactMain"></div>
+            <div class="foot-col" data-list="contactShop"></div>
+        </div>
+        <div class="foot-bottom" data-c="footer.copyright">© 2026 ROOTLAB</div>
     </footer>
+
+    <!-- Nút liên hệ nổi: máy tính thì nằm góc phải, điện thoại thì thành thanh dưới đáy -->
+    <div class="cta-dock" data-list="dock"></div>
 
     <!-- Hình lá dùng chung -->
     <svg style="position:absolute;width:0;height:0;opacity:0;pointer-events:none" aria-hidden="true">
@@ -2225,6 +2376,19 @@
                 "comboLink": "",
                 "note": "Giá minh hoạ — thay bằng giá bán thật của bạn."
         },
+        "contact": {
+                "heading": "Đặt hàng & tư vấn",
+                "note": "Nhắn Zalo để được tư vấn miễn phí trước khi mua. Bỏ trống ô nào thì mục đó tự ẩn.",
+                "phone": "",
+                "zalo": "",
+                "messenger": "",
+                "shopee": "",
+                "tiktok": "",
+                "email": "",
+                "address": "",
+                "hours": "8:00 – 21:00 · Thứ 2 – Chủ nhật",
+                "shopLabel": "Kênh mua hàng"
+        },
         "footer": {
                 "tagline": "Chăm sóc tóc từ chân tóc — làm sạch trước, nuôi dưỡng sau.",
                 "copyright": "© 2026 ROOTLAB"
@@ -2260,6 +2424,57 @@
         const shotHTML = p => p.photo
             ? `<img class="shot" src="${esc(p.photo)}" alt="${esc(p.name)}">`
             : (SHOT_SVG[p.key] || SHOT_SVG.cleanse);
+
+        /* ---- liên hệ: chấp nhận cả link đầy đủ lẫn chỉ số điện thoại / tên tài khoản ---- */
+        const soDT = s => String(s || '').replace(/[^\d+]/g, '');
+        const telHref = s => soDT(s) ? 'tel:' + soDT(s) : '';
+        const zaloHref = v => {
+            v = String(v || '').trim();
+            if (!v) return '';
+            return /^https?:\/\//i.test(v) ? v : (soDT(v) ? 'https://zalo.me/' + soDT(v) : '');
+        };
+        const webHref = (v, pre) => {
+            v = String(v || '').trim();
+            if (!v) return '';
+            return /^https?:\/\//i.test(v) ? v : pre + v.replace(/^@/, '');
+        };
+        /* Nút mua chưa gắn link thì rơi về kênh liên hệ gần nhất, không để bấm vào hư không */
+        const ctaDuPhong = () => {
+            const k = C.contact || {};
+            return zaloHref(k.zalo) || telHref(k.phone) || webHref(k.messenger, 'https://m.me/')
+                || webHref(k.shopee, 'https://') || webHref(k.tiktok, 'https://') || '';
+        };
+
+        function applyContact() {
+            const k = C.contact || {}, chinh = [], kenh = [], dock = [];
+            const row = (ico, txt, href) => {
+                const inner = `<span class="ico">${ico}</span><span>${esc(txt)}</span>`;
+                if (!href) return `<div class="foot-item">${inner}</div>`;
+                const ext = /^https?:/i.test(href) ? ' target="_blank" rel="noopener"' : '';
+                return `<a class="foot-item" href="${esc(href)}"${ext}>${inner}</a>`;
+            };
+            if (k.phone) chinh.push(row('☎', k.phone, telHref(k.phone)));
+            if (zaloHref(k.zalo)) chinh.push(row('Z', 'Nhắn Zalo', zaloHref(k.zalo)));
+            if (k.email) chinh.push(row('@', k.email, 'mailto:' + esc(k.email)));
+            if (k.address) chinh.push(row('◎', k.address, ''));
+            if (k.hours) chinh.push(row('◷', k.hours, ''));
+            if (k.shopee) kenh.push(row('S', 'Shopee', webHref(k.shopee, 'https://')));
+            if (k.tiktok) kenh.push(row('T', 'TikTok Shop', webHref(k.tiktok, 'https://')));
+            if (k.messenger) kenh.push(row('M', 'Messenger', webHref(k.messenger, 'https://m.me/')));
+
+            fill('contactMain', chinh.length
+                ? `<h4>${esc(k.heading || 'Liên hệ')}</h4>${chinh.join('')}` +
+                  (k.note ? `<div class="foot-note">${esc(k.note)}</div>` : '')
+                : '');
+            fill('contactShop', kenh.length ? `<h4>${esc(k.shopLabel || 'Kênh mua hàng')}</h4>${kenh.join('')}` : '');
+
+            if (zaloHref(k.zalo)) dock.push(`<a class="dock-btn" href="${esc(zaloHref(k.zalo))}" target="_blank" rel="noopener">Nhắn Zalo</a>`);
+            if (telHref(k.phone)) dock.push(`<a class="dock-btn ghost" href="${esc(telHref(k.phone))}">Gọi ${esc(k.phone)}</a>`);
+            fill('dock', dock.join(''));
+
+            const cb = document.getElementById('comboBuy');
+            if (cb) cb.dataset.link = esc(C.pricing.comboLink || '');
+        }
 
         function applyContent() {
             document.querySelectorAll('[data-c]').forEach(el => {
@@ -2314,14 +2529,19 @@
                     </div>
                 </div>`).join(''));
 
+            applyContact();
             document.title = `${esc(C.brand)} | ${esc(C.products[0].name)} & ${esc(C.products[1].name)}`;
         }
         applyContent();
 
-        /* nút mua: mở link nếu có điền */
+        /* Nút mua: ưu tiên link riêng của sản phẩm, không có thì rơi về Zalo / điện thoại,
+           không có nữa thì cuộn xuống khối liên hệ — tuyệt đối không bấm rồi im lặng. */
         document.addEventListener('click', e => {
-            const btn = e.target.closest('.buy-btn[data-link]');
-            if (btn && btn.dataset.link) window.open(btn.dataset.link, '_blank');
+            const btn = e.target.closest('.buy-btn');
+            if (!btn) return;
+            const link = (btn.dataset.link || '').trim() || ctaDuPhong();
+            if (link) window.open(link, '_blank', 'noopener');
+            else document.getElementById('lien-he')?.scrollIntoView({ behavior: 'smooth' });
         });
 
         /* ============================================================
@@ -3118,11 +3338,17 @@
             lastJump = performance.now();
             goTo(i, 900);
         }));
-        [['.contact-btn', 'gia'], ['.primary-btn', 'gia']].forEach(([sel, id]) => {
-            document.querySelector(sel)?.addEventListener('click', () => {
-                lastJump = performance.now();
-                goTo(idxOf(id), 900);
-            });
+        document.querySelector('.primary-btn')?.addEventListener('click', () => {
+            lastJump = performance.now();
+            goTo(idxOf('gia'), 900);
+        });
+        /* Nút "Liên hệ" trên thanh menu: mở thẳng kênh nhắn tin nếu đã điền,
+           chưa điền thì đưa xuống khối liên hệ ở chân trang. */
+        document.querySelector('.contact-btn')?.addEventListener('click', () => {
+            const link = ctaDuPhong();
+            if (link) { window.open(link, '_blank', 'noopener'); return; }
+            lastJump = performance.now();
+            document.getElementById('lien-he')?.scrollIntoView({ behavior: 'smooth' });
         });
         document.querySelector('.scroll-hint')?.addEventListener('click', () => {
             lastJump = performance.now();
