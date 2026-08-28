@@ -1,6 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /quantri-9f4k2m
-Disallow: /quantri-9f4k2m.html
-
-Sitemap: https://www.sptlab.co/sitemap.xml
+Sitemap: https://rootlab.vercel.app/sitemap.xml

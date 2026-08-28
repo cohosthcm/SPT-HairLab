@@ -7,7 +7,7 @@
     <title>ROOTLAB | Bộ đôi làm sạch &amp; kích thích mọc tóc</title>
     <meta name="description"
         content="ROOTLAB — Bước 1 làm sạch sâu chân tóc và nang tóc, Bước 2 serum dưỡng tóc và kích thích mọc tóc từ gốc.">
-    <link rel="canonical" href="https://www.sptlab.co/">
+    <link rel="canonical" href="https://rootlab.vercel.app/">
     <meta name="theme-color" content="#044e3b">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23044e3b'/%3E%3Cpath d='M16 24V12M16 12c0-3-2.5-5.5-5.5-5.5M16 12c0-3 2.5-5.5 5.5-5.5' stroke='%23fbcfe8' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 
@@ -700,23 +700,14 @@
 
         .carousel-cards {
             display: flex;
-            gap: .8rem;
-            /* 6 sản phẩm không nhét vừa một hàng → cho cuộn ngang, ẩn thanh cuộn */
-            max-width: min(36vw, 452px);
-            overflow-x: auto;
-            overflow-y: hidden;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-            padding-bottom: .3rem;
+            gap: 1rem;
         }
-        .carousel-cards::-webkit-scrollbar { display: none; }
-        .carousel-cards > .card { flex: 0 0 auto; scroll-snap-align: center; }
 
         .card {
             background: rgba(255, 255, 255, .075);
             border: 1px solid var(--glass-border);
             padding: 1rem;
-            padding-top: 4.6rem;
+            padding-top: 5.4rem;
             border-radius: 28px;
             display: flex;
             flex-direction: column;
@@ -724,7 +715,7 @@
             gap: 1.2rem;
             cursor: pointer;
             transition: all .4s cubic-bezier(.175, .885, .32, 1.275);
-            width: 142px;
+            width: 160px;
             position: relative;
             text-align: center;
         }
@@ -1896,127 +1887,10 @@
                 width: 46%;
             }
         }
-
-        /* ==========================================================
-           MÀN CHỌN NHÓM SẢN PHẨM — màn hình đầu tiên khách nhìn thấy
-           Rê chuột (hoặc chạm) vào một nhóm → đổi người mẫu.
-           Bấm → trang tự trôi xuống đúng trang của sản phẩm đó.
-           ========================================================== */
-        .chooser {
-            position: relative; z-index: 20;      /* che lớp chai 3D đang cố định phía sau */
-            min-height: 100svh; overflow: hidden;
-            display: grid; place-items: center;
-            background: radial-gradient(120% 92% at 50% 44%, #0b8a78 0%, #044e3b 34%, #011411 78%);
-            transition: background 1s cubic-bezier(.2, .9, .25, 1);
-        }
-        .chooser::after {
-            content: ""; position: absolute; inset: 0; pointer-events: none;
-            background: radial-gradient(74% 62% at 50% 46%, transparent 38%, rgba(1, 20, 17, .8) 100%);
-        }
-        .cs-bar {
-            position: absolute; top: 0; left: 0; right: 0; z-index: 3;
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 26px clamp(18px, 4vw, 52px); color: #f1f7f4;
-        }
-        .cs-brand { font-size: 18px; letter-spacing: .34em; font-weight: 500; }
-        .cs-brand small { display: block; font-size: 8.5px; letter-spacing: .3em; opacity: .5; margin-top: 5px; font-weight: 400; }
-        .cs-bar .hint { font-size: 10px; letter-spacing: .22em; opacity: .55; text-transform: uppercase; }
-
-        .cs-stage { position: relative; z-index: 2; width: min(1240px, 94vw); height: min(88svh, 830px); display: grid; place-items: center; }
-        .cs-wrap, .cs-nodes { grid-area: 1/1; }
-        .cs-nodes { position: relative; width: 100%; height: 100%; pointer-events: none; }
-        .cs-nodes .cs-node { pointer-events: auto; }
-        .cs-wrap { position: relative; display: grid; place-items: center; }
-        .cs-plate {
-            position: relative; width: min(40vw, 420px); aspect-ratio: 765/890;
-            border-radius: 210px 210px 18px 18px; overflow: hidden; isolation: isolate;
-            box-shadow: 0 50px 90px -30px rgba(0, 0, 0, .8), inset 0 0 0 1px rgba(241, 247, 244, .12);
-        }
-        .cs-who { position: absolute; inset: 0; opacity: 0; transition: opacity .45s ease; will-change: transform, filter, clip-path; }
-        .cs-who.on { opacity: 1; }
-        .cs-who img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
-        @keyframes csSlice {
-            0%   { clip-path: inset(0 0 88% 0); transform: translateX(-16px); }
-            10%  { clip-path: inset(76% 0 2% 0); transform: translateX(14px); }
-            20%  { clip-path: inset(20% 0 62% 0); transform: translateX(-11px); }
-            32%  { clip-path: inset(54% 0 24% 0); transform: translateX(10px); }
-            44%  { clip-path: inset(6% 0 80% 0); transform: translateX(-7px); }
-            56%  { clip-path: inset(36% 0 44% 0); transform: translateX(6px); }
-            70%  { clip-path: inset(0 0 0 0); transform: translateX(-3px); }
-            100% { clip-path: inset(0 0 0 0); transform: none; }
-        }
-        @keyframes csFringe {
-            0%, 70% { filter: drop-shadow(4px 0 0 rgba(255, 40, 90, .75)) drop-shadow(-4px 0 0 rgba(0, 225, 255, .75)) saturate(1.5); }
-            100%    { filter: none; }
-        }
-        .cs-plate.gl .cs-who.on { animation: csSlice .5s linear, csFringe .5s linear; }
-        .cs-scan { position: absolute; inset: 0; pointer-events: none; opacity: 0; z-index: 5;
-            background: repeating-linear-gradient(0deg, rgba(255,255,255,.16) 0 1px, transparent 1px 4px); }
-        @keyframes csScan { 0% { opacity: .85 } 60% { opacity: .35 } 100% { opacity: 0 } }
-        .cs-plate.gl .cs-scan { animation: csScan .5s linear; }
-        .cs-name { position: absolute; left: 50%; bottom: -58px; translate: -50% 0; z-index: 6; text-align: center;
-            width: max-content; max-width: min(88vw, 440px); line-height: 1.6; color: #f1f7f4;
-            font-size: 10px; letter-spacing: .26em; text-transform: uppercase; opacity: .65; transition: opacity .3s; }
-        .cs-name b { display: block; font-size: 15px; letter-spacing: .1em; margin-bottom: 5px; font-weight: 400; }
-
-        .cs-node { position: absolute; translate: 0 -50%; display: flex; flex-direction: column; gap: 5px;
-            padding: 13px 17px; border-radius: 15px; min-width: 184px; cursor: pointer; text-align: left;
-            color: #f1f7f4; font: inherit; background: rgba(255,255,255,.045);
-            border: 1px solid rgba(241,247,244,.14); backdrop-filter: blur(10px);
-            transition: transform .5s cubic-bezier(.2,.9,.25,1), background .4s, border-color .4s, box-shadow .5s; }
-        .cs-node .k { font-size: 8.5px; letter-spacing: .22em; text-transform: uppercase; opacity: .5; }
-        .cs-node .l { font-size: 15.5px; letter-spacing: .03em; }
-        .cs-node .dot { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--c);
-            box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 26%, transparent); top: 50%; translate: 0 -50%; transition: scale .4s; }
-        .cs-node[data-side="l"] .dot { right: -22px; }
-        .cs-node[data-side="r"] .dot { left: -22px; }
-        .cs-node:hover, .cs-node:focus-visible { outline: none;
-            background: color-mix(in srgb, var(--c) 20%, rgba(255,255,255,.05));
-            border-color: color-mix(in srgb, var(--c) 58%, transparent);
-            box-shadow: 0 14px 40px -12px color-mix(in srgb, var(--c) 60%, transparent); }
-        .cs-node[data-side="l"]:hover { transform: translateX(-9px); }
-        .cs-node[data-side="r"]:hover { transform: translateX(9px); }
-        .cs-node:hover .dot { scale: 1.5; }
-        .cs-hint { position: absolute; bottom: 22px; left: 50%; translate: -50% 0; z-index: 3; color: #f1f7f4;
-            font-size: 9px; letter-spacing: .28em; text-transform: uppercase; opacity: .5;
-            display: flex; flex-direction: column; align-items: center; gap: 9px; }
-        .cs-hint i { display: block; width: 1px; height: 32px; background: linear-gradient(#f1f7f4, transparent); }
-
-        @media (max-width: 920px) {
-            .cs-stage { height: auto; padding: 88px 0 96px; display: flex; flex-direction: column; gap: 20px; }
-            .cs-wrap, .cs-nodes { grid-area: auto; }
-            .cs-plate { width: min(66vw, 300px); }
-            .cs-name { position: static; translate: none; margin-top: 16px; }
-            .cs-nodes { height: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 9px; width: min(560px, 92vw); margin-top: 34px; }
-            .cs-node { position: static !important; width: 100%; min-width: 0; padding: 12px 14px; translate: none; transform: none !important; }
-            .cs-node .dot { display: none; }
-            .cs-node .l { font-size: 14px; }
-            .cs-hint { display: none; }
-        }
-        /* Đang ở màn chọn thì ẩn thanh menu của trang sản phẩm cho khỏi đè lên nhau */
-        header.header, .scroll-hint { transition: opacity .45s ease; }
-        body.o-man-chon header.header,
-        body.o-man-chon .scroll-hint { opacity: 0; pointer-events: none; }
     </style>
 </head>
 
 <body>
-
-    <!-- ===== MÀN CHỌN NHÓM SẢN PHẨM (màn hình đầu tiên) ===== -->
-    <header class="chooser" id="chon">
-        <div class="cs-bar">
-            <div class="cs-brand">ROOTLAB<small>HAIR LABORATORY</small></div>
-            <div class="hint" id="cs-hint">Rê chuột vào từng nhóm</div>
-        </div>
-        <div class="cs-stage">
-            <div class="cs-wrap">
-                <div class="cs-plate" id="cs-plate"><div class="cs-scan"></div></div>
-                <div class="cs-name" id="cs-name"></div>
-            </div>
-            <div class="cs-nodes" id="cs-nodes"></div>
-        </div>
-        <div class="cs-hint"><span>Bấm vào một nhóm</span><i></i></div>
-    </header>
 
     <div class="bg-fixed"></div>
     <div id="bubbles-container"></div>
@@ -2050,7 +1924,8 @@
         <div class="flare" id="flare"></div>
         <div class="blur-wrap" id="blur-wrap">
             <div class="persp">
-                <!-- các khung chai được tạo bằng JS, một khung cho mỗi sản phẩm -->
+                <div class="rig" id="rig-cleanse"></div>
+                <div class="rig" id="rig-serum"></div>
             </div>
         </div>
     </div>
@@ -2546,33 +2421,9 @@
             const el = document.querySelector(`[data-list="${name}"]`);
             if (el) el.innerHTML = html;
         };
-        /* Ảnh chai 2D nhỏ trên thẻ. Hai sản phẩm gốc dùng hình vẽ tay có sẵn;
-           sản phẩm mới tự dựng hình theo đúng màu và chữ khai trong content.js. */
-        const shotSVG = p => {
-            const B = p.bottle || {}, body = B.body || '#f1f7f4', cap = B.cap || '#0d2f27', ink = B.ink || '#0b3d33';
-            const drop = (p.shape || 'jar') === 'dropper';
-            const id = 'g' + String(p.key).replace(/[^a-z0-9]/gi, '');
-            const w = drop ? 40 : 56, x = 75 - w / 2, capH = drop ? 56 : 30, capY = drop ? 18 : 14;
-            const bodyTop = drop ? 86 : 58, bw = drop ? 38 : 46;
-            return `<svg class="shot" viewBox="0 0 150 260">
-              <defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0" stop-color="${shade(body, .62)}"/><stop offset=".18" stop-color="${shade(body, 1.06)}"/>
-                <stop offset=".45" stop-color="${shade(body, 1.16)}"/><stop offset=".76" stop-color="${shade(body, .9)}"/>
-                <stop offset="1" stop-color="${shade(body, .55)}"/></linearGradient></defs>
-              <ellipse cx="75" cy="250" rx="${drop ? 40 : 46}" ry="6" fill="rgba(0,0,0,.35)"/>
-              ${drop ? `<rect x="59" y="8" width="32" height="12" rx="5" fill="${shade(cap, .7)}"/>` : ''}
-              <rect x="${x}" y="${capY}" width="${w}" height="${capH}" rx="7" fill="${cap}"/>
-              <rect x="${75 - bw / 2 - 6}" y="${bodyTop - 16}" width="${bw + 12}" height="16" fill="${shade(body, .86)}"/>
-              <rect x="${75 - bw}" y="${bodyTop}" width="${bw * 2}" height="${240 - bodyTop}" rx="14" fill="url(#${id})"/>
-              <text x="75" y="${bodyTop + 66}" text-anchor="middle" font-family="Inter,sans-serif" font-size="7.5" letter-spacing="3.5" font-weight="700" fill="${ink}">ROOTLAB</text>
-              <text x="75" y="${bodyTop + 88}" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="${ink}">${esc(B.l1 || '')}</text>
-              <text x="75" y="${bodyTop + 105}" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="${ink}">${esc(B.l2 || '')}</text>
-              <rect x="${75 - bw + 7}" y="${bodyTop + 14}" width="8" height="${200 - bodyTop}" rx="4" fill="rgba(255,255,255,.42)"/>
-            </svg>`;
-        };
         const shotHTML = p => p.photo
             ? `<img class="shot" src="${esc(p.photo)}" alt="${esc(p.name)}">`
-            : (SHOT_SVG[p.key] || shotSVG(p));
+            : (SHOT_SVG[p.key] || SHOT_SVG.cleanse);
 
         /* ---- liên hệ: chấp nhận cả link đầy đủ lẫn chỉ số điện thoại / tên tài khoản ---- */
         const soDT = s => String(s || '').replace(/[^\d+]/g, '');
@@ -2625,68 +2476,40 @@
             if (cb) cb.dataset.link = esc(C.pricing.comboLink || '');
         }
 
-        /* ============================================================
-           NỘI DUNG RIÊNG THEO TỪNG SẢN PHẨM
-           Bấm sang sản phẩm khác thì Thành phần / Cách dùng / Hiệu quả /
-           Đánh giá / Bảng giá đổi theo hết, chứ không chỉ đổi cái chai.
-           ============================================================ */
-        let SP_KEY = (() => {
-            try {
-                const k = new URLSearchParams(location.search).get('sp');
-                return (k && C.products.some(p => p.key === k)) ? k : C.products[0].key;
-            } catch (e) { return C.products[0].key; }
-        })();
-        const spOf = k => C.products.find(p => p.key === k) || C.products[0];
-        /* khách vào bằng link riêng của sản phẩm thì bỏ qua màn chọn */
-        const CO_SP = (() => { try { return !!new URLSearchParams(location.search).get('sp'); } catch (e) { return false; } })();
-        /* Khối nào sản phẩm có riêng thì lấy của nó, chưa có thì rơi về khối dùng chung */
-        const viewFor = k => {
-            const p = spOf(k);
-            return Object.assign({}, C, {
-                ingredients: p.ingredients || C.ingredients,
-                howto: p.howto || C.howto,
-                results: p.results || C.results,
-                reviews: p.reviews || C.reviews
-            });
-        };
-        /* chép ảnh chai 2D từ thẻ hero sang thẻ giá (bản điện thoại dùng ảnh này) */
-        function copyShots() {
-            document.querySelectorAll('.price-card').forEach(card => {
-                const src = document.querySelector(`.card[data-product="${card.dataset.product}"] .shot`);
-                const slot = card.querySelector('.price-slot');
-                if (!slot) return;
-                slot.innerHTML = '';
-                if (src) { const cl = src.cloneNode(true); cl.setAttribute('class', 'shot-2d'); slot.appendChild(cl); }
-            });
-        }
-
-        function applySections(key) {
-            SP_KEY = key;
-            const V = viewFor(key), P = spOf(key);
+        function applyContent() {
             document.querySelectorAll('[data-c]').forEach(el => {
-                const v = at(V, el.dataset.c);
+                const v = at(C, el.dataset.c);
                 if (v != null) el.innerHTML = esc(v);
             });
 
-            fill('ing', V.ingredients.items.map(it => `
+            fill('nav', C.nav.map((t, i) =>
+                `<a href="#${NAV_IDS[i] || 'home'}" class="nav-item${i === 0 ? ' active' : ''}">${esc(t)}</a>`).join(''));
+
+            fill('cards', C.products.map((p, i) => `
+                <div class="card${i === 0 ? ' active' : ''}" data-product="${esc(p.key)}">
+                    ${shotHTML(p)}
+                    <div class="card-info"><span>${esc(p.name)}</span><span>${esc(p.cardSub)}</span></div>
+                </div>`).join(''));
+
+            fill('ing', C.ingredients.items.map(it => `
                 <div class="ing"><span class="ing-chip">${esc(it.chip)}</span>
                     <div><b>${esc(it.name)}</b><span class="desc">${esc(it.desc)}</span></div>
                 </div>`).join(''));
 
-            fill('steps', V.howto.steps.map((st, i) => `
-                <div class="step reveal d${Math.min(4, i + 2)} in">
+            fill('steps', C.howto.steps.map((st, i) => `
+                <div class="step reveal d${Math.min(4, i + 2)}">
                     <div class="step-no">${esc(st.no)}</div>
                     <div><h3>${esc(st.h)}</h3><p>${esc(st.p)}</p><em>${esc(st.em)}</em></div>
                 </div>`).join(''));
 
-            fill('weeks', V.results.weeks.map(w =>
+            fill('weeks', C.results.weeks.map(w =>
                 `<div class="week"><b>${esc(w.b)}</b><span>${esc(w.s)}</span></div>`).join(''));
 
-            fill('tiles', V.results.tiles.map(t =>
+            fill('tiles', C.results.tiles.map(t =>
                 `<div class="tile"><div class="val">${esc(t.val)}</div><div class="lbl">${esc(t.lbl)}</div></div>`).join(''));
 
-            fill('reviews', V.reviews.items.map((r, i) => `
-                <div class="review reveal d${Math.min(4, i + 1)} in">
+            fill('reviews', C.reviews.items.map((r, i) => `
+                <div class="review reveal d${Math.min(4, i + 1)}">
                     <div class="stars">${'★'.repeat(Math.max(0, Math.min(5, +r.stars || 5)))}${'☆'.repeat(5 - Math.max(0, Math.min(5, +r.stars || 5)))}</div>
                     <p>${esc(r.text)}</p>
                     <div class="who"><span class="ava">${esc(r.name).trim().charAt(0)}</span>
@@ -2694,9 +2517,8 @@
                     </div>
                 </div>`).join(''));
 
-            /* bảng giá chỉ hiện đúng sản phẩm đang xem — mỗi sản phẩm là một trang riêng */
-            fill('prices', [P].map(p => `
-                <div class="price-card reveal d2 in" data-product="${esc(p.key)}">
+            fill('prices', C.products.map((p, i) => `
+                <div class="price-card reveal d${i + 2}" data-product="${esc(p.key)}">
                     <div class="price-slot"></div>
                     <div class="price-body">
                         <h3>${esc(p.name)}</h3>
@@ -2707,38 +2529,8 @@
                     </div>
                 </div>`).join(''));
 
-            /* tiêu đề lớn ở màn sản phẩm — mỗi sản phẩm một câu riêng */
-            const t1 = document.querySelector('[data-c="hero.title1"]');
-            const t2 = document.querySelector('[data-c="hero.title2"]');
-            if (t1) t1.textContent = P.heroT1 || C.hero.title1;
-            if (t2) t2.textContent = P.heroT2 || C.hero.title2;
-
-            /* nút mua ở màn đầu theo đúng sản phẩm đang xem */
-            const heroCta = document.querySelector('[data-c="hero.cta"]');
-            if (heroCta) {
-                heroCta.textContent = P.buyBtn || C.hero.cta;
-                const wrap = heroCta.closest('button, a'); if (wrap) wrap.dataset.link = P.buyLink || '';
-            }
-            document.body.classList.toggle('theme-serum', !!P.light);
-
-            copyShots();
-            document.title = `${esc(C.brand)} | ${esc(P.name)}`;
-            try { history.replaceState(null, '', location.pathname + '?sp=' + key); } catch (e) { }
-            try { measureScenes(); } catch (e) { }
-        }
-
-        function applyContent() {
-            fill('nav', C.nav.map((t, i) =>
-                `<a href="#${NAV_IDS[i] || 'home'}" class="nav-item${i === 0 ? ' active' : ''}">${esc(t)}</a>`).join(''));
-
-            fill('cards', C.products.map((p, i) => `
-                <div class="card${i === 0 ? ' active' : ''}" data-product="${esc(p.key)}">
-                    ${shotHTML(p)}
-                    <div class="card-info"><span>${esc(p.name)}</span><span>${esc(p.cardSub)}</span></div>
-                </div>`).join(''));
-
-            applySections(SP_KEY);
             applyContact();
+            document.title = `${esc(C.brand)} | ${esc(C.products[0].name)} & ${esc(C.products[1].name)}`;
         }
         applyContent();
 
@@ -2994,6 +2786,8 @@
                 sub: xml(bo.sub), vn: xml(bo.vn), vol: xml(bo.vol)
             });
         }
+        const LABEL_CLEANSE = labelFor(C.products[0].key, 56, 250);
+        const LABEL_SERUM = labelFor(C.products[1].key, 45, 200);
 
         function ground(b, { H, w, h }) {
             const g = document.createElement('div');
@@ -3005,8 +2799,8 @@
         }
 
         /* SẢN PHẨM 1 — chai làm sạch, nhựa trắng ngọc trai, nắp bấm xanh rêu */
-        function buildCleanse(P) {
-            P = P || C.products[0]; const B = P.bottle || {};
+        function buildCleanse() {
+            const P = C.products[0], B = P.bottle || {};
             const body = B.body || '#f1f7f4', cap = B.cap || '#0d2f27';
             const b = document.createElement('div');
             b.className = 'bottle';
@@ -3014,7 +2808,7 @@
             b.appendChild(makeDisk({ y: 344, r: 54, bg: `radial-gradient(circle at 50% 50%, ${shade(body, .22)}, ${shade(body, .08)})` }));
             b.appendChild(makeCyl({ top: 0, r: 38, h: 32, slices: 16, color: cap, alt: shade(cap, 1.28), shine: .30, spec: .14, vgrad: VG_CAP }));
             curve(b, { top: 32, r0: 38, r1: 56, h: 50, segs: 3, slices: 16, color: shade(body, .97), shine: .44, spec: .22 });
-            b.appendChild(makeCyl({ top: 82, r: 56, h: 250, slices: 26, color: body, shine: .46, spec: .26, label: labelFor(P.key, 56, 250), labKey: P.key, vgrad: VG_LIGHT }));
+            b.appendChild(makeCyl({ top: 82, r: 56, h: 250, slices: 26, color: body, shine: .46, spec: .26, label: LABEL_CLEANSE, labKey: P.key, vgrad: VG_LIGHT }));
             b.appendChild(makeCone({ top: 332, r0: 56, r1: 52, h: 12, slices: 16, color: shade(body, .88), shine: .30, spec: .12 }));
             b.appendChild(makeDisk({ y: 0, r: 38, bg: `radial-gradient(circle at 38% 32%, ${shade(cap, 1.9)}, ${shade(cap, .62)} 74%)` }));
             ground(b, { H, w: 190, h: 54 });
@@ -3023,8 +2817,8 @@
         }
 
         /* SẢN PHẨM 2 — chai serum thủy tinh hổ phách, nắp ống nhỏ giọt có gân */
-        function buildSerum(P) {
-            P = P || C.products[1]; const B = P.bottle || {};
+        function buildSerum() {
+            const P = C.products[1], B = P.bottle || {};
             const body = B.body || '#a3600d', cap = B.cap || '#141009';
             const b = document.createElement('div');
             b.className = 'bottle';
@@ -3034,7 +2828,7 @@
             b.appendChild(makeCyl({ top: 14, r: 23, h: 58, slices: 16, color: cap, alt: shade(cap, 1.55), shine: .28, spec: .12, vgrad: VG_CAP })); // nắp có gân
             b.appendChild(makeCyl({ top: 72, r: 16, h: 15, slices: 12, color: shade(body, .66), shine: .36, spec: .18 }));
             curve(b, { top: 87, r0: 16, r1: 45, h: 32, segs: 3, slices: 16, color: shade(body, .95), shine: .46, spec: .26 });
-            b.appendChild(makeCyl({ top: 119, r: 45, h: 182, slices: 26, color: body, shine: .48, spec: .30, label: labelFor(P.key, 45, 200), labKey: P.key, vgrad: VG_GLASS }));
+            b.appendChild(makeCyl({ top: 119, r: 45, h: 182, slices: 26, color: body, shine: .48, spec: .30, label: LABEL_SERUM, labKey: P.key, vgrad: VG_GLASS }));
             b.appendChild(makeCone({ top: 301, r0: 45, r1: 41, h: 11, slices: 16, color: shade(body, .58), shine: .26, spec: .1 }));
             b.appendChild(makeDisk({ y: 0, r: 15, bg: `radial-gradient(circle at 38% 32%, ${shade(cap, 2.6)}, ${shade(cap, 1.1)} 74%)` }));
             ground(b, { H, w: 160, h: 46 });
@@ -3061,25 +2855,17 @@
             b.style.transform = `translateY(${-H / 2}px)`;
             return b;
         }
-        /* Mỗi sản phẩm một khung chai riêng. Dáng chai lấy theo p.shape:
-           "dropper" = chai nhỏ giọt (như Growth Serum), còn lại = chai lớn (như Deep Cleanse).
-           Màu, chữ trên nhãn, dung tích đều đọc từ content.js nên thêm sản phẩm
-           mới chỉ là thêm dữ liệu, không phải viết thêm code vẽ chai. */
         const K0 = C.products[0].key, K1 = C.products[1].key;
-        const dungAnh = k => !!(C.products.find(p => p.key === k) || {}).photo;
-        const SHAPE = {}, bottles = {}, BOTTLE_H = {};
-        const persp = document.querySelector('.persp');
-        C.products.forEach((p, i) => {
-            const shape = p.shape || (i === 1 ? 'dropper' : 'jar');
-            const H = shape === 'dropper' ? 312 : 344;
-            SHAPE[p.key] = shape; BOTTLE_H[p.key] = H;
-            bottles[p.key] = p.photo ? buildPhoto(p, H)
-                           : (shape === 'dropper' ? buildSerum(p) : buildCleanse(p));
-            const rig = document.createElement('div');
-            rig.className = 'rig'; rig.id = 'rig-' + p.key;
-            persp.appendChild(rig); rigs[p.key] = rig;
-            rig.appendChild(bottles[p.key]);
-        });
+        const DUNG_ANH = C.products.some(p => p.photo);
+        const bottles = {
+            [K0]: C.products[0].photo ? buildPhoto(C.products[0], 344) : buildCleanse(),
+            [K1]: C.products[1].photo ? buildPhoto(C.products[1], 312) : buildSerum()
+        };
+        const BOTTLE_H = { [K0]: 344, [K1]: 312 };
+        rigs[K0] = document.getElementById('rig-cleanse');
+        rigs[K1] = document.getElementById('rig-serum');
+        rigs[K0].appendChild(bottles[K0]);
+        rigs[K1].appendChild(bottles[K1]);
 
         /* Làm nóng: để cả 2 chai được vẽ trong vài khung hình đầu, lần đổi
            sản phẩm hoặc lần cuộn đầu tiên sẽ không bị khựng. */
@@ -3091,10 +2877,10 @@
            ============================================================ */
         const PRODUCTS = {};
         C.products.forEach(p => { PRODUCTS[p.key] = { theme: p.theme, tag: p.tag, desc: p.desc }; });
-        let current = SP_KEY;
+        let current = C.products[0].key;
         const order = C.products.map(p => p.key);
         /* chai nào hiện ở màn hero (từ màn 2 trở đi cả hai cùng xuất hiện) */
-        const heroVisible = {}; order.forEach(k => heroVisible[k] = k === SP_KEY ? 1 : 0);
+        const heroVisible = {}; order.forEach((k, i) => heroVisible[k] = i === 0 ? 1 : 0);
 
         /* ============================================================
            4. CHUYỂN SẢN PHẨM
@@ -3171,18 +2957,17 @@
             tween({
                 duration: .52, ease: Ease.power2In,
                 onUpdate: (t, raw) => {
-                    switchSpin = dungAnh(key) ? 0 : t * 360; spinPulse = t;
+                    switchSpin = DUNG_ANH ? 0 : t * 360; spinPulse = t;
                 },
                 onComplete: () => {
                     heroVisible[current] = 0;
                     heroVisible[key] = 1;
-                    body.classList.toggle('theme-serum', !!spOf(key).light);   /* nền sáng thì đổi màu chữ */
+                    body.classList.toggle('theme-serum', key === 'serum');
                     current = key;
-                    applySections(key);   /* <- đổi TOÀN BỘ nội dung bên dưới theo sản phẩm */
                     tween({
                         duration: 1.0, ease: Ease.backOut(0.7),
                         onUpdate: (t, raw) => {
-                            switchSpin = dungAnh(key) ? 0 : 360 + t * 180; spinPulse = 1 - t;
+                            switchSpin = DUNG_ANH ? 0 : 360 + t * 180; spinPulse = 1 - t;
                         },
                         onComplete: () => {
                             switchSpin = 0;
@@ -3295,10 +3080,8 @@
         const sections = [...document.querySelectorAll('main > section')];
         const navItems = [...document.querySelectorAll('.nav-item')];
         let secCenters = [];
-        const priceTarget = {};
-        C.products.forEach(p => priceTarget[p.key] = null);
-        let priceScale = {};
-        C.products.forEach(p => priceScale[p.key] = SHAPE[p.key] === 'dropper' ? .40 : .36);
+        const priceTarget = { cleanse: null, serum: null };
+        let priceScale = { cleanse: .36, serum: .40 };
 
         function measureScenes() {
             secCenters = sections.map(s => s.offsetTop + s.offsetHeight / 2);
@@ -3306,7 +3089,7 @@
             document.body.classList.add('measuring');
             const sec = document.getElementById('gia');
             const sr = sec.getBoundingClientRect();
-            order.forEach(k => {
+            ['cleanse', 'serum'].forEach(k => {
                 const slot = document.querySelector(`.price-card[data-product="${k}"] .price-slot`);
                 if (!slot) return;
                 const r = slot.getBoundingClientRect();
@@ -3355,8 +3138,7 @@
         const clamp01 = v => v < 0 ? 0 : v > 1 ? 1 : v;
 
         function kfAt(key, i) {
-            /* Sản phẩm mới chưa có đường bay riêng thì đi theo đường của chai cùng dáng */
-            const arr = KF[key] || KF[SHAPE[key] === 'dropper' ? K1 : K0];
+            const arr = KF[key];
             const k = arr[Math.min(i, arr.length - 1)];
             if (!isNarrow && i >= 5) {
                 const pt = priceTarget[key];
@@ -3386,8 +3168,10 @@
         }
 
         /* trạng thái hiện tại của mỗi chai — bám theo mục tiêu có độ trễ cho mượt */
-        const rigNow = {};
-        C.products.forEach(p => rigNow[p.key] = { x: 0, y: 0, s: 1, ry: 0, rx: 0, o: p.key === SP_KEY ? 1 : 0 });
+        const rigNow = {
+            cleanse: { x: 0, y: 0, s: 1, ry: 0, rx: 0, o: 1 },
+            serum: { x: 0, y: 0, s: 1, ry: 0, rx: 0, o: 0 }
+        };
 
         /* Khi giá trị đã gần đích thì bám hẳn vào đích. Nhờ vậy scale và góc quay
            ngừng đổi lúc đứng yên → trình duyệt không phải vẽ lại chai mỗi khung hình. */
@@ -3409,7 +3193,7 @@
                 const s = lerp(a.s, b.s, f);
                 const ry = lerp(a.ry, b.ry, f);
                 const rx = lerp(a.rx, b.rx, f);
-                const o = lerp(a.o, b.o, f) * heroVisible[key];   /* mỗi trang chỉ hiện đúng chai của sản phẩm đó */
+                const o = lerp(a.o, b.o, f) * lerp(heroVisible[key], 1, heroBlend);
 
                 y += Math.sin(time * 1.05 + bi * 2.1) * 18 * (1 - settle * .8);
 
@@ -3455,7 +3239,15 @@
         window.addEventListener('load', measureScenes);
 
         /* chép ảnh chai 2D từ thẻ ở hero sang thẻ giá — bản điện thoại dùng ảnh này */
-        copyShots();
+        document.querySelectorAll('.price-card').forEach(card => {
+            const src = document.querySelector(`.card[data-product="${card.dataset.product}"] .shot`);
+            const slot = card.querySelector('.price-slot');
+            if (src && slot) {
+                const cl = src.cloneNode(true);
+                cl.setAttribute('class', 'shot-2d');
+                slot.appendChild(cl);
+            }
+        });
 
         /* nội dung hiện dần khi cuộn tới */
         const io = new IntersectionObserver(es => {
@@ -3676,107 +3468,6 @@
         }
         setInterval(createBubble, 620);
         for (let i = 0; i < 6; i++) setTimeout(createBubble, i * 700);
-    
-        /* ============================================================
-           MÀN CHỌN NHÓM SẢN PHẨM
-           ============================================================ */
-        (function () {
-            const plate = document.getElementById('cs-plate');
-            const nameEl = document.getElementById('cs-name');
-            const box = document.getElementById('cs-nodes');
-            const chon = document.getElementById('chon');
-            if (!plate || !box) return;
-
-            C.products.forEach(p => {
-                const d = document.createElement('div');
-                d.className = 'cs-who'; d.dataset.key = p.key;
-                d.innerHTML = `<img src="${esc(p.nguoi || p.key + '.jpg')}" alt="${esc(p.name)}">`;
-                plate.insertBefore(d, plate.firstChild);
-            });
-
-            /* Xếp các nhóm thành vòng cung quanh người mẫu.
-               Tự chia đều cho bất kỳ số sản phẩm nào — 2 dòng thì mỗi bên một cái,
-               6 dòng thì mỗi bên ba cái. Thêm bớt sản phẩm không phải sửa code. */
-            const soSP = C.products.length, soTrai = Math.ceil(soSP / 2);
-            C.products.forEach((p, i) => {
-                const side = i < soTrai ? 'l' : 'r';
-                const dem = side === 'l' ? soTrai : soSP - soTrai;
-                const thu = side === 'l' ? i : i - soTrai;
-                const y = dem <= 1 ? 50 : 18 + (thu * 64) / (dem - 1);
-                const x = 4 + 9 * Math.min(1, Math.abs(y - 50) / 30);
-                const b = document.createElement('button');
-                b.className = 'cs-node'; b.dataset.side = side; b.dataset.key = p.key;
-                b.style.setProperty('--c', (p.theme || {}).inner || '#0b8a78');
-                b.style.top = y + '%';
-                if (side === 'l') b.style.left = x + '%'; else b.style.right = x + '%';
-                b.innerHTML = `<span class="k">${esc(p.navKicker || '')}</span><span class="l">${esc(p.navLabel || p.name)}</span><span class="dot"></span>`;
-                box.appendChild(b);
-            });
-
-            let cur = null, busy = false;
-            function show(key) {
-                if (key === cur || busy) return;
-                const p = spOf(key); busy = true; cur = key;
-                plate.querySelectorAll('.cs-who').forEach(w => w.classList.toggle('on', w.dataset.key === key));
-                plate.classList.remove('gl'); void plate.offsetWidth; plate.classList.add('gl');
-                nameEl.style.opacity = 0;
-                setTimeout(() => {
-                    nameEl.innerHTML = `<b>${esc(p.name)}</b><span>${esc(p.cardSub || '')}</span>`;
-                    nameEl.style.opacity = .65;
-                }, 230);
-                const th = p.theme || {};
-                chon.style.background = `radial-gradient(120% 92% at 50% 44%, ${th.inner} 0%, ${th.mid} 34%, ${th.outer} 78%)`;
-                setTimeout(() => { plate.classList.remove('gl'); busy = false; }, 520);
-            }
-            show(SP_KEY);
-
-            box.querySelectorAll('.cs-node').forEach(nd => {
-                nd.addEventListener('mouseenter', () => show(nd.dataset.key));
-                nd.addEventListener('focus', () => show(nd.dataset.key));
-                nd.addEventListener('click', () => {
-                    const k = nd.dataset.key;
-                    if (k !== current) switchProduct(k);
-                    document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
-                });
-            });
-
-            /* điện thoại không có rê chuột → tự đảo người, chạm là xuống trang */
-            if (window.matchMedia('(hover: none)').matches) {
-                document.getElementById('cs-hint').textContent = 'Chạm vào từng nhóm';
-                let i = 1;
-                setInterval(() => { show(C.products[i++ % C.products.length].key); }, 2800);
-            }
-
-            /* logo bấm được để quay lại màn chọn */
-            document.querySelector('.logo, [data-c="brand"]')?.addEventListener('click', () => {
-                chon.scrollIntoView({ behavior: 'smooth' });
-            });
-
-            /* Ẩn thanh menu khi đang xem màn chọn, hiện lại khi đã cuộn xuống trang sản phẩm */
-            const capNhatMenu = () => document.body.classList.toggle(
-                'o-man-chon', window.scrollY < chon.offsetHeight * .55);
-            capNhatMenu();
-            window.addEventListener('scroll', capNhatMenu, { passive: true });
-
-            /* vào bằng link riêng của sản phẩm thì nhảy thẳng tới trang sản phẩm */
-            if (CO_SP) setTimeout(() => {
-                document.getElementById('home').scrollIntoView(); capNhatMenu();
-            }, 60);
-        })();
-
-    
-        /* Nhận lệnh từ trang quản trị: nhảy tới đúng màn đang sửa */
-        window.addEventListener('message', e => {
-            const d = e.data || {};
-            if (d.rootlab !== 'goto') return;
-            try {
-                if (d.sp && d.sp !== current) switchProduct(d.sp);
-                const el = document.getElementById(d.sec);
-                /* nhảy tức thì — đang sửa nội dung thì cần thấy ngay, không cần cuộn mượt */
-                if (el) el.scrollIntoView({ behavior: 'auto', block: 'start' });
-            } catch (err) { }
-        });
-
     </script>
 </body>
 
