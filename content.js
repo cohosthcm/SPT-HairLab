@@ -51,7 +51,103 @@ window.ROOTLAB_CONTENT = {
         "Hợp da đầu dầu và có gàu"
       ],
       "buyBtn": "Chọn bước 1",
-      "buyLink": ""
+      "buyLink": "",
+      "ingredients": {
+        "eyebrow": "THÀNH PHẦN",
+        "t1": "Clean",
+        "t2": "Roots",
+        "lead": "Ba hoạt chất lo đúng một việc: dọn sạch đường đi cho nang tóc.",
+        "items": [
+          {
+            "chip": "B1",
+            "name": "Salicylic Acid 2%",
+            "desc": "Làm tan bã nhờn và lớp sừng đang bít miệng nang tóc"
+          },
+          {
+            "chip": "B1",
+            "name": "Tinh dầu tràm trà",
+            "desc": "Kháng khuẩn nhẹ, giảm ngứa và gàu trên da đầu"
+          },
+          {
+            "chip": "B1",
+            "name": "Panthenol B5",
+            "desc": "Làm dịu và giữ ẩm cho da đầu sau khi làm sạch sâu"
+          }
+        ],
+        "note": "Danh sách mẫu — thay bằng bảng thành phần thật trên nhãn sản phẩm của bạn."
+      },
+      "howto": {
+        "eyebrow": "CÁCH DÙNG",
+        "t1": "One",
+        "t2": "Step",
+        "lead": "Làm sạch sâu vài lần một tuần. Không cần dùng mỗi ngày.",
+        "steps": [
+          {
+            "no": "01",
+            "h": "Làm sạch chân tóc",
+            "p": "Làm ướt tóc, lấy một lượng gel bằng đồng xu, massage trực tiếp lên da đầu 60 giây rồi xả thật kỹ.",
+            "em": "2–3 LẦN / TUẦN"
+          }
+        ]
+      },
+      "results": {
+        "eyebrow": "HIỆU QUẢ",
+        "t1": "Clean",
+        "t2": "First",
+        "lead": "Da đầu sạch là điều kiện cần. Đây là mốc thời gian thực tế.",
+        "weeks": [
+          {
+            "b": "Tuần 2",
+            "s": "Da đầu sạch, hết bết và ngứa"
+          },
+          {
+            "b": "Tuần 4",
+            "s": "Tóc rụng khi gội giảm rõ"
+          }
+        ],
+        "tiles": [
+          {
+            "val": "89%",
+            "lbl": "Người dùng thấy giảm rụng sau 8 tuần"
+          },
+          {
+            "val": "60",
+            "lbl": "Giây massage mỗi lần dùng"
+          },
+          {
+            "val": "2–3",
+            "lbl": "Số lần dùng mỗi tuần"
+          }
+        ],
+        "note": "Số liệu minh hoạ — thay bằng kết quả khảo sát thật của bạn trước khi phát hành trang."
+      },
+      "reviews": {
+        "eyebrow": "ĐÁNH GIÁ",
+        "t1": "Real",
+        "t2": "Voices",
+        "items": [
+          {
+            "stars": 5,
+            "text": "Da đầu mình dầu kinh khủng, gội hôm trước hôm sau đã bết. Dùng bước 1 được ba tuần thì tóc nhẹ hẳn, không còn ngứa nữa.",
+            "name": "Minh Anh, 29 tuổi",
+            "meta": "Đã dùng 3 tháng"
+          },
+          {
+            "stars": 5,
+            "text": "Dùng đủ bộ đôi mới thấy khác. Trước mình chỉ xịt serum mà da đầu còn bẩn nên gần như không ăn thua.",
+            "name": "Lan Phương, 41 tuổi",
+            "meta": "Đã dùng 4 tháng"
+          }
+        ],
+        "note": "Đánh giá mẫu — thay bằng phản hồi thật của khách hàng."
+      },
+      "navKicker": "Bước 01",
+      "navLabel": "Dầu gội & Làm sạch",
+      "nguoi": "shampoo.jpg",
+      "shape": "jar",
+      "light": false,
+      "heroT1": "Awaken",
+      "heroT2": "Roots"
     },
     {
       "key": "serum",
@@ -83,7 +179,123 @@ window.ROOTLAB_CONTENT = {
         "Dùng được cho cả nam và nữ"
       ],
       "buyBtn": "Chọn bước 2",
-      "buyLink": ""
+      "buyLink": "",
+      "ingredients": {
+        "eyebrow": "THÀNH PHẦN",
+        "t1": "What's",
+        "t2": "Inside",
+        "lead": "Ba hoạt chất đi thẳng vào nang tóc đang ngủ.",
+        "items": [
+          {
+            "chip": "B2",
+            "name": "Redensyl 3%",
+            "desc": "Đánh thức nang tóc đang ngủ, kéo dài giai đoạn mọc"
+          },
+          {
+            "chip": "B2",
+            "name": "Caffeine & Biotin B7",
+            "desc": "Tăng tuần hoàn dưới da đầu và cung cấp nguyên liệu tạo sợi tóc"
+          },
+          {
+            "chip": "B2",
+            "name": "Tinh dầu hương thảo",
+            "desc": "Hỗ trợ giảm rụng tóc theo mùa"
+          }
+        ],
+        "note": "Danh sách mẫu — thay bằng bảng thành phần thật trên nhãn sản phẩm của bạn."
+      },
+      "howto": {
+        "eyebrow": "CÁCH DÙNG",
+        "t1": "Two",
+        "t2": "Steps",
+        "lead": "Nhỏ lên da đầu mỗi tối, massage một phút, không cần xả lại.",
+        "steps": [
+          {
+            "no": "02",
+            "h": "Nhỏ serum lên da đầu",
+            "p": "Tóc còn hơi ẩm, rẽ ngôi và chấm serum dọc theo đường rẽ, đặc biệt ở vùng tóc thưa.",
+            "em": "MỖI TỐI"
+          },
+          {
+            "no": "03",
+            "h": "Massage 1 phút",
+            "p": "Xoa nhẹ bằng đầu ngón tay theo vòng tròn để serum thấm xuống nang tóc. Không cần xả lại.",
+            "em": "KHÔNG RỬA LẠI"
+          }
+        ]
+      },
+      "results": {
+        "eyebrow": "HIỆU QUẢ",
+        "t1": "Week",
+        "t2": "By Week",
+        "lead": "Tóc mọc theo chu kỳ, không theo ngày. Đây là mốc thời gian thực tế bạn nên kỳ vọng.",
+        "weeks": [
+          {
+            "b": "Tuần 2",
+            "s": "Da đầu sạch, hết bết và ngứa"
+          },
+          {
+            "b": "Tuần 4",
+            "s": "Tóc rụng khi gội giảm rõ"
+          },
+          {
+            "b": "Tuần 8",
+            "s": "Tóc con nhú lên ở vùng thưa"
+          },
+          {
+            "b": "Tuần 12",
+            "s": "Tóc dày hơn thấy được bằng mắt"
+          }
+        ],
+        "tiles": [
+          {
+            "val": "89%",
+            "lbl": "Người dùng thấy giảm rụng sau 8 tuần"
+          },
+          {
+            "val": "3,2×",
+            "lbl": "Số sợi tóc con mới so với trước khi dùng"
+          },
+          {
+            "val": "12",
+            "lbl": "Số tuần trung bình để thấy tóc dày lên"
+          }
+        ],
+        "note": "Số liệu minh hoạ — thay bằng kết quả khảo sát thật của bạn trước khi phát hành trang."
+      },
+      "reviews": {
+        "eyebrow": "ĐÁNH GIÁ",
+        "t1": "Real",
+        "t2": "Voices",
+        "items": [
+          {
+            "stars": 5,
+            "text": "Mình rụng tóc sau sinh, hai bên thái dương thưa hẳn. Sau hai tháng dùng serum thì thấy lớp tóc con mọc lên, hơi lún phún nhưng có thật.",
+            "name": "Thu Hà, 33 tuổi",
+            "meta": "Đã dùng 2 tháng"
+          },
+          {
+            "stars": 4,
+            "text": "Serum không nhờn, để qua đêm sáng dậy tóc vẫn khô ráo. Trừ nửa sao vì mùi hương thảo hơi nồng với mình.",
+            "name": "Đức Huy, 27 tuổi",
+            "meta": "Đã dùng 6 tuần"
+          },
+          {
+            "stars": 5,
+            "text": "Dùng đủ bộ đôi mới thấy khác. Trước mình chỉ xịt serum mà da đầu còn bẩn nên gần như không ăn thua.",
+            "name": "Lan Phương, 41 tuổi",
+            "meta": "Đã dùng 4 tháng"
+          }
+        ],
+        "note": "Đánh giá mẫu — thay bằng phản hồi thật của khách hàng."
+      },
+      "navKicker": "Bước 04",
+      "navLabel": "Serum dưỡng",
+      "nguoi": "serum.jpg",
+      "shape": "dropper",
+      "light": true,
+      "heroT1": "Pure",
+      "heroT2": "Drop"
     }
   ],
   "ingredients": {
