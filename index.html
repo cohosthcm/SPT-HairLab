@@ -1923,8 +1923,10 @@
             display: flex; align-items: center; justify-content: space-between;
             padding: 26px clamp(18px, 4vw, 52px); color: #f1f7f4;
         }
-        .cs-brand { font-size: 18px; letter-spacing: .34em; font-weight: 500; }
-        .cs-brand small { display: block; font-size: 8.5px; letter-spacing: .3em; opacity: .5; margin-top: 5px; font-weight: 400; }
+        /* cùng một chữ ký thương hiệu với trang sản phẩm */
+        .cs-brand { font-family: var(--font-heading); font-size: 26px; letter-spacing: .5px; font-weight: 700; }
+        .cs-brand small { display: block; font-family: var(--font-main); font-size: 8.5px;
+            letter-spacing: .3em; opacity: .5; margin-top: 2px; font-weight: 400; }
         .cs-bar .hint { font-size: 10px; letter-spacing: .22em; opacity: .55; text-transform: uppercase; }
 
         .cs-stage { position: relative; z-index: 2; width: min(1240px, 94vw); height: min(88svh, 830px); display: grid; place-items: center; }
@@ -2003,38 +2005,45 @@
         body.o-man-chon header.header,
         body.o-man-chon .scroll-hint { opacity: 0; pointer-events: none; }
 
-        /* ----- chọn ngôn ngữ ----- */
-        .header-right { display: flex; align-items: center; gap: 14px; }
-        .ngonngu { display: flex; align-items: center; gap: 2px; padding: 3px;
-            border-radius: 100px; background: rgba(0, 0, 0, .32);
-            border: 1px solid rgba(255, 255, 255, .13); }
-        .ngonngu button { border: 0; background: none; cursor: pointer;
-            font-family: var(--font-main); font-size: .68rem; font-weight: 600; letter-spacing: .08em;
-            color: rgba(255, 255, 255, .58); padding: 5px 8px; border-radius: 100px;
-            transition: color .25s ease, background .25s ease; }
-        .ngonngu button:hover { color: #fff; }
-        .ngonngu button.on { background: rgba(255, 255, 255, .93); color: #06231d; }
-        body.theme-serum .ngonngu button.on { color: #2a1a02; }
-        .cs-bar .ngonngu { background: rgba(0, 0, 0, .26); }
+        /* ----- chọn ngôn ngữ: một chữ gọn, bấm mới xổ ----- */
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .ngonngu { position: relative; }
+        .ngonngu .ng-nut { display: flex; align-items: center; gap: .4rem; cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, .16); background: rgba(0, 0, 0, .38);
+            color: rgba(255, 255, 255, .82); border-radius: 100px; padding: .62rem 1rem;
+            font-family: var(--font-main); font-size: .74rem; font-weight: 600; letter-spacing: .1em;
+            transition: background .25s ease, color .25s ease; }
+        .ngonngu .ng-nut:hover { background: rgba(0, 0, 0, .6); color: #fff; }
+        .ngonngu .ng-nut i { width: 0; height: 0; border-left: 3.5px solid transparent;
+            border-right: 3.5px solid transparent; border-top: 4px solid currentColor;
+            opacity: .75; transition: transform .25s ease; }
+        .ngonngu.mo .ng-nut i { transform: rotate(180deg); }
 
-        @media (max-width: 900px) {
-            .header-right { gap: 8px; }
-            .ngonngu button { padding: 5px 6px; font-size: .63rem; }
-        }
+        .ngonngu .ng-menu { position: absolute; top: calc(100% + 8px); right: 0; z-index: 30;
+            min-width: 152px; padding: 5px; border-radius: 14px;
+            background: rgba(6, 22, 19, .92); border: 1px solid rgba(255, 255, 255, .13);
+            box-shadow: 0 18px 44px rgba(0, 0, 0, .45);
+            -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+            opacity: 0; visibility: hidden; transform: translateY(-6px);
+            transition: opacity .2s ease, transform .2s ease, visibility .2s; }
+        .ngonngu.mo .ng-menu { opacity: 1; visibility: visible; transform: none; }
+        .ngonngu .ng-menu button { display: block; width: 100%; text-align: left; cursor: pointer;
+            border: 0; background: none; border-radius: 10px; padding: .55rem .75rem;
+            font-family: var(--font-main); font-size: .8rem; font-weight: 500;
+            color: rgba(255, 255, 255, .72); transition: background .18s ease, color .18s ease; }
+        .ngonngu .ng-menu button:hover { background: rgba(255, 255, 255, .1); color: #fff; }
+        .ngonngu .ng-menu button.on { color: var(--accent); font-weight: 600; }
+        .cs-bar .ngonngu .ng-nut { background: rgba(0, 0, 0, .3); }
 
-        /* Điện thoại: logo + 5 nút tiếng + nút liên hệ không đủ chỗ trên một hàng,
-           nên thu nhỏ cả ba lại thay vì để nút liên hệ bị đẩy ra ngoài màn hình. */
         @media (max-width: 620px) {
-            .header { padding: 1.15rem 4%; gap: 6px; }
-            .header-right { gap: 6px; flex-shrink: 0; }
-            .ngonngu { padding: 2px; gap: 0; }
-            .ngonngu button { padding: 4px 4px; font-size: .56rem; letter-spacing: .01em; }
-            .contact-btn { padding: .62rem 1rem; font-size: .72rem; white-space: nowrap; }
+            .header { padding: 1.15rem 4%; gap: 8px; }
+            .header-right { gap: 8px; flex-shrink: 0; }
+            .ngonngu .ng-nut { padding: .5rem .7rem; font-size: .68rem; }
+            .contact-btn { padding: .55rem .95rem; font-size: .72rem; white-space: nowrap; }
             .logo { min-width: 0; }
-            .logo span { font-size: 1rem; letter-spacing: .04em; }
+            .logo span { font-size: 1.15rem; }
             .logo svg { width: 22px; height: 22px; }
             .cs-bar { padding: 18px 5%; }
-            .cs-bar .ngonngu button { padding: 4px 5px; font-size: .58rem; }
         }
 
         /* Dòng chỉ có một chai thì không cần nút qua lại giữa các chai */
@@ -2563,6 +2572,12 @@
         "footer": {
                 "tagline": "Chăm sóc tóc từ chân tóc — làm sạch trước, nuôi dưỡng sau.",
                 "copyright": "© 2026 ROOTLAB"
+        },
+        "ui": {
+                "zalo": "Nhắn Zalo",
+                "goi": "Gọi",
+                "lienHe": "Liên hệ",
+                "kenhMua": "Kênh mua hàng"
         }
 };
 
@@ -2633,22 +2648,35 @@
             q.set('lang', ma);
             location.href = location.pathname + '?' + q.toString();
         }
-        /* dựng hàng nút VI EN FR IT JA vào một chỗ trống cho sẵn */
+        /* Một chữ gọn ở góc, bấm mới xổ danh sách — cùng tông với trang. */
         function veNutTieng(o) {
             if (!o) return;
+            const dang = TIENG.find(t => t.ma === LANG) || TIENG[0];
             o.innerHTML = '';
             o.className = 'ngonngu';
+            const nut = document.createElement('button');
+            nut.type = 'button'; nut.className = 'ng-nut';
+            nut.setAttribute('aria-haspopup', 'listbox');
+            nut.innerHTML = `<span>${esc(dang.tat)}</span><i></i>`;
+            const menu = document.createElement('div');
+            menu.className = 'ng-menu';
             TIENG.forEach(t => {
-                const b = document.createElement('button');
-                b.type = 'button';
-                b.textContent = t.tat;
-                b.title = t.ten;
-                b.setAttribute('aria-label', t.ten);
-                if (t.ma === LANG) b.className = 'on';
-                b.addEventListener('click', e => { e.stopPropagation(); doiTieng(t.ma); });
-                o.appendChild(b);
+                const m = document.createElement('button');
+                m.type = 'button'; m.textContent = t.ten;
+                if (t.ma === LANG) m.className = 'on';
+                m.addEventListener('click', e => { e.stopPropagation(); doiTieng(t.ma); });
+                menu.appendChild(m);
             });
+            nut.addEventListener('click', e => {
+                e.stopPropagation();
+                const mo = o.classList.contains('mo');
+                document.querySelectorAll('.ngonngu.mo').forEach(x => x.classList.remove('mo'));
+                o.classList.toggle('mo', !mo);
+            });
+            o.append(nut, menu);
         }
+        document.addEventListener('click', () => document.querySelectorAll('.ngonngu.mo').forEach(x => x.classList.remove('mo')));
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.ngonngu.mo').forEach(x => x.classList.remove('mo')); });
 
         const NAV_IDS = ['home', 'thanh-phan', 'cach-dung', 'hieu-qua', 'danh-gia', 'gia'];
         const esc = t => String(t == null ? '' : t);
@@ -2713,8 +2741,9 @@
                 const ext = /^https?:/i.test(href) ? ' target="_blank" rel="noopener"' : '';
                 return `<a class="foot-item" href="${esc(href)}"${ext}>${inner}</a>`;
             };
+            const U = C.ui || {};
             if (k.phone) chinh.push(row('☎', k.phone, telHref(k.phone)));
-            if (zaloHref(k.zalo)) chinh.push(row('Z', 'Nhắn Zalo', zaloHref(k.zalo)));
+            if (zaloHref(k.zalo)) chinh.push(row('Z', U.zalo || 'Nhắn Zalo', zaloHref(k.zalo)));
             if (k.email) chinh.push(row('@', k.email, 'mailto:' + esc(k.email)));
             if (k.address) chinh.push(row('◎', k.address, ''));
             if (k.hours) chinh.push(row('◷', k.hours, ''));
@@ -2723,13 +2752,13 @@
             if (k.messenger) kenh.push(row('M', 'Messenger', webHref(k.messenger, 'https://m.me/')));
 
             fill('contactMain', chinh.length
-                ? `<h4>${esc(k.heading || 'Liên hệ')}</h4>${chinh.join('')}` +
+                ? `<h4>${esc(k.heading || U.lienHe || 'Liên hệ')}</h4>${chinh.join('')}` +
                   (k.note ? `<div class="foot-note">${esc(k.note)}</div>` : '')
                 : '');
-            fill('contactShop', kenh.length ? `<h4>${esc(k.shopLabel || 'Kênh mua hàng')}</h4>${kenh.join('')}` : '');
+            fill('contactShop', kenh.length ? `<h4>${esc(k.shopLabel || U.kenhMua || 'Kênh mua hàng')}</h4>${kenh.join('')}` : '');
 
-            if (zaloHref(k.zalo)) dock.push(`<a class="dock-btn" href="${esc(zaloHref(k.zalo))}" target="_blank" rel="noopener">Nhắn Zalo</a>`);
-            if (telHref(k.phone)) dock.push(`<a class="dock-btn ghost" href="${esc(telHref(k.phone))}">Gọi ${esc(k.phone)}</a>`);
+            if (zaloHref(k.zalo)) dock.push(`<a class="dock-btn" href="${esc(zaloHref(k.zalo))}" target="_blank" rel="noopener">${esc(U.zalo || 'Nhắn Zalo')}</a>`);
+            if (telHref(k.phone)) dock.push(`<a class="dock-btn ghost" href="${esc(telHref(k.phone))}">${esc(U.goi || 'Gọi')} ${esc(k.phone)}</a>`);
             fill('dock', dock.join(''));
 
             const cb = document.getElementById('comboBuy');
@@ -2887,7 +2916,13 @@
 
             copyShots();
             document.title = `${esc(C.brand)} | ${esc(D.name)}`;
-            try { history.replaceState(null, '', location.pathname + '?sp=' + key); } catch (e) { }
+            /* giữ lại ?lang khi đổi dòng — có vậy gửi link cho khách nước ngoài mới đúng tiếng */
+            try {
+                const q = new URLSearchParams(location.search);
+                q.set('sp', key);
+                if (LANG !== 'vi') q.set('lang', LANG); else q.delete('lang');
+                history.replaceState(null, '', location.pathname + '?' + q.toString());
+            } catch (e) { }
             try { measureScenes(); } catch (e) { }
         }
 
@@ -3345,6 +3380,8 @@
 
         function switchProduct(key) {
             if (isSwitching) return;
+            /* chốt an toàn: không bao giờ để chai của dòng khác lọt vào trang này */
+            if (!chaiCuaDong(DONG).some(p => p.key === key)) return;
             isSwitching = true;
             const from = PRODUCTS[current].theme;
             const to = PRODUCTS[key].theme;
@@ -3469,15 +3506,20 @@
             const d = dongOf(key);
             if (!d) return;
             const chai = chaiCuaDong(d.key)[0].key;
-            const doiChai = chai !== current;
+            /* Đổi dòng = mở hẳn một trang khác, nên làm dứt khoát và tức thì,
+               KHÔNG mượn hiệu ứng quay chai của switchProduct.
+               Trước đây gọi switchProduct(): nếu hiệu ứng lần trước chưa chạy xong
+               thì lệnh bị chặn bởi isSwitching, kết quả là trang của dòng này mà
+               vẫn đang hiện chai (và màu nền) của dòng kia. */
+            clearTimeout(window.__fastGuard);
+            isSwitching = false; switchSpin = 0; spinPulse = 0;
+            if (flareEl) flareEl.style.display = 'none';
             DONG = d.key;
             SP_KEY = chai;
-            applySections(d.key, !doiChai);
-            if (doiChai) switchProduct(chai);
-            else {
-                order.forEach(k => heroVisible[k] = k === chai ? 1 : 0);
-                capNhatChai(chai);
-            }
+            current = chai;
+            order.forEach(k => heroVisible[k] = k === chai ? 1 : 0);
+            applySections(d.key, true);
+            capNhatChai(chai);
         }
         /* trang quản trị gọi qua đây — khoá nào cũng nhận: dòng thì đổi dòng, chai thì đổi chai */
         window.switchLine = switchLine;
