@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>ROOTLAB — Trang quản trị nội dung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Galada&family=Inter:wght@400;500;600;700&display=swap">
     <script src="content.js"></script>
     <style>
 /* ==========================================================
@@ -45,6 +49,9 @@ button,input,textarea,select{font:inherit;color:inherit}
   display:flex;align-items:center;gap:10px;padding:0 20px;position:sticky;top:0;z-index:40}
 .top h1{font-size:15.5px;font-weight:600;margin:0;display:flex;align-items:baseline;gap:10px}
 .top h1 small{font-weight:400;font-size:12px;color:var(--nhat)}
+/* cùng chữ ký thương hiệu với trang chính */
+.top h1 .hieu{font-family:'Galada','Brush Script MT',cursive;font-size:23px;font-weight:400;
+  letter-spacing:.5px;color:var(--chinh-dam);margin-right:3px}
 .top .day{margin-left:auto;display:flex;align-items:center;gap:8px}
 .top button{padding:8px 14px;border:1px solid var(--vien-dam);background:var(--the);
   border-radius:9px;cursor:pointer;font-size:13.5px;transition:.15s}
@@ -67,14 +74,31 @@ button,input,textarea,select{font:inherit;color:inherit}
 .khac .menu button:hover{background:#f0f3f2}
 
 /* ---------- BỐ CỤC 3 CỘT ---------- */
-.wrap{display:grid;grid-template-columns:250px minmax(0,1fr) minmax(0,1fr);
+/* Cột sửa hẹp lại để khung xem trước rộng hơn 1024px — đủ để trang bên trong
+   dựng đúng khổ máy tính mà KHÔNG phải thu nhỏ bằng transform hay zoom
+   (Safari không vẽ nội dung 3D trong khung bị thu nhỏ). */
+.wrap{display:grid;grid-template-columns:206px minmax(340px,505px) minmax(0,1fr);
   height:calc(100vh - 60px);overflow:hidden}
-body.khong-xem .wrap{grid-template-columns:250px minmax(0,1fr)}
+body.khong-xem .wrap{grid-template-columns:206px minmax(0,1fr)}
+/* xem to: giấu hẳn hai cột trái, khung xem trước chiếm trọn bề ngang.
+   Ẩn bằng display:none nên lưới chỉ còn MỘT cột — không để lại cột rỗng. */
+body.xem-to .wrap{grid-template-columns:minmax(0,1fr)}
+body.xem-to .nav,body.xem-to .side{display:none}
 
 /* ---------- MENU DỌC ---------- */
 .nav{background:var(--the);border-right:1px solid var(--vien);overflow-y:auto;padding:16px 12px 40px}
-.nav .nhom{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--nhat);
-  padding:16px 12px 7px;font-weight:600}
+/* nhóm gập được — để danh sách bên trái không quá dài */
+.nav .nhom-box{margin-top:10px}
+.nav .nhom{width:100%;display:flex;align-items:center;gap:8px;border:0;background:none;cursor:pointer;
+  font-family:inherit;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--nhat);
+  padding:9px 12px;font-weight:600;border-radius:9px;text-align:left}
+.nav .nhom:hover{background:#f2f5f4;color:var(--mo)}
+.nav .nhom span{flex:1;min-width:0}
+.nav .nhom i{width:0;height:0;flex:0 0 auto;border-left:4px solid transparent;
+  border-right:4px solid transparent;border-top:5px solid currentColor;opacity:.6;transition:transform .18s}
+.nav .nhom-box.mo .nhom i{transform:rotate(180deg)}
+.nav .nhom-than{display:none;padding-left:4px}
+.nav .nhom-box.mo .nhom-than{display:block}
 .seclink{width:100%;display:flex;align-items:center;gap:11px;padding:10px 12px;border:0;
   background:none;border-radius:10px;cursor:pointer;text-align:left;color:var(--mo);font-size:14px;transition:.14s}
 .seclink svg{width:17px;height:17px;flex:0 0 17px;stroke:currentColor;fill:none;stroke-width:1.7;
@@ -133,8 +157,11 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
 .list>button.sm:hover,#form>div>div>button.sm:hover{background:var(--chinh-nhat);border-style:solid}
 
 /* ---------- KHUNG XEM TRƯỚC ---------- */
-.prev{position:relative;background:#0b1512;border-left:1px solid var(--vien);overflow:hidden}
-#preview{border:0;display:block;transform-origin:top left}
+.prev{position:relative;background:#0b1512;border-left:1px solid var(--vien);overflow:hidden;
+  display:flex;justify-content:center}
+/* KHÔNG transform, KHÔNG zoom — chỉ đổi bề rộng thật của khung. */
+#preview{border:0;display:block;width:100%;height:100%;background:#0b1512}
+body.kho-dt #preview{width:390px;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
 .prev .kho{position:absolute;bottom:44px;right:14px;z-index:5;display:flex;gap:4px;
   padding:4px;border-radius:999px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);
   border:1px solid rgba(255,255,255,.12)}
@@ -143,6 +170,10 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
 .prev .kho button.on{background:#fff;color:#0b1512;font-weight:600}
 .prev .kho.tieng{bottom:82px}
 .prev .kho.tieng button{padding:5px 9px;letter-spacing:.06em;font-weight:600}
+.prev .bar-nut{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.08);color:#dcece7;
+  font-size:11.5px;padding:3px 11px;border-radius:999px;cursor:pointer;margin-left:12px}
+.prev .bar-nut:hover{background:rgba(255,255,255,.18)}
+.prev .bar-link{color:#8fd9c6;text-decoration:underline;margin-left:12px}
 .prev .bar{position:absolute;left:0;right:0;bottom:0;padding:8px 14px;background:rgba(0,0,0,.55);
   color:#b9cdc6;font-size:11.5px;display:flex;gap:8px;align-items:center;backdrop-filter:blur(6px)}
 
@@ -197,7 +228,7 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
     </div>
 
     <div class="top">
-        <h1>ROOTLAB · Quản trị<small id="state">Bản nháp tự lưu trong trình duyệt này</small></h1>
+        <h1><b class="hieu">ROOTLAB</b> · Quản trị<small id="state">Bản nháp tự lưu trong trình duyệt này</small></h1>
         <div class="day">
             <details class="khac">
                 <summary>⋯ Khác</summary>
@@ -232,9 +263,9 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
                 <button data-w="390">Điện thoại</button>
             </div>
             <iframe id="preview" src="index.html?preview=1&lang=vi"></iframe>
-            <div class="bar"><span>Xem trước — sửa tới đâu hiện tới đó</span>
-                <a href="index.html?preview=1" target="_blank" rel="noopener"
-                   style="color:#8fd9c6;text-decoration:underline;margin-left:14px">Mở ở tab mới</a>
+            <div class="bar"><span id="kho-nhan">Xem trước</span>
+                <button type="button" id="xemTo" class="bar-nut">Xem to</button>
+                <a href="index.html?preview=1" target="_blank" rel="noopener" class="bar-link">Mở ở tab mới</a>
                 <span style="margin-left:auto">Xong bấm <b>Đẩy lên web</b></span></div>
         </div>
     </div>
@@ -531,37 +562,34 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
            Dựng ở đúng khổ máy tính rồi thu nhỏ lại → nhìn giống hệt web thật,
            thay vì bị co thành bản điện thoại như trước.
            ============================================================ */
-        let KHO_XEM = 1440;
-        /* Thu nhỏ bằng "zoom" chứ KHÔNG dùng transform: scale().
-           Safari không vẽ nội dung 3D nằm trong một iframe bị transform — khung
-           xem trước hiện ra đen thui dù trang bên trong vẫn chạy đúng. zoom là
-           cách thu nhỏ theo bố cục (giống phóng to/thu nhỏ trang của trình duyệt)
-           nên vẽ bình thường ở mọi trình duyệt. */
+        /* Khung xem trước KHÔNG thu nhỏ nữa.
+           Trước đây thu nhỏ bằng transform rồi bằng zoom, Safari đều vẽ sai
+           (khung đen, hoặc khung bé xíu). Nay khung rộng đúng bằng chỗ nó có:
+           cột xem trước rộng hơn 1024px nên trang bên trong tự dựng khổ máy tính.
+           Cần xem đúng khổ thật thì bấm "Xem to" — giấu hai cột trái đi. */
         function vuaKhung() {
-            const box = document.querySelector('.prev'), fr = document.getElementById('preview');
-            if (!box || !fr || !box.clientWidth) return;
-            const ty = box.clientWidth / KHO_XEM;
+            const fr = document.getElementById('preview');
+            if (!fr) return;
             fr.style.transform = 'none';
-            fr.style.width = KHO_XEM + 'px';
-            fr.style.height = Math.round(box.clientHeight / ty) + 'px';
-            fr.style.zoom = ty;
-            /* Có trình duyệt tính khổ bên trong khung theo bề rộng ĐÃ thu nhỏ.
-               Nếu vậy thì nới bề rộng khung ra đúng tỉ lệ để bên trong vẫn là
-               khổ máy tính, không bị co thành bản điện thoại. */
-            try {
-                const trong = fr.contentWindow && fr.contentWindow.innerWidth;
-                if (trong && Math.abs(trong - KHO_XEM) > 8) {
-                    const bu = KHO_XEM / trong;
-                    fr.style.width = Math.round(KHO_XEM * bu) + 'px';
-                    fr.style.height = Math.round(box.clientHeight / ty * bu) + 'px';
-                }
-            } catch (e) { }
+            fr.style.zoom = '';
+            const rong = document.querySelector('.prev')?.clientWidth || 0;
+            const nhan = document.getElementById('kho-nhan');
+            if (nhan) nhan.textContent = document.body.classList.contains('kho-dt')
+                ? '390px · khổ điện thoại'
+                : Math.round(rong) + 'px · ' + (rong >= 1024 ? 'khổ máy tính' : 'khổ máy tính bảng — bấm Xem to để thấy đúng khổ máy tính');
         }
         window.addEventListener('resize', vuaKhung);
         document.querySelectorAll('.prev .kho:not(.tieng) button').forEach(b => b.addEventListener('click', () => {
             document.querySelectorAll('.prev .kho:not(.tieng) button').forEach(x => x.classList.remove('on'));
-            b.classList.add('on'); KHO_XEM = +b.dataset.w; vuaKhung();
+            b.classList.add('on');
+            document.body.classList.toggle('kho-dt', b.dataset.w === '390');
+            vuaKhung();
         }));
+        document.getElementById('xemTo')?.addEventListener('click', () => {
+            const to = document.body.classList.toggle('xem-to');
+            document.getElementById('xemTo').textContent = to ? 'Thu lại' : 'Xem to';
+            setTimeout(vuaKhung, 60);
+        });
 
         /* xem trước từng thứ tiếng */
         let TIENG_XEM = 'vi';
@@ -638,6 +666,10 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
             document.querySelectorAll('#secnav .seclink').forEach(b => {
                 b.classList.toggle('active', b.dataset.sec === id);
             });
+            /* nhóm nào chứa mục đang sửa thì tự mở ra, các nhóm khác gập lại */
+            document.querySelectorAll('#secnav .nhom-box').forEach(box => {
+                box.classList.toggle('mo', !!box.querySelector('.seclink.active'));
+            });
         }
 
         function goToSection(id) {
@@ -674,18 +706,31 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
             try { w.location.hash = '#' + m.sec; } catch (e) { }
         }
 
+        /* Danh sách mục: các nhóm gập lại cho gọn, bấm mới mở ra. */
         function buildSecNav() {
             const nav = document.getElementById('secnav');
             nav.innerHTML = '';
-            let lastGroup = null;
+            const nutMuc = s => h('button', {
+                class: 'seclink', type: 'button', 'data-sec': s.id,
+                onclick: () => goToSection(s.id),
+                html: `<svg viewBox="0 0 24 24">${IC[s.ic] || ''}</svg><span>${s.label}</span>`
+            });
+            let box = null, lastGroup = null;
             SECTIONS.forEach(s => {
-                if (s.group && s.group !== lastGroup) nav.append(h('div', { class: 'nhom', html: s.group }));
-                lastGroup = s.group || null;
-                nav.append(h('button', {
-                    class: 'seclink', type: 'button', 'data-sec': s.id,
-                    onclick: () => goToSection(s.id),
-                    html: `<svg viewBox="0 0 24 24">${IC[s.ic] || ''}</svg><span>${s.label}</span>`
-                }));
+                if (!s.group) { box = null; lastGroup = null; nav.append(nutMuc(s)); return; }
+                if (s.group !== lastGroup) {
+                    lastGroup = s.group;
+                    box = h('div', { class: 'nhom-box' });
+                    const than = h('div', { class: 'nhom-than' });
+                    box.append(h('button', {
+                        class: 'nhom', type: 'button',
+                        onclick: () => box.classList.toggle('mo'),
+                        html: `<span>${s.group}</span><i></i>`
+                    }), than);
+                    box._than = than;
+                    nav.append(box);
+                }
+                box._than.append(nutMuc(s));
             });
             setActiveSection(SECTIONS[0].id);
             const d = SECTIONS[0];
