@@ -1997,6 +1997,10 @@
         header.header, .scroll-hint { transition: opacity .45s ease; }
         body.o-man-chon header.header,
         body.o-man-chon .scroll-hint { opacity: 0; pointer-events: none; }
+
+        /* Dòng chỉ có một chai thì không cần nút qua lại giữa các chai */
+        body.mot-chai .carousel-nav { display: none; }
+        body.mot-chai .carousel-cards { justify-content: center; }
     </style>
 </head>
 
@@ -2626,27 +2630,48 @@
         }
 
         /* ============================================================
-           NỘI DUNG RIÊNG THEO TỪNG SẢN PHẨM
-           Bấm sang sản phẩm khác thì Thành phần / Cách dùng / Hiệu quả /
-           Đánh giá / Bảng giá đổi theo hết, chứ không chỉ đổi cái chai.
+           DÒNG SẢN PHẨM — màn đầu chọn DÒNG, không phải chọn bước.
+           Một dòng = một trang hoàn chỉnh: hero, Thành phần, Cách dùng,
+           Hiệu quả, Đánh giá, Bảng giá đều là của riêng dòng đó.
+           Một dòng có thể gồm nhiều chai (ví dụ bộ đôi làm sạch + serum),
+           lúc đó trong trang có thẻ để đổi qua lại giữa các chai.
            ============================================================ */
-        let SP_KEY = (() => {
+        const spOf = k => C.products.find(p => p.key === k) || C.products[0];
+        /* content.js cũ chưa khai "lines" thì mỗi chai tự thành một dòng — trang vẫn chạy */
+        const LINES = (Array.isArray(C.lines) && C.lines.length) ? C.lines
+            : C.products.map(p => ({
+                key: p.key, name: p.name, navLabel: p.navLabel || p.name, navKicker: p.navKicker,
+                nguoi: p.nguoi, accent: (p.theme || {}).inner, sp: [p.key],
+                heroT1: p.heroT1, heroT2: p.heroT2, cta: p.buyBtn,
+                ingredients: p.ingredients, howto: p.howto, results: p.results, reviews: p.reviews
+            }));
+        const dongOf = k => LINES.find(d => d.key === k) || LINES[0];
+        /* các chai thuộc một dòng, theo đúng thứ tự khai trong content.js */
+        const chaiCuaDong = k => {
+            const ds = (dongOf(k).sp || []).map(x => spOf(x)).filter(Boolean);
+            return ds.length ? ds : [C.products[0]];
+        };
+        let DONG = (() => {
             try {
                 const k = new URLSearchParams(location.search).get('sp');
-                return (k && C.products.some(p => p.key === k)) ? k : C.products[0].key;
-            } catch (e) { return C.products[0].key; }
+                if (k && LINES.some(d => d.key === k)) return k;
+                /* link cũ trỏ thẳng vào một chai thì mở đúng dòng chứa chai đó */
+                const d = k && LINES.find(x => (x.sp || []).includes(k));
+                return d ? d.key : LINES[0].key;
+            } catch (e) { return LINES[0].key; }
         })();
-        const spOf = k => C.products.find(p => p.key === k) || C.products[0];
-        /* khách vào bằng link riêng của sản phẩm thì bỏ qua màn chọn */
+        let SP_KEY = chaiCuaDong(DONG)[0].key;   /* chai đang hiện trong dòng */
+        /* khách vào bằng link riêng của một dòng thì bỏ qua màn chọn */
         const CO_SP = (() => { try { return !!new URLSearchParams(location.search).get('sp'); } catch (e) { return false; } })();
-        /* Khối nào sản phẩm có riêng thì lấy của nó, chưa có thì rơi về khối dùng chung */
+        /* Khối nào dòng có riêng thì lấy của nó, chưa có thì rơi về khối dùng chung */
         const viewFor = k => {
-            const p = spOf(k);
+            const d = dongOf(k);
             return Object.assign({}, C, {
-                ingredients: p.ingredients || C.ingredients,
-                howto: p.howto || C.howto,
-                results: p.results || C.results,
-                reviews: p.reviews || C.reviews
+                ingredients: d.ingredients || C.ingredients,
+                howto: d.howto || C.howto,
+                results: d.results || C.results,
+                reviews: d.reviews || C.reviews,
+                pricing: Object.assign({}, C.pricing, d.pricing || {})
             });
         };
         /* chép ảnh chai 2D từ thẻ hero sang thẻ giá (bản điện thoại dùng ảnh này) */
@@ -2660,9 +2685,13 @@
             });
         }
 
-        function applySections(key) {
-            SP_KEY = key;
-            const V = viewFor(key), P = spOf(key);
+        /* doiNen = false khi ngay sau đó có hiệu ứng đổi chai lo phần nền và chữ,
+           để nền không bị nhảy màu một nhịp rồi mới chạy hiệu ứng. */
+        function applySections(key, doiNen = true) {
+            DONG = key;
+            const V = viewFor(key), D = dongOf(key), DS = chaiCuaDong(key);
+            if (!DS.some(p => p.key === SP_KEY)) SP_KEY = DS[0].key;
+            const P = spOf(SP_KEY);
             document.querySelectorAll('[data-c]').forEach(el => {
                 const v = at(V, el.dataset.c);
                 if (v != null) el.innerHTML = esc(v);
@@ -2694,8 +2723,16 @@
                     </div>
                 </div>`).join(''));
 
-            /* bảng giá chỉ hiện đúng sản phẩm đang xem — mỗi sản phẩm là một trang riêng */
-            fill('prices', [P].map(p => `
+            /* thẻ đổi chai: chỉ có nghĩa khi dòng gồm từ 2 chai trở lên */
+            fill('cards', DS.map(p => `
+                <div class="card${p.key === SP_KEY ? ' active' : ''}" data-product="${esc(p.key)}">
+                    ${shotHTML(p)}
+                    <div class="card-info"><span>${esc(p.name)}</span><span>${esc(p.cardSub)}</span></div>
+                </div>`).join(''));
+            document.body.classList.toggle('mot-chai', DS.length < 2);
+
+            /* bảng giá: đủ các chai của dòng đang xem, không lẫn chai của dòng khác */
+            fill('prices', DS.map(p => `
                 <div class="price-card reveal d2 in" data-product="${esc(p.key)}">
                     <div class="price-slot"></div>
                     <div class="price-body">
@@ -2707,22 +2744,42 @@
                     </div>
                 </div>`).join(''));
 
-            /* tiêu đề lớn ở màn sản phẩm — mỗi sản phẩm một câu riêng */
+            /* ô "Mua cả bộ" chỉ có nghĩa khi dòng gồm từ 2 chai trở lên */
+            const comboBox = document.querySelector('.combo');
+            if (comboBox) comboBox.style.display = (DS.length < 2 || !V.pricing.comboLabel) ? 'none' : '';
+
+            /* tiêu đề lớn ở màn hero — mỗi dòng một câu riêng */
             const t1 = document.querySelector('[data-c="hero.title1"]');
             const t2 = document.querySelector('[data-c="hero.title2"]');
-            if (t1) t1.textContent = P.heroT1 || C.hero.title1;
-            if (t2) t2.textContent = P.heroT2 || C.hero.title2;
+            if (t1) t1.textContent = D.heroT1 || C.hero.title1;
+            if (t2) t2.textContent = D.heroT2 || C.hero.title2;
 
-            /* nút mua ở màn đầu theo đúng sản phẩm đang xem */
+            /* nút mua ở màn hero: theo dòng, không theo từng chai */
             const heroCta = document.querySelector('[data-c="hero.cta"]');
             if (heroCta) {
-                heroCta.textContent = P.buyBtn || C.hero.cta;
-                const wrap = heroCta.closest('button, a'); if (wrap) wrap.dataset.link = P.buyLink || '';
+                heroCta.textContent = D.cta || C.hero.cta;
+                const wrap = heroCta.closest('button, a'); if (wrap) wrap.dataset.link = D.ctaLink || '';
             }
             document.body.classList.toggle('theme-serum', !!P.light);
 
+            /* Dòng chữ ở hero và màu nền cảnh 3D theo đúng chai đang hiện.
+               Trước đây hai thứ này chỉ đổi lúc bấm nút chuyển chai, nên mở
+               thẳng link của một dòng khác vẫn còn dính chữ của chai đầu tiên. */
+            if (doiNen) {
+                const dEl = document.getElementById('desc');
+                const tEl = document.getElementById('step-tag');
+                if (dEl) dEl.innerHTML = esc(P.desc);
+                if (tEl) tEl.innerHTML = esc(P.tag);
+                const th = P.theme || {};
+                if (th.inner) {
+                    document.body.style.setProperty('--bg-inner', th.inner);
+                    document.body.style.setProperty('--bg-mid', th.mid);
+                    document.body.style.setProperty('--bg-outer', th.outer);
+                }
+            }
+
             copyShots();
-            document.title = `${esc(C.brand)} | ${esc(P.name)}`;
+            document.title = `${esc(C.brand)} | ${esc(D.name)}`;
             try { history.replaceState(null, '', location.pathname + '?sp=' + key); } catch (e) { }
             try { measureScenes(); } catch (e) { }
         }
@@ -2730,14 +2787,7 @@
         function applyContent() {
             fill('nav', C.nav.map((t, i) =>
                 `<a href="#${NAV_IDS[i] || 'home'}" class="nav-item${i === 0 ? ' active' : ''}">${esc(t)}</a>`).join(''));
-
-            fill('cards', C.products.map((p, i) => `
-                <div class="card${i === 0 ? ' active' : ''}" data-product="${esc(p.key)}">
-                    ${shotHTML(p)}
-                    <div class="card-info"><span>${esc(p.name)}</span><span>${esc(p.cardSub)}</span></div>
-                </div>`).join(''));
-
-            applySections(SP_KEY);
+            applySections(DONG);
             applyContact();
         }
         applyContent();
@@ -3130,27 +3180,34 @@
         /* ============================================================
            4. CHUYỂN SẢN PHẨM
            ============================================================ */
-        const cards = document.querySelectorAll('.card');
+        /* Thẻ chai được vẽ lại mỗi lần đổi dòng, nên nghe sự kiện ở khung ngoài
+           thay vì gắn vào từng thẻ — gắn vào thẻ thì đổi dòng một lần là mất. */
+        const cardsBox = document.querySelector('.carousel-cards');
+        const theCards = () => [...document.querySelectorAll('.card')];
+        const danhDauThe = key => theCards().forEach(c => c.classList.toggle('active', c.dataset.product === key));
         const descEl = document.getElementById('desc');
         const tagEl = document.getElementById('step-tag');
         let isSwitching = false;
         let switchSpin = 0;
 
-        cards.forEach(card => {
-            card.addEventListener('click', () => {
-                const p = card.dataset.product;
-                if (isSwitching || p === current) return;
-                cards.forEach(c => c.classList.toggle('active', c === card));
-                switchProduct(p);
-            });
+        cardsBox?.addEventListener('click', e => {
+            const card = e.target.closest('.card');
+            if (!card) return;
+            const p = card.dataset.product;
+            if (isSwitching || p === current) return;
+            danhDauThe(p);
+            switchProduct(p);
         });
         document.getElementById('next').addEventListener('click', () => step(1));
         document.getElementById('prev').addEventListener('click', () => step(-1));
+        /* Mũi tên ← → chỉ chạy vòng trong các chai của dòng đang xem,
+           không nhảy sang chai của dòng khác. */
         function step(dir) {
             if (isSwitching) return;
-            const i = (order.indexOf(current) + dir + order.length) % order.length;
-            const key = order[i];
-            cards.forEach(c => c.classList.toggle('active', c.dataset.product === key));
+            const trong = chaiCuaDong(DONG).map(p => p.key);
+            if (trong.length < 2) return;
+            const key = trong[(trong.indexOf(current) + dir + trong.length) % trong.length];
+            danhDauThe(key);
             switchProduct(key);
         }
 
@@ -3208,8 +3265,8 @@
                     heroVisible[current] = 0;
                     heroVisible[key] = 1;
                     body.classList.toggle('theme-serum', !!spOf(key).light);   /* nền sáng thì đổi màu chữ */
-                    current = key;
-                    applySections(key);   /* <- đổi TOÀN BỘ nội dung bên dưới theo sản phẩm */
+                    current = key; SP_KEY = key;
+                    capNhatChai(key);     /* chỉ đổi chai + bảng giá, nội dung dòng giữ nguyên */
                     tween({
                         duration: 1.0, ease: Ease.backOut(0.7),
                         onUpdate: (t, raw) => {
@@ -3264,6 +3321,45 @@
                 });
             });
         }
+
+        /* Đổi chai TRONG cùng một dòng: nội dung trang giữ nguyên,
+           chỉ đánh dấu lại thẻ và tiêu đề tab. */
+        function capNhatChai(key) {
+            danhDauThe(key);
+            document.querySelectorAll('.price-card').forEach(c =>
+                c.classList.toggle('active', c.dataset.product === key));
+            try { measureScenes(); } catch (e) { }
+        }
+
+        /* ============================================================
+           4b. CHUYỂN DÒNG SẢN PHẨM — đây là thứ màn đầu bấm vào.
+           Đổi dòng = đổi TOÀN BỘ trang bên dưới: hero, thành phần,
+           cách dùng, hiệu quả, đánh giá, bảng giá.
+           ============================================================ */
+        function switchLine(key) {
+            const d = dongOf(key);
+            if (!d) return;
+            const chai = chaiCuaDong(d.key)[0].key;
+            const doiChai = chai !== current;
+            DONG = d.key;
+            SP_KEY = chai;
+            applySections(d.key, !doiChai);
+            if (doiChai) switchProduct(chai);
+            else {
+                order.forEach(k => heroVisible[k] = k === chai ? 1 : 0);
+                capNhatChai(chai);
+            }
+        }
+        /* trang quản trị gọi qua đây — khoá nào cũng nhận: dòng thì đổi dòng, chai thì đổi chai */
+        window.switchLine = switchLine;
+        window.rootlabGoto = k => {
+            if (LINES.some(d => d.key === k)) switchLine(k);
+            else if (C.products.some(p => p.key === k)) {
+                const d = LINES.find(x => (x.sp || []).includes(k));
+                if (d && d.key !== DONG) switchLine(d.key);
+                if (k !== current) switchProduct(k);
+            }
+        };
 
         /* ============================================================
            5. VÒNG LẶP CHUYỂN ĐỘNG: nghiêng theo chuột, đẩy giọt, trôi nổi
@@ -3331,6 +3427,19 @@
         let priceScale = {};
         C.products.forEach(p => priceScale[p.key] = SHAPE[p.key] === 'dropper' ? .40 : .36);
 
+        /* Chiều cao THẬT của một chai đang được vẽ trên màn hình. Thân chai ghép từ
+           các lát 3D không có chiều cao hộp, nên phải lấy khoảng cách từ mép trên
+           lát cao nhất tới mép dưới lát thấp nhất (bỏ bóng đổ dưới chân). */
+        function doCaoChai(k) {
+            let tr = Infinity, du = -Infinity;
+            bottles[k].querySelectorAll('*').forEach(n => {
+                if (n.classList.contains('ground')) return;
+                const r = n.getBoundingClientRect();
+                if (r.height > .4) { tr = Math.min(tr, r.top); du = Math.max(du, r.bottom); }
+            });
+            return du > tr ? du - tr : 0;
+        }
+
         function measureScenes() {
             secCenters = sections.map(s => s.offsetTop + s.offsetHeight / 2);
             /* đo đúng ô trống trong thẻ giá để chai đáp vào giữa ô */
@@ -3345,18 +3454,22 @@
                     x: (r.left + r.width / 2) - vw / 2,
                     y: (r.top - sr.top) + r.height / 2 - sr.height / 2
                 };
-                priceScale[k] = (r.height * .92 / BOTTLE_H[k]) / scale;
                 priceTarget[k] = pt;
 
-                /* Tự hiệu chỉnh: đặt thử chai vào đúng tư thế màn giá, đo xem tâm chai
-                   rơi vào đâu rồi bù lại. Chắc ăn hơn tính bằng công thức, vì phối cảnh
-                   3D làm vật thể lệch đi một chút so với toạ độ lý thuyết. */
+                /* Tự hiệu chỉnh hai bước. Chắc ăn hơn tính bằng công thức, vì mỗi dáng
+                   chai cao thấp khác nhau và phối cảnh 3D còn kéo giãn thêm một chút.
+                   Bước 1: đo chiều cao THẬT của chai để thu cho vừa ô trống trong thẻ
+                   (trước đây lấy theo con số khai sẵn nên chai tràn ra đè lên chữ).
+                   Bước 2: đặt thử vào đúng tư thế màn giá, xem tâm chai rơi vào đâu rồi bù. */
                 const rig = rigs[k], keepD = rig.style.display, keepT = rig.style.transform;
-                const abs = priceScale[k] * scale;
                 rig.style.display = '';
+                rig.style.transform = `translate3d(0px, 0px, 0) scale(${scale})`;
+                const caoThat = (doCaoChai(k) / scale) || BOTTLE_H[k];
+                priceScale[k] = (r.height * .86 / caoThat) / scale;
+
+                const abs = priceScale[k] * scale;
                 rig.style.transform = `translate3d(${pt.x}px, ${pt.y}px, 0) scale(${abs})`;
-                const br = bottles[k].getBoundingClientRect();
-                const tamThat = br.top + (BOTTLE_H[k] / 2) * abs;
+                const tamThat = bottles[k].getBoundingClientRect().top + (caoThat / 2) * abs;
                 pt.y -= (tamThat - (vh / 2 + pt.y));
                 rig.style.display = keepD;
                 rig.style.transform = keepT;
@@ -3433,6 +3546,11 @@
             const pinned = Math.max(0, (window.scrollY + vh / 2) - secCenters[secCenters.length - 1]);
             let gx = 0, gy = 0, gw = 0;
 
+            /* Tới màn bảng giá thì MỌI chai của dòng đang xem đều hiện ra, mỗi chai
+               đáp vào đúng thẻ giá của nó — không còn cảnh một thẻ có chai, thẻ kia trống. */
+            const trongDong = (dongOf(DONG).sp || []);
+            const hienGia = clamp01((t - 4.35) / .5);
+
             order.forEach((key, bi) => {
                 const a = kfAt(key, i), b = kfAt(key, i + 1);
                 const x = lerp(a.x, b.x, f) * vw;
@@ -3440,17 +3558,24 @@
                 const s = lerp(a.s, b.s, f);
                 const ry = lerp(a.ry, b.ry, f);
                 const rx = lerp(a.rx, b.rx, f);
-                const o = lerp(a.o, b.o, f) * heroVisible[key];   /* mỗi trang chỉ hiện đúng chai của sản phẩm đó */
+                let hien = heroVisible[key];
+                if (hien < 1 && trongDong.includes(key)) hien = Math.max(hien, hienGia);
+                const o = lerp(a.o, b.o, f) * hien;   /* mỗi trang chỉ hiện chai của dòng đó */
 
                 y += Math.sin(time * 1.05 + bi * 2.1) * 18 * (1 - settle * .8);
 
                 const n = rigNow[key], k = 0.11;
-                n.x = snap(n.x + (x - n.x) * k, x, .12);
-                n.y += (y - n.y) * k;
-                n.s = snap(n.s + (s - n.s) * k, s, .0006);
-                n.ry = snap(n.ry + (ry - n.ry) * k, ry, .03);
-                n.rx = snap(n.rx + (rx - n.rx) * k, rx, .03);
-                n.o = (o === 0 || o === 1) ? o : snap(n.o + (o - n.o) * 0.15, o, .004);
+                if (n.o < .008 && o < .008) {
+                    /* chai đang ẩn thì bám thẳng vào đích, lúc hiện ra là đã đúng chỗ sẵn */
+                    n.x = x; n.y = y; n.s = s; n.ry = ry; n.rx = rx; n.o = o;
+                } else {
+                    n.x = snap(n.x + (x - n.x) * k, x, .12);
+                    n.y += (y - n.y) * k;
+                    n.s = snap(n.s + (s - n.s) * k, s, .0006);
+                    n.ry = snap(n.ry + (ry - n.ry) * k, ry, .03);
+                    n.rx = snap(n.rx + (rx - n.rx) * k, rx, .03);
+                    n.o = (o === 0 || o === 1) ? o : snap(n.o + (o - n.o) * 0.15, o, .004);
+                }
 
                 const rig = rigs[key];
                 const vis = n.o > .006 || warmFrames > 0;
@@ -3513,6 +3638,19 @@
             return best;
         }
 
+        /* Về hẳn màn chọn dòng sản phẩm (nằm trên màn 1, ngoài danh sách section) */
+        function veManChon(dur = 720) {
+            snapIdx = 0; snapping = true;
+            const from = window.scrollY, d = -from, t0 = performance.now();
+            if (Math.abs(d) < 2) { snapping = false; return; }
+            (function step(now) {
+                const p = Math.min(1, (now - t0) / dur);
+                window.scrollTo(0, from + d * easeInOut(p));
+                if (p < 1) requestAnimationFrame(step);
+                else setTimeout(() => { snapping = false; }, 90);
+            })(t0);
+        }
+
         function goTo(i, dur = 780) {
             i = Math.max(0, Math.min(sections.length - 1, i));
             snapIdx = i; snapping = true;
@@ -3541,7 +3679,18 @@
             const dir = e.deltaY > 0 ? 1 : -1;
             const here = snapping ? snapIdx : nearestIndex();
             const next = here + dir;
-            if (next < 0) return;                                     // trên cùng: để cuộn tự nhiên
+            if (next < 0) {
+                /* Cuộn ngược từ màn sản phẩm lên: kéo hẳn về màn chọn dòng,
+                   không thả tự nhiên rồi kẹt lại giữa hai màn. */
+                if (window.scrollY <= 2) return;
+                e.preventDefault();
+                if (snapping) return;
+                if (!(gap > 150) && now - lastJump < 1400) return;
+                if (now - lastJump < 320) return;
+                lastJump = now;
+                veManChon();
+                return;
+            }
             if (next > sections.length - 1) return;                   // dưới cùng: cho xuống xem chân trang
 
             e.preventDefault();                                       // chặn đà trôi
@@ -3564,7 +3713,9 @@
             const now = performance.now();
             if (snapping || now - lastJump < 320) return;
             lastJump = now;
-            goTo((snapping ? snapIdx : nearestIndex()) + (down ? 1 : -1));
+            const toi = (snapping ? snapIdx : nearestIndex()) + (down ? 1 : -1);
+            if (toi < 0) { veManChon(); return; }
+            goTo(toi);
         });
 
         /* menu và các nút bấm cũng đi qua cùng một cơ chế */
@@ -3718,63 +3869,72 @@
             const chon = document.getElementById('chon');
             if (!plate || !box) return;
 
-            C.products.forEach(p => {
-                const d = document.createElement('div');
-                d.className = 'cs-who'; d.dataset.key = p.key;
-                d.innerHTML = `<img src="${esc(p.nguoi || p.key + '.jpg')}" alt="${esc(p.name)}">`;
-                plate.insertBefore(d, plate.firstChild);
+            LINES.forEach(d => {
+                const el = document.createElement('div');
+                el.className = 'cs-who'; el.dataset.key = d.key;
+                el.innerHTML = `<img src="${esc(d.nguoi || d.key + '.jpg')}" alt="${esc(d.name)}" loading="eager">`;
+                plate.insertBefore(el, plate.firstChild);
             });
 
-            /* Xếp các nhóm thành vòng cung quanh người mẫu.
-               Tự chia đều cho bất kỳ số sản phẩm nào — 2 dòng thì mỗi bên một cái,
-               6 dòng thì mỗi bên ba cái. Thêm bớt sản phẩm không phải sửa code. */
-            const soSP = C.products.length, soTrai = Math.ceil(soSP / 2);
-            C.products.forEach((p, i) => {
+            /* Màu nền màn chọn: dựng từ một màu nhấn duy nhất của dòng, luôn có
+               vùng sáng ở giữa. Trước đây mượn màu nền của cảnh 3D nên dòng nào
+               màu tối là cả màn hình đen kịt. */
+            const mauNhan = d => d.accent || (spOf((d.sp || [])[0]).theme || {}).inner || '#0b8a78';
+            const nenChon = d => {
+                const a = mauNhan(d);
+                return `radial-gradient(120% 92% at 50% 44%, ${shade(a, 1.06)} 0%, ${shade(a, .52)} 34%, ` +
+                       `${shade(a, .2)} 78%)`;
+            };
+
+            /* Xếp các dòng thành vòng cung quanh người mẫu.
+               Tự chia đều cho bất kỳ số dòng nào — 2 dòng thì mỗi bên một cái,
+               6 dòng thì mỗi bên ba cái. Thêm bớt dòng không phải sửa code. */
+            const soSP = LINES.length, soTrai = Math.ceil(soSP / 2);
+            LINES.forEach((d, i) => {
                 const side = i < soTrai ? 'l' : 'r';
                 const dem = side === 'l' ? soTrai : soSP - soTrai;
                 const thu = side === 'l' ? i : i - soTrai;
                 const y = dem <= 1 ? 50 : 18 + (thu * 64) / (dem - 1);
                 const x = 4 + 9 * Math.min(1, Math.abs(y - 50) / 30);
                 const b = document.createElement('button');
-                b.className = 'cs-node'; b.dataset.side = side; b.dataset.key = p.key;
-                b.style.setProperty('--c', (p.theme || {}).inner || '#0b8a78');
+                b.className = 'cs-node'; b.dataset.side = side; b.dataset.key = d.key;
+                b.style.setProperty('--c', mauNhan(d));
                 b.style.top = y + '%';
                 if (side === 'l') b.style.left = x + '%'; else b.style.right = x + '%';
-                b.innerHTML = `<span class="l">${esc(p.navLabel || p.name)}</span><span class="dot"></span>`;
+                b.innerHTML = `<span class="l">${esc(d.navLabel || d.name)}</span><span class="dot"></span>`;
                 box.appendChild(b);
             });
 
             let cur = null, busy = false;
             function show(key) {
                 if (key === cur || busy) return;
-                const p = spOf(key); busy = true; cur = key;
+                const d = dongOf(key); busy = true; cur = key;
                 plate.querySelectorAll('.cs-who').forEach(w => w.classList.toggle('on', w.dataset.key === key));
                 plate.classList.remove('gl'); void plate.offsetWidth; plate.classList.add('gl');
                 nameEl.style.opacity = 0;
                 setTimeout(() => {
-                    nameEl.innerHTML = `<b>${esc(p.name)}</b>`;
-                    nameEl.style.opacity = .65;
+                    nameEl.innerHTML = `<b>${esc(d.name)}</b>`;
+                    nameEl.style.opacity = .72;
                 }, 230);
-                const th = p.theme || {};
-                chon.style.background = `radial-gradient(120% 92% at 50% 44%, ${th.inner} 0%, ${th.mid} 34%, ${th.outer} 78%)`;
+                chon.style.background = nenChon(d);
                 setTimeout(() => { plate.classList.remove('gl'); busy = false; }, 520);
             }
-            show(SP_KEY);
+            show(DONG);
 
             box.querySelectorAll('.cs-node').forEach(nd => {
                 nd.addEventListener('mouseenter', () => show(nd.dataset.key));
                 nd.addEventListener('focus', () => show(nd.dataset.key));
                 nd.addEventListener('click', () => {
                     const k = nd.dataset.key;
-                    if (k !== current) switchProduct(k);
+                    if (k !== DONG) switchLine(k);
                     document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
                 });
             });
 
             /* điện thoại không có rê chuột → tự đảo người, chạm là xuống trang */
-            if (window.matchMedia('(hover: none)').matches) {
+            if (window.matchMedia('(hover: none)').matches && LINES.length > 1) {
                 let i = 1;
-                setInterval(() => { show(C.products[i++ % C.products.length].key); }, 2800);
+                setInterval(() => { show(LINES[i++ % LINES.length].key); }, 2800);
             }
 
             /* logo bấm được để quay lại màn chọn */
@@ -3807,7 +3967,8 @@
             const d = e.data || {};
             if (d.rootlab !== 'goto') return;
             try {
-                if (d.sp && d.sp !== current) switchProduct(d.sp);
+                if (d.sp) window.rootlabGoto(d.sp);
+                if (d.sec === 'chon') { document.getElementById('chon')?.scrollIntoView({ behavior: 'auto' }); return; }
                 const el = document.getElementById(d.sec);
                 /* nhảy tức thì — đang sửa nội dung thì cần thấy ngay, không cần cuộn mượt */
                 if (el) el.scrollIntoView({ behavior: 'auto', block: 'start' });
