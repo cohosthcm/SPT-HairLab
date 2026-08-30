@@ -141,6 +141,8 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
 .prev .kho button{border:0;background:none;color:#cfe0da;font-size:11.5px;padding:5px 13px;
   border-radius:999px;cursor:pointer}
 .prev .kho button.on{background:#fff;color:#0b1512;font-weight:600}
+.prev .kho.tieng{bottom:82px}
+.prev .kho.tieng button{padding:5px 9px;letter-spacing:.06em;font-weight:600}
 .prev .bar{position:absolute;left:0;right:0;bottom:0;padding:8px 14px;background:rgba(0,0,0,.55);
   color:#b9cdc6;font-size:11.5px;display:flex;gap:8px;align-items:center;backdrop-filter:blur(6px)}
 
@@ -218,12 +220,21 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
             <div id="form"></div>
         </div>
         <div class="prev">
+            <div class="kho tieng">
+                <button data-l="vi" class="on">VI</button>
+                <button data-l="en">EN</button>
+                <button data-l="fr">FR</button>
+                <button data-l="it">IT</button>
+                <button data-l="ja">JA</button>
+            </div>
             <div class="kho">
                 <button data-w="1440" class="on">Máy tính</button>
                 <button data-w="390">Điện thoại</button>
             </div>
-            <iframe id="preview" src="index.html?preview=1"></iframe>
+            <iframe id="preview" src="index.html?preview=1&lang=vi"></iframe>
             <div class="bar"><span>Xem trước — sửa tới đâu hiện tới đó</span>
+                <a href="index.html?preview=1" target="_blank" rel="noopener"
+                   style="color:#8fd9c6;text-decoration:underline;margin-left:14px">Mở ở tab mới</a>
                 <span style="margin-left:auto">Xong bấm <b>Đẩy lên web</b></span></div>
         </div>
     </div>
@@ -521,18 +532,44 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
            thay vì bị co thành bản điện thoại như trước.
            ============================================================ */
         let KHO_XEM = 1440;
+        /* Thu nhỏ bằng "zoom" chứ KHÔNG dùng transform: scale().
+           Safari không vẽ nội dung 3D nằm trong một iframe bị transform — khung
+           xem trước hiện ra đen thui dù trang bên trong vẫn chạy đúng. zoom là
+           cách thu nhỏ theo bố cục (giống phóng to/thu nhỏ trang của trình duyệt)
+           nên vẽ bình thường ở mọi trình duyệt. */
         function vuaKhung() {
             const box = document.querySelector('.prev'), fr = document.getElementById('preview');
             if (!box || !fr || !box.clientWidth) return;
             const ty = box.clientWidth / KHO_XEM;
+            fr.style.transform = 'none';
             fr.style.width = KHO_XEM + 'px';
-            fr.style.height = (box.clientHeight / ty) + 'px';
-            fr.style.transform = 'scale(' + ty + ')';
+            fr.style.height = Math.round(box.clientHeight / ty) + 'px';
+            fr.style.zoom = ty;
+            /* Có trình duyệt tính khổ bên trong khung theo bề rộng ĐÃ thu nhỏ.
+               Nếu vậy thì nới bề rộng khung ra đúng tỉ lệ để bên trong vẫn là
+               khổ máy tính, không bị co thành bản điện thoại. */
+            try {
+                const trong = fr.contentWindow && fr.contentWindow.innerWidth;
+                if (trong && Math.abs(trong - KHO_XEM) > 8) {
+                    const bu = KHO_XEM / trong;
+                    fr.style.width = Math.round(KHO_XEM * bu) + 'px';
+                    fr.style.height = Math.round(box.clientHeight / ty * bu) + 'px';
+                }
+            } catch (e) { }
         }
         window.addEventListener('resize', vuaKhung);
-        document.querySelectorAll('.prev .kho button').forEach(b => b.addEventListener('click', () => {
-            document.querySelectorAll('.prev .kho button').forEach(x => x.classList.remove('on'));
+        document.querySelectorAll('.prev .kho:not(.tieng) button').forEach(b => b.addEventListener('click', () => {
+            document.querySelectorAll('.prev .kho:not(.tieng) button').forEach(x => x.classList.remove('on'));
             b.classList.add('on'); KHO_XEM = +b.dataset.w; vuaKhung();
+        }));
+
+        /* xem trước từng thứ tiếng */
+        let TIENG_XEM = 'vi';
+        document.querySelectorAll('.prev .kho.tieng button').forEach(b => b.addEventListener('click', () => {
+            document.querySelectorAll('.prev .kho.tieng button').forEach(x => x.classList.remove('on'));
+            b.classList.add('on'); TIENG_XEM = b.dataset.l;
+            const fr = document.getElementById('preview');
+            fr.src = 'index.html?preview=1&lang=' + TIENG_XEM;
         }));
         document.getElementById('preview').addEventListener('load', vuaKhung);
         vuaKhung();
@@ -795,7 +832,8 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
                 field('Câu ở chân trang', 'footer.tagline'),
                 field('Dòng bản quyền', 'footer.copyright'),
                 listEditor('Các mục menu (theo đúng thứ tự 6 màn)', 'nav', null, () => 'Mục mới'),
-                h('div', { class: 'hint', html: 'Menu gắn cố định với 6 màn: Trang chủ · Thành phần · Cách dùng · Hiệu quả · Đánh giá · Giá. Đổi chữ được, đừng xoá bớt.' })
+                h('div', { class: 'hint', html: 'Menu gắn cố định với 6 màn: Trang chủ · Thành phần · Cách dùng · Hiệu quả · Đánh giá · Giá. Đổi chữ được, đừng xoá bớt.' }),
+                h('div', { class: 'hint', html: '<b>Về 5 thứ tiếng:</b> web có tiếng Việt, Anh, Pháp, Ý, Nhật. Mọi ô trong trang này sửa <b>bản tiếng Việt</b>. Các bản dịch nằm trong file <code>content.js</code> (khối <code>i18n</code>) và không tự đổi theo. Sửa xong nhớ báo mình dịch lại phần đã đổi. Dùng hàng nút <b>VI EN FR IT JA</b> ở góc dưới khung xem trước để xem thử từng thứ tiếng.' })
             ], true, 'sec-chung'));
 
             F.append(panel('Màn chọn dòng sản phẩm', [
