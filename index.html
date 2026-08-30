@@ -232,6 +232,13 @@
             opacity: .95;
         }
 
+        /* Logo bằng ảnh: tải lên trong trang quản trị. Có ảnh thì ảnh thay cho
+           biểu tượng vẽ sẵn và chữ ROOTLAB. Không có thì giữ nguyên như cũ. */
+        .logo-anh { display: block; height: 34px; width: auto; max-width: 210px; object-fit: contain; }
+        .site-footer .logo-anh { height: 28px; }
+        .cs-brand .logo-anh { height: 40px; max-width: 240px; margin-bottom: 4px; }
+        @media (max-width: 620px) { .logo-anh { height: 26px; max-width: 140px; } }
+
         .nav {
             display: flex;
             gap: .35rem;
@@ -2094,7 +2101,7 @@
     <!-- ===== MÀN CHỌN NHÓM SẢN PHẨM (màn hình đầu tiên) ===== -->
     <header class="chooser" id="chon">
         <div class="cs-bar">
-            <div class="cs-brand">ROOTLAB<small>HAIR LABORATORY</small></div>
+            <div class="cs-brand" id="logo-chon"><span class="logo-chu">ROOTLAB</span><small>HAIR LABORATORY</small></div>
             <div id="tieng-chon"></div>
         </div>
         <div class="cs-stage">
@@ -2157,13 +2164,13 @@
     </div>
 
     <header class="header">
-        <div class="logo">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="logo" id="logo-menu">
+            <svg class="logo-hinh" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.6" />
                 <path d="M12 17.5V9.2M12 9.2C12 7.1 10.3 5.4 8.2 5.4M12 9.2c0-2.1 1.7-3.8 3.8-3.8" stroke="currentColor"
                     stroke-width="1.6" stroke-linecap="round" />
             </svg>
-            <span data-c="brand">ROOTLAB</span>
+            <span class="logo-chu" data-c="brand">ROOTLAB</span>
         </div>
         <nav class="nav" data-list="nav"></nav>
         <div class="header-right">
@@ -2313,7 +2320,7 @@
     <footer class="site-footer" id="lien-he">
         <div class="foot-grid">
             <div class="foot-col foot-brand">
-                <div class="logo" data-c="brand">ROOTLAB</div>
+                <div class="logo" id="logo-chan"><span class="logo-chu" data-c="brand">ROOTLAB</span></div>
                 <p data-c="footer.tagline">Chăm sóc tóc từ chân tóc — làm sạch trước, nuôi dưỡng sau.</p>
             </div>
             <div class="foot-col" data-list="contactMain"></div>
@@ -2610,6 +2617,7 @@
                 "tagline": "Chăm sóc tóc từ chân tóc — làm sạch trước, nuôi dưỡng sau.",
                 "copyright": "© 2026 ROOTLAB"
         },
+        "logo": "",
         "ui": {
                 "zalo": "Nhắn Zalo",
                 "goi": "Gọi",
@@ -2969,8 +2977,31 @@
                 `<a href="#${NAV_IDS[i] || 'home'}" class="nav-item${i === 0 ? ' active' : ''}">${esc(t)}</a>`).join(''));
             applySections(DONG);
             applyContact();
+            veLogo();
             veNutTieng(document.getElementById('tieng-trang'));
             veNutTieng(document.getElementById('tieng-chon'));
+        }
+
+        /* Logo: có ảnh trong C.logo thì dùng ảnh, không có thì giữ biểu tượng + chữ. */
+        function veLogo() {
+            const anh = (C.logo || '').trim();
+            ['logo-menu', 'logo-chan', 'logo-chon'].forEach(id => {
+                const o = document.getElementById(id);
+                if (!o) return;
+                o.querySelector('.logo-anh')?.remove();
+                const hinh = o.querySelector('.logo-hinh'), chu = o.querySelector('.logo-chu');
+                if (chu && chu.dataset.c !== 'brand') chu.textContent = esc(C.brand || 'ROOTLAB');
+                if (anh) {
+                    const img = document.createElement('img');
+                    img.className = 'logo-anh'; img.src = anh; img.alt = esc(C.brand || 'ROOTLAB');
+                    o.prepend(img);
+                    if (hinh) hinh.style.display = 'none';
+                    if (chu) chu.style.display = 'none';
+                } else {
+                    if (hinh) hinh.style.display = '';
+                    if (chu) chu.style.display = '';
+                }
+            });
         }
         applyContent();
 
