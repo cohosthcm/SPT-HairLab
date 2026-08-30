@@ -3834,7 +3834,14 @@
             ],
             serum: [
                 { x: 0, y: 0, s: 1, ry: 0, rx: 0, o: 1 },
-                { x: .34, y: .17, s: .50, ry: 22, rx: 0, o: 1 },
+                /* ry = -24 chứ KHÔNG phải +22.
+                   Chai được dựng bằng 26 lát phẳng xếp thành vòng, nên bề rộng
+                   nhìn thấy đổi theo góc quay — đo thật: ry=-24 ra 103px,
+                   ry=+22 chỉ còn 82px, ry=0 còn 56px. Chai thật thì xoay góc nào
+                   cũng rộng như nhau, đây là nhược điểm của cách dựng này.
+                   Góc -24 là góc màn "Cách dùng" đang dùng — màn đó chai nhìn
+                   đầy đặn, nên lấy đúng góc đó cho màn "Thành phần". */
+                { x: .31, y: .17, s: .50, ry: -24, rx: 0, o: 1 },
                 { x: -.15, y: .15, s: .50, ry: -24, rx: 0, o: 1 },
                 { x: -.20, y: -.12, s: .50, ry: 20, rx: 0, o: 1 },
                 { x: -.24, y: .16, s: .44, ry: -26, rx: 0, o: 1 }
