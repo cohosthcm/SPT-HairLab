@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Galada&family=Inter:wght@400;500;600;700&display=swap">
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <script src="content.js"></script>
     <style>
 /* ==========================================================
@@ -49,9 +49,8 @@ button,input,textarea,select{font:inherit;color:inherit}
   display:flex;align-items:center;gap:10px;padding:0 20px;position:sticky;top:0;z-index:40}
 .top h1{font-size:15.5px;font-weight:600;margin:0;display:flex;align-items:baseline;gap:10px}
 .top h1 small{font-weight:400;font-size:12px;color:var(--nhat)}
-/* cùng chữ ký thương hiệu với trang chính */
-.top h1 .hieu{font-family:'Galada','Brush Script MT',cursive;font-size:23px;font-weight:400;
-  letter-spacing:.5px;color:var(--chinh-dam);margin-right:3px}
+/* cùng chữ ký thương hiệu với trang chính (màn chọn dòng) */
+.top h1 .hieu{font-weight:500;font-size:14px;letter-spacing:.32em;color:var(--chinh-dam);margin-right:5px}
 .top .day{margin-left:auto;display:flex;align-items:center;gap:8px}
 .top button{padding:8px 14px;border:1px solid var(--vien-dam);background:var(--the);
   border-radius:9px;cursor:pointer;font-size:13.5px;transition:.15s}
@@ -78,6 +77,11 @@ button,input,textarea,select{font:inherit;color:inherit}
    dựng đúng khổ máy tính mà KHÔNG phải thu nhỏ bằng transform hay zoom
    (Safari không vẽ nội dung 3D trong khung bị thu nhỏ). */
 .wrap{display:grid;grid-template-columns:206px minmax(340px,505px) minmax(0,1fr);
+  /* Khai rõ CHIỀU CAO của hàng. Không khai thì hàng lấy chiều cao theo nội dung,
+     mà nội dung của cột xem trước lại là iframe đặt tuyệt đối (không tính chiều cao)
+     → cột co lại còn hơn trăm pixel và chỗ đó hiện ra đen thui.
+     Đây mới là nguyên nhân thật của lỗi "khung xem trước bị đen". */
+  grid-template-rows:minmax(0,1fr);
   height:calc(100vh - 60px);overflow:hidden}
 body.khong-xem .wrap{grid-template-columns:206px minmax(0,1fr)}
 /* xem to: giấu hẳn hai cột trái, khung xem trước chiếm trọn bề ngang.
@@ -158,10 +162,27 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
 
 /* ---------- KHUNG XEM TRƯỚC ---------- */
 .prev{position:relative;background:#0b1512;border-left:1px solid var(--vien);overflow:hidden;
-  display:flex;justify-content:center}
-/* KHÔNG transform, KHÔNG zoom — chỉ đổi bề rộng thật của khung. */
-#preview{border:0;display:block;width:100%;height:100%;background:#0b1512}
+  height:100%;min-height:0}
+/* KHÔNG transform, KHÔNG zoom, KHÔNG chiều cao phần trăm.
+   Đặt tuyệt đối theo khung cha — cách duy nhất mà mọi trình duyệt đều tính ra
+   kích thước rõ ràng. Safari hay cho iframe cao 0 khi chiều cao khai 100%
+   bên trong một khung flex/grid, và chỗ đó hiện ra đen thui. */
+/* PHẢI khai height rõ ràng. iframe là "phần tử thay thế": để top:0;bottom:0 mà
+   height:auto thì nó KHÔNG giãn ra, nó giữ nguyên chiều cao mặc định 150px —
+   phần còn lại của cột là nền tối, nhìn ra đúng như "khung xem trước bị đen". */
+/* canh giữa bằng left/right + margin auto, KHÔNG dùng transform
+   (mã cũ có chỗ gán transform:none làm hỏng việc canh giữa) */
+#preview{position:absolute;top:0;left:0;right:0;margin:0 auto;
+  border:0;display:block;width:100%;height:100%;background:#0b1512}
 body.kho-dt #preview{width:390px;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+/* Khung không dựng được thì nói thẳng ra và mời mở cửa sổ riêng, đừng để đen im lặng */
+.prev .canhbao{position:absolute;left:50%;translate:-50% 0;bottom:96px;z-index:7;width:min(420px,86%);
+  padding:16px 18px;border-radius:14px;background:rgba(18,30,27,.97);color:#dcece7;
+  border:1px solid rgba(255,255,255,.18);font-size:13px;line-height:1.6;display:none}
+body.khung-hong .prev .canhbao{display:block}
+.prev .canhbao b{color:#fff}
+.prev .canhbao button{margin-top:11px;border:0;background:var(--chinh);color:#fff;
+  padding:9px 15px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600}
 .prev .kho{position:absolute;bottom:44px;right:14px;z-index:5;display:flex;gap:4px;
   padding:4px;border-radius:999px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);
   border:1px solid rgba(255,255,255,.12)}
@@ -263,8 +284,16 @@ body.kho-dt #preview{width:390px;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
                 <button data-w="390">Điện thoại</button>
             </div>
             <iframe id="preview" src="index.html?preview=1&lang=vi"></iframe>
+            <div class="canhbao">
+                <b>Khung xem trước không dựng được trong trang này.</b><br>
+                Trình duyệt của bạn không vẽ được trang 3D bên trong khung nhỏ.
+                Bấm nút dưới để mở khung xem trước ra một cửa sổ riêng — bấm mục nào
+                bên trái thì cửa sổ đó vẫn tự nhảy tới đúng chỗ.
+                <br><button type="button" class="mo-cua-so">Mở cửa sổ xem trước</button>
+            </div>
             <div class="bar"><span id="kho-nhan">Xem trước</span>
                 <button type="button" id="xemTo" class="bar-nut">Xem to</button>
+                <button type="button" id="moCuaSo" class="bar-nut">Cửa sổ riêng</button>
                 <a href="index.html?preview=1" target="_blank" rel="noopener" class="bar-link">Mở ở tab mới</a>
                 <span style="margin-left:auto">Xong bấm <b>Đẩy lên web</b></span></div>
         </div>
@@ -382,7 +411,9 @@ body.kho-dt #preview{width:390px;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
             if (!refresh) return;
             clearTimeout(saveT);
             saveT = setTimeout(() => {
-                document.getElementById('preview').contentWindow.location.reload();
+                try { document.getElementById('preview').contentWindow.location.reload(); } catch (e) { }
+                /* cửa sổ xem trước riêng cũng phải cập nhật theo */
+                try { if (cuaSoXem && !cuaSoXem.closed) cuaSoXem.location.reload(); } catch (e) { }
             }, 450);
         }
 
@@ -570,13 +601,14 @@ body.kho-dt #preview{width:390px;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
         function vuaKhung() {
             const fr = document.getElementById('preview');
             if (!fr) return;
-            fr.style.transform = 'none';
-            fr.style.zoom = '';
             const rong = document.querySelector('.prev')?.clientWidth || 0;
             const nhan = document.getElementById('kho-nhan');
             if (nhan) nhan.textContent = document.body.classList.contains('kho-dt')
                 ? '390px · khổ điện thoại'
                 : Math.round(rong) + 'px · ' + (rong >= 1024 ? 'khổ máy tính' : 'khổ máy tính bảng — bấm Xem to để thấy đúng khổ máy tính');
+            /* kiểm vài lần cách nhau — trang bên trong cần chút thời gian để dựng xong,
+               kiểm một lần dễ báo nhầm là hỏng */
+            [500, 1400, 3000].forEach(t => setTimeout(() => { try { kiemTraKhung(); } catch (e) { } }, t));
         }
         window.addEventListener('resize', vuaKhung);
         document.querySelectorAll('.prev .kho:not(.tieng) button').forEach(b => b.addEventListener('click', () => {
@@ -590,6 +622,43 @@ body.kho-dt #preview{width:390px;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
             document.getElementById('xemTo').textContent = to ? 'Thu lại' : 'Xem to';
             setTimeout(vuaKhung, 60);
         });
+
+        /* ============================================================
+           CỬA SỔ XEM TRƯỚC RIÊNG
+           Đường thoát chắc chắn: một cửa sổ trình duyệt thật, không phải khung
+           nhúng — nên không dính bất kỳ lỗi vẽ khung nhúng nào. Bấm mục nào ở
+           cột trái thì cửa sổ này vẫn tự nhảy tới đúng chỗ, sửa gì cũng tự tải lại.
+           ============================================================ */
+        let cuaSoXem = null;
+        const cuaSoConSong = () => { try { return cuaSoXem && !cuaSoXem.closed; } catch (e) { return false; } };
+        function moCuaSoXem() {
+            const url = 'index.html?preview=1&lang=' + TIENG_XEM;
+            try {
+                cuaSoXem = window.open(url, 'rootlab_xem', 'width=1440,height=900');
+                if (cuaSoXem) { cuaSoXem.focus(); toast('Đã mở cửa sổ xem trước'); }
+                else alert('Trình duyệt chặn cửa sổ bật lên. Cho phép sptlab.co mở cửa sổ rồi bấm lại.');
+            } catch (e) { }
+        }
+        document.getElementById('moCuaSo')?.addEventListener('click', moCuaSoXem);
+        document.querySelector('.prev .canhbao .mo-cua-so')?.addEventListener('click', moCuaSoXem);
+
+        /* Khung nhúng dựng xong chưa? Không thì hiện lời nhắc thay vì để đen im lặng. */
+        function kiemTraKhung() {
+            const fr = document.getElementById('preview');
+            let hong = false, chiTiet = '';
+            try {
+                const w = fr.contentWindow, d = w && w.document;
+                const cao = Math.round(fr.getBoundingClientRect().height);
+                const rong = Math.round(fr.getBoundingClientRect().width);
+                const soNut = d ? d.querySelectorAll('.cs-node').length : 0;
+                hong = !w || !w.innerWidth || cao < 80 || rong < 80 || soNut === 0;
+                chiTiet = rong + '×' + cao + ' · ' + soNut + ' mục';
+            } catch (e) { hong = true; chiTiet = 'không đọc được'; }
+            document.body.classList.toggle('khung-hong', hong);
+            const n = document.getElementById('kho-chitiet');
+            if (n) n.textContent = chiTiet;
+            return !hong;
+        }
 
         /* xem trước từng thứ tiếng */
         let TIENG_XEM = 'vi';
@@ -685,25 +754,30 @@ body.kho-dt #preview{width:390px;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
             }
         }
 
-        /* Bảo khung xem trước nhảy tới đúng màn (và đúng sản phẩm) đang sửa */
+        /* Bảo mọi khung xem trước đang mở nhảy tới đúng màn (và đúng dòng) đang sửa.
+           Có bao nhiêu chỗ đang xem thì nhảy hết: khung nhúng và cửa sổ riêng. */
         function nhayToi(m) {
-            const fr = document.getElementById('preview');
-            if (!fr || !fr.contentWindow || !m.sec) return;
+            if (!m || !m.sec) return;
             /* mục của một dòng thì nhảy tới đúng dòng, mục của một chai thì nhảy tới chai */
             const sp = (m.dong != null && D.lines[m.dong]) ? D.lines[m.dong].key
                 : (m.sp != null && D.products[m.sp]) ? D.products[m.sp].key : null;
-            const w = fr.contentWindow;
-            /* Khung xem trước cùng tên miền nên gọi thẳng được — không phải sửa index.html */
-            try {
-                if (sp && typeof w.rootlabGoto === 'function') w.rootlabGoto(sp);
-                else if (sp && typeof w.switchProduct === 'function') w.switchProduct(sp);
-                /* màn chọn nằm trên cùng — cuộn thẳng về 0 để thanh menu tự ẩn đi */
-                if (m.sec === 'chon') { w.scrollTo(0, 0); return; }
-                const el = w.document.getElementById(m.sec);
-                if (el) { el.scrollIntoView({ behavior: 'auto', block: m.sec === 'chon' ? 'start' : 'start' }); return; }
-            } catch (e) { /* khác tên miền thì rơi xuống cách dưới */ }
-            try { w.postMessage({ rootlab: 'goto', sec: m.sec, sp }, '*'); } catch (e) { }
-            try { w.location.hash = '#' + m.sec; } catch (e) { }
+            const dich = [];
+            const fr = document.getElementById('preview');
+            if (fr && fr.contentWindow) dich.push(fr.contentWindow);
+            if (cuaSoConSong()) dich.push(cuaSoXem);
+            dich.forEach(w => {
+                /* cùng tên miền nên gọi thẳng được — không phải sửa index.html */
+                try {
+                    if (sp && typeof w.rootlabGoto === 'function') w.rootlabGoto(sp);
+                    else if (sp && typeof w.switchProduct === 'function') w.switchProduct(sp);
+                    /* màn chọn nằm trên cùng — cuộn thẳng về 0 để thanh menu tự ẩn đi */
+                    if (m.sec === 'chon') { w.scrollTo(0, 0); return; }
+                    const el = w.document.getElementById(m.sec);
+                    if (el) { el.scrollIntoView({ behavior: 'auto', block: 'start' }); return; }
+                } catch (e) { /* khác tên miền thì rơi xuống cách dưới */ }
+                try { w.postMessage({ rootlab: 'goto', sec: m.sec, sp }, '*'); } catch (e) { }
+                try { w.location.hash = '#' + m.sec; } catch (e) { }
+            });
         }
 
         /* Danh sách mục: các nhóm gập lại cho gọn, bấm mới mở ra. */
