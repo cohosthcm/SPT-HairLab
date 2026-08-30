@@ -49,9 +49,18 @@ button,input,textarea,select{font:inherit;color:inherit}
   display:flex;align-items:center;gap:10px;padding:0 20px;position:sticky;top:0;z-index:40}
 .top h1{font-size:15.5px;font-weight:600;margin:0;display:flex;align-items:baseline;gap:10px}
 .top h1 small{font-weight:400;font-size:12px;color:var(--nhat)}
+.top h1 small.chua-day{color:#b4551f;font-weight:600;background:#fdf0e6;
+  padding:3px 9px;border-radius:999px;border:1px solid #f0d3bc}
 /* cùng chữ ký thương hiệu với trang chính (màn chọn dòng) */
 .top h1 .hieu{font-weight:500;font-size:14px;letter-spacing:.32em;color:var(--chinh-dam);margin-right:5px}
 .top .day{margin-left:auto;display:flex;align-items:center;gap:8px}
+body:has(#state.chua-day) #deploy{box-shadow:0 0 0 3px rgba(180,85,31,.2)}
+.bao-ban-moi{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:12px 20px;background:#fdf0e6;border-bottom:1px solid #f0d3bc;color:#7a3a12;font-size:13.5px}
+.bao-ban-moi b{color:#5d2c0d}
+.bao-ban-moi button{margin-left:auto;border:0;background:var(--chinh);color:#fff;
+  padding:8px 14px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600}
+.bao-ban-moi button.phu{margin-left:0;background:none;color:#7a3a12;border:1px solid #e0bfa6;font-weight:500}
 .top button{padding:8px 14px;border:1px solid var(--vien-dam);background:var(--the);
   border-radius:9px;cursor:pointer;font-size:13.5px;transition:.15s}
 .top button:hover{background:#f0f3f2}
@@ -405,9 +414,65 @@ body.khung-hong .prev .canhbao{display:block}
             clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 1800);
         };
 
+        /* ============================================================
+           BẢN NHÁP vs BẢN ĐANG CHẠY TRÊN WEB
+           Sửa trong trang này chỉ lưu vào trình duyệt. Chưa bấm "Đẩy lên web"
+           thì khách vào sptlab.co vẫn thấy bản cũ. Trước đây không có gì báo,
+           nên thêm một dòng sản phẩm rồi tưởng đã lên web mà thật ra chưa.
+           ============================================================ */
+        const DAU_DAY = 'rootlab_daday';
+        const vanTay = t => { let h = 5381; for (let i = 0; i < t.length; i++) h = ((h * 33) ^ t.charCodeAt(i)) >>> 0; return h.toString(36); };
+        function danhDauDaDay() {
+            try { localStorage.setItem(DAU_DAY, vanTay(JSON.stringify(D))); } catch (e) { }
+            capNhatTrangThai();
+        }
+        function capNhatTrangThai() {
+            const el = document.getElementById('state');
+            if (!el) return;
+            let daDay = '';
+            try { daDay = localStorage.getItem(DAU_DAY) || ''; } catch (e) { }
+            const khop = daDay && daDay === vanTay(JSON.stringify(D));
+            const soDong = (D.lines || []).length;
+            el.textContent = khop
+                ? soDong + ' dòng · đã khớp với web'
+                : soDong + ' dòng · CÓ THAY ĐỔI CHƯA ĐẨY LÊN WEB';
+            el.classList.toggle('chua-day', !khop);
+        }
+
+        /* Bản nháp trong máy có thể CŨ HƠN content.js trên web (ví dụ web vừa được
+           bổ sung bản dịch). Cứ để bản nháp đè lên thì bấm "Đẩy lên web" là xoá mất
+           phần mới. Nên hỏi rõ một câu thay vì lặng lẽ ghi đè. */
+        const KHOA_BASE = 'rootlab_base';
+        const vtBase = () => vanTay(JSON.stringify(BASE));
+        function kiemTraBanMoi() {
+            let cu = '', coNhap = false;
+            try { cu = localStorage.getItem(KHOA_BASE) || ''; coNhap = !!localStorage.getItem('rootlab_draft'); } catch (e) { }
+            if (!coNhap || !cu || cu === vtBase()) {
+                try { localStorage.setItem(KHOA_BASE, vtBase()); } catch (e) { }
+                return;
+            }
+            const bar = document.createElement('div');
+            bar.className = 'bao-ban-moi';
+            bar.innerHTML = '<span><b>Web đã có bản mới hơn bản nháp trong máy bạn.</b> '
+                + 'Giữ bản nháp thì phần mới trên web sẽ bị ghi đè khi bấm Đẩy lên web.</span>';
+            const b1 = document.createElement('button');
+            b1.textContent = 'Lấy bản mới từ web';
+            b1.onclick = () => {
+                try { localStorage.removeItem('rootlab_draft'); localStorage.setItem(KHOA_BASE, vtBase()); } catch (e) { }
+                location.reload();
+            };
+            const b2 = document.createElement('button');
+            b2.className = 'phu'; b2.textContent = 'Giữ bản nháp của tôi';
+            b2.onclick = () => { try { localStorage.setItem(KHOA_BASE, vtBase()); } catch (e) { } bar.remove(); };
+            bar.append(b1, b2);
+            document.body.insertBefore(bar, document.body.firstChild);
+        }
+
         let saveT;
         function save(refresh = true) {
             localStorage.setItem('rootlab_draft', JSON.stringify(D));
+            try { localStorage.setItem(KHOA_BASE, vtBase()); } catch (e) { }
+            try { capNhatTrangThai(); } catch (e) { }
             if (!refresh) return;
             clearTimeout(saveT);
             saveT = setTimeout(() => {
@@ -1193,8 +1258,16 @@ body.khung-hong .prev .canhbao{display:block}
         };
         const textToB64 = s => bytesToB64(new TextEncoder().encode(s));
 
+        /* Lấy thiết lập: ưu tiên cái đang gõ trong bảng, không có thì lấy cái đã lưu.
+           Nhờ vậy đẩy thẳng được mà không cần mở bảng ra. */
+        const ghCauHinh = () => {
+            const f = ghForm(), l = ghRead();
+            return { owner: f.owner || l.owner, repo: f.repo || l.repo,
+                     branch: f.branch || l.branch || 'main', token: f.token || l.token };
+        };
+
         async function ghApi(path, opt = {}) {
-            const s = ghForm();
+            const s = opt.cauHinh || ghCauHinh();
             if (!s.token) throw new Error('Chưa dán token GitHub');
             if (!s.owner || !s.repo) throw new Error('Chưa điền chủ kho hoặc tên kho');
             const r = await fetch('https://api.github.com' + path, {
@@ -1215,25 +1288,49 @@ body.khung-hong .prev .canhbao{display:block}
         }
 
         /* Ghi 1 file. Có sẵn thì phải kèm sha của bản cũ, chưa có thì tạo mới. */
-        async function ghPut(name, b64, message) {
-            const s = ghForm();
+        async function ghPut(name, b64, message, cauHinh) {
+            const s = cauHinh || ghCauHinh();
             const base = `/repos/${s.owner}/${s.repo}/contents/${name}`;
             let sha = null;
             try {
-                const cur = await ghApi(`${base}?ref=${encodeURIComponent(s.branch)}`);
+                const cur = await ghApi(`${base}?ref=${encodeURIComponent(s.branch)}`, { cauHinh: s });
                 sha = cur && cur.sha;
             } catch (e) {
                 if (!/^404/.test(e.message)) throw e;   // 404 = file mới, các lỗi khác thì dừng
             }
             const body = { message, content: b64, branch: s.branch };
             if (sha) body.sha = sha;
-            await ghApi(base, { method: 'PUT', body: JSON.stringify(body) });
+            await ghApi(base, { method: 'PUT', body: JSON.stringify(body), cauHinh: s });
             return !!sha;
         }
 
         const ghBusy = on => ['ghTest', 'ghPushContent', 'ghPushFiles'].forEach(id => ghDoc(id).disabled = on);
 
-        ghDoc('deploy').onclick = () => { ghFill(); ghClear(); ghDoc('deployBox').hidden = false; };
+        /* Bấm "Đẩy lên web" là ĐẨY LUÔN nếu đã lưu token.
+           Trước đây nút này chỉ mở bảng cài đặt, phải bấm thêm một nút nữa bên trong
+           mới thật sự đẩy — nên sửa xong tưởng đã lên web mà thật ra chưa. */
+        ghDoc('deploy').onclick = async () => {
+            const s = ghRead();
+            if (!s.token || !s.owner || !s.repo) {
+                ghFill(); ghClear(); ghDoc('deployBox').hidden = false;
+                ghSay('Điền token GitHub một lần rồi bấm "Đẩy content.js". Lần sau chỉ cần bấm "Đẩy lên web" là xong.');
+                return;
+            }
+            const nut = ghDoc('deploy');
+            const chuCu = nut.textContent;
+            nut.disabled = true; nut.textContent = 'Đang đẩy…';
+            try {
+                const txt = contentJsText();
+                await ghPut('content.js', textToB64(txt), 'Cập nhật nội dung từ trang admin', s);
+                danhDauDaDay(txt);
+                toast('Đã đẩy lên web — khoảng 1 phút nữa tải lại trang là thấy');
+            } catch (e) {
+                ghFill(); ghClear(); ghDoc('deployBox').hidden = false;
+                ghSay('✗ Đẩy không được: ' + e.message, 'bad');
+                ghSay('Kiểm tra lại token bên dưới rồi bấm "Đẩy content.js".');
+            }
+            nut.disabled = false; nut.textContent = chuCu;
+        };
         ghDoc('ghClose').onclick = () => { ghWrite(ghForm()); ghDoc('deployBox').hidden = true; };
         ghDoc('deployBox').addEventListener('click', e => {
             if (e.target.id === 'deployBox') ghDoc('ghClose').click();
@@ -1277,6 +1374,7 @@ body.khung-hong .prev .canhbao{display:block}
                 ghSay('Đang đẩy content.js (' + kb + ' KB)…');
                 const thay = await ghPut('content.js', textToB64(txt), 'Cập nhật nội dung từ trang admin');
                 ghSay('✓ Xong — đã ' + (thay ? 'ghi đè' : 'tạo mới') + ' content.js.', 'good');
+                danhDauDaDay();
                 ghSay('Vercel đang dựng lại. Khoảng 1 phút nữa tải lại trang web là thấy.', 'good');
                 ghWrite(ghForm());
                 toast('Đã đẩy lên web');
@@ -1304,7 +1402,11 @@ body.khung-hong .prev .canhbao{display:block}
             ghBusy(false);
         };
 
+        /* Kiểm tra bản nháp cũ TRƯỚC khi save() — save() ghi lại vân tay của
+           content.js nên gọi sau thì không còn phát hiện được nữa. */
+        try { kiemTraBanMoi(); } catch (e) { }
         save(false);
+        try { capNhatTrangThai(); } catch (e) { }
     </script>
 </body>
 
