@@ -3266,7 +3266,9 @@
                 s.style.left = (-w / 2) + 'px';
                 s.style.transform = `rotateY(${deg}deg) translateZ(${r}px)`;
 
-                paint(s, { a, b, c: c2, vgrad, label, labKey, C, N, i, w, base: docHex((alt && i % 2) ? alt : color) });
+                const nen = docHex((alt && i % 2) ? alt : color);
+                s._k = { rad, half, shine, spec, hotPow, edge, base: nen };
+                paint(s, { a, b, c: c2, vgrad, label, labKey, C, N, i, w, base: nen });
                 el.appendChild(s);
             }
             return el;
@@ -3295,6 +3297,16 @@
            Khác biệt duy nhất: phần tối nay nằm DƯỚI nhãn thay vì trên. Không
            thấy được, vì chỗ tối nhất là rìa chai — ở đó nhãn quay nghiêng gần
            như mất hút rồi. */
+        /* Dựng dải sáng-tối ngang cho một lát, theo GÓC THẬT của lát đó so với
+           đèn. Tách riêng ra để còn vẽ lại được mỗi khi chai xoay. */
+        function daiSang(k, lech) {
+            const a = shadeAt(k.rad - k.half + lech, k.shine, k.spec, k.hotPow, k.edge);
+            const b = shadeAt(k.rad + lech, k.shine, k.spec, k.hotPow, k.edge);
+            const c = shadeAt(k.rad + k.half + lech, k.shine, k.spec, k.hotPow, k.edge);
+            return `linear-gradient(to right, ${tronMau(k.base, a.w, a.d)} 0%, ` +
+                   `${tronMau(k.base, b.w, b.d)} 50%, ${tronMau(k.base, c.w, c.d)} 100%)`;
+        }
+
         function paint(s, { a, b, c, vgrad, label, labKey, C, N, i, w, base }) {
             const imgs = [], sizes = [], poss = [], reps = [];
             if (vgrad) { imgs.push(vgrad); sizes.push('100% 100%'); poss.push('0 0'); reps.push('no-repeat'); }
@@ -3373,7 +3385,9 @@
                 s.style.transformOrigin = '50% 0';
                 s.style.transform = `rotateY(${deg}deg) translateZ(${r0}px) rotateX(${CONE_SIGN * phi}deg)`;
                 s.style.clipPath = `polygon(${(W - c0) / 2}px 0, ${(W + c0) / 2}px 0, ${(W + c1) / 2}px 100%, ${(W - c1) / 2}px 100%)`;
-                paint(s, { a, b, c: c2, vgrad, base: docHex(color) });
+                const nen = docHex(color);
+                s._k = { rad, half, shine, spec, hotPow, edge, base: nen };
+                paint(s, { a, b, c: c2, vgrad, base: nen });
                 el.appendChild(s);
             }
             return el;
@@ -3933,6 +3947,41 @@
             return k;
         }
 
+        /* ============================================================
+           ĐÈN ĐỨNG YÊN KHI CHAI XOAY
+           Đây là lỗi khiến chai serum nhìn như hình phẳng "lật qua lại".
+
+           Phần sáng-tối của mỗi lát được tính lúc DỰNG chai, theo góc của lát
+           đó trong lòng chai. Nghĩa là vệt sáng bị DÍNH VÀO chai: chai xoay
+           sang trái thì vệt sáng đi sang trái theo. Vật thật dưới đèn cố định
+           thì ngược lại — vệt sáng ở nguyên một chỗ trên màn hình, chỉ có mặt
+           chai trượt qua dưới nó. Vệt sáng chạy theo chính là dấu hiệu mắt
+           người đọc ra "đây là tấm hình đang bị lật", chứ không phải khối trụ.
+
+           Chai trắng lớn không lộ vì độ tương phản của nó thấp; chai hổ phách
+           tương phản mạnh nên lộ rõ. Càng tăng tương phản cho "nổi khối" thì
+           càng lộ — đó là lý do mấy lần chỉnh trước lại càng xấu.
+
+           Cách chữa: mỗi khi chai xoay quá 4 độ thì vẽ lại dải sáng-tối theo
+           GÓC THẬT (góc của lát + góc chai đang xoay). Làm theo bậc 4 độ nên
+           một lượt rê chuột chỉ vẽ lại chục lần, không phải mỗi khung hình.
+           Lúc chai đang quay tít (đổi sản phẩm) thì bỏ qua, quay xong mới cập
+           nhật — đang quay nhanh mắt không kịp nhìn vệt sáng.
+           ============================================================ */
+        const BUOC_SANG = 4;                     // độ
+        function veLaiSang(rig, ryDeg) {
+            const lech = -ryDeg * Math.PI / 180;  // trừ đi góc chai đang xoay
+            const ds = rig.querySelectorAll('.sl');
+            for (let i = 0; i < ds.length; i++) {
+                const el = ds[i];
+                if (!el._k || !el._bg) continue;
+                el._bg.imgs[el._bg.imgs.length - 1] = daiSang(el._k, lech);
+                el.style.backgroundImage = el._bg.imgs.join(',');
+            }
+            rig._sang = ryDeg;
+        }
+
+        window.veLaiSang = veLaiSang;
         function sceneT() {
             if (!secCenters.length) return 0;
             const c = window.scrollY + vh / 2;
@@ -4013,10 +4062,16 @@
                 const op = n.o.toFixed(3);
                 if (op !== rig._op) { rig.style.opacity = op; rig._op = op; }
 
+                const ryTot = n.ry + cur.x * 34 + switchSpin;
                 const tr =
                     `translate3d(${n.x.toFixed(1)}px, ${(n.y - pinned).toFixed(1)}px, 0) scale(${(n.s * scale * (1 - spinPulse * .06)).toFixed(4)})` +
-                    ` rotateX(${(n.rx + -cur.y * 13).toFixed(2)}deg) rotateY(${(n.ry + cur.x * 34 + switchSpin).toFixed(2)}deg)`;
+                    ` rotateX(${(n.rx + -cur.y * 13).toFixed(2)}deg) rotateY(${ryTot.toFixed(2)}deg)`;
                 if (tr !== rig._tr) { rig.style.transform = tr; rig._tr = tr; }
+
+                /* giữ đèn đứng yên: xoay quá một bậc thì vẽ lại phần sáng-tối */
+                if (spinPulse < .02 && (rig._sang == null || Math.abs(ryTot - rig._sang) >= BUOC_SANG)) {
+                    veLaiSang(rig, ryTot);
+                }
 
                 gx += n.x * n.o; gy += n.y * n.o; gw += n.o;
             });
