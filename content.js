@@ -740,7 +740,19 @@ window.ROOTLAB_CONTENT = {
             "vn": "Gentle everyday shampoo"
           }
         }
-      ]
+      ],
+      "ui": {
+        "zalo": "Chat on Zalo",
+        "goi": "Call",
+        "lienHe": "Contact",
+        "kenhMua": "Where to buy"
+      },
+      "contact": {
+        "heading": "Order & advice",
+        "note": "Message us on Zalo for free advice before you buy. Any field left blank is hidden automatically.",
+        "hours": "8:00 – 21:00 · Monday – Sunday",
+        "shopLabel": "Where to buy"
+      }
     },
     "fr": {
       "contactBtn": "Contact",
@@ -1051,7 +1063,19 @@ window.ROOTLAB_CONTENT = {
             "vn": "Shampooing doux quotidien"
           }
         }
-      ]
+      ],
+      "ui": {
+        "zalo": "Écrire sur Zalo",
+        "goi": "Appeler",
+        "lienHe": "Contact",
+        "kenhMua": "Où acheter"
+      },
+      "contact": {
+        "heading": "Commande & conseils",
+        "note": "Écrivez-nous sur Zalo pour un conseil gratuit avant d'acheter. Tout champ laissé vide est masqué automatiquement.",
+        "hours": "8h00 – 21h00 · Du lundi au dimanche",
+        "shopLabel": "Où acheter"
+      }
     },
     "it": {
       "contactBtn": "Contatti",
@@ -1362,7 +1386,19 @@ window.ROOTLAB_CONTENT = {
             "vn": "Shampoo delicato quotidiano"
           }
         }
-      ]
+      ],
+      "ui": {
+        "zalo": "Scrivi su Zalo",
+        "goi": "Chiama",
+        "lienHe": "Contatti",
+        "kenhMua": "Dove acquistare"
+      },
+      "contact": {
+        "heading": "Ordini & consulenza",
+        "note": "Scrivici su Zalo per una consulenza gratuita prima di acquistare. I campi lasciati vuoti vengono nascosti automaticamente.",
+        "hours": "8:00 – 21:00 · Da lunedì a domenica",
+        "shopLabel": "Dove acquistare"
+      }
     },
     "ja": {
       "contactBtn": "お問い合わせ",
@@ -1673,7 +1709,26 @@ window.ROOTLAB_CONTENT = {
             "vn": "毎日使えるやさしいシャンプー"
           }
         }
-      ]
+      ],
+      "ui": {
+        "zalo": "Zaloで連絡",
+        "goi": "電話",
+        "lienHe": "お問い合わせ",
+        "kenhMua": "購入できる場所"
+      },
+      "contact": {
+        "heading": "ご注文・ご相談",
+        "note": "ご購入前の無料相談はZaloからどうぞ。空欄の項目は自動的に非表示になります。",
+        "hours": "8:00 – 21:00 · 月曜〜日曜",
+        "shopLabel": "購入できる場所"
+      }
     }
-  }
+  },
+  "ui": {
+    "zalo": "Nhắn Zalo",
+    "goi": "Gọi",
+    "lienHe": "Liên hệ",
+    "kenhMua": "Kênh mua hàng"
+  },
+  "contact": {}
 };
