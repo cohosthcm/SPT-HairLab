@@ -23,8 +23,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Galada là font chữ ký cho tiêu đề lớn, nhưng nó CHỈ có Bengali + Latin cơ bản:
+         không vẽ được dấu tiếng Việt (ế ộ ữ…) và không có chữ Nhật. Nên nạp thêm
+         Playfair Display cho tiếng Việt và Zen Old Mincho cho tiếng Nhật. -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;700&family=Galada&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;700&family=Galada&family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Zen+Old+Mincho:wght@500;700&display=swap"
         rel="stylesheet">
 
     <style>
@@ -34,6 +37,10 @@
             --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.14);
             --font-main: 'Inter', system-ui, sans-serif;
+            /* Tiêu đề lớn. Mặc định là chữ ký tay Galada (tiếng Anh, Pháp, Ý).
+               Tiếng Việt và tiếng Nhật đổi sang font khác ở dưới — không phải
+               vì thẩm mỹ mà vì Galada KHÔNG CÓ dấu tiếng Việt và chữ Nhật,
+               để nguyên thì chữ vỡ thành ô vuông. */
             --font-heading: 'Galada', 'Brush Script MT', cursive;
 
             --accent: #fbcfe8;
@@ -1933,6 +1940,22 @@
             display: flex; align-items: center; justify-content: space-between;
             padding: 26px clamp(18px, 4vw, 52px); color: #f1f7f4;
         }
+        /* Tiếng Việt: Playfair Display — chữ thanh, chân nhỏ, đủ chỗ cho dấu chồng
+           (ế ộ ữ) nên đọc rõ ở cỡ lớn. Tiếng Nhật: Zen Old Mincho. */
+        html[lang="vi"] { --font-heading: 'Playfair Display', 'Times New Roman', serif; }
+        html[lang="ja"] { --font-heading: 'Zen Old Mincho', 'Hiragino Mincho ProN', serif; }
+        /* chữ Việt/Nhật ở cỡ lớn không cần nghiêng nhiều như chữ ký tay */
+        html[lang="vi"] .main-title, html[lang="vi"] .scene-title, html[lang="vi"] .side-title,
+        html[lang="ja"] .main-title, html[lang="ja"] .scene-title, html[lang="ja"] .side-title {
+            letter-spacing: -.005em;
+        }
+        /* Từ tiếng Việt và tiếng Nhật dài hơn từ tiếng Anh ("Đánh thức" so với
+           "Awaken"), hạ cỡ chữ lớn xuống cho khỏi chạm vào chai ở giữa. */
+        html[lang="vi"] .main-title, html[lang="vi"] .side-title { font-size: clamp(3.4rem, 7.4vw, 8.4rem); line-height: .92; }
+        html[lang="ja"] .main-title, html[lang="ja"] .side-title { font-size: clamp(2.6rem, 6vw, 6.4rem); line-height: 1.06; }
+        html[lang="vi"] .scene-title { font-size: clamp(2.4rem, 5.2vw, 5.4rem); line-height: .96; }
+        html[lang="ja"] .scene-title { font-size: clamp(2rem, 4.2vw, 4.4rem); line-height: 1.1; }
+
         /* Chữ ký thương hiệu CHUẨN của cả web — lấy từ màn chọn (trang chính).
            Mọi nơi hiện chữ ROOTLAB đều dùng bộ này: màn chọn, thanh menu trang
            sản phẩm, chân trang, và cả trang quản trị. */
