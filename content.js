@@ -19,8 +19,8 @@ window.ROOTLAB_CONTENT = {
     "cta": "Mua bộ đôi",
     "badgeTitle": "CAM KẾT",
     "badgeSub": "KHÔNG SULFATE · KHÔNG PARABEN",
-    "side1": "Naturally",
-    "side2": "Strong",
+    "side1": "Khoẻ",
+    "side2": "Tự nhiên",
     "scrollHint": "CUỘN XUỐNG"
   },
   "lines": [
@@ -35,8 +35,8 @@ window.ROOTLAB_CONTENT = {
         "cleanse",
         "serum"
       ],
-      "heroT1": "Awaken",
-      "heroT2": "Roots",
+      "heroT1": "Đánh thức",
+      "heroT2": "chân tóc",
       "cta": "Mua bộ đôi"
     },
     {
@@ -49,13 +49,13 @@ window.ROOTLAB_CONTENT = {
       "sp": [
         "goi"
       ],
-      "heroT1": "Daily",
-      "heroT2": "Clean",
+      "heroT1": "Sạch",
+      "heroT2": "mỗi ngày",
       "cta": "Mua dầu gội",
       "pricing": {
         "eyebrow": "BẢNG GIÁ",
-        "t1": "Start",
-        "t2": "Today",
+        "t1": "Bắt đầu",
+        "t2": "hôm nay",
         "comboLabel": "",
         "comboOld": "",
         "comboNew": "",
@@ -65,8 +65,8 @@ window.ROOTLAB_CONTENT = {
       },
       "ingredients": {
         "eyebrow": "THÀNH PHẦN",
-        "t1": "Gentle",
-        "t2": "Wash",
+        "t1": "Gội",
+        "t2": "dịu nhẹ",
         "lead": "Bọt từ dừa thay cho sulfate: đủ sạch cho tóc bết, nhưng không bóc mất lớp dầu đang bảo vệ da đầu.",
         "items": [
           {
@@ -88,8 +88,8 @@ window.ROOTLAB_CONTENT = {
       },
       "howto": {
         "eyebrow": "CÁCH DÙNG",
-        "t1": "Daily",
-        "t2": "Ritual",
+        "t1": "Thói quen",
+        "t2": "mỗi ngày",
         "lead": "Gội đúng cách quan trọng ngang với gội bằng gì. Ba việc, mỗi lần chưa tới ba phút.",
         "steps": [
           {
@@ -114,8 +114,8 @@ window.ROOTLAB_CONTENT = {
       },
       "results": {
         "eyebrow": "HIỆU QUẢ",
-        "t1": "Clean",
-        "t2": "Scalp",
+        "t1": "Da đầu",
+        "t2": "sạch khoẻ",
         "lead": "Dầu gội không làm tóc mọc. Việc của nó là giữ da đầu ở trạng thái để tóc mọc được.",
         "weeks": [
           {
@@ -153,8 +153,8 @@ window.ROOTLAB_CONTENT = {
       },
       "reviews": {
         "eyebrow": "ĐÁNH GIÁ",
-        "t1": "Real",
-        "t2": "Voices",
+        "t1": "Người thật",
+        "t2": "việc thật",
         "items": [
           {
             "stars": 5,
@@ -175,6 +175,145 @@ window.ROOTLAB_CONTENT = {
             "meta": "Đã dùng 6 tuần"
           }
         ]
+      }
+    },
+    {
+      "key": "tam",
+      "name": "Sữa tắm dưỡng da",
+      "navLabel": "Sữa tắm",
+      "navKicker": "Dòng 03",
+      "nguoi": "bath.jpg",
+      "accent": "#9068c4",
+      "sp": [
+        "tam"
+      ],
+      "heroT1": "Sạch",
+      "heroT2": "mà dịu",
+      "cta": "Mua sữa tắm",
+      "pricing": {
+        "eyebrow": "BẢNG GIÁ",
+        "t1": "Bắt đầu",
+        "t2": "hôm nay",
+        "comboLabel": "",
+        "comboOld": "",
+        "comboNew": "",
+        "comboBtn": "",
+        "comboLink": "",
+        "note": "Giá minh hoạ — thay bằng giá bán thật của bạn."
+      },
+      "ingredients": {
+        "eyebrow": "THÀNH PHẦN",
+        "t1": "Sạch",
+        "t2": "mà không khô",
+        "lead": "Cùng nền tảng làm sạch dịu nhẹ với dầu gội, thêm dưỡng ẩm để da không bị căng sau khi tắm.",
+        "items": [
+          {
+            "chip": "01",
+            "name": "Coco Glucoside",
+            "desc": "Chất tạo bọt gốc dừa, làm sạch mồ hôi và bụi mà không bóc lớp dầu tự nhiên của da"
+          },
+          {
+            "chip": "02",
+            "name": "Glycerin & Panthenol B5",
+            "desc": "Giữ nước cho da, tắm xong không còn cảm giác căng rít"
+          },
+          {
+            "chip": "03",
+            "name": "Yến mạch keo",
+            "desc": "Làm dịu vùng da dễ ngứa ở lưng và vai, hợp cả da nhạy cảm"
+          }
+        ]
+      },
+      "howto": {
+        "eyebrow": "CÁCH DÙNG",
+        "t1": "Ba",
+        "t2": "phút",
+        "lead": "Không cần cầu kỳ. Ba việc, tắm xong da vẫn còn ẩm.",
+        "steps": [
+          {
+            "no": "01",
+            "h": "Làm ướt da bằng nước ấm",
+            "p": "Nước ấm vừa tay, đừng nóng. Nước nóng lấy đi lớp dầu bảo vệ nhanh hơn cả xà phòng.",
+            "em": "ẤM, KHÔNG NÓNG"
+          },
+          {
+            "no": "02",
+            "h": "Tạo bọt rồi xoa đều",
+            "p": "Lấy một lượng bằng đồng xu, xoa ra bọt trong lòng bàn tay hoặc bông tắm rồi mới thoa lên da.",
+            "em": "MỖI NGÀY"
+          },
+          {
+            "no": "03",
+            "h": "Xả sạch, thấm khô",
+            "p": "Xả kỹ rồi dùng khăn thấm nhẹ, đừng chà. Thoa dưỡng ẩm khi da còn hơi ẩm là thấm tốt nhất.",
+            "em": "THẤM, ĐỪNG CHÀ"
+          }
+        ]
+      },
+      "results": {
+        "eyebrow": "HIỆU QUẢ",
+        "t1": "Da",
+        "t2": "dịu lại",
+        "lead": "Sữa tắm không chữa được bệnh da. Việc của nó là làm sạch mà không phá lớp bảo vệ.",
+        "weeks": [
+          {
+            "b": "Ngay lần đầu",
+            "s": "Da sạch thoáng, không căng rít"
+          },
+          {
+            "b": "Tuần 2",
+            "s": "Bớt ngứa ở lưng và vai"
+          },
+          {
+            "b": "Tuần 4",
+            "s": "Da bớt khô, ít bong nhẹ hơn"
+          },
+          {
+            "b": "Tuần 8",
+            "s": "Da ổn định, dùng được lâu dài"
+          }
+        ],
+        "tiles": [
+          {
+            "val": "0%",
+            "lbl": "Sulfate và hương liệu nồng trong công thức"
+          },
+          {
+            "val": "5,5",
+            "lbl": "Độ pH, gần với độ pH tự nhiên của da"
+          },
+          {
+            "val": "500ml",
+            "lbl": "Đủ dùng khoảng 8 tuần nếu tắm mỗi ngày"
+          }
+        ],
+        "note": "Số liệu minh hoạ — thay bằng kết quả kiểm nghiệm thật của bạn trước khi phát hành trang."
+      },
+      "reviews": {
+        "eyebrow": "ĐÁNH GIÁ",
+        "t1": "Người thật",
+        "t2": "việc thật",
+        "items": [
+          {
+            "stars": 5,
+            "text": "Mùa hanh là lưng mình ngứa suốt. Đổi sang sữa tắm này gần hai tháng thì đỡ hẳn, tắm xong không còn căng da.",
+            "name": "Hoàng Yến, 30 tuổi",
+            "meta": "Đã dùng 2 tháng"
+          },
+          {
+            "stars": 5,
+            "text": "Mình thích vì mùi rất nhẹ, tắm xong không bị át mùi nước hoa. Cả nhà dùng chung được.",
+            "name": "Anh Tuấn, 38 tuổi",
+            "meta": "Đã dùng 3 tháng"
+          },
+          {
+            "stars": 4,
+            "text": "Bọt ít hơn loại cũ nên lúc đầu hơi tiếc tay, nhưng da mềm hơn thật. Trừ nửa sao vì chai to hơi khó cầm khi ướt.",
+            "name": "Mỹ Duyên, 25 tuổi",
+            "meta": "Đã dùng 6 tuần"
+          }
+        ],
+        "note": "Đánh giá mẫu — thay bằng phản hồi thật của khách hàng."
       }
     }
   ],
@@ -277,12 +416,45 @@ window.ROOTLAB_CONTENT = {
       "buyBtn": "Mua dầu gội",
       "buyLink": "",
       "shape": "jar"
+    },
+    {
+      "key": "tam",
+      "name": "Root Body Wash",
+      "cardSub": "Tắm hằng ngày",
+      "tag": "Sữa tắm dịu nhẹ · không sulfate",
+      "desc": "Sữa tắm cùng gốc công thức với dầu gội.<br>Sạch thoáng mà không làm khô da,<br>hợp cả người hay bị ngứa lưng và vai.",
+      "photo": "",
+      "bottle": {
+        "body": "#f2ecf6",
+        "cap": "#3b2a52",
+        "ink": "#3a2755",
+        "l1": "ROOT",
+        "l2": "BODY WASH",
+        "sub": "GENTLE DAILY CLEANSE",
+        "vn": "Sữa tắm dịu nhẹ mỗi ngày",
+        "vol": "500 ml"
+      },
+      "theme": {
+        "inner": "#7b52a8",
+        "mid": "#3a2456",
+        "outer": "#150a20"
+      },
+      "price": "260.000",
+      "priceSub": "Sữa tắm dịu nhẹ không sulfate · 500ml",
+      "features": [
+        "Dùng được khoảng 8 tuần",
+        "Không sulfate, không hương liệu nồng",
+        "Hợp da khô và da dễ kích ứng"
+      ],
+      "buyBtn": "Mua sữa tắm",
+      "buyLink": "",
+      "shape": "jar"
     }
   ],
   "ingredients": {
     "eyebrow": "THÀNH PHẦN",
-    "t1": "What's",
-    "t2": "Inside",
+    "t1": "Bên trong",
+    "t2": "có gì",
     "lead": "Hai công thức bổ trợ nhau: một bên dọn sạch đường đi cho nang tóc, một bên đưa dưỡng chất vào tận chân tóc.",
     "items": [
       {
@@ -320,8 +492,8 @@ window.ROOTLAB_CONTENT = {
   },
   "howto": {
     "eyebrow": "CÁCH DÙNG",
-    "t1": "Two",
-    "t2": "Steps",
+    "t1": "Hai",
+    "t2": "bước",
     "lead": "Không phức tạp. Làm sạch vài lần một tuần, dưỡng mỗi tối trước khi ngủ.",
     "steps": [
       {
@@ -346,8 +518,8 @@ window.ROOTLAB_CONTENT = {
   },
   "results": {
     "eyebrow": "HIỆU QUẢ",
-    "t1": "Week",
-    "t2": "By Week",
+    "t1": "Từng",
+    "t2": "tuần một",
     "lead": "Tóc mọc theo chu kỳ, không theo ngày. Đây là mốc thời gian thực tế bạn nên kỳ vọng.",
     "weeks": [
       {
@@ -385,8 +557,8 @@ window.ROOTLAB_CONTENT = {
   },
   "reviews": {
     "eyebrow": "ĐÁNH GIÁ",
-    "t1": "Real",
-    "t2": "Voices",
+    "t1": "Người thật",
+    "t2": "việc thật",
     "items": [
       {
         "stars": 5,
@@ -417,8 +589,8 @@ window.ROOTLAB_CONTENT = {
   },
   "pricing": {
     "eyebrow": "BẢNG GIÁ",
-    "t1": "Start",
-    "t2": "Today",
+    "t1": "Bắt đầu",
+    "t2": "hôm nay",
     "comboLabel": "Mua cả bộ đôi",
     "comboOld": "1.080.000đ",
     "comboNew": "980.000đ",
@@ -444,7 +616,9 @@ window.ROOTLAB_CONTENT = {
       "hero": {
         "badgeTitle": "OUR PROMISE",
         "badgeSub": "SULFATE-FREE · PARABEN-FREE",
-        "scrollHint": "SCROLL"
+        "scrollHint": "SCROLL",
+        "side1": "Naturally",
+        "side2": "Strong"
       },
       "footer": {
         "tagline": "Hair care that starts at the root — cleanse first, nourish after."
@@ -692,6 +866,118 @@ window.ROOTLAB_CONTENT = {
             "t2": "Today",
             "note": "Illustrative prices — replace with your real selling prices."
           }
+        },
+        {
+          "name": "Body Wash",
+          "navLabel": "Body wash",
+          "cta": "Buy body wash",
+          "heroT1": "Clean",
+          "heroT2": "and calm",
+          "ingredients": {
+            "eyebrow": "INGREDIENTS",
+            "t1": "Clean",
+            "t2": "not dry",
+            "lead": "The same gentle cleansing base as the shampoo, plus moisture so skin doesn't feel tight after a shower.",
+            "items": [
+              {
+                "name": "Coco Glucoside",
+                "desc": "Coconut-based foam that lifts sweat and grime without stripping the skin's own oil"
+              },
+              {
+                "name": "Glycerin & Panthenol B5",
+                "desc": "Holds water in the skin — no tight, squeaky feeling afterwards"
+              },
+              {
+                "name": "Colloidal oatmeal",
+                "desc": "Calms itch-prone skin on the back and shoulders, gentle enough for sensitive skin"
+              }
+            ]
+          },
+          "howto": {
+            "eyebrow": "HOW TO USE",
+            "t1": "Three",
+            "t2": "minutes",
+            "lead": "Nothing elaborate. Three things, and skin still feels hydrated afterwards.",
+            "steps": [
+              {
+                "h": "Wet the skin with warm water",
+                "p": "Warm, not hot. Hot water strips the protective oil faster than soap does.",
+                "em": "WARM, NOT HOT"
+              },
+              {
+                "h": "Lather, then spread",
+                "p": "Take a coin-sized amount, work it into a lather in your hands or on a cloth, then apply.",
+                "em": "DAILY"
+              },
+              {
+                "h": "Rinse clean, pat dry",
+                "p": "Rinse well and blot with a towel rather than rubbing. Moisturise while skin is still slightly damp.",
+                "em": "BLOT, DON'T RUB"
+              }
+            ]
+          },
+          "results": {
+            "eyebrow": "RESULTS",
+            "t1": "Calmer",
+            "t2": "skin",
+            "lead": "A body wash can't cure a skin condition. Its job is to clean without breaking the skin barrier.",
+            "weeks": [
+              {
+                "b": "First wash",
+                "s": "Skin clean and fresh, no tightness"
+              },
+              {
+                "b": "Week 2",
+                "s": "Less itching on back and shoulders"
+              },
+              {
+                "b": "Week 4",
+                "s": "Less dryness and flaking"
+              },
+              {
+                "b": "Week 8",
+                "s": "Skin settled, comfortable long-term"
+              }
+            ],
+            "tiles": [
+              {
+                "lbl": "sulfates and heavy fragrance in the formula"
+              },
+              {
+                "lbl": "pH, close to skin's natural pH"
+              },
+              {
+                "lbl": "lasts about 8 weeks with daily use"
+              }
+            ],
+            "note": "Illustrative figures — replace with your own lab results before publishing."
+          },
+          "reviews": {
+            "eyebrow": "REVIEWS",
+            "t1": "Real",
+            "t2": "Voices",
+            "items": [
+              {
+                "text": "My back itches all through the dry season. Nearly two months on this and it has calmed right down — no tight skin after a shower.",
+                "meta": "2 months of use"
+              },
+              {
+                "text": "I like that the scent is very light, so it doesn't fight my perfume. The whole family uses it.",
+                "meta": "3 months of use"
+              },
+              {
+                "text": "It lathers less than my old one, which felt stingy at first, but my skin really is softer. Half a star off because the big bottle is slippery when wet.",
+                "meta": "6 weeks of use"
+              }
+            ],
+            "note": "Sample reviews — replace with real customer feedback."
+          },
+          "pricing": {
+            "eyebrow": "PRICING",
+            "t1": "Start",
+            "t2": "Today",
+            "note": "Illustrative prices — replace with your real selling prices."
+          }
         }
       ],
       "products": [
@@ -739,6 +1025,21 @@ window.ROOTLAB_CONTENT = {
           "bottle": {
             "vn": "Gentle everyday shampoo"
           }
+        },
+        {
+          "cardSub": "Daily wash",
+          "tag": "Gentle body wash · sulfate-free",
+          "desc": "A body wash built on the same base as the shampoo.<br>Clean and fresh without drying the skin,<br>good for itchy backs and shoulders.",
+          "priceSub": "Gentle sulfate-free body wash · 500ml",
+          "buyBtn": "Buy body wash",
+          "features": [
+            "Lasts about 8 weeks",
+            "Sulfate-free, no heavy fragrance",
+            "Suits dry and easily irritated skin"
+          ],
+          "bottle": {
+            "vn": "Gentle everyday body wash"
+          }
         }
       ],
       "ui": {
@@ -767,7 +1068,9 @@ window.ROOTLAB_CONTENT = {
       "hero": {
         "badgeTitle": "NOTRE ENGAGEMENT",
         "badgeSub": "SANS SULFATE · SANS PARABÈNE",
-        "scrollHint": "DÉFILER"
+        "scrollHint": "DÉFILER",
+        "side1": "Naturellement",
+        "side2": "forte"
       },
       "footer": {
         "tagline": "Prendre soin des cheveux dès la racine — nettoyer d'abord, nourrir ensuite."
@@ -1015,6 +1318,118 @@ window.ROOTLAB_CONTENT = {
             "t2": "aujourd'hui",
             "note": "Prix indicatifs — remplacez-les par vos prix de vente réels."
           }
+        },
+        {
+          "name": "Gel douche",
+          "navLabel": "Gel douche",
+          "cta": "Acheter le gel douche",
+          "heroT1": "Propre",
+          "heroT2": "et apaisée",
+          "ingredients": {
+            "eyebrow": "COMPOSITION",
+            "t1": "Propre",
+            "t2": "sans dessécher",
+            "lead": "La même base lavante douce que le shampooing, avec en plus de l'hydratation : plus de peau qui tiraille après la douche.",
+            "items": [
+              {
+                "name": "Coco Glucoside",
+                "desc": "Mousse issue de la noix de coco, élimine sueur et impuretés sans retirer le film lipidique"
+              },
+              {
+                "name": "Glycérine & Panthénol B5",
+                "desc": "Retient l'eau dans la peau — fini la sensation de peau qui tire"
+              },
+              {
+                "name": "Avoine colloïdale",
+                "desc": "Apaise les démangeaisons du dos et des épaules, convient aux peaux sensibles"
+              }
+            ]
+          },
+          "howto": {
+            "eyebrow": "UTILISATION",
+            "t1": "Trois",
+            "t2": "minutes",
+            "lead": "Rien de compliqué. Trois gestes, et la peau reste hydratée.",
+            "steps": [
+              {
+                "h": "Mouiller à l'eau tiède",
+                "p": "Tiède, pas chaude. L'eau chaude retire le film protecteur plus vite que le savon.",
+                "em": "TIÈDE, PAS CHAUDE"
+              },
+              {
+                "h": "Faire mousser puis étaler",
+                "p": "Prenez l'équivalent d'une pièce, faites mousser entre les mains ou sur une fleur de douche, puis appliquez.",
+                "em": "TOUS LES JOURS"
+              },
+              {
+                "h": "Rincer, éponger",
+                "p": "Rincez bien et épongez avec une serviette au lieu de frotter. Hydratez pendant que la peau est encore humide.",
+                "em": "ÉPONGER, NE PAS FROTTER"
+              }
+            ]
+          },
+          "results": {
+            "eyebrow": "RÉSULTATS",
+            "t1": "Peau",
+            "t2": "apaisée",
+            "lead": "Un gel douche ne soigne pas une maladie de peau. Son rôle est de laver sans casser la barrière cutanée.",
+            "weeks": [
+              {
+                "b": "Dès la 1re douche",
+                "s": "Peau nette, aucune sensation de tiraillement"
+              },
+              {
+                "b": "Semaine 2",
+                "s": "Moins de démangeaisons au dos et aux épaules"
+              },
+              {
+                "b": "Semaine 4",
+                "s": "Moins de sécheresse et de desquamation"
+              },
+              {
+                "b": "Semaine 8",
+                "s": "Peau stabilisée, confortable sur la durée"
+              }
+            ],
+            "tiles": [
+              {
+                "lbl": "de sulfates et de parfum lourd dans la formule"
+              },
+              {
+                "lbl": "de pH, proche du pH naturel de la peau"
+              },
+              {
+                "lbl": "environ 8 semaines à raison d'une douche par jour"
+              }
+            ],
+            "note": "Chiffres indicatifs — remplacez-les par vos propres analyses avant publication."
+          },
+          "reviews": {
+            "eyebrow": "AVIS",
+            "t1": "Vraies",
+            "t2": "voix",
+            "items": [
+              {
+                "text": "En saison sèche, j'ai le dos qui démange en permanence. Près de deux mois avec ce gel et c'est nettement calmé, plus de peau qui tire après la douche.",
+                "meta": "2 mois d'utilisation"
+              },
+              {
+                "text": "J'aime le parfum très léger, il ne couvre pas mon parfum. Toute la famille l'utilise.",
+                "meta": "3 mois d'utilisation"
+              },
+              {
+                "text": "Il mousse moins que mon ancien, un peu frustrant au début, mais la peau est vraiment plus douce. Une demi-étoile en moins car le grand flacon glisse quand il est mouillé.",
+                "meta": "6 semaines d'utilisation"
+              }
+            ],
+            "note": "Avis d'exemple — remplacez-les par de vrais retours clients."
+          },
+          "pricing": {
+            "eyebrow": "TARIFS",
+            "t1": "Commencer",
+            "t2": "aujourd'hui",
+            "note": "Prix indicatifs — remplacez-les par vos prix de vente réels."
+          }
         }
       ],
       "products": [
@@ -1062,6 +1477,21 @@ window.ROOTLAB_CONTENT = {
           "bottle": {
             "vn": "Shampooing doux quotidien"
           }
+        },
+        {
+          "cardSub": "Douche quotidienne",
+          "tag": "Gel douche doux · sans sulfate",
+          "desc": "Un gel douche sur la même base que le shampooing.<br>Propre et frais sans dessécher la peau,<br>idéal pour le dos et les épaules qui démangent.",
+          "priceSub": "Gel douche doux sans sulfate · 500 ml",
+          "buyBtn": "Acheter le gel douche",
+          "features": [
+            "Environ 8 semaines d'utilisation",
+            "Sans sulfate, sans parfum lourd",
+            "Pour peaux sèches ou vite irritées"
+          ],
+          "bottle": {
+            "vn": "Gel douche doux quotidien"
+          }
         }
       ],
       "ui": {
@@ -1090,7 +1520,9 @@ window.ROOTLAB_CONTENT = {
       "hero": {
         "badgeTitle": "IL NOSTRO IMPEGNO",
         "badgeSub": "SENZA SOLFATI · SENZA PARABENI",
-        "scrollHint": "SCORRI"
+        "scrollHint": "SCORRI",
+        "side1": "Naturalmente",
+        "side2": "forte"
       },
       "footer": {
         "tagline": "Cura dei capelli che parte dalla radice — prima si pulisce, poi si nutre."
@@ -1338,6 +1770,118 @@ window.ROOTLAB_CONTENT = {
             "t2": "oggi",
             "note": "Prezzi indicativi — sostituiscili con i tuoi prezzi di vendita reali."
           }
+        },
+        {
+          "name": "Bagnoschiuma",
+          "navLabel": "Bagnoschiuma",
+          "cta": "Acquista il bagnoschiuma",
+          "heroT1": "Pulita",
+          "heroT2": "e calma",
+          "ingredients": {
+            "eyebrow": "INGREDIENTI",
+            "t1": "Pulita",
+            "t2": "non secca",
+            "lead": "La stessa base detergente delicata dello shampoo, più idratazione: niente pelle che tira dopo la doccia.",
+            "items": [
+              {
+                "name": "Coco Glucoside",
+                "desc": "Schiuma di origine cocco, rimuove sudore e sporco senza togliere il film lipidico"
+              },
+              {
+                "name": "Glicerina & Pantenolo B5",
+                "desc": "Trattiene l'acqua nella pelle — via la sensazione di pelle tirata"
+              },
+              {
+                "name": "Avena colloidale",
+                "desc": "Calma il prurito su schiena e spalle, adatta anche alla pelle sensibile"
+              }
+            ]
+          },
+          "howto": {
+            "eyebrow": "COME SI USA",
+            "t1": "Tre",
+            "t2": "minuti",
+            "lead": "Niente di complicato. Tre gesti, e la pelle resta idratata.",
+            "steps": [
+              {
+                "h": "Bagna la pelle con acqua tiepida",
+                "p": "Tiepida, non calda. L'acqua calda toglie il film protettivo più in fretta del sapone.",
+                "em": "TIEPIDA, NON CALDA"
+              },
+              {
+                "h": "Fai schiuma, poi distribuisci",
+                "p": "Preleva una quantità grande come una moneta, fai schiuma tra le mani o sulla spugna, poi applica.",
+                "em": "OGNI GIORNO"
+              },
+              {
+                "h": "Risciacqua e tampona",
+                "p": "Risciacqua bene e tampona con l'asciugamano invece di strofinare. Idrata mentre la pelle è ancora umida.",
+                "em": "TAMPONA, NON STROFINARE"
+              }
+            ]
+          },
+          "results": {
+            "eyebrow": "RISULTATI",
+            "t1": "Pelle",
+            "t2": "più calma",
+            "lead": "Un bagnoschiuma non cura una malattia della pelle. Il suo compito è lavare senza rompere la barriera cutanea.",
+            "weeks": [
+              {
+                "b": "Dalla 1ª doccia",
+                "s": "Pelle pulita e fresca, senza sensazione di pelle tirata"
+              },
+              {
+                "b": "Settimana 2",
+                "s": "Meno prurito su schiena e spalle"
+              },
+              {
+                "b": "Settimana 4",
+                "s": "Meno secchezza e desquamazione"
+              },
+              {
+                "b": "Settimana 8",
+                "s": "Pelle stabile, comoda a lungo termine"
+              }
+            ],
+            "tiles": [
+              {
+                "lbl": "di solfati e profumazioni forti nella formula"
+              },
+              {
+                "lbl": "di pH, vicino al pH naturale della pelle"
+              },
+              {
+                "lbl": "circa 8 settimane con una doccia al giorno"
+              }
+            ],
+            "note": "Dati indicativi — sostituiscili con le tue analisi reali prima di pubblicare."
+          },
+          "reviews": {
+            "eyebrow": "RECENSIONI",
+            "t1": "Voci",
+            "t2": "vere",
+            "items": [
+              {
+                "text": "Nella stagione secca la schiena mi prude in continuazione. Quasi due mesi con questo e si è calmata parecchio, niente pelle tirata dopo la doccia.",
+                "meta": "2 mesi di utilizzo"
+              },
+              {
+                "text": "Mi piace perché il profumo è molto leggero e non copre il mio profumo. Lo usa tutta la famiglia.",
+                "meta": "3 mesi di utilizzo"
+              },
+              {
+                "text": "Fa meno schiuma del precedente, all'inizio sembrava poco, ma la pelle è davvero più morbida. Mezza stella in meno perché il flacone grande scivola quando è bagnato.",
+                "meta": "6 settimane di utilizzo"
+              }
+            ],
+            "note": "Recensioni di esempio — sostituiscile con feedback reali dei clienti."
+          },
+          "pricing": {
+            "eyebrow": "PREZZI",
+            "t1": "Inizia",
+            "t2": "oggi",
+            "note": "Prezzi indicativi — sostituiscili con i tuoi prezzi di vendita reali."
+          }
         }
       ],
       "products": [
@@ -1385,6 +1929,21 @@ window.ROOTLAB_CONTENT = {
           "bottle": {
             "vn": "Shampoo delicato quotidiano"
           }
+        },
+        {
+          "cardSub": "Doccia quotidiana",
+          "tag": "Bagnoschiuma delicato · senza solfati",
+          "desc": "Un bagnoschiuma sulla stessa base dello shampoo.<br>Pulito e fresco senza seccare la pelle,<br>adatto a schiena e spalle che prudono.",
+          "priceSub": "Bagnoschiuma delicato senza solfati · 500 ml",
+          "buyBtn": "Acquista il bagnoschiuma",
+          "features": [
+            "Dura circa 8 settimane",
+            "Senza solfati, senza profumazioni forti",
+            "Adatto a pelle secca e facilmente irritabile"
+          ],
+          "bottle": {
+            "vn": "Bagnoschiuma delicato quotidiano"
+          }
         }
       ],
       "ui": {
@@ -1413,15 +1972,17 @@ window.ROOTLAB_CONTENT = {
       "hero": {
         "badgeTitle": "お約束",
         "badgeSub": "サルフェート不使用・パラベン不使用",
-        "scrollHint": "スクロール"
+        "scrollHint": "スクロール",
+        "side1": "自然に",
+        "side2": "強く"
       },
       "footer": {
         "tagline": "髪は根元から。まず洗い、そして育てる。"
       },
       "ingredients": {
         "eyebrow": "成分",
-        "t1": "Inside",
-        "t2": "the bottle",
+        "t1": "中身",
+        "t2": "のはなし",
         "lead": "補い合う二つの処方。片方は毛穴の詰まりを取り除き、もう片方は栄養を根元まで届けます。",
         "items": [
           {
@@ -1453,8 +2014,8 @@ window.ROOTLAB_CONTENT = {
       },
       "howto": {
         "eyebrow": "使い方",
-        "t1": "Two",
-        "t2": "Steps",
+        "t1": "二つ",
+        "t2": "の手順",
         "lead": "むずかしくありません。週に数回洗い、毎晩ねる前に育てる。それだけです。",
         "steps": [
           {
@@ -1476,8 +2037,8 @@ window.ROOTLAB_CONTENT = {
       },
       "results": {
         "eyebrow": "効果",
-        "t1": "Week",
-        "t2": "By Week",
+        "t1": "週ごと",
+        "t2": "の変化",
         "lead": "髪は日ごとではなく周期で伸びます。現実的な目安をお伝えします。",
         "weeks": [
           {
@@ -1512,8 +2073,8 @@ window.ROOTLAB_CONTENT = {
       },
       "reviews": {
         "eyebrow": "レビュー",
-        "t1": "Real",
-        "t2": "Voices",
+        "t1": "本当の",
+        "t2": "声",
         "items": [
           {
             "text": "頭皮がとても脂っぽく、洗った翌日にはもうベタついていました。ステップ1を三週間つづけたら髪が軽くなり、かゆみもなくなりました。",
@@ -1536,8 +2097,8 @@ window.ROOTLAB_CONTENT = {
       },
       "pricing": {
         "eyebrow": "価格",
-        "t1": "Start",
-        "t2": "Today",
+        "t1": "今日",
+        "t2": "はじめる",
         "comboLabel": "2本セットで購入",
         "comboBtn": "セットを購入",
         "note": "参考価格です。実際の販売価格に差し替えてください。"
@@ -1547,19 +2108,19 @@ window.ROOTLAB_CONTENT = {
           "name": "根元ケアセット",
           "navLabel": "補修 & 育毛",
           "cta": "セットを購入",
-          "heroT1": "Awaken",
-          "heroT2": "Roots"
+          "heroT1": "根元から",
+          "heroT2": "目覚める"
         },
         {
           "name": "根元ケアシャンプー",
           "navLabel": "シャンプー",
           "cta": "シャンプーを購入",
-          "heroT1": "Daily",
-          "heroT2": "Clean",
+          "heroT1": "毎日を",
+          "heroT2": "やさしく",
           "ingredients": {
             "eyebrow": "成分",
-            "t1": "Gentle",
-            "t2": "Wash",
+            "t1": "やさしい",
+            "t2": "泡",
             "lead": "サルフェートの代わりにココナッツ由来の泡を。脂っぽい髪にも十分な洗浄力で、頭皮を守る皮脂は残します。",
             "items": [
               {
@@ -1578,8 +2139,8 @@ window.ROOTLAB_CONTENT = {
           },
           "howto": {
             "eyebrow": "使い方",
-            "t1": "Daily",
-            "t2": "Ritual",
+            "t1": "毎日",
+            "t2": "の習慣",
             "lead": "何で洗うかと同じくらい、どう洗うかが大切です。三つの手順、三分もかかりません。",
             "steps": [
               {
@@ -1601,8 +2162,8 @@ window.ROOTLAB_CONTENT = {
           },
           "results": {
             "eyebrow": "効果",
-            "t1": "Clean",
-            "t2": "Scalp",
+            "t1": "健やかな",
+            "t2": "頭皮",
             "lead": "シャンプーが髪を生やすわけではありません。髪が育つ状態に頭皮を保つことが役目です。",
             "weeks": [
               {
@@ -1637,8 +2198,8 @@ window.ROOTLAB_CONTENT = {
           },
           "reviews": {
             "eyebrow": "レビュー",
-            "t1": "Real",
-            "t2": "Voices",
+            "t1": "本当の",
+            "t2": "声",
             "items": [
               {
                 "text": "すぐ脂っぽくなるので毎日洗っていました。これに変えてから一日おきでも平気になり、頭皮のかゆみもなくなりました。",
@@ -1657,8 +2218,120 @@ window.ROOTLAB_CONTENT = {
           },
           "pricing": {
             "eyebrow": "価格",
-            "t1": "Start",
-            "t2": "Today",
+            "t1": "今日",
+            "t2": "はじめる",
+            "note": "参考価格です。実際の販売価格に差し替えてください。"
+          }
+        },
+        {
+          "name": "ボディソープ",
+          "navLabel": "ボディソープ",
+          "cta": "ボディソープを購入",
+          "heroT1": "清潔に",
+          "heroT2": "やさしく",
+          "ingredients": {
+            "eyebrow": "成分",
+            "t1": "清潔に",
+            "t2": "乾かさず",
+            "lead": "シャンプーと同じやさしい洗浄ベースに保湿を加えました。お風呂上がりの肌のつっぱりがありません。",
+            "items": [
+              {
+                "name": "ココグルコシド",
+                "desc": "ココナッツ由来の泡。汗や汚れを落としながら、肌の皮脂は残します"
+              },
+              {
+                "name": "グリセリン & パンテノール B5",
+                "desc": "肌に水分を保ち、洗い上がりのつっぱり感をなくします"
+              },
+              {
+                "name": "コロイドオートミール",
+                "desc": "背中や肩のかゆみをしずめます。敏感な肌にも使えます"
+              }
+            ]
+          },
+          "howto": {
+            "eyebrow": "使い方",
+            "t1": "三分",
+            "t2": "で終わり",
+            "lead": "むずかしくありません。三つの手順で、洗い上がりもしっとり。",
+            "steps": [
+              {
+                "h": "ぬるま湯で肌をぬらす",
+                "p": "熱すぎないぬるま湯で。熱いお湯は石けんより早く肌の保護膜を落とします。",
+                "em": "ぬるま湯で、熱くしない"
+              },
+              {
+                "h": "泡立ててから広げる",
+                "p": "10円玉ほどを手のひらかタオルで泡立ててから、肌にのせます。",
+                "em": "毎日"
+              },
+              {
+                "h": "すすいで、押さえて乾かす",
+                "p": "しっかりすすぎ、こすらずタオルで押さえます。肌が少し湿っているうちに保湿すると一番なじみます。",
+                "em": "こすらず、押さえる"
+              }
+            ]
+          },
+          "results": {
+            "eyebrow": "効果",
+            "t1": "肌が",
+            "t2": "落ち着く",
+            "lead": "ボディソープが肌の病気を治すわけではありません。バリアを壊さずに洗うことが役目です。",
+            "weeks": [
+              {
+                "b": "1回目から",
+                "s": "さっぱり洗えて、つっぱらない"
+              },
+              {
+                "b": "2週目",
+                "s": "背中と肩のかゆみが落ち着く"
+              },
+              {
+                "b": "4週目",
+                "s": "乾燥と粉ふきが減る"
+              },
+              {
+                "b": "8週目",
+                "s": "肌が安定し、長く使える"
+              }
+            ],
+            "tiles": [
+              {
+                "lbl": "処方に含まれるサルフェートと強い香料の量"
+              },
+              {
+                "lbl": "肌本来の pH に近い数値"
+              },
+              {
+                "lbl": "毎日使って約8週間分"
+              }
+            ],
+            "note": "参考値です。公開前にご自身の試験結果に差し替えてください。"
+          },
+          "reviews": {
+            "eyebrow": "レビュー",
+            "t1": "本当の",
+            "t2": "声",
+            "items": [
+              {
+                "text": "乾燥する季節は背中がずっとかゆかったのですが、二か月近く使ってかなり落ち着きました。お風呂上がりもつっぱりません。",
+                "meta": "2か月使用"
+              },
+              {
+                "text": "香りがとても軽いので、香水の邪魔をしないのが気に入っています。家族みんなで使えます。",
+                "meta": "3か月使用"
+              },
+              {
+                "text": "以前のものより泡立ちは控えめで最初は物足りなく感じましたが、肌は確かにやわらかくなりました。大きいボトルが濡れると滑るので0.5減点。",
+                "meta": "6週間使用"
+              }
+            ],
+            "note": "サンプルのレビューです。実際のお客様の声に差し替えてください。"
+          },
+          "pricing": {
+            "eyebrow": "価格",
+            "t1": "今日",
+            "t2": "はじめる",
             "note": "参考価格です。実際の販売価格に差し替えてください。"
           }
         }
@@ -1707,6 +2380,21 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "毎日使えるやさしいシャンプー"
+          }
+        },
+        {
+          "cardSub": "毎日のボディソープ",
+          "tag": "やさしいボディソープ · サルフェート不使用",
+          "desc": "シャンプーと同じ洗浄ベースのボディソープ。<br>さっぱり洗えて肌は乾かさず、<br>背中や肩がかゆくなりやすい方にも。",
+          "priceSub": "サルフェート不使用のやさしいボディソープ · 500ml",
+          "buyBtn": "ボディソープを購入",
+          "features": [
+            "約8週間分",
+            "サルフェート不使用、強い香料なし",
+            "乾燥肌・敏感になりやすい肌に"
+          ],
+          "bottle": {
+            "vn": "毎日使えるやさしいボディソープ"
           }
         }
       ],
