@@ -209,14 +209,16 @@
             z-index: 200;
         }
 
+        /* Chữ ROOTLAB trên thanh menu: cùng một chữ ký với màn chọn.
+           (Trước dùng font chữ ký tay của tiêu đề lớn — không đồng bộ.) */
         .logo {
             display: flex;
             align-items: center;
-            gap: .55rem;
-            font-weight: 700;
-            font-size: 1.5rem;
-            font-family: var(--font-heading);
-            letter-spacing: .5px;
+            gap: .6rem;
+            font-weight: 500;
+            font-size: 1.05rem;
+            font-family: var(--font-main);
+            letter-spacing: .3em;
         }
 
         .logo svg {
@@ -706,13 +708,21 @@
         .carousel-cards {
             display: flex;
             gap: .8rem;
-            /* 6 sản phẩm không nhét vừa một hàng → cho cuộn ngang, ẩn thanh cuộn */
             max-width: min(36vw, 452px);
+            padding-bottom: .3rem;
+            /* KHÔNG cắt: ảnh chai nhô hẳn lên phía trên thẻ, rê chuột còn nhảy lên
+               thêm 28px nữa. Trước đây để overflow-y:hidden nên chai bị cắt ngang
+               đúng lúc rê chuột vào — đó là lỗi "hover vào chai bị che". */
+            overflow: visible;
+        }
+        /* Chỉ khi một dòng có quá nhiều chai mới cần cuộn ngang. */
+        body.nhieu-chai .carousel-cards {
             overflow-x: auto;
             overflow-y: hidden;
             scroll-snap-type: x mandatory;
             scrollbar-width: none;
-            padding-bottom: .3rem;
+            padding-top: 122px;
+            margin-top: -122px;   /* chừa chỗ cho chai nhô lên mà không đẩy layout */
         }
         .carousel-cards::-webkit-scrollbar { display: none; }
         .carousel-cards > .card { flex: 0 0 auto; scroll-snap-align: center; }
@@ -1380,7 +1390,7 @@
         }
 
         .site-footer .logo {
-            font-size: 1.2rem;
+            font-size: .98rem;
             color: #fff;
         }
 
@@ -1923,10 +1933,11 @@
             display: flex; align-items: center; justify-content: space-between;
             padding: 26px clamp(18px, 4vw, 52px); color: #f1f7f4;
         }
-        /* cùng một chữ ký thương hiệu với trang sản phẩm */
-        .cs-brand { font-family: var(--font-heading); font-size: 26px; letter-spacing: .5px; font-weight: 700; }
-        .cs-brand small { display: block; font-family: var(--font-main); font-size: 8.5px;
-            letter-spacing: .3em; opacity: .5; margin-top: 2px; font-weight: 400; }
+        /* Chữ ký thương hiệu CHUẨN của cả web — lấy từ màn chọn (trang chính).
+           Mọi nơi hiện chữ ROOTLAB đều dùng bộ này: màn chọn, thanh menu trang
+           sản phẩm, chân trang, và cả trang quản trị. */
+        .cs-brand { font-family: var(--font-main); font-size: 18px; letter-spacing: .34em; font-weight: 500; }
+        .cs-brand small { display: block; font-size: 8.5px; letter-spacing: .3em; opacity: .5; margin-top: 5px; font-weight: 400; }
         .cs-bar .hint { font-size: 10px; letter-spacing: .22em; opacity: .55; text-transform: uppercase; }
 
         .cs-stage { position: relative; z-index: 2; width: min(1240px, 94vw); height: min(88svh, 830px); display: grid; place-items: center; }
@@ -2005,19 +2016,23 @@
         body.o-man-chon header.header,
         body.o-man-chon .scroll-hint { opacity: 0; pointer-events: none; }
 
-        /* ----- chọn ngôn ngữ: một chữ gọn, bấm mới xổ ----- */
-        .header-right { display: flex; align-items: center; gap: 12px; }
+        /* ----- chọn ngôn ngữ + nút liên hệ -----
+           Hai thứ này đứng cạnh nhau ở góc phải. Để cả hai đều là "viên thuốc"
+           thì chúng đá nhau; nên ngôn ngữ làm chữ trơn, liên hệ mới là nút đặc —
+           mắt đọc theo đúng thứ tự: chọn tiếng trước, hành động sau. */
+        .header-right { display: flex; align-items: center; gap: 1.5rem; }
         .ngonngu { position: relative; }
-        .ngonngu .ng-nut { display: flex; align-items: center; gap: .4rem; cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, .16); background: rgba(0, 0, 0, .38);
-            color: rgba(255, 255, 255, .82); border-radius: 100px; padding: .62rem 1rem;
-            font-family: var(--font-main); font-size: .74rem; font-weight: 600; letter-spacing: .1em;
-            transition: background .25s ease, color .25s ease; }
-        .ngonngu .ng-nut:hover { background: rgba(0, 0, 0, .6); color: #fff; }
+        .ngonngu .ng-nut { display: flex; align-items: center; gap: .42rem; cursor: pointer;
+            border: 0; background: none; padding: .3rem 0;
+            color: rgba(255, 255, 255, .66);
+            font-family: var(--font-main); font-size: .72rem; font-weight: 600; letter-spacing: .16em;
+            transition: color .25s ease; }
+        .ngonngu .ng-nut:hover, .ngonngu.mo .ng-nut { color: #fff; }
         .ngonngu .ng-nut i { width: 0; height: 0; border-left: 3.5px solid transparent;
             border-right: 3.5px solid transparent; border-top: 4px solid currentColor;
-            opacity: .75; transition: transform .25s ease; }
+            opacity: .7; transition: transform .25s ease; }
         .ngonngu.mo .ng-nut i { transform: rotate(180deg); }
+        body.theme-serum .ngonngu .ng-nut { color: rgba(255, 255, 255, .72); }
 
         .ngonngu .ng-menu { position: absolute; top: calc(100% + 8px); right: 0; z-index: 30;
             min-width: 152px; padding: 5px; border-radius: 14px;
@@ -2033,17 +2048,16 @@
             color: rgba(255, 255, 255, .72); transition: background .18s ease, color .18s ease; }
         .ngonngu .ng-menu button:hover { background: rgba(255, 255, 255, .1); color: #fff; }
         .ngonngu .ng-menu button.on { color: var(--accent); font-weight: 600; }
-        .cs-bar .ngonngu .ng-nut { background: rgba(0, 0, 0, .3); }
 
         @media (max-width: 620px) {
             .header { padding: 1.15rem 4%; gap: 8px; }
-            .header-right { gap: 8px; flex-shrink: 0; }
-            .ngonngu .ng-nut { padding: .5rem .7rem; font-size: .68rem; }
+            .header-right { gap: .9rem; flex-shrink: 0; }
+            .ngonngu .ng-nut { font-size: .66rem; letter-spacing: .12em; }
             .contact-btn { padding: .55rem .95rem; font-size: .72rem; white-space: nowrap; }
-            .logo { min-width: 0; }
-            .logo span { font-size: 1.15rem; }
-            .logo svg { width: 22px; height: 22px; }
+            .logo { min-width: 0; letter-spacing: .18em; font-size: .86rem; }
+            .logo svg { width: 20px; height: 20px; }
             .cs-bar { padding: 18px 5%; }
+            .cs-brand { font-size: 15px; letter-spacing: .26em; }
         }
 
         /* Dòng chỉ có một chai thì không cần nút qua lại giữa các chai */
@@ -2866,6 +2880,7 @@
                     <div class="card-info"><span>${esc(p.name)}</span><span>${esc(p.cardSub)}</span></div>
                 </div>`).join(''));
             document.body.classList.toggle('mot-chai', DS.length < 2);
+            document.body.classList.toggle('nhieu-chai', DS.length > 3);
 
             /* bảng giá: đủ các chai của dòng đang xem, không lẫn chai của dòng khác */
             fill('prices', DS.map(p => `
@@ -3717,10 +3732,11 @@
             const pinned = Math.max(0, (window.scrollY + vh / 2) - secCenters[secCenters.length - 1]);
             let gx = 0, gy = 0, gw = 0;
 
-            /* Tới màn bảng giá thì MỌI chai của dòng đang xem đều hiện ra, mỗi chai
-               đáp vào đúng thẻ giá của nó — không còn cảnh một thẻ có chai, thẻ kia trống. */
+            /* Màn hero chỉ một chai làm chủ đạo cho gọn. Rời hero là CẢ BỘ của dòng
+               cùng đi theo tới cuối trang — bộ đôi thì phải thấy đủ hai chai, chứ
+               không phải chỉ hiện lại ở màn bảng giá. */
             const trongDong = (dongOf(DONG).sp || []);
-            const hienGia = clamp01((t - 4.35) / .5);
+            const hienGia = clamp01((t - 0.55) / .5);
 
             order.forEach((key, bi) => {
                 const a = kfAt(key, i), b = kfAt(key, i + 1);
