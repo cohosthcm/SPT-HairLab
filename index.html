@@ -3135,7 +3135,7 @@
            ============================================================ */
         const svgURI = s => 'url("data:image/svg+xml;utf8,' + encodeURIComponent(s).replace(/"/g, '%22') + '")';
 
-        function labelSVG({ C, H, ink, brand, l1, l2, sub, vn, vol, band }) {
+        function labelSVG({ C, H, ink, brand, l1, l2, sub, vn, vol, band, cuCo }) {
             /* Nhãn được vẽ trên khổ bằng cả chu vi chai, nhưng người xem chỉ thấy
                mặt trước. Dòng nào dài quá bề mặt nhìn thấy thì bóp lại cho vừa,
                không để chữ tràn ra khỏi thân chai. */
@@ -3183,7 +3183,16 @@
                 const k = RONG / w;
                 return { fs: +(fs * k).toFixed(2), ls: +(ls * k).toFixed(2) };
             };
-            const A = {
+            /* cuCo = giữ nguyên cỡ chữ của BẢN ĐẦU (19/8), không tự thu nhỏ.
+               Bước thu nhỏ được thêm hồi 30/8 để chữ khỏi tràn ra khỏi thân chai,
+               nhưng với chai serum (chu vi nhỏ) nó bóp chữ xuống quá tay: dòng
+               "ROOT ACTIVATOR" từ cỡ 8.5 tụt còn khoảng 5.8 và mất hết giãn chữ,
+               làm cái nhãn teo lại, chai nhìn trống và lép. Chai serum quay về
+               cỡ chữ gốc theo đúng yêu cầu. */
+            const A = cuCo ? {
+                brand: { fs: 11, ls: 7 }, l1: { fs: 25, ls: .5 }, l2: { fs: 25, ls: .5 },
+                sub: { fs: 8.5, ls: 3.4 }, vn: { fs: 9.5, ls: 0 }, vol: { fs: 9, ls: 2.6 }
+            } : {
                 brand: vua(brand, 11, 7, 700), l1: vua(l1, 25, .5, 800), l2: vua(l2, 25, .5, 800),
                 sub: vua(sub, 8.5, 3.4, 600), vn: vua(vn, 9.5, 0, 500), vol: vua(vol, 9, 2.6, 400)
             };
@@ -3380,10 +3389,11 @@
             const v = [0, 2, 4].map(i => Math.max(0, Math.min(255, Math.round(parseInt(n.substr(i, 2), 16) * f))));
             return '#' + v.map(x => x.toString(16).padStart(2, '0')).join('');
         }
-        function labelFor(key, radius, height) {
+        function labelFor(key, radius, height, cuCo) {
             const p = C.products.find(x => x.key === key) || C.products[0];
             const bo = p.bottle || {};
             return makeLabel(key, {
+                cuCo,
                 C: Math.round(2 * Math.PI * radius), H: height,
                 ink: bo.ink || '#0b3d33', band: bo.ink || '#0b3d33',
                 brand: xml(C.brand), l1: xml(bo.l1), l2: xml(bo.l2),
@@ -3430,7 +3440,7 @@
             b.appendChild(makeCyl({ top: 14, r: 23, h: 58, slices: 16, color: cap, alt: shade(cap, 1.55), shine: .28, spec: .12, vgrad: VG_CAP })); // nắp có gân
             b.appendChild(makeCyl({ top: 72, r: 16, h: 15, slices: 12, color: shade(body, .66), shine: .36, spec: .18 }));
             curve(b, { top: 87, r0: 16, r1: 45, h: 32, segs: 3, slices: 16, color: shade(body, .95), shine: .46, spec: .26 });
-            b.appendChild(makeCyl({ top: 119, r: 45, h: 182, slices: 26, color: body, shine: .48, spec: .30, label: labelFor(P.key, 45, 200), labKey: P.key, vgrad: VG_GLASS }));
+            b.appendChild(makeCyl({ top: 119, r: 45, h: 182, slices: 26, color: body, shine: .48, spec: .30, label: labelFor(P.key, 45, 200, true), labKey: P.key, vgrad: VG_GLASS }));
             b.appendChild(makeCone({ top: 301, r0: 45, r1: 41, h: 11, slices: 16, color: shade(body, .58), shine: .26, spec: .1 }));
             b.appendChild(makeDisk({ y: 0, r: 15, bg: `radial-gradient(circle at 38% 32%, ${shade(cap, 2.6)}, ${shade(cap, 1.1)} 74%)` }));
             ground(b, { H, w: 160, h: 46 });
