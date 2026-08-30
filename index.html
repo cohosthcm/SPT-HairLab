@@ -820,30 +820,6 @@
             color: var(--muted-color);
         }
 
-        .carousel-nav {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .nav-arrow {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: #fff;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: .95rem;
-            transition: background .3s;
-        }
-
-        .nav-arrow:hover {
-            background: rgba(255, 255, 255, .16);
-        }
-
         .side-title {
             align-self: flex-end;
             text-align: right;
@@ -1966,11 +1942,6 @@
                 margin-top: -5.4rem;
             }
 
-            /* hai nút mũi tên nằm giữa dưới hàng thẻ, không dạt về mép phải */
-            .carousel-nav {
-                align-self: center;
-            }
-
             /* Dòng CAM KẾT: thu nhỏ lại cho hở hai bên, không chạm mép màn hình.
                Chữ dài của tiếng Pháp/Ý cũng còn chỗ xuống dòng. */
             .award-badge {
@@ -2203,7 +2174,6 @@
         }
 
         /* Dòng chỉ có một chai thì không cần nút qua lại giữa các chai */
-        body.mot-chai .carousel-nav { display: none; }
         body.mot-chai .carousel-cards { justify-content: center; }
     </style>
 </head>
@@ -2331,10 +2301,6 @@
             <div class="hero-right">
                 <div class="product-carousel fade-left">
                     <div class="carousel-cards" data-list="cards"></div>
-                    <div class="carousel-nav">
-                        <button class="nav-arrow" id="prev" aria-label="Sản phẩm trước">←</button>
-                        <button class="nav-arrow" id="next" aria-label="Sản phẩm sau">→</button>
-                    </div>
                 </div>
                 <h2 class="side-title entry d3">
                     <span class="outline" data-c="hero.side1">Naturally</span><br><span data-c="hero.side2">Strong</span>
@@ -3467,20 +3433,34 @@
             b.className = 'bottle';
             const H = 312;
             b.appendChild(makeDisk({ y: 312, r: 44, bg: `radial-gradient(circle at 50% 50%, ${shade(body, .36)}, ${shade(body, .1)})` }));
-            b.appendChild(makeCyl({ top: 0, r: 15, h: 14, slices: 12, color: shade(cap, 1.6), shine: .34, spec: .22, hotPow: 15, edge: .84, vgrad: VG_CAP }));   // núm bóp
-            b.appendChild(makeCyl({ top: 14, r: 23, h: 58, slices: 18, color: cap, alt: shade(cap, 1.55), shine: .36, spec: .24, hotPow: 15, edge: .84, vgrad: VG_CAP })); // nắp có gân
-            /* Chai serum mảnh hơn chai lớn gần một nửa và luôn đứng ở cỡ nhỏ, nên
-               phải đánh sáng mạnh tay hơn thì mới ra khối tròn:
-               - vệt sáng loang rộng (hotPow 15 thay vì 30) — vệt hẹp ở cỡ nhỏ là
-                 mất hút, thân chai trông phẳng như miếng nâu dán lên nền;
-               - viền hai bên tối hơn (edge .90) vì thân màu hổ phách trung tính,
-                 không tự bật khối như thân trắng của chai lớn;
-               - thêm nhiều lát dọc (34) cho mặt cong mượt ở cỡ nhỏ. */
-            const HP = 18, EG = .98;
-            b.appendChild(makeCyl({ top: 72, r: 16, h: 15, slices: 12, color: shade(body, .66), shine: .38, spec: .18, hotPow: HP, edge: EG }));
-            curve(b, { top: 87, r0: 16, r1: 45, h: 32, segs: 3, slices: 20, color: shade(body, .95), shine: .50, spec: .28, hotPow: HP, edge: EG });
-            b.appendChild(makeCyl({ top: 119, r: 45, h: 182, slices: 34, color: body, shine: .52, spec: .26, hotPow: HP, edge: EG, label: labelFor(P.key, 45, 200), labKey: P.key, vgrad: VG_GLASS }));
-            b.appendChild(makeCone({ top: 301, r0: 45, r1: 41, h: 11, slices: 20, color: shade(body, .58), shine: .28, spec: .12, hotPow: HP, edge: EG }));
+            /* ------------------------------------------------------------
+               Vì sao chai serum trông "dẹp" dù đã chỉnh ánh sáng:
+               lỗi nằm ở HÌNH KHỐI chứ không phải ở màu.
+                 - Vai chai phình từ bán kính 16 lên 45 mà chỉ ghép bằng 3 đoạn
+                   nón → mỗi đoạn nhảy 10 đơn vị, nhìn ra ba nếp gấp thẳng chứ
+                   không ra đường cong. Nay tách thành 10 đoạn.
+                 - Đáy chai trước là một đoạn nón vát 45→41, tạo một nhát cắt chéo
+                   cứng ở góc dưới. Nay bo tròn bằng nhiều đoạn nhỏ.
+                 - Nắp và cổ chỉ có 12–18 lát dọc → thấy rõ từng mặt phẳng, nắp
+                   trông như hai khối hộp xám. Nay 30 và 26 lát.
+               Chai lớn không cần vì nó hiện ở cỡ gấp đôi và vai chỉ phình
+               38→56, thoải hơn nhiều.
+
+               Lưu ý số lát: mỗi lát là một thẻ HTML có 3-4 lớp nền chồng nhau,
+               nên đừng tăng bừa. Bản thử đầu tiên lên tới 628 lát cho riêng chai
+               này (chai lớn chỉ 106) làm trang nặng thấy rõ. Con số dưới đây
+               khoảng 300 lát — đủ tròn ở cỡ chai hiện trên màn, mà chỉ nhỉnh hơn
+               bản cũ một chút. Vai chai cần NHIỀU ĐOẠN (segs) để đường viền cong
+               mượt, còn số lát quanh trục thì vừa phải là được.
+               ------------------------------------------------------------ */
+            const HP = 18, EG = .82;
+            b.appendChild(makeCyl({ top: 0, r: 15, h: 14, slices: 16, color: shade(cap, 1.6), shine: .34, spec: .22, hotPow: 15, edge: .78, vgrad: VG_CAP }));   // núm bóp
+            b.appendChild(makeCyl({ top: 14, r: 23, h: 58, slices: 24, color: cap, alt: shade(cap, 1.55), shine: .36, spec: .24, hotPow: 15, edge: .78, vgrad: VG_CAP })); // nắp có gân
+            b.appendChild(makeCyl({ top: 72, r: 16, h: 15, slices: 18, color: shade(body, .66), shine: .38, spec: .18, hotPow: HP, edge: EG }));
+            curve(b, { top: 87, r0: 16, r1: 45, h: 32, segs: 8, slices: 18, color: shade(body, .95), shine: .50, spec: .28, hotPow: HP, edge: EG });
+            b.appendChild(makeCyl({ top: 119, r: 45, h: 178, slices: 30, color: body, shine: .52, spec: .26, hotPow: HP, edge: EG, label: labelFor(P.key, 45, 200), labKey: P.key, vgrad: VG_GLASS }));
+            /* đáy bo tròn: bán kính thu dần theo cung 1/4 nên không còn nhát vát */
+            curve(b, { top: 297, r0: 45, r1: 38, h: 15, segs: 4, slices: 18, color: shade(body, .58), shine: .30, spec: .14, hotPow: HP, edge: EG });
             b.appendChild(makeDisk({ y: 0, r: 15, bg: `radial-gradient(circle at 38% 32%, ${shade(cap, 2.6)}, ${shade(cap, 1.1)} 74%)` }));
             ground(b, { H, w: 160, h: 46 });
             b.style.transform = `translateY(${-H / 2}px)`;
@@ -3562,10 +3542,10 @@
             danhDauThe(p);
             switchProduct(p);
         });
-        document.getElementById('next').addEventListener('click', () => step(1));
-        document.getElementById('prev').addEventListener('click', () => step(-1));
-        /* Mũi tên ← → chỉ chạy vòng trong các chai của dòng đang xem,
-           không nhảy sang chai của dòng khác. */
+        /* Hai nút mũi tên ← → đã bỏ khỏi giao diện — bấm vào thẻ chai là đổi
+           được rồi, thêm nút chỉ rối mắt. Giữ lại hàm step() vì nó vẫn là chỗ
+           duy nhất biết cách chạy vòng trong các chai của MỘT dòng; sau này cần
+           vuốt ngang hay phím mũi tên thì gọi lại, khỏi viết lại. */
         function step(dir) {
             if (isSwitching) return;
             const trong = chaiCuaDong(DONG).map(p => p.key);
