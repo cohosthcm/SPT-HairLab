@@ -741,6 +741,27 @@
         .carousel-cards::-webkit-scrollbar { display: none; }
         .carousel-cards > .card { flex: 0 0 auto; scroll-snap-align: center; }
 
+        /* Điện thoại: 36vw chỉ khoảng 140px — hai thẻ chai bị bóp còn 65px mỗi cái,
+           ảnh chai tràn hẳn ra ngoài và chữ "Bước 1 · Làm sạch" bị cắt cụt.
+           Cho hàng thẻ rộng gần hết màn hình và xuống hàng khi không đủ chỗ. */
+        @media (max-width: 1024px) {
+            .carousel-cards {
+                max-width: min(94vw, 452px);
+                flex-wrap: wrap;
+                justify-content: center;
+                row-gap: 2.8rem;
+                margin-inline: auto;
+                overflow: visible;
+            }
+            body.nhieu-chai .carousel-cards {
+                overflow: visible;
+                padding-top: 0;
+                margin-top: 0;
+                flex-wrap: wrap;
+                scroll-snap-type: none;
+            }
+        }
+
         .card {
             background: rgba(255, 255, 255, .075);
             border: 1px solid var(--glass-border);
@@ -1763,11 +1784,15 @@
                 display: none;
             }
 
+            /* padding-top do JS đặt (chuaChoChai) — vùng chừa cho chai luôn khớp
+               với vị trí chai thật, không quy tắc CSS nào đè được.
+               min-height: 0 để màn đầu vừa đúng nội dung, không dư khoảng trống
+               dài lê thê ở dưới như trước. */
             .hero {
                 height: auto;
-                min-height: 100vh;
-                padding-top: 46vh;
-                padding-bottom: 3rem;
+                min-height: 0;
+                padding-top: 40vh;
+                padding-bottom: 2.4rem;
             }
 
             .hero-content {
@@ -1921,8 +1946,17 @@
                 gap: .7rem;
             }
 
+            /* 46% của hàng thẻ (không phải của màn hình) — hai thẻ vừa một hàng,
+               ba thẻ trở lên thì tự xuống hàng. */
             .card {
-                width: 46%;
+                width: min(46%, 168px);
+                min-width: 128px;
+                padding-top: 4rem;
+            }
+
+            .card .shot {
+                width: 96px;
+                margin-top: -5.4rem;
             }
         }
 
@@ -2078,6 +2112,22 @@
             color: rgba(255, 255, 255, .72); transition: background .18s ease, color .18s ease; }
         .ngonngu .ng-menu button:hover { background: rgba(255, 255, 255, .1); color: #fff; }
         .ngonngu .ng-menu button.on { color: var(--accent); font-weight: 600; }
+
+        /* Điện thoại: thanh menu trong suốt nên chai và chữ cuộn qua phía sau,
+           đè lên nhau nhìn rất rối. Thêm một lớp mờ dần phía sau thanh menu. */
+        @media (max-width: 1024px) {
+            header.header::before {
+                content: "";
+                position: absolute;
+                inset: -10px 0 auto 0;
+                height: calc(100% + 26px);
+                background: linear-gradient(to bottom, var(--bg-outer) 18%, transparent);
+                opacity: .92;
+                z-index: -1;
+                pointer-events: none;
+            }
+            header.header { isolation: isolate; }
+        }
 
         @media (max-width: 620px) {
             .header { padding: 1.15rem 4%; gap: 8px; }
@@ -3646,11 +3696,24 @@
         function checkSnap() {
             snapAllowed = !isNarrow && sections.every(s => s.offsetHeight <= vh + 120);
         }
+        /* Trên điện thoại, chai nằm trong một VÙNG RIÊNG ở đầu màn hình và chữ bắt
+           đầu ngay bên dưới vùng đó. Trước đây chỗ chừa này khai bằng CSS
+           (padding-top: 46vh) nhưng bị một quy tắc khác đè mất trên máy màn hình
+           thấp → chai đè lên tiêu đề và đoạn mô tả. Đặt bằng JS thì không quy tắc
+           CSS nào đè được, và luôn khớp với vị trí chai vì cùng một con số. */
+        const VUNG_CHAI_DT = 0.40;       /* chai chiếm 40% chiều cao màn hình ở trên cùng */
+        function chuaChoChai() {
+            const hero = document.querySelector('.hero');
+            if (!hero) return;
+            hero.style.paddingTop = isNarrow ? Math.round(vh * VUNG_CHAI_DT) + 'px' : '';
+        }
+
         function fit() {
             vw = window.innerWidth; vh = window.innerHeight;
             isNarrow = vw <= 1024;
             scale = Math.max(.52, Math.min(1.7, (vh * 0.62) / 344));
             if (isNarrow) scale = Math.min(scale, (vh * .40) / 344);
+            chuaChoChai();
             cacheDropOrigins();
             measureScenes();
             checkSnap();
@@ -3747,10 +3810,11 @@
                 if (pt) return { x: pt.x / vw, y: pt.y / vh, s: priceScale[key], ry: 0, rx: 0, o: 1 };
             }
             if (isNarrow) {
-                /* điện thoại: chai chỉ đóng vai chính ở hero, các màn sau nhường chỗ cho chữ
-                   (thẻ giá dùng ảnh chai 2D đặt sẵn bên trong) */
-                if (i === 0) return { x: 0, y: -vh * .21 / vh, s: .62, ry: k.ry, rx: 0, o: 1 };
-                return { x: 0, y: -.12, s: .5, ry: k.ry, rx: 0, o: 0 };
+                /* Điện thoại: chai nằm gọn trong vùng 40% trên cùng, tâm chai ở
+                   khoảng 19% chiều cao màn hình — không bao giờ chạm vào chữ.
+                   Các màn sau nhường hết chỗ cho chữ (thẻ giá dùng ảnh chai 2D). */
+                if (i === 0) return { x: 0, y: -.31, s: .50, ry: k.ry, rx: 0, o: 1 };
+                return { x: 0, y: -.31, s: .50, ry: k.ry, rx: 0, o: 0 };
             }
             return k;
         }
@@ -3801,9 +3865,18 @@
                 const rx = lerp(a.rx, b.rx, f);
                 let hien = heroVisible[key];
                 if (hien < 1 && trongDong.includes(key)) hien = Math.max(hien, hienGia);
+                /* Điện thoại: chai chỉ đứng ở đầu trang sản phẩm. Vừa kéo xuống là
+                   mờ đi hẳn, không lơ lửng bám theo màn hình suốt cả trang.
+                   Đo từ ĐẦU MÀN SẢN PHẨM, không phải từ đầu tài liệu — vào bằng
+                   link ?sp= thì trang đã cuộn sẵn qua màn chọn rồi. */
+                if (isNarrow) {
+                    const moc = (sections[0] && sections[0].offsetTop) || 0;
+                    hien *= clamp01(1 - Math.max(0, window.scrollY - moc) / (vh * .34));
+                }
                 const o = lerp(a.o, b.o, f) * hien;   /* mỗi trang chỉ hiện chai của dòng đó */
 
-                y += Math.sin(time * 1.05 + bi * 2.1) * 18 * (1 - settle * .8);
+                /* bồng bềnh nhẹ trên máy tính; trên điện thoại đứng yên cho gọn */
+                if (!isNarrow) y += Math.sin(time * 1.05 + bi * 2.1) * 18 * (1 - settle * .8);
 
                 const n = rigNow[key], k = 0.11;
                 if (n.o < .008 && o < .008) {
