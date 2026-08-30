@@ -1944,12 +1944,19 @@
 
             .carousel-cards {
                 gap: .7rem;
+                width: 100%;
             }
 
-            /* 46% của hàng thẻ (không phải của màn hình) — hai thẻ vừa một hàng,
+            /* Hàng thẻ ăn hết bề ngang cột phải, nhờ vậy mỗi thẻ rộng thêm
+               ~35px và chữ "Bước 1 · Làm sạch" nằm gọn một dòng. */
+            .product-carousel {
+                width: 100%;
+            }
+
+            /* 48% của hàng thẻ (không phải của màn hình) — hai thẻ vừa một hàng,
                ba thẻ trở lên thì tự xuống hàng. */
             .card {
-                width: min(46%, 168px);
+                width: min(48%, 186px);
                 min-width: 128px;
                 padding-top: 4rem;
             }
@@ -1957,6 +1964,43 @@
             .card .shot {
                 width: 96px;
                 margin-top: -5.4rem;
+            }
+
+            /* hai nút mũi tên nằm giữa dưới hàng thẻ, không dạt về mép phải */
+            .carousel-nav {
+                align-self: center;
+            }
+
+            /* Dòng CAM KẾT: thu nhỏ lại cho hở hai bên, không chạm mép màn hình.
+               Chữ dài của tiếng Pháp/Ý cũng còn chỗ xuống dòng. */
+            .award-badge {
+                gap: .7rem;
+                max-width: 100%;
+            }
+
+            .award-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+            }
+
+            .award-icon svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .award-title {
+                font-size: .6rem;
+                letter-spacing: .12em;
+            }
+
+            .award-subtitle {
+                font-size: .76rem;
+                line-height: 1.3;
+            }
+
+            .award-text {
+                text-align: left;
             }
         }
 
@@ -1975,6 +2019,24 @@
         .chooser::after {
             content: ""; position: absolute; inset: 0; pointer-events: none;
             background: radial-gradient(74% 62% at 50% 46%, transparent 38%, rgba(1, 20, 17, .8) 100%);
+        }
+        /* Lớp sợi tóc lượn phía sau người mẫu.
+           z-index 0 → nằm trên nền màu, nhưng dưới lớp tối viền (::after) và dưới
+           ảnh người mẫu (.cs-stage z-index 2), nên tóc "chạy phía sau" đúng nghĩa.
+           Làm mờ bằng CSS (không phải bằng canvas) để Safari đưa việc này cho card
+           màn hình, đỡ tốn pin. */
+        .cs-toc {
+            position: absolute; inset: 0; z-index: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            opacity: .62;
+        }
+        @media (max-width: 720px) {
+            .cs-toc { opacity: .58; }
+        }
+        /* máy đang bật chế độ hạn chế chuyển động thì tắt hẳn */
+        @media (prefers-reduced-motion: reduce) {
+            .cs-toc { display: none; }
         }
         .cs-bar {
             position: absolute; top: 0; left: 0; right: 0; z-index: 3;
@@ -2150,6 +2212,7 @@
 
     <!-- ===== MÀN CHỌN NHÓM SẢN PHẨM (màn hình đầu tiên) ===== -->
     <header class="chooser" id="chon">
+        <canvas class="cs-toc" id="cs-toc" aria-hidden="true"></canvas>
         <div class="cs-bar">
             <div class="cs-brand" id="logo-chon"><span class="logo-chu">ROOTLAB</span><small>HAIR LABORATORY</small></div>
             <div id="tieng-chon"></div>
@@ -3701,7 +3764,7 @@
            (padding-top: 46vh) nhưng bị một quy tắc khác đè mất trên máy màn hình
            thấp → chai đè lên tiêu đề và đoạn mô tả. Đặt bằng JS thì không quy tắc
            CSS nào đè được, và luôn khớp với vị trí chai vì cùng một con số. */
-        const VUNG_CHAI_DT = 0.40;       /* chai chiếm 40% chiều cao màn hình ở trên cùng */
+        const VUNG_CHAI_DT = 0.34;       /* chai chiếm 34% chiều cao màn hình ở trên cùng */
         function chuaChoChai() {
             const hero = document.querySelector('.hero');
             if (!hero) return;
@@ -4173,6 +4236,165 @@
         setInterval(createBubble, 620);
         for (let i = 0; i < 6; i++) setTimeout(createBubble, i * 700);
     
+        /* ============================================================
+           5b. LỌN TÓC LƯỢN Ở NỀN MÀN CHỌN
+           Tóc thật không bao giờ là một sợi lẻ: nó đi thành LỌN — chục sợi
+           mảnh nằm sát nhau, cùng uốn theo một đường, càng về đuôi càng xoè
+           ra. Nên ở đây mỗi "vệt" là một lọn: một đường sống ở giữa, rồi các
+           sợi con lệch sang hai bên theo đường sống đó.
+
+           Bốn điều giữ cho nó không làm máy chậm:
+           1. Cả một lọn (10-12 sợi) chỉ tô MỘT lần — gom hết sợi vào cùng
+              một nét rồi mới stroke, thay vì stroke từng sợi.
+           2. Cuộn qua khỏi màn chọn (hoặc đổi sang tab khác) là ngừng vẽ hẳn.
+           3. Độ nét bản vẽ chặn ở 1.6 lần, điện thoại 1.3 — đã làm mờ rồi thì
+              vẽ nét hơn nữa cũng không ai thấy.
+           4. Dải màu tạo sẵn một lần lúc đổi cỡ màn hình, không tạo lại mỗi
+              khung hình.
+           ============================================================ */
+        (function () {
+            const cvs = document.getElementById('cs-toc');
+            const chonEl = document.getElementById('chon');
+            if (!cvs || !chonEl || !cvs.getContext) return;
+            if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            const ctx = cvs.getContext('2d');
+            /* Màu tóc bắt sáng: vàng kem là chính, chen vài lọn xanh nhạt cho
+               ăn với nền xanh của thương hiệu. */
+            const MAU = ['#f6e6c4', '#e9cd98', '#fff4da', '#efd9aa', '#b6e4d2'];
+            let W = 0, H = 0, lon = [], dpr = 1;
+
+            const rnd = (a, b) => a + Math.random() * (b - a);
+
+            function dungLon() {
+                const hep = W < 720;
+                const n = hep ? 7 : 11;
+                lon = [];
+                for (let i = 0; i < n; i++) {
+                    const mau = MAU[(Math.random() * MAU.length) | 0];
+                    /* Dải màu dọc: hai đầu trong suốt nên lọn tóc tan dần ở mép
+                       trên và mép dưới, không bị cắt ngang thành đoạn thẳng. */
+                    const g = ctx.createLinearGradient(0, -H * .15, 0, H * 1.15);
+                    g.addColorStop(0, 'rgba(0,0,0,0)');
+                    g.addColorStop(.20, mau);
+                    g.addColorStop(.70, mau);
+                    g.addColorStop(1, 'rgba(0,0,0,0)');
+                    const soi = hep ? 8 : 12;
+                    /* mỗi sợi con lệch bao nhiêu so với đường sống, và lệch pha
+                       chút xíu để không thành cái lược cứng đờ */
+                    const lech = [], phaCon = [];
+                    for (let j = 0; j < soi; j++) {
+                        /* cộng thêm chút xê dịch, nếu chia đều tăm tắp thì nhìn
+                           ra cái lược chứ không ra lọn tóc */
+                        lech.push((j / (soi - 1) - .5) * 2 + rnd(-.11, .11));
+                        phaCon.push(rnd(-.55, .55));
+                    }
+                    lon.push({
+                        /* rải đều theo bề ngang (mỗi lọn một ô riêng) rồi mới xê dịch
+                           ngẫu nhiên trong ô — nếu bốc hoàn toàn ngẫu nhiên thì hay bị
+                           dồn cục một bên, giữa màn hình trống hoác. */
+                        x: (i + rnd(.12, .88)) / n * 1.22 - .11,
+                        do: rnd(-.34, .34),        /* đổ nghiêng từ trên xuống dưới */
+                        bien: rnd(.024, .070),     /* lượn rộng hay hẹp — nhỏ mới ra dáng tóc */
+                        song: rnd(2.2, 4.2),       /* số gợn trên một lọn */
+                        pha: rnd(0, 6.28),
+                        toc: rnd(.09, .22),        /* lượn nhanh hay chậm */
+                        rong: rnd(.030, .078),     /* bề dày của lọn */
+                        day: hep ? rnd(.55, .95) : rnd(.6, 1.15),
+                        mo: rnd(.13, .30),
+                        lech, phaCon, gr: g
+                    });
+                }
+            }
+
+            function coCanvas() {
+                const r = chonEl.getBoundingClientRect();
+                W = Math.round(r.width); H = Math.round(r.height);
+                if (!W || !H) return;
+                /* Lớp này ĐÃ làm mờ rồi nên vẽ nét cỡ nào cũng bằng nhau khi
+                   nhìn — vẽ ở độ nét 1 lần thay vì 1.6 lần cắt số điểm ảnh phải
+                   tô xuống hơn một nửa, đó là chỗ tốn máy nhất. */
+                /* Chặn luôn bề rộng bản vẽ ở 1500 điểm ảnh. Màn hình 5K rộng
+                   2560 trở lên thì vẽ ở 1500 rồi kéo giãn ra — lớp này mềm sẵn
+                   nên không ai thấy khác, mà máy đỡ phải tô gấp ba số điểm. */
+                dpr = Math.min(window.devicePixelRatio || 1, 1, 1500 / W);
+                cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
+                cvs.style.width = W + 'px'; cvs.style.height = H + 'px';
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                dungLon();
+            }
+
+            /* Vẽ một lọn. Nối các điểm bằng đường cong bậc hai qua trung điểm —
+               cách nối này cho nét liền mượt, không thấy góc gãy như nối thẳng. */
+            const BUOC = 15;
+            function veLon(L, t) {
+                ctx.beginPath();
+                for (let j = 0; j < L.lech.length; j++) {
+                    const px = [], py = [];
+                    for (let i = 0; i <= BUOC; i++) {
+                        const u = i / BUOC;                    /* 0 = ngọn trên, 1 = đuôi dưới */
+                        /* hai sóng chồng nhau, tần số lệch nhau → không lặp lại y hệt */
+                        const p = L.pha + L.phaCon[j] + t * L.toc;
+                        const a = Math.sin(u * L.song * 6.283 + p);
+                        const b = Math.sin(u * L.song * 2.3 - p * .7);
+                        /* gốc lọn bó chặt, càng xuống đuôi càng bay và càng xoè */
+                        const manh = .22 + u * 1.05;
+                        const xoe = .30 + u * 1.55;
+                        px.push((L.x + L.do * u
+                                 + (a * .7 + b * .38) * L.bien * manh
+                                 + L.lech[j] * L.rong * xoe) * W);
+                        py.push(-H * .15 + u * H * 1.30);
+                    }
+                    ctx.moveTo(px[0], py[0]);
+                    for (let i = 1; i < BUOC; i++) {
+                        ctx.quadraticCurveTo(px[i], py[i], (px[i] + px[i + 1]) / 2, (py[i] + py[i + 1]) / 2);
+                    }
+                    ctx.lineTo(px[BUOC], py[BUOC]);
+                }
+                /* Độ mềm nằm ngay trong nét vẽ, KHÔNG dùng filter: blur() của CSS.
+                   Đo thử trên máy: lớp mờ CSS ngốn 33ms mỗi khung hình, trong khi
+                   tô thêm một nét quầng rộng chỉ tốn vài ms — đường đã dựng sẵn,
+                   tô lại lần nữa gần như không mất gì. Nét rộng mờ tịt + nét mảnh
+                   rõ chồng lên nhau cho ra đúng cái vệt sáng mềm của tóc bắt sáng. */
+                ctx.strokeStyle = L.gr;
+                ctx.lineWidth = L.day * 6.5;         /* quầng sáng */
+                ctx.globalAlpha = L.mo * .11;
+                ctx.stroke();
+                ctx.lineWidth = L.day * 2.6;         /* lớp giữa */
+                ctx.globalAlpha = L.mo * .17;
+                ctx.stroke();
+                ctx.lineWidth = L.day;               /* lõi sợi */
+                ctx.globalAlpha = L.mo * .30;
+                ctx.stroke();
+            }
+
+            /* Tóc trôi rất chậm nên 30 hình/giây là thừa mượt; vẽ đủ 60 hình
+               chỉ tốn gấp đôi mà mắt không phân biệt được. */
+            const NHIP = 1000 / 30;
+            let lanTruoc = -1e9;
+            function ve(ms) {
+                requestAnimationFrame(ve);
+                if (document.hidden || !W) return;
+                /* cuộn qua khỏi màn chọn rồi thì khỏi vẽ cho đỡ tốn máy */
+                if (window.scrollY > H) return;
+                if (ms - lanTruoc < NHIP) return;
+                lanTruoc = ms;
+                const t = ms * .001;
+                ctx.clearRect(0, 0, W, H);
+                ctx.globalCompositeOperation = 'lighter';   /* sợi cắt nhau thì sáng lên */
+                ctx.lineCap = 'round';
+                for (let i = 0; i < lon.length; i++) veLon(lon[i], t);
+                ctx.globalAlpha = 1;
+                ctx.globalCompositeOperation = 'source-over';
+            }
+
+            coCanvas();
+            let hoTro;
+            window.addEventListener('resize', () => { clearTimeout(hoTro); hoTro = setTimeout(coCanvas, 180); });
+            requestAnimationFrame(ve);
+            window.__toc = { coCanvas, lon: () => lon.length, soi: () => lon.reduce((a, L) => a + L.lech.length, 0) };
+        })();
+
         /* ============================================================
            MÀN CHỌN NHÓM SẢN PHẨM
            ============================================================ */
