@@ -3205,46 +3205,18 @@
         const LIGHT = -0.34;                                   // hướng đèn: hơi lệch trái
         /* Đèn chính phía trước + đèn phụ phía sau, tối dồn về 2 mép.
            Nhờ đối xứng trước/sau nên chai quay góc nào cũng tròn đều, không bị "tối mặt". */
-        function shadeAt(rad, shine, spec, hotPow, edge) {
-            /* hotPow = vệt sáng gắt hay loang. Số nhỏ = vệt rộng hơn. Chai nhỏ
-               cần vệt rộng, vì mỗi lát chỉ vài điểm ảnh — vệt hẹp quá là biến mất
-               luôn, thân chai trông phẳng lì như dán giấy.
-               edge = độ đậm của viền tối hai bên. Thân màu trung (hổ phách) cần
-               viền đậm hơn thân màu trắng thì mới ra khối tròn. */
-            const hp = hotPow || 30, eg = edge == null ? .66 : edge;
+        function shadeAt(rad, shine, spec) {
             const c = Math.cos(rad - LIGHT), a = Math.abs(c);
             const key = Math.pow(Math.max(0, c), 2.2) * shine;
             const fill = Math.pow(Math.max(0, -c), 2.6) * shine * .66;
-            const hot = Math.pow(Math.max(0, c), hp) * spec + Math.pow(Math.max(0, -c), hp * 1.13) * spec * .45;
+            const hot = Math.pow(Math.max(0, c), 30) * spec + Math.pow(Math.max(0, -c), 34) * spec * .45;
             const rim = Math.pow(Math.max(0, Math.cos(rad - Math.PI * .80)), 7) * .18;
-            const dark = Math.pow(1 - a, 1.5) * eg;
+            const dark = Math.pow(1 - a, 1.5) * .66;
             return { w: Math.min(.95, key + fill + hot + rim), d: dark };
         }
 
-        /* ============================================================
-           NGÂN SÁCH SỐ LÁT — đọc trước khi tăng bất kỳ con số slices/segs nào.
-           Mỗi lát là một lớp 3D riêng của trình duyệt (có backface-visibility
-           nên nửa sau bị loại, nhưng nửa trước vẫn phải dựng từng lớp một).
-           Đo thật trên máy, cảnh có hai chai cùng hiện:
-
-               342 lát → 631 ms mỗi khung hình   (giật thấy rõ)
-               171 lát → 245 ms
-                87 lát →  18 ms                  (mượt)
-
-           Không phải đường thẳng: qua khoảng 150 lát là trình duyệt rơi khỏi
-           đường nhanh. Chú ý vai chai và đáy chai dùng curve(): tốn
-           segs × slices, nhân lên rất nhanh — đó là chỗ dễ vỡ ngân sách nhất.
-
-           NHƯNG: đã thử cắt xuống ~76 lát cho chai lớn thì chai LỘ CẠNH ĐA GIÁC,
-           xấu hẳn. Không đánh đổi kiểu đó nữa. Chai lớn giữ ~110 lát, chai serum
-           ~120 (nó mảnh và luôn hiện ở cỡ nhỏ nên cần nhiều lát quanh trục hơn
-           mới tròn). Muốn nhẹ nữa thì giảm ở CHỖ KHÁC — bớt bong bóng, bớt lá,
-           hoặc thay hẳn bằng ẢNH CHỤP chai thật (đã có sẵn: điền ô "photo" của
-           sản phẩm trong trang quản trị là chai 3D tự nhường chỗ cho ảnh).
-           ============================================================ */
-
         /* Một hình trụ = N lát dọc; mỗi lát nội suy sáng/tối 2 mép nên không thấy đường ghép */
-        function makeCyl({ top, r, h, slices, color, alt, shine = .5, spec = .3, hotPow, edge, label, labKey, vgrad }) {
+        function makeCyl({ top, r, h, slices, color, alt, shine = .5, spec = .3, label, labKey, vgrad }) {
             const el = document.createElement('div');
             el.className = 'cyl';
             el.style.top = top + 'px';
@@ -3255,9 +3227,9 @@
 
             for (let i = 0; i < N; i++) {
                 const deg = i * step, rad = deg * Math.PI / 180;
-                const a = shadeAt(rad - half, shine, spec, hotPow, edge);
-                const b = shadeAt(rad, shine, spec, hotPow, edge);
-                const c2 = shadeAt(rad + half, shine, spec, hotPow, edge);
+                const a = shadeAt(rad - half, shine, spec);
+                const b = shadeAt(rad, shine, spec);
+                const c2 = shadeAt(rad + half, shine, spec);
 
                 const s = document.createElement('i');
                 s.className = 'sl';
@@ -3265,52 +3237,21 @@
                 s.style.height = h + 'px';
                 s.style.left = (-w / 2) + 'px';
                 s.style.transform = `rotateY(${deg}deg) translateZ(${r}px)`;
+                s.style.backgroundColor = (alt && i % 2) ? alt : color;
 
-                const nen = docHex((alt && i % 2) ? alt : color);
-                s._k = { rad, half, shine, spec, hotPow, edge, base: nen };
-                paint(s, { a, b, c: c2, vgrad, label, labKey, C, N, i, w, base: nen });
+                paint(s, { a, b, c: c2, vgrad, label, labKey, C, N, i, w });
                 el.appendChild(s);
             }
             return el;
         }
 
-        const docHex = hex => {
-            const h = String(hex || '#000').replace('#', '');
-            const v = h.length === 3 ? h[0] + h[0] + h[1] + h[1] + h[2] + h[2] : h;
-            const n = parseInt(v, 16) || 0;
-            return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-        };
-        /* Màu cuối cùng của một điểm trên lát: màu thân → phủ trắng (phần sáng)
-           → phủ đen (phần tối). Tính sẵn ra MỘT màu đặc thay vì chồng ba lớp. */
-        const tronMau = (base, w, d) => {
-            const f = k => Math.round(Math.min(255, base[k] * (1 - w) + 255 * w) * (1 - d));
-            return `rgb(${f(0)},${f(1)},${f(2)})`;
-        };
-
-        /* Xếp lớp nền cho 1 lát.
-           TRƯỚC ĐÂY mỗi lát có tới 4 lớp nền chồng nhau (dải dọc + dải tối + nhãn
-           + dải sáng) cộng thêm màu nền. Một chai có vài trăm lát, nhân lên là
-           hơn nghìn dải màu phải tô lại mỗi khung hình → trang giật.
-           NAY gộp màu thân + dải sáng + dải tối thành MỘT dải màu đặc duy nhất
-           (tính sẵn màu ở 3 mốc trái/giữa/phải), nên còn 1-3 lớp. Nhìn y hệt:
-           chồng ba lớp trong suốt hay tô thẳng màu đã pha đều ra cùng kết quả.
-           Khác biệt duy nhất: phần tối nay nằm DƯỚI nhãn thay vì trên. Không
-           thấy được, vì chỗ tối nhất là rìa chai — ở đó nhãn quay nghiêng gần
-           như mất hút rồi. */
-        /* Dựng dải sáng-tối ngang cho một lát, theo GÓC THẬT của lát đó so với
-           đèn. Tách riêng ra để còn vẽ lại được mỗi khi chai xoay. */
-        function daiSang(k, lech) {
-            const a = shadeAt(k.rad - k.half + lech, k.shine, k.spec, k.hotPow, k.edge);
-            const b = shadeAt(k.rad + lech, k.shine, k.spec, k.hotPow, k.edge);
-            const c = shadeAt(k.rad + k.half + lech, k.shine, k.spec, k.hotPow, k.edge);
-            return `linear-gradient(to right, ${tronMau(k.base, a.w, a.d)} 0%, ` +
-                   `${tronMau(k.base, b.w, b.d)} 50%, ${tronMau(k.base, c.w, c.d)} 100%)`;
-        }
-
-        function paint(s, { a, b, c, vgrad, label, labKey, C, N, i, w, base }) {
+        /* Xếp lớp nền cho 1 lát: bóng tối → nhãn in → highlight → gradient dọc */
+        function paint(s, { a, b, c, vgrad, label, labKey, C, N, i, w }) {
             const imgs = [], sizes = [], poss = [], reps = [];
             if (vgrad) { imgs.push(vgrad); sizes.push('100% 100%'); poss.push('0 0'); reps.push('no-repeat'); }
-            if (label) {
+            imgs.push(`linear-gradient(to right, rgba(0,0,0,${a.d.toFixed(3)}) 0%, rgba(0,0,0,${b.d.toFixed(3)}) 50%, rgba(0,0,0,${c.d.toFixed(3)}) 100%)`);
+            sizes.push('100% 100%'); poss.push('0 0'); reps.push('no-repeat');
+            if (label) {   /* nhãn nằm TRÊN highlight để chữ luôn đọc rõ */
                 s._li = imgs.length;          // nhớ chỗ của lớp nhãn
                 s.dataset.lab = labKey || '';
                 imgs.push(svgURI(label));
@@ -3318,8 +3259,7 @@
                 poss.push(`${-(C / 2 + i * (C / N) - w / 2)}px 0`);
                 reps.push('repeat-x');
             }
-            imgs.push(`linear-gradient(to right, ${tronMau(base, a.w, a.d)} 0%, ` +
-                      `${tronMau(base, b.w, b.d)} 50%, ${tronMau(base, c.w, c.d)} 100%)`);
+            imgs.push(`linear-gradient(to right, rgba(255,255,255,${a.w.toFixed(3)}) 0%, rgba(255,255,255,${b.w.toFixed(3)}) 50%, rgba(255,255,255,${c.w.toFixed(3)}) 100%)`);
             sizes.push('100% 100%'); poss.push('0 0'); reps.push('no-repeat');
             s._bg = { imgs, sizes, poss, reps };
             s.style.backgroundImage = imgs.join(',');
@@ -3362,7 +3302,7 @@
         }
 
         /* Hình nón cụt: mỗi lát là hình thang nghiêng → vai chai cong mượt, không bậc thang */
-        function makeCone({ top, r0, r1, h, slices, color, shine = .5, spec = .3, hotPow, edge, vgrad }) {
+        function makeCone({ top, r0, r1, h, slices, color, shine = .5, spec = .3, vgrad }) {
             const el = document.createElement('div');
             el.className = 'cyl';
             el.style.top = top + 'px';
@@ -3374,9 +3314,9 @@
             const W = Math.max(c0, c1);
             for (let i = 0; i < N; i++) {
                 const deg = i * step, rad = deg * Math.PI / 180;
-                const a = shadeAt(rad - half, shine, spec, hotPow, edge);
-                const b = shadeAt(rad, shine, spec, hotPow, edge);
-                const c2 = shadeAt(rad + half, shine, spec, hotPow, edge);
+                const a = shadeAt(rad - half, shine, spec);
+                const b = shadeAt(rad, shine, spec);
+                const c2 = shadeAt(rad + half, shine, spec);
                 const s = document.createElement('i');
                 s.className = 'sl';
                 s.style.width = W + 'px';
@@ -3385,9 +3325,8 @@
                 s.style.transformOrigin = '50% 0';
                 s.style.transform = `rotateY(${deg}deg) translateZ(${r0}px) rotateX(${CONE_SIGN * phi}deg)`;
                 s.style.clipPath = `polygon(${(W - c0) / 2}px 0, ${(W + c0) / 2}px 0, ${(W + c1) / 2}px 100%, ${(W - c1) / 2}px 100%)`;
-                const nen = docHex(color);
-                s._k = { rad, half, shine, spec, hotPow, edge, base: nen };
-                paint(s, { a, b, c: c2, vgrad, base: nen });
+                s.style.backgroundColor = color;
+                paint(s, { a, b, c: c2, vgrad });
                 el.appendChild(s);
             }
             return el;
@@ -3404,8 +3343,7 @@
                 const r = o.r0 + (o.r1 - o.r0) * Math.sin(t * Math.PI / 2);
                 parent.appendChild(makeCone({
                     top: o.top + yPrev, r0: rPrev, r1: r, h: (y - yPrev) + 1.8,
-                    slices: o.slices || 20, color: o.color, shine: o.shine, spec: o.spec,
-                    hotPow: o.hotPow, edge: o.edge, vgrad: o.vgrad
+                    slices: o.slices || 26, color: o.color, shine: o.shine, spec: o.spec
                 }));
                 yPrev = y; rPrev = r;
             }
@@ -3425,14 +3363,6 @@
         const VG_LIGHT = 'linear-gradient(to bottom, rgba(255,255,255,.16) 0%, rgba(255,255,255,.03) 12%, rgba(0,0,0,0) 58%, rgba(0,0,0,.20) 100%)';
         const VG_GLASS = 'linear-gradient(to bottom, rgba(255,255,255,.16) 0%, rgba(0,0,0,.10) 8%, rgba(0,0,0,.04) 26%, rgba(0,0,0,0) 46%, rgba(0,0,0,.20) 84%, rgba(0,0,0,.42) 100%)';
         const VG_CAP = 'linear-gradient(to bottom, rgba(255,255,255,.14) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,.26) 100%)';
-        /* Dải dọc dành riêng cho thân chai serum.
-           VG_GLASS cũ tối tới .42 ở đáy và .20 ở 84%. Dải dọc là lớp TRÊN CÙNG,
-           tô đè lên cả phần sáng lẫn phần tối hai bên — nên một dải dọc mạnh sẽ
-           NUỐT MẤT phần đổ bóng ngang, thứ duy nhất tạo cảm giác mặt trụ. Đó là
-           lý do thật khiến chai serum nhìn dẹp: nó chỉ còn gradient trên-sáng
-           dưới-tối, y như một hình vẽ phẳng. Bản này nhẹ đi ba lần, nhường chỗ
-           cho phần đổ bóng ngang. */
-        const VG_AMBER = 'linear-gradient(to bottom, rgba(255,255,255,.13) 0%, rgba(0,0,0,.05) 10%, rgba(0,0,0,0) 42%, rgba(0,0,0,.08) 82%, rgba(0,0,0,.20) 100%)';
 
         const LABEL_DEFS = {};
         function makeLabel(key, o) {
@@ -3479,9 +3409,9 @@
             const H = 344;
             b.appendChild(makeDisk({ y: 344, r: 54, bg: `radial-gradient(circle at 50% 50%, ${shade(body, .22)}, ${shade(body, .08)})` }));
             b.appendChild(makeCyl({ top: 0, r: 38, h: 32, slices: 16, color: cap, alt: shade(cap, 1.28), shine: .30, spec: .14, vgrad: VG_CAP }));
-            curve(b, { top: 32, r0: 38, r1: 56, h: 50, segs: 4, slices: 16, color: shade(body, .97), shine: .44, spec: .22 });
-            b.appendChild(makeCyl({ top: 82, r: 56, h: 250, slices: 28, color: body, shine: .46, spec: .26, label: labelFor(P.key, 56, 250), labKey: P.key, vgrad: VG_LIGHT }));
-            b.appendChild(makeCone({ top: 332, r0: 56, r1: 52, h: 12, slices: 18, color: shade(body, .88), shine: .30, spec: .12 }));
+            curve(b, { top: 32, r0: 38, r1: 56, h: 50, segs: 3, slices: 16, color: shade(body, .97), shine: .44, spec: .22 });
+            b.appendChild(makeCyl({ top: 82, r: 56, h: 250, slices: 26, color: body, shine: .46, spec: .26, label: labelFor(P.key, 56, 250), labKey: P.key, vgrad: VG_LIGHT }));
+            b.appendChild(makeCone({ top: 332, r0: 56, r1: 52, h: 12, slices: 16, color: shade(body, .88), shine: .30, spec: .12 }));
             b.appendChild(makeDisk({ y: 0, r: 38, bg: `radial-gradient(circle at 38% 32%, ${shade(cap, 1.9)}, ${shade(cap, .62)} 74%)` }));
             ground(b, { H, w: 190, h: 54 });
             b.style.transform = `translateY(${-H / 2}px)`;
@@ -3496,49 +3426,14 @@
             b.className = 'bottle';
             const H = 312;
             b.appendChild(makeDisk({ y: 312, r: 44, bg: `radial-gradient(circle at 50% 50%, ${shade(body, .36)}, ${shade(body, .1)})` }));
-            /* ------------------------------------------------------------
-               TỈ LỆ. Bản cũ: thân rộng 90 cao 178, nhưng cụm nắp + cổ cao tới
-               87 — gần bằng NỬA chiều cao thân. Thành ra một cái que dài cắm
-               trên một cái ống hẹp, nhìn lép kẹp chứ không ra chai.
-               Chai nhỏ giọt 60ml thật: thân rộng bằng khoảng 1/2 chiều cao
-               thân, cụm nắp chỉ cao chừng 1/3 thân.
-               Bản này: thân rộng 104 cao 194 (1:1.87), cụm nắp cao 68 (35%
-               thân), cả chai 312 cao trên 104 rộng (1:3.0 thay vì 1:3.5).
-               ------------------------------------------------------------ */
-            /* ------------------------------------------------------------
-               Vì sao chai serum trông "dẹp" dù đã chỉnh ánh sáng:
-               lỗi nằm ở HÌNH KHỐI chứ không phải ở màu.
-                 - Vai chai phình từ bán kính 16 lên 45 mà chỉ ghép bằng 3 đoạn
-                   nón → mỗi đoạn nhảy 10 đơn vị, nhìn ra ba nếp gấp thẳng chứ
-                   không ra đường cong. Nay tách thành 10 đoạn.
-                 - Đáy chai trước là một đoạn nón vát 45→41, tạo một nhát cắt chéo
-                   cứng ở góc dưới. Nay bo tròn bằng nhiều đoạn nhỏ.
-                 - Nắp và cổ chỉ có 12–18 lát dọc → thấy rõ từng mặt phẳng, nắp
-                   trông như hai khối hộp xám. Nay 30 và 26 lát.
-               Chai lớn không cần vì nó hiện ở cỡ gấp đôi và vai chỉ phình
-               38→56, thoải hơn nhiều.
-
-               Lưu ý số lát: mỗi lát là một thẻ HTML có 3-4 lớp nền chồng nhau,
-               nên đừng tăng bừa. Bản thử đầu tiên lên tới 628 lát cho riêng chai
-               này (chai lớn chỉ 106) làm trang nặng thấy rõ. Con số dưới đây
-               khoảng 300 lát — đủ tròn ở cỡ chai hiện trên màn, mà chỉ nhỉnh hơn
-               bản cũ một chút. Vai chai cần NHIỀU ĐOẠN (segs) để đường viền cong
-               mượt, còn số lát quanh trục thì vừa phải là được.
-               ------------------------------------------------------------ */
-            /* Đổ bóng NGANG mạnh tay: vệt sáng loang (hotPow 16) và viền hai bên
-               đậm (edge .94). Thân màu hổ phách trung tính không tự bật khối như
-               thân trắng của chai lớn, phải kéo giãn khoảng sáng-tối ra mới thấy
-               mặt trụ. */
-            const HP = 21, EG = .96;
-            b.appendChild(makeCyl({ top: 0, r: 14, h: 10, slices: 12, color: shade(cap, 1.6), shine: .36, spec: .26, hotPow: 14, edge: .86, vgrad: VG_CAP }));   // núm bóp
-            b.appendChild(makeCyl({ top: 10, r: 26, h: 48, slices: 16, color: cap, alt: shade(cap, 1.55), shine: .40, spec: .30, hotPow: 14, edge: .86, vgrad: VG_CAP })); // nắp có gân
-            b.appendChild(makeCyl({ top: 58, r: 18, h: 10, slices: 12, color: shade(body, .66), shine: .40, spec: .26, hotPow: HP, edge: EG }));
-            curve(b, { top: 68, r0: 18, r1: 52, h: 34, segs: 4, slices: 14, color: shade(body, .95), shine: .48, spec: .30, hotPow: HP, edge: EG, vgrad: VG_AMBER });
-            b.appendChild(makeCyl({ top: 102, r: 52, h: 194, slices: 24, color: body, shine: .46, spec: .30, hotPow: HP, edge: EG, label: labelFor(P.key, 52, 194), labKey: P.key, vgrad: VG_AMBER }));
-            /* đáy bo tròn: bán kính thu dần theo cung 1/4 nên không còn nhát vát */
-            curve(b, { top: 296, r0: 52, r1: 44, h: 16, segs: 2, slices: 14, color: shade(body, .58), shine: .34, spec: .16, hotPow: HP, edge: EG });
-            b.appendChild(makeDisk({ y: 0, r: 14, bg: `radial-gradient(circle at 38% 32%, ${shade(cap, 2.6)}, ${shade(cap, 1.1)} 74%)` }));
-            ground(b, { H, w: 186, h: 48 });
+            b.appendChild(makeCyl({ top: 0, r: 15, h: 14, slices: 12, color: shade(cap, 1.6), shine: .26, spec: .12, vgrad: VG_CAP }));   // núm bóp
+            b.appendChild(makeCyl({ top: 14, r: 23, h: 58, slices: 16, color: cap, alt: shade(cap, 1.55), shine: .28, spec: .12, vgrad: VG_CAP })); // nắp có gân
+            b.appendChild(makeCyl({ top: 72, r: 16, h: 15, slices: 12, color: shade(body, .66), shine: .36, spec: .18 }));
+            curve(b, { top: 87, r0: 16, r1: 45, h: 32, segs: 3, slices: 16, color: shade(body, .95), shine: .46, spec: .26 });
+            b.appendChild(makeCyl({ top: 119, r: 45, h: 182, slices: 26, color: body, shine: .48, spec: .30, label: labelFor(P.key, 45, 200), labKey: P.key, vgrad: VG_GLASS }));
+            b.appendChild(makeCone({ top: 301, r0: 45, r1: 41, h: 11, slices: 16, color: shade(body, .58), shine: .26, spec: .1 }));
+            b.appendChild(makeDisk({ y: 0, r: 15, bg: `radial-gradient(circle at 38% 32%, ${shade(cap, 2.6)}, ${shade(cap, 1.1)} 74%)` }));
+            ground(b, { H, w: 160, h: 46 });
             b.style.transform = `translateY(${-H / 2}px)`;
             return b;
         }
@@ -3956,45 +3851,6 @@
             return k;
         }
 
-        /* ============================================================
-           ĐÈN ĐỨNG YÊN KHI CHAI XOAY
-           Đây là lỗi khiến chai serum nhìn như hình phẳng "lật qua lại".
-
-           Phần sáng-tối của mỗi lát được tính lúc DỰNG chai, theo góc của lát
-           đó trong lòng chai. Nghĩa là vệt sáng bị DÍNH VÀO chai: chai xoay
-           sang trái thì vệt sáng đi sang trái theo. Vật thật dưới đèn cố định
-           thì ngược lại — vệt sáng ở nguyên một chỗ trên màn hình, chỉ có mặt
-           chai trượt qua dưới nó. Vệt sáng chạy theo chính là dấu hiệu mắt
-           người đọc ra "đây là tấm hình đang bị lật", chứ không phải khối trụ.
-
-           Chai trắng lớn không lộ vì độ tương phản của nó thấp; chai hổ phách
-           tương phản mạnh nên lộ rõ. Càng tăng tương phản cho "nổi khối" thì
-           càng lộ — đó là lý do mấy lần chỉnh trước lại càng xấu.
-
-           Cách chữa: mỗi khi chai xoay quá 4 độ thì vẽ lại dải sáng-tối theo
-           GÓC THẬT (góc của lát + góc chai đang xoay). Làm theo bậc 4 độ nên
-           một lượt rê chuột chỉ vẽ lại chục lần, không phải mỗi khung hình.
-           Lúc chai đang quay tít (đổi sản phẩm) thì bỏ qua, quay xong mới cập
-           nhật — đang quay nhanh mắt không kịp nhìn vệt sáng.
-           ============================================================ */
-        const BUOC_SANG = 6;                     // độ
-        function veLaiSang(rig, ryDeg) {
-            /* Đếm số lần vẽ lại — mở Console gõ __sangDem để xem. Cuộn hết
-               trang mà con số này nhảy vài trăm là biết đang bị vẽ lại quá
-               nhiều, đó chính là lỗi làm trang giật hồi 30/8. */
-            window.__sangDem = (window.__sangDem || 0) + 1;
-            const lech = -ryDeg * Math.PI / 180;  // trừ đi góc chai đang xoay
-            const ds = rig.querySelectorAll('.sl');
-            for (let i = 0; i < ds.length; i++) {
-                const el = ds[i];
-                if (!el._k || !el._bg) continue;
-                el._bg.imgs[el._bg.imgs.length - 1] = daiSang(el._k, lech);
-                el.style.backgroundImage = el._bg.imgs.join(',');
-            }
-            rig._sang = ryDeg;
-        }
-
-        window.veLaiSang = veLaiSang;
         function sceneT() {
             if (!secCenters.length) return 0;
             const c = window.scrollY + vh / 2;
@@ -4075,27 +3931,10 @@
                 const op = n.o.toFixed(3);
                 if (op !== rig._op) { rig.style.opacity = op; rig._op = op; }
 
-                const ryTot = n.ry + cur.x * 34 + switchSpin;
                 const tr =
                     `translate3d(${n.x.toFixed(1)}px, ${(n.y - pinned).toFixed(1)}px, 0) scale(${(n.s * scale * (1 - spinPulse * .06)).toFixed(4)})` +
-                    ` rotateX(${(n.rx + -cur.y * 13).toFixed(2)}deg) rotateY(${ryTot.toFixed(2)}deg)`;
+                    ` rotateX(${(n.rx + -cur.y * 13).toFixed(2)}deg) rotateY(${(n.ry + cur.x * 34 + switchSpin).toFixed(2)}deg)`;
                 if (tr !== rig._tr) { rig.style.transform = tr; rig._tr = tr; }
-
-                /* Giữ đèn đứng yên — nhưng CHỈ vẽ lại lúc chai đã đứng.
-                   Lúc cuộn trang, góc xoay của chai chạy liên tục qua vài chục
-                   độ, nếu cứ quá 4 độ là vẽ lại thì mỗi lần cuộn phải vẽ lại
-                   cả trăm lát chục lần → giật. Mà lúc đang cuộn nhanh thì
-                   không ai soi vệt sáng cả. Nên: khung hình nào góc gần như
-                   không đổi (đã đứng) mới xét vẽ lại, cộng thêm chặn tần suất
-                   tối đa 6 lần mỗi giây. */
-                const dungYen = rig._ryTruoc != null && Math.abs(ryTot - rig._ryTruoc) < .6;
-                rig._ryTruoc = ryTot;
-                if (spinPulse < .02 && dungYen &&
-                    (rig._sang == null || Math.abs(ryTot - rig._sang) >= BUOC_SANG) &&
-                    (time - (rig._lucSang || -9) > .17)) {
-                    rig._lucSang = time;
-                    veLaiSang(rig, ryTot);
-                }
 
                 gx += n.x * n.o; gy += n.y * n.o; gw += n.o;
             });
