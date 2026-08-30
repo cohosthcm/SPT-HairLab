@@ -192,6 +192,8 @@ body.khung-hong .prev .canhbao{display:block}
 .prev .canhbao b{color:#fff}
 .prev .canhbao button{margin-top:11px;border:0;background:var(--chinh);color:#fff;
   padding:9px 15px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600}
+.prev .canhbao .chitiet{margin-top:11px;padding-top:10px;border-top:1px solid rgba(255,255,255,.14);
+  font-size:11px;line-height:1.5;color:#8faea5;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 .prev .kho{position:absolute;bottom:44px;right:14px;z-index:5;display:flex;gap:4px;
   padding:4px;border-radius:999px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);
   border:1px solid rgba(255,255,255,.12)}
@@ -299,6 +301,7 @@ body.khung-hong .prev .canhbao{display:block}
                 Bấm nút dưới để mở khung xem trước ra một cửa sổ riêng — bấm mục nào
                 bên trái thì cửa sổ đó vẫn tự nhảy tới đúng chỗ.
                 <br><button type="button" class="mo-cua-so">Mở cửa sổ xem trước</button>
+                <div id="kho-chitiet" class="chitiet"></div>
             </div>
             <div class="bar"><span id="kho-nhan">Xem trước</span>
                 <button type="button" id="xemTo" class="bar-nut">Xem to</button>
@@ -666,7 +669,17 @@ body.khung-hong .prev .canhbao{display:block}
         function vuaKhung() {
             const fr = document.getElementById('preview');
             if (!fr) return;
-            const rong = document.querySelector('.prev')?.clientWidth || 0;
+            const box = document.querySelector('.prev');
+            const rong = box?.clientWidth || 0;
+            /* Đặt kích thước bằng PIXEL THẬT, không để phần trăm.
+               height:100% phải suy ra qua chuỗi cha–con; chuỗi đó đứt một mắt là
+               iframe rơi về 150px mặc định và cả cột thành đen. Gán pixel thì
+               không trình duyệt nào tính sai được. */
+            if (box && box.clientHeight > 40) {
+                fr.style.height = box.clientHeight + 'px';
+                fr.style.width = document.body.classList.contains('kho-dt')
+                    ? '390px' : Math.max(320, rong) + 'px';
+            }
             const nhan = document.getElementById('kho-nhan');
             if (nhan) nhan.textContent = document.body.classList.contains('kho-dt')
                 ? '390px · khổ điện thoại'
@@ -710,18 +723,25 @@ body.khung-hong .prev .canhbao{display:block}
         /* Khung nhúng dựng xong chưa? Không thì hiện lời nhắc thay vì để đen im lặng. */
         function kiemTraKhung() {
             const fr = document.getElementById('preview');
-            let hong = false, chiTiet = '';
+            let hong = false, chiTiet = '', vi = [];
             try {
-                const w = fr.contentWindow, d = w && w.document;
-                const cao = Math.round(fr.getBoundingClientRect().height);
-                const rong = Math.round(fr.getBoundingClientRect().width);
-                const soNut = d ? d.querySelectorAll('.cs-node').length : 0;
-                hong = !w || !w.innerWidth || cao < 80 || rong < 80 || soNut === 0;
-                chiTiet = rong + '×' + cao + ' · ' + soNut + ' mục';
-            } catch (e) { hong = true; chiTiet = 'không đọc được'; }
+                const r = fr.getBoundingClientRect();
+                const cao = Math.round(r.height), rong = Math.round(r.width);
+                let w = null, d = null, trong = 0, soNut = -1, tieuDe = '?';
+                try { w = fr.contentWindow; d = w && w.document; trong = (w && w.innerWidth) || 0; } catch (e) { vi.push('không đọc được cửa sổ bên trong'); }
+                try { soNut = d ? d.querySelectorAll('.cs-node').length : -1; tieuDe = (d && d.title) || '?'; } catch (e) { vi.push('không đọc được nội dung bên trong'); }
+                if (rong < 80) vi.push('khung rộng ' + rong + 'px');
+                if (cao < 80) vi.push('khung cao ' + cao + 'px');
+                if (!trong) vi.push('bên trong báo rộng 0px');
+                if (soNut === 0) vi.push('bên trong chưa dựng xong mục nào');
+                if (soNut < 0) vi.push('không đếm được mục bên trong');
+                hong = vi.length > 0;
+                chiTiet = 'khung ' + rong + '×' + cao + ' · bên trong ' + trong + 'px · '
+                        + (soNut < 0 ? 'không đọc được' : soNut + ' mục') + ' · "' + String(tieuDe).slice(0, 34) + '"';
+            } catch (e) { hong = true; chiTiet = 'lỗi: ' + e.message; }
             document.body.classList.toggle('khung-hong', hong);
             const n = document.getElementById('kho-chitiet');
-            if (n) n.textContent = chiTiet;
+            if (n) n.textContent = (hong ? 'Vì sao: ' + vi.join(' · ') + ' — ' : '') + chiTiet;
             return !hong;
         }
 
@@ -971,6 +991,42 @@ body.khung-hong .prev .canhbao{display:block}
             return box;
         }
 
+        /* Logo của thương hiệu — hiện ở thanh menu và chân trang.
+           Có ảnh thì ảnh thay cho biểu tượng vẽ sẵn và chữ ROOTLAB. */
+        function anhLogo() {
+            const box = h('div');
+            const render = () => {
+                box.innerHTML = '';
+                box.append(h('label', { html: '<b style="color:#16211e">Logo</b>' }));
+                if (D.logo) {
+                    box.append(h('div', { class: 'thumb', style: 'background:#0b1512' }, [
+                        h('img', { src: D.logo, style: 'max-height:56px;width:auto' })
+                    ]));
+                }
+                const file = h('input', { type: 'file', accept: 'image/*' });
+                file.addEventListener('change', async () => {
+                    const f = file.files[0]; if (!f) return;
+                    try {
+                        D.logo = await nenAnh(f, 240);   /* cao 240px là đủ nét cho mọi màn hình */
+                        save(); render(); toast('Đã đổi logo');
+                    } catch (e) { alert('Không đọc được ảnh này'); }
+                });
+                box.append(file);
+                if (D.logo) box.append(h('button', {
+                    class: 'sm danger', style: 'margin-top:.6rem',
+                    onclick: () => { D.logo = ''; save(); render(); toast('Đã bỏ logo, quay về chữ ROOTLAB'); },
+                    html: 'Bỏ logo, dùng lại chữ ROOTLAB'
+                }));
+                box.append(h('div', {
+                    class: 'hint',
+                    html: 'Nên dùng ảnh <b>PNG nền trong suốt</b>, chữ màu trắng hoặc sáng (nền web màu tối). '
+                        + 'Ảnh ngang, cao khoảng 120–240px. Để trống thì web hiện biểu tượng vẽ sẵn + chữ ROOTLAB như hiện tại.'
+                }));
+            };
+            render();
+            return box;
+        }
+
         /* Ảnh người mẫu của một dòng ở màn chọn */
         function anhNguoi(i) {
             const box = h('div');
@@ -1011,7 +1067,8 @@ body.khung-hong .prev .canhbao{display:block}
             F.innerHTML = '';
 
             F.append(panel('Chung', [
-                field('Tên thương hiệu (logo + chân trang)', 'brand'),
+                anhLogo(),
+                field('Tên thương hiệu (dùng khi chưa có ảnh logo)', 'brand'),
                 field('Chữ trên nút góc phải', 'contactBtn'),
                 field('Câu ở chân trang', 'footer.tagline'),
                 field('Dòng bản quyền', 'footer.copyright'),
