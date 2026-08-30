@@ -3232,9 +3232,15 @@
                 87 lát →  18 ms                  (mượt)
 
            Không phải đường thẳng: qua khoảng 150 lát là trình duyệt rơi khỏi
-           đường nhanh và chậm gấp mười. Nên giữ TỔNG số lát của các chai cùng
-           hiện dưới ~150. Chú ý vai chai và đáy chai dùng curve(): tốn
+           đường nhanh. Chú ý vai chai và đáy chai dùng curve(): tốn
            segs × slices, nhân lên rất nhanh — đó là chỗ dễ vỡ ngân sách nhất.
+
+           NHƯNG: đã thử cắt xuống ~76 lát cho chai lớn thì chai LỘ CẠNH ĐA GIÁC,
+           xấu hẳn. Không đánh đổi kiểu đó nữa. Chai lớn giữ ~110 lát, chai serum
+           ~120 (nó mảnh và luôn hiện ở cỡ nhỏ nên cần nhiều lát quanh trục hơn
+           mới tròn). Muốn nhẹ nữa thì giảm ở CHỖ KHÁC — bớt bong bóng, bớt lá,
+           hoặc thay hẳn bằng ẢNH CHỤP chai thật (đã có sẵn: điền ô "photo" của
+           sản phẩm trong trang quản trị là chai 3D tự nhường chỗ cho ảnh).
            ============================================================ */
 
         /* Một hình trụ = N lát dọc; mỗi lát nội suy sáng/tối 2 mép nên không thấy đường ghép */
@@ -3384,7 +3390,7 @@
                 const r = o.r0 + (o.r1 - o.r0) * Math.sin(t * Math.PI / 2);
                 parent.appendChild(makeCone({
                     top: o.top + yPrev, r0: rPrev, r1: r, h: (y - yPrev) + 1.8,
-                    slices: o.slices || 12, color: o.color, shine: o.shine, spec: o.spec,
+                    slices: o.slices || 20, color: o.color, shine: o.shine, spec: o.spec,
                     hotPow: o.hotPow, edge: o.edge, vgrad: o.vgrad
                 }));
                 yPrev = y; rPrev = r;
@@ -3458,10 +3464,10 @@
             b.className = 'bottle';
             const H = 344;
             b.appendChild(makeDisk({ y: 344, r: 54, bg: `radial-gradient(circle at 50% 50%, ${shade(body, .22)}, ${shade(body, .08)})` }));
-            b.appendChild(makeCyl({ top: 0, r: 38, h: 32, slices: 12, color: cap, alt: shade(cap, 1.28), shine: .30, spec: .14, vgrad: VG_CAP }));
-            curve(b, { top: 32, r0: 38, r1: 56, h: 50, segs: 3, slices: 8, color: shade(body, .97), shine: .44, spec: .22 });
-            b.appendChild(makeCyl({ top: 82, r: 56, h: 250, slices: 20, color: body, shine: .46, spec: .26, label: labelFor(P.key, 56, 250), labKey: P.key, vgrad: VG_LIGHT }));
-            b.appendChild(makeCone({ top: 332, r0: 56, r1: 52, h: 12, slices: 12, color: shade(body, .88), shine: .30, spec: .12 }));
+            b.appendChild(makeCyl({ top: 0, r: 38, h: 32, slices: 16, color: cap, alt: shade(cap, 1.28), shine: .30, spec: .14, vgrad: VG_CAP }));
+            curve(b, { top: 32, r0: 38, r1: 56, h: 50, segs: 4, slices: 16, color: shade(body, .97), shine: .44, spec: .22 });
+            b.appendChild(makeCyl({ top: 82, r: 56, h: 250, slices: 28, color: body, shine: .46, spec: .26, label: labelFor(P.key, 56, 250), labKey: P.key, vgrad: VG_LIGHT }));
+            b.appendChild(makeCone({ top: 332, r0: 56, r1: 52, h: 12, slices: 18, color: shade(body, .88), shine: .30, spec: .12 }));
             b.appendChild(makeDisk({ y: 0, r: 38, bg: `radial-gradient(circle at 38% 32%, ${shade(cap, 1.9)}, ${shade(cap, .62)} 74%)` }));
             ground(b, { H, w: 190, h: 54 });
             b.style.transform = `translateY(${-H / 2}px)`;
@@ -3501,13 +3507,13 @@
                thân trắng của chai lớn, phải kéo giãn khoảng sáng-tối ra mới thấy
                mặt trụ. */
             const HP = 21, EG = .96;
-            b.appendChild(makeCyl({ top: 0, r: 15, h: 14, slices: 6, color: shade(cap, 1.6), shine: .36, spec: .26, hotPow: 14, edge: .86, vgrad: VG_CAP }));   // núm bóp
-            b.appendChild(makeCyl({ top: 14, r: 23, h: 58, slices: 10, color: cap, alt: shade(cap, 1.55), shine: .40, spec: .30, hotPow: 14, edge: .86, vgrad: VG_CAP })); // nắp có gân
-            b.appendChild(makeCyl({ top: 72, r: 16, h: 15, slices: 6, color: shade(body, .66), shine: .40, spec: .26, hotPow: HP, edge: EG }));
-            curve(b, { top: 87, r0: 16, r1: 45, h: 32, segs: 3, slices: 10, color: shade(body, .95), shine: .48, spec: .30, hotPow: HP, edge: EG, vgrad: VG_AMBER });
-            b.appendChild(makeCyl({ top: 119, r: 45, h: 178, slices: 18, color: body, shine: .46, spec: .30, hotPow: HP, edge: EG, label: labelFor(P.key, 45, 200), labKey: P.key, vgrad: VG_AMBER }));
+            b.appendChild(makeCyl({ top: 0, r: 15, h: 14, slices: 12, color: shade(cap, 1.6), shine: .36, spec: .26, hotPow: 14, edge: .86, vgrad: VG_CAP }));   // núm bóp
+            b.appendChild(makeCyl({ top: 14, r: 23, h: 58, slices: 16, color: cap, alt: shade(cap, 1.55), shine: .40, spec: .30, hotPow: 14, edge: .86, vgrad: VG_CAP })); // nắp có gân
+            b.appendChild(makeCyl({ top: 72, r: 16, h: 15, slices: 12, color: shade(body, .66), shine: .40, spec: .26, hotPow: HP, edge: EG }));
+            curve(b, { top: 87, r0: 16, r1: 45, h: 32, segs: 4, slices: 14, color: shade(body, .95), shine: .48, spec: .30, hotPow: HP, edge: EG, vgrad: VG_AMBER });
+            b.appendChild(makeCyl({ top: 119, r: 45, h: 178, slices: 24, color: body, shine: .46, spec: .30, hotPow: HP, edge: EG, label: labelFor(P.key, 45, 200), labKey: P.key, vgrad: VG_AMBER }));
             /* đáy bo tròn: bán kính thu dần theo cung 1/4 nên không còn nhát vát */
-            curve(b, { top: 297, r0: 45, r1: 38, h: 15, segs: 2, slices: 12, color: shade(body, .58), shine: .34, spec: .16, hotPow: HP, edge: EG });
+            curve(b, { top: 297, r0: 45, r1: 38, h: 15, segs: 2, slices: 14, color: shade(body, .58), shine: .34, spec: .16, hotPow: HP, edge: EG });
             b.appendChild(makeDisk({ y: 0, r: 15, bg: `radial-gradient(circle at 38% 32%, ${shade(cap, 2.6)}, ${shade(cap, 1.1)} 74%)` }));
             ground(b, { H, w: 160, h: 46 });
             b.style.transform = `translateY(${-H / 2}px)`;
