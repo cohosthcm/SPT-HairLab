@@ -281,6 +281,40 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
             if (nhap) D = Object.assign(clone(BASE), JSON.parse(nhap));
         } catch (e) { }
 
+        /* ---------- dòng sản phẩm ----------
+           Màn đầu của web là chỗ chọn DÒNG SẢN PHẨM. Mỗi dòng là một trang riêng
+           và có thể gồm nhiều chai. Bản nháp cũ chưa có "lines" thì tự dựng ra,
+           mỗi chai thành một dòng, để không mất dữ liệu đang có. */
+        function chuanHoaDong() {
+            if (!Array.isArray(D.products) || !D.products.length) D.products = [{ key: 'sp1', name: 'Sản phẩm 1' }];
+            D.products.forEach((p, i) => { if (!p.key) p.key = 'sp' + (i + 1); });
+
+            if (!Array.isArray(D.lines) || !D.lines.length) {
+                D.lines = D.products.map((p, i) => ({
+                    key: p.key, name: p.name || ('Dòng ' + (i + 1)),
+                    navLabel: p.name || ('Dòng ' + (i + 1)),
+                    navKicker: 'Dòng 0' + (i + 1),
+                    nguoi: p.nguoi || (p.key + '.jpg'),
+                    accent: (p.theme || {}).inner || '#0b8a78',
+                    sp: [p.key],
+                    heroT1: p.heroT1 || (D.hero || {}).title1 || '',
+                    heroT2: p.heroT2 || (D.hero || {}).title2 || '',
+                    cta: p.buyBtn || (D.hero || {}).cta || 'Mua ngay'
+                }));
+            }
+            D.lines.forEach((l, i) => {
+                if (!l.key) l.key = 'dong' + (i + 1);
+                l.sp = (Array.isArray(l.sp) ? l.sp : []).filter(k => D.products.some(p => p.key === k));
+                if (!l.sp.length) l.sp = [D.products[Math.min(i, D.products.length - 1)].key];
+                /* Mỗi dòng giữ nội dung riêng của nó. Dòng nào chưa có thì chép từ
+                   nội dung dùng chung để sửa được ngay, không phải gõ lại từ đầu. */
+                ['ingredients', 'howto', 'results', 'reviews', 'pricing'].forEach(k => {
+                    if (!l[k] && D[k]) l[k] = clone(D[k]);
+                });
+            });
+        }
+        chuanHoaDong();
+
         const get = (p) => p.split('.').reduce((v, k) => v == null ? v : v[k], D);
         const set = (p, val) => {
             const ks = p.split('.'); let o = D;
@@ -526,31 +560,45 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
             gia: '<path d="M20.6 13.4L13 21a1.9 1.9 0 0 1-2.7 0l-7.6-7.6A2 2 0 0 1 2 12V4a2 2 0 0 1 2-2h8a2 2 0 0 1 1.4.6l7.2 7.2a1.9 1.9 0 0 1 0 2.6z"/><path d="M7 7h.01"/>',
             phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.7 2z"/>',
         };
-        const SECTIONS = [
-            { id:'sec-chung', label:'Chung', ic:'gear', sec:'home',
-              mo:'Tên thương hiệu, chữ trên menu, chân trang — những thứ hiện ở mọi màn.' },
-            { id:'sec-hero', label:'Màn đầu', ic:'man', sec:'home',
-              mo:'Màn hình đầu tiên khách nhìn thấy: tiêu đề lớn, nút chính, dòng cam kết.' },
-            { id:'sec-sp1', label:'Sản phẩm 1', ic:'chai', group:'Sản phẩm', sec:'home', sp:0,
-              mo:'Tên, mô tả, giá, màu chai và chữ in trên thân chai 3D.' },
-            { id:'sec-sp2', label:'Sản phẩm 2', ic:'chai', group:'Sản phẩm', sec:'home', sp:1,
-              mo:'Tên, mô tả, giá, màu chai và chữ in trên thân chai 3D.' },
-            { id:'sec-thanhphan', label:'Thành phần', ic:'ds', sec:'thanh-phan',
-              mo:'Danh sách hoạt chất và tác dụng. Nhãn B1 là của chai làm sạch, B2 là của serum.' },
-            { id:'sec-cachdung', label:'Cách dùng', ic:'buoc', sec:'cach-dung',
-              mo:'Các bước dùng, kèm tần suất (mỗi tối, 2–3 lần/tuần…).' },
-            { id:'sec-hieuqua', label:'Hiệu quả', ic:'chart', sec:'hieu-qua',
-              mo:'Mốc thời gian theo tuần và các ô số liệu. Nhớ thay bằng khảo sát thật trước khi bán.' },
-            { id:'sec-danhgia', label:'Đánh giá', ic:'sao', sec:'danh-gia',
-              mo:'Phản hồi khách hàng. Nhớ thay bằng đánh giá thật.' },
-            { id:'sec-banggia', label:'Bảng giá', ic:'gia', sec:'gia',
-              mo:'Giá từng sản phẩm và ưu đãi mua bộ đôi.' },
-            { id:'sec-lienhe', label:'Liên hệ', ic:'phone', sec:'lien-he',
-              mo:'Số điện thoại, Zalo, Shopee… hiện ở chân trang và nút liên hệ.' }
-        ];
+        /* Danh sách mục bên trái dựng theo đúng các dòng sản phẩm đang có,
+           nên thêm một dòng mới là tự có đủ 6 mục nội dung của dòng đó. */
+        let SECTIONS = [];
+        function dungSections() {
+            const S = [
+                { id: 'sec-chung', label: 'Chung', ic: 'gear', sec: 'home',
+                  mo: 'Tên thương hiệu, chữ trên menu, chân trang — những thứ hiện ở mọi màn.' },
+                { id: 'sec-manchon', label: 'Màn chọn dòng', ic: 'man', sec: 'chon',
+                  mo: 'Màn hình đầu tiên: khách chọn dòng sản phẩm. Thêm, xoá, đổi tên các dòng ở đây.' },
+                { id: 'sec-hero', label: 'Khung chung màn 1', ic: 'ds', sec: 'home',
+                  mo: 'Những chữ dùng chung cho mọi dòng ở màn sản phẩm: tiêu đề bên phải, dòng cam kết, gợi ý cuộn.' }
+            ];
+            D.lines.forEach((l, i) => {
+                const g = 'DÒNG ' + (i + 1) + ' · ' + (l.navLabel || l.name || '');
+                S.push({ id: `sec-d${i}`, label: 'Giới thiệu dòng', ic: 'man', group: g, sec: 'home', dong: i,
+                    mo: 'Tên dòng, ảnh người mẫu ở màn chọn, tiêu đề lớn và nút mua của trang này.' });
+                S.push({ id: `sec-d${i}-tp`, label: 'Thành phần', ic: 'ds', group: g, sec: 'thanh-phan', dong: i,
+                    mo: 'Danh sách hoạt chất và tác dụng — của riêng dòng này.' });
+                S.push({ id: `sec-d${i}-cd`, label: 'Cách dùng', ic: 'buoc', group: g, sec: 'cach-dung', dong: i,
+                    mo: 'Các bước dùng, kèm tần suất (mỗi tối, 2–3 lần/tuần…).' });
+                S.push({ id: `sec-d${i}-hq`, label: 'Hiệu quả', ic: 'chart', group: g, sec: 'hieu-qua', dong: i,
+                    mo: 'Mốc thời gian theo tuần và các ô số liệu. Nhớ thay bằng khảo sát thật trước khi bán.' });
+                S.push({ id: `sec-d${i}-dg`, label: 'Đánh giá', ic: 'sao', group: g, sec: 'danh-gia', dong: i,
+                    mo: 'Phản hồi khách hàng. Nhớ thay bằng đánh giá thật.' });
+                S.push({ id: `sec-d${i}-gia`, label: 'Bảng giá', ic: 'gia', group: g, sec: 'gia', dong: i,
+                    mo: 'Chữ trên màn giá và ô mua cả bộ. Giá từng chai nằm ở mục CHAI bên dưới.' });
+            });
+            D.products.forEach((p, i) => {
+                S.push({ id: `sec-sp${i}`, label: p.name || ('Chai ' + (i + 1)), ic: 'chai', group: 'CHAI SẢN PHẨM',
+                    sec: 'home', sp: i, mo: 'Tên, mô tả, giá, màu chai và chữ in trên thân chai 3D.' });
+            });
+            S.push({ id: 'sec-lienhe', label: 'Liên hệ', ic: 'phone', sec: 'lien-he',
+                mo: 'Số điện thoại, Zalo, Shopee… hiện ở chân trang và nút liên hệ.' });
+            SECTIONS = S;
+        }
+        dungSections();
 
         function setActiveSection(id) {
-            document.querySelectorAll('.secnav .seclink').forEach(b => {
+            document.querySelectorAll('#secnav .seclink').forEach(b => {
                 b.classList.toggle('active', b.dataset.sec === id);
             });
         }
@@ -572,13 +620,18 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
         function nhayToi(m) {
             const fr = document.getElementById('preview');
             if (!fr || !fr.contentWindow || !m.sec) return;
-            const sp = (m.sp != null && D.products[m.sp]) ? D.products[m.sp].key : null;
+            /* mục của một dòng thì nhảy tới đúng dòng, mục của một chai thì nhảy tới chai */
+            const sp = (m.dong != null && D.lines[m.dong]) ? D.lines[m.dong].key
+                : (m.sp != null && D.products[m.sp]) ? D.products[m.sp].key : null;
             const w = fr.contentWindow;
             /* Khung xem trước cùng tên miền nên gọi thẳng được — không phải sửa index.html */
             try {
-                if (sp && typeof w.switchProduct === 'function') w.switchProduct(sp);
+                if (sp && typeof w.rootlabGoto === 'function') w.rootlabGoto(sp);
+                else if (sp && typeof w.switchProduct === 'function') w.switchProduct(sp);
+                /* màn chọn nằm trên cùng — cuộn thẳng về 0 để thanh menu tự ẩn đi */
+                if (m.sec === 'chon') { w.scrollTo(0, 0); return; }
                 const el = w.document.getElementById(m.sec);
-                if (el) { el.scrollIntoView({ behavior: 'auto', block: 'start' }); return; }
+                if (el) { el.scrollIntoView({ behavior: 'auto', block: m.sec === 'chon' ? 'start' : 'start' }); return; }
             } catch (e) { /* khác tên miền thì rơi xuống cách dưới */ }
             try { w.postMessage({ rootlab: 'goto', sec: m.sec, sp }, '*'); } catch (e) { }
             try { w.location.hash = '#' + m.sec; } catch (e) { }
@@ -603,6 +656,134 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
             document.getElementById('mucMo').textContent = d.mo || '';
         }
 
+        /* ---------- công cụ riêng cho dòng sản phẩm ---------- */
+        const khoaMoi = ten => {
+            const b = (ten || 'dong').toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd')
+                .replace(/[^a-z0-9]+/g, '').slice(0, 14) || 'dong';
+            let k = b, n = 2;
+            while (D.lines.some(l => l.key === k) || D.products.some(p => p.key === k)) k = b + (n++);
+            return k;
+        };
+
+        /* Bảng thêm / xoá / đổi thứ tự các dòng ở màn chọn */
+        function bangDong() {
+            const box = h('div');
+            const render = () => {
+                box.innerHTML = '';
+                box.append(h('label', { html: 'Các dòng đang hiện ở màn chọn' }));
+                D.lines.forEach((l, i) => {
+                    const card = h('div', { class: 'item' });
+                    card.append(h('div', { class: 'hd' }, [
+                        h('b', { html: `${i + 1}. ${l.navLabel || l.name || 'Chưa đặt tên'}` }),
+                        h('button', { class: 'sm', title: 'Lên', html: '↑', onclick: () => {
+                            if (i > 0) { [D.lines[i - 1], D.lines[i]] = [D.lines[i], D.lines[i - 1]]; lamMoiForm(); }
+                        } }),
+                        h('button', { class: 'sm', title: 'Xuống', html: '↓', onclick: () => {
+                            if (i < D.lines.length - 1) { [D.lines[i + 1], D.lines[i]] = [D.lines[i], D.lines[i + 1]]; lamMoiForm(); }
+                        } }),
+                        h('button', { class: 'sm', title: 'Sửa dòng này', html: 'Sửa',
+                            onclick: () => goToSection('sec-d' + i) }),
+                        h('button', { class: 'sm danger', title: 'Xoá', html: '✕', onclick: () => {
+                            if (D.lines.length < 2) { alert('Phải còn ít nhất một dòng.'); return; }
+                            if (!confirm(`Xoá dòng “${l.name || ''}”? Nội dung riêng của dòng này sẽ mất.`)) return;
+                            D.lines.splice(i, 1); lamMoiForm();
+                        } })
+                    ]));
+                    const ten = h('input', { type: 'text' }); ten.value = l.navLabel || '';
+                    ten.addEventListener('input', () => { l.navLabel = ten.value; save(); });
+                    card.append(h('label', { html: 'Chữ trên nút ở màn chọn' }), ten);
+                    card.append(h('div', { class: 'hint', html: 'Gồm: ' + l.sp.map(k => (D.products.find(p => p.key === k) || {}).name || k).join(' + ') }));
+                    box.append(card);
+                });
+                box.append(h('button', {
+                    class: 'sm', style: 'margin-top:.6rem', html: '+ Thêm dòng sản phẩm',
+                    onclick: () => {
+                        const ten = (prompt('Tên dòng mới (ví dụ: Dầu xả & Ủ tóc)') || '').trim();
+                        if (!ten) return;
+                        const goc = D.lines[0] || {};
+                        D.lines.push({
+                            key: khoaMoi(ten), name: ten, navLabel: ten,
+                            navKicker: 'Dòng 0' + (D.lines.length + 1),
+                            nguoi: goc.nguoi || '', accent: goc.accent || '#0b8a78',
+                            sp: [D.products[0].key],
+                            heroT1: goc.heroT1 || '', heroT2: goc.heroT2 || '', cta: 'Mua ngay',
+                            ingredients: clone(goc.ingredients || D.ingredients || {}),
+                            howto: clone(goc.howto || D.howto || {}),
+                            results: clone(goc.results || D.results || {}),
+                            reviews: clone(goc.reviews || D.reviews || {}),
+                            pricing: clone(goc.pricing || D.pricing || {})
+                        });
+                        lamMoiForm();
+                        toast('Đã thêm dòng — nhớ chọn chai và sửa nội dung cho dòng này');
+                    }
+                }));
+                box.append(h('div', { class: 'hint', html: 'Dòng mới chép tạm nội dung của dòng đầu tiên để bạn sửa lại cho nhanh. Nhớ vào mục <b>Giới thiệu dòng</b> chọn đúng chai và đổi ảnh người mẫu.' }));
+            };
+            render();
+            return box;
+        }
+
+        /* Chọn những chai thuộc một dòng */
+        function chonChai(i) {
+            const box = h('div');
+            const render = () => {
+                box.innerHTML = '';
+                D.products.forEach(p => {
+                    const on = D.lines[i].sp.includes(p.key);
+                    const cb = h('input', { type: 'checkbox' }); cb.checked = on;
+                    cb.style.cssText = 'width:auto;margin-right:.5rem';
+                    cb.addEventListener('change', () => {
+                        const sp = D.lines[i].sp;
+                        if (cb.checked) { if (!sp.includes(p.key)) sp.push(p.key); }
+                        else if (sp.length > 1) sp.splice(sp.indexOf(p.key), 1);
+                        else { cb.checked = true; alert('Mỗi dòng phải có ít nhất một chai.'); return; }
+                        save(); render();
+                    });
+                    const lb = h('label', { style: 'display:flex;align-items:center;font-weight:500;margin:.2rem 0' });
+                    lb.append(cb, document.createTextNode(p.name || p.key));
+                    box.append(lb);
+                });
+                box.append(h('div', { class: 'hint', html: 'Chọn từ 2 chai trở lên thì trang của dòng này có nút qua lại giữa các chai và ô “mua cả bộ”.' }));
+            };
+            render();
+            return box;
+        }
+
+        /* Ảnh người mẫu của một dòng ở màn chọn */
+        function anhNguoi(i) {
+            const box = h('div');
+            const render = () => {
+                box.innerHTML = '';
+                const l = D.lines[i];
+                box.append(h('label', { html: 'Ảnh người mẫu ở màn chọn' }));
+                const inp = h('input', { type: 'text' }); inp.value = l.nguoi || '';
+                inp.addEventListener('input', () => { l.nguoi = inp.value; save(); });
+                box.append(inp);
+                box.append(h('div', { class: 'hint', html: 'Tên file ảnh đã có sẵn trên web: <b>growth.jpg · shampoo.jpg · serum.jpg · cond.jpg · bath.jpg · scalp.jpg</b>. Hoặc chọn một ảnh mới ở dưới.' }));
+                const file = h('input', { type: 'file', accept: 'image/*' });
+                file.addEventListener('change', async () => {
+                    const f = file.files[0]; if (!f) return;
+                    try { l.nguoi = await nenAnh(f, 900); save(); render(); toast('Đã đổi ảnh người mẫu'); }
+                    catch (e) { alert('Không đọc được ảnh này'); }
+                });
+                box.append(file);
+                if (l.nguoi) box.append(h('div', { class: 'thumb' }, [h('img', { src: l.nguoi })]));
+            };
+            render();
+            return box;
+        }
+
+        /* Thêm / xoá / đổi thứ tự dòng làm đổi luôn danh sách mục bên trái */
+        function lamMoiForm() {
+            chuanHoaDong();
+            save();
+            const giu = document.querySelector('#secnav .seclink.active')?.dataset.sec;
+            dungSections();
+            buildForm();
+            if (giu && SECTIONS.some(s => s.id === giu)) goToSection(giu);
+        }
+
         /* ---------- dựng toàn bộ form ---------- */
         function buildForm() {
             const F = document.getElementById('form');
@@ -617,19 +798,90 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
                 h('div', { class: 'hint', html: 'Menu gắn cố định với 6 màn: Trang chủ · Thành phần · Cách dùng · Hiệu quả · Đánh giá · Giá. Đổi chữ được, đừng xoá bớt.' })
             ], true, 'sec-chung'));
 
-            F.append(panel('Màn đầu (hero)', [
-                h('div', { class: 'row' }, [field('Tiêu đề lớn — dòng 1', 'hero.title1'), field('Dòng 2', 'hero.title2')]),
+            F.append(panel('Màn chọn dòng sản phẩm', [
+                h('div', { class: 'hint', html: 'Đây là màn hình đầu tiên khách nhìn thấy. Mỗi <b>dòng</b> ở đây là một trang riêng — bấm vào dòng nào thì toàn bộ trang bên dưới (thành phần, cách dùng, hiệu quả, đánh giá, bảng giá) đổi theo dòng đó. Một dòng có thể gồm nhiều chai.' }),
+                bangDong()
+            ], false, 'sec-manchon'));
+
+            F.append(panel('Khung chung của màn sản phẩm', [
+                h('div', { class: 'hint', html: 'Những chữ này dùng chung cho mọi dòng. Tiêu đề lớn bên trái và nút mua nằm trong từng dòng.' }),
                 h('div', { class: 'row' }, [field('Tiêu đề phải — dòng 1', 'hero.side1'), field('Dòng 2', 'hero.side2')]),
-                field('Chữ trên nút chính', 'hero.cta'),
                 h('div', { class: 'row' }, [field('Nhãn cam kết — dòng nhỏ', 'hero.badgeTitle'), field('Dòng đậm', 'hero.badgeSub')]),
                 field('Chữ gợi ý cuộn', 'hero.scrollHint')
             ], false, 'sec-hero'));
 
+            /* ---------- từng dòng sản phẩm ---------- */
+            D.lines.forEach((l, i) => {
+                F.append(panel(`Dòng ${i + 1} — ${l.name || ''}`, [
+                    field('Tên dòng (hiện dưới ảnh người mẫu)', `lines.${i}.name`),
+                    field('Chữ trên nút ở màn chọn', `lines.${i}.navLabel`),
+                    anhNguoi(i),
+                    colorField('Màu nền màn chọn', `lines.${i}.accent`),
+                    h('div', { class: 'hint', html: 'Màu này chỉ dùng cho màn chọn. Màu nền của trang sản phẩm lấy theo từng chai ở mục CHAI bên dưới.' }),
+                    h('label', { html: '<b style="color:#16211e">Chai thuộc dòng này</b>' }),
+                    chonChai(i),
+                    h('label', { html: '<b style="color:#16211e">Trang của dòng này</b>' }),
+                    h('div', { class: 'row' }, [field('Tiêu đề lớn — dòng 1', `lines.${i}.heroT1`), field('Dòng 2', `lines.${i}.heroT2`)]),
+                    field('Chữ trên nút mua ở màn đầu', `lines.${i}.cta`)
+                ], false, `sec-d${i}`));
+
+                F.append(panel(`Thành phần — ${l.name || ''}`, [
+                    field('Nhãn nhỏ', `lines.${i}.ingredients.eyebrow`),
+                    h('div', { class: 'row' }, [field('Tiêu đề dòng 1', `lines.${i}.ingredients.t1`), field('Dòng 2', `lines.${i}.ingredients.t2`)]),
+                    field('Câu dẫn', `lines.${i}.ingredients.lead`, { area: true }),
+                    listEditor('Danh sách thành phần', `lines.${i}.ingredients.items`,
+                        [{ k: 'chip', l: 'Nhãn nhỏ' }, { k: 'name', l: 'Tên thành phần' }, { k: 'desc', l: 'Tác dụng', area: true }],
+                        () => ({ chip: '01', name: 'Thành phần mới', desc: '' }), it => it.name),
+                    field('Ghi chú cuối', `lines.${i}.ingredients.note`)
+                ], false, `sec-d${i}-tp`));
+
+                F.append(panel(`Cách dùng — ${l.name || ''}`, [
+                    field('Nhãn nhỏ', `lines.${i}.howto.eyebrow`),
+                    h('div', { class: 'row' }, [field('Tiêu đề dòng 1', `lines.${i}.howto.t1`), field('Dòng 2', `lines.${i}.howto.t2`)]),
+                    field('Câu dẫn', `lines.${i}.howto.lead`, { area: true }),
+                    listEditor('Các bước', `lines.${i}.howto.steps`,
+                        [{ k: 'no', l: 'Số thứ tự' }, { k: 'h', l: 'Tên bước' }, { k: 'p', l: 'Mô tả', area: true }, { k: 'em', l: 'Dòng tần suất' }],
+                        () => ({ no: '04', h: 'Bước mới', p: '', em: '' }), it => it.no + ' · ' + it.h)
+                ], false, `sec-d${i}-cd`));
+
+                F.append(panel(`Hiệu quả — ${l.name || ''}`, [
+                    field('Nhãn nhỏ', `lines.${i}.results.eyebrow`),
+                    h('div', { class: 'row' }, [field('Tiêu đề dòng 1', `lines.${i}.results.t1`), field('Dòng 2', `lines.${i}.results.t2`)]),
+                    field('Câu dẫn', `lines.${i}.results.lead`, { area: true }),
+                    listEditor('Mốc thời gian', `lines.${i}.results.weeks`,
+                        [{ k: 'b', l: 'Mốc' }, { k: 's', l: 'Diễn giải' }],
+                        () => ({ b: 'Tuần 16', s: '' }), it => it.b),
+                    listEditor('Ô số liệu', `lines.${i}.results.tiles`,
+                        [{ k: 'val', l: 'Con số' }, { k: 'lbl', l: 'Diễn giải' }],
+                        () => ({ val: '0%', lbl: '' }), it => it.val),
+                    field('Ghi chú cuối', `lines.${i}.results.note`)
+                ], false, `sec-d${i}-hq`));
+
+                F.append(panel(`Đánh giá — ${l.name || ''}`, [
+                    field('Nhãn nhỏ', `lines.${i}.reviews.eyebrow`),
+                    h('div', { class: 'row' }, [field('Tiêu đề dòng 1', `lines.${i}.reviews.t1`), field('Dòng 2', `lines.${i}.reviews.t2`)]),
+                    listEditor('Các đánh giá', `lines.${i}.reviews.items`,
+                        [{ k: 'stars', l: 'Số sao (1–5)' }, { k: 'text', l: 'Nội dung', area: true }, { k: 'name', l: 'Tên, tuổi' }, { k: 'meta', l: 'Đã dùng bao lâu' }],
+                        () => ({ stars: 5, text: '', name: 'Khách hàng', meta: '' }), it => it.name),
+                    field('Ghi chú cuối', `lines.${i}.reviews.note`)
+                ], false, `sec-d${i}-dg`));
+
+                F.append(panel(`Bảng giá — ${l.name || ''}`, [
+                    field('Nhãn nhỏ', `lines.${i}.pricing.eyebrow`),
+                    h('div', { class: 'row' }, [field('Tiêu đề dòng 1', `lines.${i}.pricing.t1`), field('Dòng 2', `lines.${i}.pricing.t2`)]),
+                    h('div', { class: 'hint', html: 'Ô “mua cả bộ” chỉ hiện khi dòng này có từ 2 chai trở lên. Để trống ô <b>Chữ combo</b> là ẩn hẳn.' }),
+                    h('div', { class: 'row' }, [field('Chữ combo', `lines.${i}.pricing.comboLabel`), field('Giá gạch ngang', `lines.${i}.pricing.comboOld`)]),
+                    h('div', { class: 'row' }, [field('Giá combo', `lines.${i}.pricing.comboNew`), field('Chữ nút combo', `lines.${i}.pricing.comboBtn`)]),
+                    field('Link khi bấm nút combo', `lines.${i}.pricing.comboLink`, { hint: 'Để trống thì nút tự dùng Zalo / số điện thoại ở mục Liên hệ.' }),
+                    field('Ghi chú cuối', `lines.${i}.pricing.note`)
+                ], false, `sec-d${i}-gia`));
+            });
+
             D.products.forEach((p, i) => {
-                F.append(panel(`Sản phẩm ${i + 1} — ${p.name || ''}`, [
+                F.append(panel(`Chai ${i + 1} — ${p.name || ''}`, [
                     field('Tên sản phẩm', `products.${i}.name`),
                     field('Dòng phụ trên thẻ', `products.${i}.cardSub`),
-                    field('Dòng "Bước…" ở màn đầu', `products.${i}.tag`),
+                    field('Dòng chữ nhỏ phía trên tiêu đề', `products.${i}.tag`),
                     field('Mô tả ở màn đầu', `products.${i}.desc`, { area: true, hint: 'Xuống dòng bằng <b>&lt;br&gt;</b>' }),
 
                     h('label', { html: '<b style="color:#16211e">Chữ in trên thân chai 3D</b>' }),
@@ -645,7 +897,7 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
                         colorField('Chữ trên nhãn', `products.${i}.bottle.ink`)
                     ]),
 
-                    h('label', { html: '<b style="color:#16211e">Màu nền khi chọn sản phẩm này</b>' }),
+                    h('label', { html: '<b style="color:#16211e">Màu nền trang khi đang xem chai này</b>' }),
                     h('div', { class: 'row' }, [
                         colorField('Giữa', `products.${i}.theme.inner`),
                         colorField('Vòng ngoài', `products.${i}.theme.mid`),
@@ -659,59 +911,9 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
                     field('Dòng mô tả dưới tên', `products.${i}.priceSub`),
                     field('Link khi bấm nút mua', `products.${i}.buyLink`, { hint: 'Dán link giỏ hàng / Shopee / form đặt hàng. Để trống thì nút không làm gì.' }),
                     listEditor('Các gạch đầu dòng', `products.${i}.features`, null, () => 'Dòng mới')
-                ], false, i === 0 ? 'sec-sp1' : 'sec-sp2'));
+                ], false, `sec-sp${i}`));
             });
 
-            F.append(panel('Màn Thành phần', [
-                field('Nhãn nhỏ', 'ingredients.eyebrow'),
-                h('div', { class: 'row' }, [field('Tiêu đề dòng 1', 'ingredients.t1'), field('Dòng 2', 'ingredients.t2')]),
-                field('Câu dẫn', 'ingredients.lead', { area: true }),
-                listEditor('Danh sách thành phần', 'ingredients.items',
-                    [{ k: 'chip', l: 'Nhãn nhỏ (B1 / B2)' }, { k: 'name', l: 'Tên thành phần' }, { k: 'desc', l: 'Tác dụng', area: true }],
-                    () => ({ chip: 'B1', name: 'Thành phần mới', desc: '' }), it => it.name),
-                field('Ghi chú cuối', 'ingredients.note')
-            ], false, 'sec-thanhphan'));
-
-            F.append(panel('Màn Cách dùng', [
-                field('Nhãn nhỏ', 'howto.eyebrow'),
-                h('div', { class: 'row' }, [field('Tiêu đề dòng 1', 'howto.t1'), field('Dòng 2', 'howto.t2')]),
-                field('Câu dẫn', 'howto.lead', { area: true }),
-                listEditor('Các bước', 'howto.steps',
-                    [{ k: 'no', l: 'Số thứ tự' }, { k: 'h', l: 'Tên bước' }, { k: 'p', l: 'Mô tả', area: true }, { k: 'em', l: 'Dòng tần suất' }],
-                    () => ({ no: '04', h: 'Bước mới', p: '', em: '' }), it => it.no + ' · ' + it.h)
-            ], false, 'sec-cachdung'));
-
-            F.append(panel('Màn Hiệu quả', [
-                field('Nhãn nhỏ', 'results.eyebrow'),
-                h('div', { class: 'row' }, [field('Tiêu đề dòng 1', 'results.t1'), field('Dòng 2', 'results.t2')]),
-                field('Câu dẫn', 'results.lead', { area: true }),
-                listEditor('Mốc thời gian', 'results.weeks',
-                    [{ k: 'b', l: 'Mốc' }, { k: 's', l: 'Diễn giải' }],
-                    () => ({ b: 'Tuần 16', s: '' }), it => it.b),
-                listEditor('Ô số liệu', 'results.tiles',
-                    [{ k: 'val', l: 'Con số' }, { k: 'lbl', l: 'Diễn giải' }],
-                    () => ({ val: '0%', lbl: '' }), it => it.val),
-                field('Ghi chú cuối', 'results.note')
-            ], false, 'sec-hieuqua'));
-
-            F.append(panel('Màn Đánh giá', [
-                field('Nhãn nhỏ', 'reviews.eyebrow'),
-                h('div', { class: 'row' }, [field('Tiêu đề dòng 1', 'reviews.t1'), field('Dòng 2', 'reviews.t2')]),
-                listEditor('Các đánh giá', 'reviews.items',
-                    [{ k: 'stars', l: 'Số sao (1–5)' }, { k: 'text', l: 'Nội dung', area: true }, { k: 'name', l: 'Tên, tuổi' }, { k: 'meta', l: 'Đã dùng bao lâu' }],
-                    () => ({ stars: 5, text: '', name: 'Khách hàng', meta: '' }), it => it.name),
-                field('Ghi chú cuối', 'reviews.note')
-            ], false, 'sec-danhgia'));
-
-            F.append(panel('Màn Bảng giá', [
-                field('Nhãn nhỏ', 'pricing.eyebrow'),
-                h('div', { class: 'row' }, [field('Tiêu đề dòng 1', 'pricing.t1'), field('Dòng 2', 'pricing.t2')]),
-                h('div', { class: 'row' }, [field('Chữ combo', 'pricing.comboLabel'), field('Giá gạch ngang', 'pricing.comboOld')]),
-                h('div', { class: 'row' }, [field('Giá combo', 'pricing.comboNew'), field('Chữ nút combo', 'pricing.comboBtn')]),
-                field('Link khi bấm nút combo', 'pricing.comboLink', { hint: 'Để trống thì nút tự dùng Zalo / số điện thoại ở mục Liên hệ bên dưới.' }),
-                field('Ghi chú cuối', 'pricing.note'),
-                h('div', { class: 'hint', html: 'Giá từng sản phẩm nằm trong mục “Sản phẩm 1 / 2” phía trên.' })
-            ], false, 'sec-banggia'));
 
             F.append(panel('Liên hệ & đặt hàng', [
                 h('div', { class: 'hint', html: 'Ô nào để trống thì tự ẩn khỏi trang. Nút mua chưa có link riêng sẽ tự dùng Zalo, không có Zalo thì dùng số điện thoại.' }),
