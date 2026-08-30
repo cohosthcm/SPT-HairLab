@@ -413,7 +413,12 @@
             text-transform: uppercase;
             color: var(--accent);
             width: fit-content;
+            /* dòng này màu hồng nhạt, vắt qua chiếc lá trang trí là chìm mất chữ —
+               thêm bóng mờ để đọc được ở mọi nền, mọi thứ tiếng */
+            text-shadow: 0 1px 10px rgba(0, 0, 0, .55);
         }
+
+        body.theme-serum .step-tag { text-shadow: 0 1px 10px rgba(255, 255, 255, .6); }
 
         .step-tag::before {
             content: "";
@@ -1998,6 +2003,40 @@
         body.o-man-chon header.header,
         body.o-man-chon .scroll-hint { opacity: 0; pointer-events: none; }
 
+        /* ----- chọn ngôn ngữ ----- */
+        .header-right { display: flex; align-items: center; gap: 14px; }
+        .ngonngu { display: flex; align-items: center; gap: 2px; padding: 3px;
+            border-radius: 100px; background: rgba(0, 0, 0, .32);
+            border: 1px solid rgba(255, 255, 255, .13); }
+        .ngonngu button { border: 0; background: none; cursor: pointer;
+            font-family: var(--font-main); font-size: .68rem; font-weight: 600; letter-spacing: .08em;
+            color: rgba(255, 255, 255, .58); padding: 5px 8px; border-radius: 100px;
+            transition: color .25s ease, background .25s ease; }
+        .ngonngu button:hover { color: #fff; }
+        .ngonngu button.on { background: rgba(255, 255, 255, .93); color: #06231d; }
+        body.theme-serum .ngonngu button.on { color: #2a1a02; }
+        .cs-bar .ngonngu { background: rgba(0, 0, 0, .26); }
+
+        @media (max-width: 900px) {
+            .header-right { gap: 8px; }
+            .ngonngu button { padding: 5px 6px; font-size: .63rem; }
+        }
+
+        /* Điện thoại: logo + 5 nút tiếng + nút liên hệ không đủ chỗ trên một hàng,
+           nên thu nhỏ cả ba lại thay vì để nút liên hệ bị đẩy ra ngoài màn hình. */
+        @media (max-width: 620px) {
+            .header { padding: 1.15rem 4%; gap: 6px; }
+            .header-right { gap: 6px; flex-shrink: 0; }
+            .ngonngu { padding: 2px; gap: 0; }
+            .ngonngu button { padding: 4px 4px; font-size: .56rem; letter-spacing: .01em; }
+            .contact-btn { padding: .62rem 1rem; font-size: .72rem; white-space: nowrap; }
+            .logo { min-width: 0; }
+            .logo span { font-size: 1rem; letter-spacing: .04em; }
+            .logo svg { width: 22px; height: 22px; }
+            .cs-bar { padding: 18px 5%; }
+            .cs-bar .ngonngu button { padding: 4px 5px; font-size: .58rem; }
+        }
+
         /* Dòng chỉ có một chai thì không cần nút qua lại giữa các chai */
         body.mot-chai .carousel-nav { display: none; }
         body.mot-chai .carousel-cards { justify-content: center; }
@@ -2010,7 +2049,7 @@
     <header class="chooser" id="chon">
         <div class="cs-bar">
             <div class="cs-brand">ROOTLAB<small>HAIR LABORATORY</small></div>
-            
+            <div id="tieng-chon"></div>
         </div>
         <div class="cs-stage">
             <div class="cs-wrap">
@@ -2081,7 +2120,10 @@
             <span data-c="brand">ROOTLAB</span>
         </div>
         <nav class="nav" data-list="nav"></nav>
-        <button class="contact-btn" data-c="contactBtn">Liên hệ</button>
+        <div class="header-right">
+            <div id="tieng-trang"></div>
+            <button class="contact-btn" data-c="contactBtn">Liên hệ</button>
+        </div>
     </header>
 
     <main>
@@ -2543,6 +2585,71 @@
             else if (window.ROOTLAB_CONTENT) C = deepMerge(DEFAULT_CONTENT, window.ROOTLAB_CONTENT);
         } catch (e) { }
 
+        /* ============================================================
+           NGÔN NGỮ
+           Bản tiếng Việt là gốc. Mỗi thứ tiếng khác chỉ khai những câu
+           cần dịch trong C.i18n, câu nào không khai thì giữ nguyên bản gốc.
+           Đổi tiếng = tải lại trang: chai 3D nướng chữ ngay lúc khởi động,
+           dựng lại giữa chừng dễ sinh lỗi hơn nhiều so với một lần tải lại.
+           ============================================================ */
+        const TIENG = [
+            { ma: 'vi', ten: 'Tiếng Việt', tat: 'VI' },
+            { ma: 'en', ten: 'English', tat: 'EN' },
+            { ma: 'fr', ten: 'Français', tat: 'FR' },
+            { ma: 'it', ten: 'Italiano', tat: 'IT' },
+            { ma: 'ja', ten: '日本語', tat: 'JA' }
+        ];
+        const COTIENG = m => TIENG.some(t => t.ma === m);
+        const LANG = (() => {
+            try {
+                const q = new URLSearchParams(location.search).get('lang');
+                if (q && COTIENG(q)) { localStorage.setItem('rootlab_lang', q); return q; }
+                const luu = localStorage.getItem('rootlab_lang');
+                if (luu && COTIENG(luu)) return luu;
+                const may = (navigator.language || '').slice(0, 2).toLowerCase();
+                return COTIENG(may) ? may : 'vi';
+            } catch (e) { return 'vi'; }
+        })();
+        /* Trộn bản dịch: mảng ghép theo VỊ TRÍ (không thay cả mảng như deepMerge),
+           nhờ vậy bản dịch chỉ cần ghi câu nào đổi, phần còn lại giữ nguyên. */
+        function phuTieng(goc, dich) {
+            if (dich === undefined || dich === null) return goc;
+            if (Array.isArray(goc)) return Array.isArray(dich) ? goc.map((v, i) => phuTieng(v, dich[i])) : goc;
+            if (goc && typeof goc === 'object') {
+                const ra = {};
+                for (const k of Object.keys(goc)) ra[k] = (dich && k in dich) ? phuTieng(goc[k], dich[k]) : goc[k];
+                return ra;
+            }
+            return dich;
+        }
+        try {
+            if (LANG !== 'vi' && C.i18n && C.i18n[LANG]) C = phuTieng(C, C.i18n[LANG]);
+            document.documentElement.lang = LANG;
+        } catch (e) { }
+        function doiTieng(ma) {
+            if (!COTIENG(ma) || ma === LANG) return;
+            try { localStorage.setItem('rootlab_lang', ma); } catch (e) { }
+            const q = new URLSearchParams(location.search);
+            q.set('lang', ma);
+            location.href = location.pathname + '?' + q.toString();
+        }
+        /* dựng hàng nút VI EN FR IT JA vào một chỗ trống cho sẵn */
+        function veNutTieng(o) {
+            if (!o) return;
+            o.innerHTML = '';
+            o.className = 'ngonngu';
+            TIENG.forEach(t => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = t.tat;
+                b.title = t.ten;
+                b.setAttribute('aria-label', t.ten);
+                if (t.ma === LANG) b.className = 'on';
+                b.addEventListener('click', e => { e.stopPropagation(); doiTieng(t.ma); });
+                o.appendChild(b);
+            });
+        }
+
         const NAV_IDS = ['home', 'thanh-phan', 'cach-dung', 'hieu-qua', 'danh-gia', 'gia'];
         const esc = t => String(t == null ? '' : t);
         const at = (o, path) => path.split('.').reduce((v, k) => (v == null ? v : v[k]), o);
@@ -2789,6 +2896,8 @@
                 `<a href="#${NAV_IDS[i] || 'home'}" class="nav-item${i === 0 ? ' active' : ''}">${esc(t)}</a>`).join(''));
             applySections(DONG);
             applyContact();
+            veNutTieng(document.getElementById('tieng-trang'));
+            veNutTieng(document.getElementById('tieng-chon'));
         }
         applyContent();
 
@@ -2844,11 +2953,15 @@
             /* Nhãn được vẽ trên khổ bằng cả chu vi chai, nhưng người xem chỉ thấy
                mặt trước. Dòng nào dài quá bề mặt nhìn thấy thì bóp lại cho vừa,
                không để chữ tràn ra khỏi thân chai. */
-            /* Bề mặt chai nhìn thấy chỉ rộng khoảng 1/3 chu vi. Đo bề rộng thật
-               của từng dòng bằng chính trình duyệt (không ước lượng), dòng nào
-               vượt thì bóp lại vừa khít — chữ không bao giờ tràn khỏi thân chai. */
-            const RONG = C * 0.34;
-            const doRong = (t, fs, ls) => {
+            /* Nhãn vẽ trên khổ bằng cả chu vi, nhưng chai là hình trụ nên chữ ở xa
+               tâm bị cuốn ra sau. Một điểm cách tâm nhãn một đoạn u sẽ hiện lên
+               màn hình ở vị trí r·sin(u/r). Muốn chữ dừng lại ở khoảng 78% bán
+               kính (còn chừa lề hai bên) thì u/r = asin(.78) = .894, tức nửa bề
+               rộng cho phép bằng .894·r — quy ra chu vi là 0.284·C cho cả dòng.
+               Trước đây lấy 0.34·C nên chữ chạy tới 88% bán kính, nhìn như tràn
+               ra khỏi thân chai. */
+            const RONG = C * 0.284;
+            const doRong = (t, fs, ls, fw) => {
                 try {
                     let k = document.getElementById('__do-nhan');
                     if (!k) {
@@ -2860,6 +2973,7 @@
                     const e = document.createElementNS('http://www.w3.org/2000/svg', 'text');
                     e.setAttribute('font-family', 'Inter,Helvetica,Arial,sans-serif');
                     e.setAttribute('font-size', fs);
+                    e.setAttribute('font-weight', fw || 400);   /* thiếu dòng này thì đo hụt, chữ đậm luôn rộng hơn */
                     if (ls) e.setAttribute('letter-spacing', ls);
                     e.textContent = String(t);
                     k.appendChild(e);
@@ -2868,20 +2982,35 @@
                     return w;
                 } catch (err) { return 0; }
             };
-            const vua = (t, fs, ls = 0) => {
-                const w = doRong(t, fs, ls);
-                return w > RONG ? ` textLength='${Math.round(RONG)}' lengthAdjust='spacingAndGlyphs'` : '';
+            /* Dòng nào dài quá thì giảm giãn chữ trước (giãn chữ chỉ để trang trí),
+               không đủ mới giảm cỡ chữ. Không dùng textLength: nén ngang làm chữ
+               bị dẹt, nhìn là biết lỗi ngay. */
+            const vua = (t, fs, ls = 0, fw = 400) => {
+                let w = doRong(t, fs, ls, fw);
+                if (!w || w <= RONG) return { fs, ls };
+                const soKhe = Math.max(1, String(t).length - 1);
+                if (ls > 0) {
+                    ls = Math.max(0, ls - (w - RONG) / soKhe);
+                    w = doRong(t, fs, ls, fw);
+                    if (w <= RONG) return { fs: +fs.toFixed(2), ls: +ls.toFixed(2) };
+                }
+                const k = RONG / w;
+                return { fs: +(fs * k).toFixed(2), ls: +(ls * k).toFixed(2) };
+            };
+            const A = {
+                brand: vua(brand, 11, 7, 700), l1: vua(l1, 25, .5, 800), l2: vua(l2, 25, .5, 800),
+                sub: vua(sub, 8.5, 3.4, 600), vn: vua(vn, 9.5, 0, 500), vol: vua(vol, 9, 2.6, 400)
             };
             return `<svg xmlns='http://www.w3.org/2000/svg' width='${C}' height='${H}' viewBox='0 0 ${C} ${H}'>
 <g font-family='Inter,Helvetica,Arial,sans-serif' text-anchor='middle' fill='${ink}'>
 <rect x='0' y='${H * .18}' width='${C}' height='1.5' fill='${band}'/>
-<text x='${C / 2}' y='${H * .30}' font-size='11' letter-spacing='7' font-weight='700'${vua(brand,11,7)}>${brand}</text>
-<text x='${C / 2}' y='${H * .44}' font-size='25' font-weight='800' letter-spacing='.5'${vua(l1,25,.5)}>${l1}</text>
-<text x='${C / 2}' y='${H * .53}' font-size='25' font-weight='800' letter-spacing='.5'${vua(l2,25,.5)}>${l2}</text>
-<text x='${C / 2}' y='${H * .61}' font-size='8.5' letter-spacing='3.4' font-weight='600' opacity='.82'${vua(sub,8.5,3.4)}>${sub}</text>
+<text x='${C / 2}' y='${H * .30}' font-size='${A.brand.fs}' letter-spacing='${A.brand.ls}' font-weight='700'>${brand}</text>
+<text x='${C / 2}' y='${H * .44}' font-size='${A.l1.fs}' font-weight='800' letter-spacing='${A.l1.ls}'>${l1}</text>
+<text x='${C / 2}' y='${H * .53}' font-size='${A.l2.fs}' font-weight='800' letter-spacing='${A.l2.ls}'>${l2}</text>
+<text x='${C / 2}' y='${H * .61}' font-size='${A.sub.fs}' letter-spacing='${A.sub.ls}' font-weight='600' opacity='.82'>${sub}</text>
 <rect x='${C / 2 - 34}' y='${H * .655}' width='68' height='1' fill='${band}'/>
-<text x='${C / 2}' y='${H * .725}' font-size='9.5' font-weight='500' opacity='.86'${vua(vn,9.5,0)}>${vn}</text>
-<text x='${C / 2}' y='${H * .875}' font-size='9' letter-spacing='2.6' opacity='.7'${vua(vol,9,2.6)}>${vol}</text>
+<text x='${C / 2}' y='${H * .725}' font-size='${A.vn.fs}' letter-spacing='${A.vn.ls}' font-weight='500' opacity='.86'>${vn}</text>
+<text x='${C / 2}' y='${H * .875}' font-size='${A.vol.fs}' letter-spacing='${A.vol.ls}' opacity='.7'>${vol}</text>
 <rect x='0' y='${H * .93}' width='${C}' height='1.5' fill='${band}'/>
 </g></svg>`;
         }
