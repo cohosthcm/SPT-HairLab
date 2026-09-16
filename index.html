@@ -4014,22 +4014,24 @@
                 }
                 const o = lerp(a.o, b.o, f) * hien;   /* mỗi trang chỉ hiện chai của dòng đó */
 
-                /* ĐỔI CHAI — lật như lật một tấm thẻ.
-                   Chai cũ quay đi, tới lúc gần nghiêng hẳn thì tráo sang chai
-                   mới, rồi chai mới quay về đúng mặt. Mắt đọc ra là "chai xoay
-                   rồi thành chai kia".
+                /* ĐỔI CHAI — ĐẨY LÙI VÀO CHIỀU SÂU, KHÔNG XOAY.
+                   
+                   Đây là chỗ tôi sai đi sai lại nhiều lần, ghi rõ để khỏi lặp:
+                   ảnh chụp là một TẤM PHẲNG. Xoay nó quanh trục dọc thì bề ngang
+                   luôn co theo cos(góc) — 52° còn 62%, 26° còn 90%. Chai thật
+                   xoay thì bề ngang KHÔNG ĐỔI. Nên mọi cách xoay đều ra "lép",
+                   chỉ khác nhau lép nhiều hay ít. Bóp ngang cũng vậy, còn tệ hơn.
 
-                   Bám vào spinPulse chứ KHÔNG bám vào độ mờ: độ mờ của chai đổi
-                   TỨC THÌ (heroVisible nhảy thẳng 0↔1), không có gì để bám. Còn
-                   spinPulse thì chạy mượt 0→1 rồi 1→0 qua hai nhịp.
-                   switchSpin ≤360 là nhịp quay đi, >360 là nhịp quay về — dùng
-                   nó để đảo chiều cho liền mạch.
+                   Cách này đẩy chai LÙI RA XA rồi kéo chai mới TIẾN LẠI GẦN.
+                   Khung nhìn có phối cảnh 2400px nên lùi xa thì chai nhỏ đều
+                   theo cả hai chiều — tỉ lệ ngang/dọc GIỮ NGUYÊN tuyệt đối, không
+                   thể lép. Mắt đọc ra là chai lùi vào trong rồi chai kia bước ra,
+                   đó mới đúng là chiều sâu 3D.
 
-                   Chặn 52°: chưa tới 90° nên không bao giờ lộ mặt sau (chữ lật
-                   ngược), và chai vẫn còn dày gần một nửa, không bẹp như cách
-                   bóp ngang đã thử ở bản trước (ở 52° chai còn 62% bề ngang). */
-                const lat = (laAnh && spinPulse > .001)
-                    ? spinPulse * 52 * (switchSpin > 360 ? 1 : -1) : 0;
+                   spinPulse chạy 0→1 (chai cũ lùi) rồi 1→0 (chai mới tiến lại),
+                   nên một công thức dùng chung cho cả hai nhịp. */
+                const sau = laAnh ? -spinPulse * 900 : 0;
+                const moDi = laAnh ? (1 - spinPulse * .82) : 1;
 
                 /* bồng bềnh nhẹ trên máy tính; trên điện thoại đứng yên cho gọn */
                 if (!isNarrow) y += Math.sin(time * 1.05 + bi * 2.1) * 18 * (1 - settle * .8);
@@ -4052,13 +4054,14 @@
                 if (vis !== rig._vis) { rig.style.display = vis ? '' : 'none'; rig._vis = vis; }
                 if (!vis) return;
 
-                const op = n.o.toFixed(3);
+                const op = (n.o * moDi).toFixed(3);
                 if (op !== rig._op) { rig.style.opacity = op; rig._op = op; }
 
                 const tr =
-                    `translate3d(${n.x.toFixed(1)}px, ${(n.y - pinned).toFixed(1)}px, 0) scale(${(n.s * scale * (1 - spinPulse * .06)).toFixed(4)})` +
+                    `translate3d(${n.x.toFixed(1)}px, ${(n.y - pinned).toFixed(1)}px, ${sau.toFixed(0)}px)` +
+                    ` scale(${(n.s * scale * (laAnh ? 1 : 1 - spinPulse * .06)).toFixed(4)})` +
                     ` rotateX(${(n.rx + (laAnh ? cur.y * -3 : -cur.y * 13)).toFixed(2)}deg)` +
-                    ` rotateY(${(n.ry + (laAnh ? cur.x * 5 + lat : cur.x * 34 + switchSpin)).toFixed(2)}deg)`;
+                    ` rotateY(${(n.ry + (laAnh ? cur.x * 5 : cur.x * 34 + switchSpin)).toFixed(2)}deg)`;
                 if (tr !== rig._tr) { rig.style.transform = tr; rig._tr = tr; }
 
                 gx += n.x * n.o; gy += n.y * n.o; gw += n.o;
