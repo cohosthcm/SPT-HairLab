@@ -1975,6 +1975,46 @@
             }
         }
 
+        /* ---- HỘP QUÀ TẶNG Ở CUỐI BẢNG GIÁ ----
+           Ảnh hộp bên trái, chữ bên phải. Dòng sản phẩm chỉ có MỘT chai thì
+           giấu ảnh hộp và dòng quà tặng đi (hộp là của bộ đôi hai bước). */
+        .combo.hop {
+            display: flex; align-items: center; gap: clamp(1.2rem, 3vw, 2.6rem);
+            text-align: left; flex-wrap: wrap; justify-content: center;
+            padding: 1.1rem clamp(1.1rem, 3vw, 2rem);
+        }
+        .combo-anh {
+            width: clamp(190px, 26vw, 290px); height: auto; flex: none;
+            border-radius: 14px; filter: drop-shadow(0 16px 30px rgba(0, 0, 0, .38));
+        }
+        .combo-noi { display: flex; flex-direction: column; gap: .45rem; min-width: min(100%, 270px); }
+        .combo-nhan {
+            font-size: .64rem; letter-spacing: .2em; text-transform: uppercase;
+            color: var(--accent-soft, #f7d2e4); opacity: .95;
+        }
+        .combo.hop b { font-size: 1.22rem; }
+        .combo-tang {
+            font-size: .9rem; opacity: .86;
+            padding-left: 1.35rem; position: relative;
+        }
+        .combo-tang::before {
+            content: "★"; position: absolute; left: 0; top: -.05em;
+            color: var(--accent-soft, #f7d2e4); font-size: .95em;
+        }
+        .combo-gia { display: flex; align-items: center; gap: .9rem; flex-wrap: wrap; margin-top: .35rem; }
+        .combo-gia .buy-btn { width: auto; padding: .7rem 1.6rem; }
+        body.mot-chai .combo-anh,
+        body.mot-chai .combo-tang,
+        body.mot-chai .combo-nhan { display: none; }
+        @media (max-width: 760px) {
+            .combo.hop { flex-direction: column; text-align: center; }
+            .combo-noi { align-items: center; }
+            .combo-tang { padding-left: 0; }
+            .combo-tang::before { position: static; margin-right: .35rem; }
+            .combo-gia { justify-content: center; }
+            .combo-anh { width: min(76vw, 300px); }
+        }
+
         /* ==========================================================
            MÀN CHỌN NHÓM SẢN PHẨM — màn hình đầu tiên khách nhìn thấy
            Rê chuột (hoặc chạm) vào một nhóm → đổi người mẫu.
@@ -2385,11 +2425,18 @@
 
                 <div class="price-grid" data-list="prices"></div>
 
-                <div class="combo reveal d4">
-                    <b data-c="pricing.comboLabel">Mua cả bộ đôi</b>
-                    <s data-c="pricing.comboOld">1.080.000đ</s>
-                    <span class="big" data-c="pricing.comboNew">980.000đ</span>
-                    <button class="buy-btn solid" id="comboBuy" style="width:auto;padding:.7rem 1.6rem" data-c="pricing.comboBtn">Mua bộ đôi</button>
+                <div class="combo hop reveal d4">
+                    <img class="combo-anh" src="bo-qua-tang.png" alt="" loading="lazy" decoding="async">
+                    <div class="combo-noi">
+                        <span class="combo-nhan" data-c="pricing.boxEyebrow">HỘP QUÀ · 2 BƯỚC CHUYÊN SÂU</span>
+                        <b data-c="pricing.comboLabel">Mua cả bộ đôi</b>
+                        <span class="combo-tang" data-c="pricing.boxGift">Tặng kèm lược massage da đầu</span>
+                        <div class="combo-gia">
+                            <s data-c="pricing.comboOld">1.080.000đ</s>
+                            <span class="big" data-c="pricing.comboNew">980.000đ</span>
+                            <button class="buy-btn solid" id="comboBuy" data-c="pricing.comboBtn">Mua bộ đôi</button>
+                        </div>
+                    </div>
                 </div>
                 <p class="note reveal d4" data-c="pricing.note">Giá minh hoạ — thay bằng giá bán thật của bạn.</p>
             </div>
@@ -2676,6 +2723,8 @@
                 "comboOld": "1.080.000đ",
                 "comboNew": "980.000đ",
                 "comboBtn": "Mua bộ đôi",
+            "boxEyebrow": "HỘP QUÀ · 2 BƯỚC CHUYÊN SÂU",
+            "boxGift": "Tặng kèm lược massage da đầu",
                 "comboLink": "",
                 "note": "Giá minh hoạ — thay bằng giá bán thật của bạn."
         },
@@ -3586,7 +3635,7 @@
             tween({
                 duration: .52, ease: Ease.power2In,
                 onUpdate: (t, raw) => {
-                    switchSpin = dungAnh(key) ? 0 : t * 360; spinPulse = t;
+                    switchSpin = t * 360; spinPulse = t;
                 },
                 onComplete: () => {
                     heroVisible[current] = 0;
@@ -3597,7 +3646,7 @@
                     tween({
                         duration: 1.0, ease: Ease.backOut(0.7),
                         onUpdate: (t, raw) => {
-                            switchSpin = dungAnh(key) ? 0 : 360 + t * 180; spinPulse = 1 - t;
+                            switchSpin = 360 + t * 180; spinPulse = 1 - t;
                         },
                         onComplete: () => {
                             switchSpin = 0;
@@ -3772,7 +3821,8 @@
         let priceScale = {};
         /* Thẻ giá: giữ đúng tỉ lệ thật giữa hai chai (158mm so với 175mm) thay vì
            kéo cho cao bằng nhau. */
-        C.products.forEach(p => priceScale[p.key] = SHAPE[p.key] === 'dropper' ? .358 : .36);
+        /* Giá trị mở đầu; hàm đo ở dưới sẽ tính lại cho vừa ô trong thẻ giá. */
+        C.products.forEach(p => priceScale[p.key] = SHAPE[p.key] === 'dropper' ? .28 : .36);
 
         /* Chiều cao THẬT của một chai đang được vẽ trên màn hình. Thân chai ghép từ
            các lát 3D không có chiều cao hộp, nên phải lấy khoảng cách từ mép trên
@@ -3811,8 +3861,13 @@
                 const rig = rigs[k], keepD = rig.style.display, keepT = rig.style.transform;
                 rig.style.display = '';
                 rig.style.transform = `translate3d(0px, 0px, 0) scale(${scale})`;
+                /* CAO_THE: chai chiếm bao nhiêu phần chỗ trống trong thẻ giá.
+                   TY_LE_SERUM: serum thấp hơn túp — nếu không nhân thì phép đo
+                   tự hiệu chỉnh sẽ kéo hai chai CAO BẰNG NHAU, sai thực tế. */
+                const CAO_THE = 1.04, TY_LE_SERUM = .78;
+                const heSo = SHAPE[k] === 'dropper' ? TY_LE_SERUM : 1;
                 const caoThat = (doCaoChai(k) / scale) || BOTTLE_H[k];
-                priceScale[k] = (r.height * .86 / caoThat) / scale;
+                priceScale[k] = (r.height * CAO_THE * heSo / caoThat) / scale;
 
                 const abs = priceScale[k] * scale;
                 rig.style.transform = `translate3d(${pt.x}px, ${pt.y}px, 0) scale(${abs})`;
@@ -3834,10 +3889,12 @@
                 { x: -.29, y: .04, s: .68, ry: -16, rx: 2, o: 1 },
                 { x: -.32, y: -.02, s: .60, ry: 28, rx: 0, o: 1 }
             ],
-            /* Cỡ phóng (s) của serum bằng đúng cỡ của túp: khung chai đã mang sẵn
-               tỉ lệ thật rồi (túp 344, serum 312 — bằng 175mm so với 158mm ngoài
-               đời), nên để s bằng nhau là hai chai đứng cạnh nhau đúng như bộ đôi
-               thật. Trước đây serum để .50 nên nhìn như chai tí hon. */
+            /* Serum nhỏ hơn túp. Số đo kỹ thuật là 158mm so với 175mm (90%), nhưng
+               túp bè ngang gấp rưỡi nên để 90% nhìn serum bị "to lấn". Lấy 78%
+               cho cân mắt — đúng như hai sản phẩm nằm cạnh nhau trong hộp quà.
+               Khoảng cách ngang giữa hai chai giữ đều 0.115 màn hình ở mọi màn:
+               xa hơn là serum lấn vào cột chữ (màn "Từng tuần một" và "Người
+               thật việc thật" từng bị đè chữ vì để cách .17–.18). */
             serum: [
                 { x: 0, y: 0, s: 1, ry: 0, rx: 0, o: 1 },
                 /* ry = -24 chứ KHÔNG phải +22.
@@ -3847,10 +3904,10 @@
                    cũng rộng như nhau, đây là nhược điểm của cách dựng này.
                    Góc -24 là góc màn "Cách dùng" đang dùng — màn đó chai nhìn
                    đầy đặn, nên lấy đúng góc đó cho màn "Thành phần". */
-                { x: .35, y: .06, s: .74, ry: 0, rx: 0, o: 1 },
-                { x: -.07, y: .02, s: .62, ry: 0, rx: 0, o: 1 },
-                { x: -.12, y: -.04, s: .68, ry: 0, rx: 0, o: 1 },
-                { x: -.15, y: .02, s: .60, ry: 0, rx: 0, o: 1 }
+                { x: .36, y: .075, s: .636, ry: 0, rx: 0, o: 1 },
+                { x: -.14, y: .035, s: .533, ry: 0, rx: 0, o: 1 },
+                { x: -.175, y: -.02, s: .585, ry: 0, rx: 0, o: 1 },
+                { x: -.205, y: .035, s: .516, ry: 0, rx: 0, o: 1 }
             ]
         };
         const smooth = t => t * t * (3 - 2 * t);
@@ -3923,6 +3980,12 @@
                 const laAnh = dungAnh(key);
                 const ry = laAnh ? 0 : lerp(a.ry, b.ry, f);
                 const rx = laAnh ? 0 : lerp(a.rx, b.rx, f);
+                /* Chai dùng ảnh vẫn có hiệu ứng quay khi đổi sản phẩm, nhưng
+                   quay bằng cách BÓP NGANG theo cos chứ không rotateY. Ảnh là
+                   tấm phẳng: rotateY quá 90° là lộ mặt sau, chữ bị lật ngược.
+                   Bóp ngang cho đúng cảm giác chai xoay quanh trục mà không bao
+                   giờ lật. bopX = 1 lúc đứng yên, về 0 khi quay ngang mặt. */
+                const bopX = laAnh && switchSpin ? Math.max(.06, Math.abs(Math.cos(switchSpin * Math.PI / 180))) : 1;
                 let hien = heroVisible[key];
                 if (hien < 1 && trongDong.includes(key)) hien = Math.max(hien, hienGia);
                 /* Điện thoại: chai chỉ đứng ở đầu trang sản phẩm. Vừa kéo xuống là
@@ -3961,8 +4024,9 @@
 
                 const tr =
                     `translate3d(${n.x.toFixed(1)}px, ${(n.y - pinned).toFixed(1)}px, 0) scale(${(n.s * scale * (1 - spinPulse * .06)).toFixed(4)})` +
-                    ` rotateX(${(n.rx + (laAnh ? 0 : -cur.y * 13)).toFixed(2)}deg)` +
-                    ` rotateY(${(n.ry + (laAnh ? 0 : cur.x * 34 + switchSpin)).toFixed(2)}deg)`;
+                    (laAnh ? ` scaleX(${bopX.toFixed(3)})` : '') +
+                    ` rotateX(${(n.rx + (laAnh ? cur.y * -3 : -cur.y * 13)).toFixed(2)}deg)` +
+                    ` rotateY(${(n.ry + (laAnh ? cur.x * 5 : cur.x * 34 + switchSpin)).toFixed(2)}deg)`;
                 if (tr !== rig._tr) { rig.style.transform = tr; rig._tr = tr; }
 
                 gx += n.x * n.o; gy += n.y * n.o; gw += n.o;
