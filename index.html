@@ -788,15 +788,29 @@
             border-color: var(--accent);
         }
 
+        /* Canh theo CHIEU CAO, khong phai chieu rong.
+           Truoc day dat width co dinh: tup ty le 0.468, serum 0.356 — cung mot
+           be rong thi serum CAO HON tup 31%, sai han thuc te va lam chan chu
+           hai the lech nhau. Nay dat chieu cao, be rong tu tinh.
+           .thap = chai thap hon (serum): cao 70% tup, phan hut lai bu bang
+           margin-bottom nen chan chu hai the van thang hang. */
         .card .shot {
-            width: 132px;
-            height: auto;
+            --cao: 229px;
+            height: var(--cao);
+            width: auto;
+            max-width: 100%;
             margin-top: -8.2rem;
             filter: drop-shadow(0 22px 34px rgba(0, 0, 0, .55));
             transition: transform .5s cubic-bezier(.34, 1.56, .64, 1);
             display: block;
+            margin-inline: auto;
             will-change: transform;
             pointer-events: none;
+        }
+
+        .card .shot.thap {
+            height: calc(var(--cao) * .70);
+            margin-bottom: calc(var(--cao) * .30);
         }
 
         .card:hover .shot {
@@ -1702,7 +1716,7 @@
             }
 
             .card .shot {
-                width: 112px;
+                --cao: 194px;
                 margin-top: -6.6rem;
             }
         }
@@ -1855,8 +1869,9 @@
 
             .shot-2d {
                 display: block;
-                width: 132px;
-                height: auto;
+                --cao: 200px;
+                height: var(--cao);
+                width: auto;
                 margin: 1.4rem auto .2rem;
                 filter: drop-shadow(0 18px 28px rgba(0, 0, 0, .5));
             }
@@ -1938,7 +1953,7 @@
             }
 
             .card .shot {
-                width: 96px;
+                --cao: 166px;
                 margin-top: -5.4rem;
             }
 
@@ -2885,9 +2900,13 @@
               <ellipse cx="${75 - bw + 11}" cy="${bodyTop + 14 + (200 - bodyTop) / 2}" rx="7" ry="${(200 - bodyTop) / 2 + 6}" fill="url(#${id}h)"/>
             </svg>`;
         };
-        const shotHTML = p => p.photo
-            ? `<img class="shot" src="${esc(p.photo)}" alt="${esc(p.name)}">`
-            : (SHOT_SVG[p.key] || shotSVG(p));
+        const shotHTML = p => {
+            /* chai nhỏ giọt thấp hơn chai lớn — đánh dấu để CSS hạ chiều cao */
+            const thap = (p.shape || '') === 'dropper' ? ' thap' : '';
+            return p.photo
+                ? `<img class="shot${thap}" src="${esc(p.photo)}" alt="${esc(p.name)}">`
+                : (SHOT_SVG[p.key] || shotSVG(p));
+        };
 
         /* ---- liên hệ: chấp nhận cả link đầy đủ lẫn chỉ số điện thoại / tên tài khoản ---- */
         const soDT = s => String(s || '').replace(/[^\d+]/g, '');
@@ -3864,7 +3883,7 @@
                 /* CAO_THE: chai chiếm bao nhiêu phần chỗ trống trong thẻ giá.
                    TY_LE_SERUM: serum thấp hơn túp — nếu không nhân thì phép đo
                    tự hiệu chỉnh sẽ kéo hai chai CAO BẰNG NHAU, sai thực tế. */
-                const CAO_THE = 1.04, TY_LE_SERUM = .78;
+                const CAO_THE = 1.04, TY_LE_SERUM = .70;
                 const heSo = SHAPE[k] === 'dropper' ? TY_LE_SERUM : 1;
                 const caoThat = (doCaoChai(k) / scale) || BOTTLE_H[k];
                 priceScale[k] = (r.height * CAO_THE * heSo / caoThat) / scale;
@@ -3892,6 +3911,7 @@
             /* Serum nhỏ hơn túp. Số đo kỹ thuật là 158mm so với 175mm (90%), nhưng
                túp bè ngang gấp rưỡi nên để 90% nhìn serum bị "to lấn". Lấy 78%
                cho cân mắt — đúng như hai sản phẩm nằm cạnh nhau trong hộp quà.
+               (Lần chỉnh này: 78% vẫn bị kêu to, hạ tiếp còn 70%.)
                Khoảng cách ngang giữa hai chai giữ đều 0.115 màn hình ở mọi màn:
                xa hơn là serum lấn vào cột chữ (màn "Từng tuần một" và "Người
                thật việc thật" từng bị đè chữ vì để cách .17–.18). */
@@ -3904,10 +3924,10 @@
                    cũng rộng như nhau, đây là nhược điểm của cách dựng này.
                    Góc -24 là góc màn "Cách dùng" đang dùng — màn đó chai nhìn
                    đầy đặn, nên lấy đúng góc đó cho màn "Thành phần". */
-                { x: .36, y: .075, s: .636, ry: 0, rx: 0, o: 1 },
-                { x: -.14, y: .035, s: .533, ry: 0, rx: 0, o: 1 },
-                { x: -.175, y: -.02, s: .585, ry: 0, rx: 0, o: 1 },
-                { x: -.205, y: .035, s: .516, ry: 0, rx: 0, o: 1 }
+                { x: .36, y: .075, s: .571, ry: 0, rx: 0, o: 1 },
+                { x: -.14, y: .035, s: .479, ry: 0, rx: 0, o: 1 },
+                { x: -.175, y: -.02, s: .525, ry: 0, rx: 0, o: 1 },
+                { x: -.205, y: .035, s: .463, ry: 0, rx: 0, o: 1 }
             ]
         };
         const smooth = t => t * t * (3 - 2 * t);
@@ -3980,12 +4000,13 @@
                 const laAnh = dungAnh(key);
                 const ry = laAnh ? 0 : lerp(a.ry, b.ry, f);
                 const rx = laAnh ? 0 : lerp(a.rx, b.rx, f);
-                /* Chai dùng ảnh vẫn có hiệu ứng quay khi đổi sản phẩm, nhưng
-                   quay bằng cách BÓP NGANG theo cos chứ không rotateY. Ảnh là
-                   tấm phẳng: rotateY quá 90° là lộ mặt sau, chữ bị lật ngược.
-                   Bóp ngang cho đúng cảm giác chai xoay quanh trục mà không bao
-                   giờ lật. bopX = 1 lúc đứng yên, về 0 khi quay ngang mặt. */
-                const bopX = laAnh && switchSpin ? Math.max(.06, Math.abs(Math.cos(switchSpin * Math.PI / 180))) : 1;
+                /* Đổi chai: ảnh chụp KHÔNG quay trọn vòng được (quá 90° là lộ mặt
+                   sau, chữ lật ngược) và cũng KHÔNG bóp ngang được (bóp thì chai
+                   dẹp dí như tờ giấy — đã thử, nhìn rất tệ).
+                   Cách dùng ở đây: nghiêng qua lại trong khoảng ±26°, cộng thêm
+                   nhún nhẹ chiều sâu. Mắt đọc ra là chai xoay trong không gian,
+                   mà chai lúc nào cũng dày dặn, không bao giờ dẹp. */
+                const nghieng = laAnh && switchSpin ? Math.sin(switchSpin * Math.PI / 180) * 26 : 0;
                 let hien = heroVisible[key];
                 if (hien < 1 && trongDong.includes(key)) hien = Math.max(hien, hienGia);
                 /* Điện thoại: chai chỉ đứng ở đầu trang sản phẩm. Vừa kéo xuống là
@@ -4024,9 +4045,8 @@
 
                 const tr =
                     `translate3d(${n.x.toFixed(1)}px, ${(n.y - pinned).toFixed(1)}px, 0) scale(${(n.s * scale * (1 - spinPulse * .06)).toFixed(4)})` +
-                    (laAnh ? ` scaleX(${bopX.toFixed(3)})` : '') +
                     ` rotateX(${(n.rx + (laAnh ? cur.y * -3 : -cur.y * 13)).toFixed(2)}deg)` +
-                    ` rotateY(${(n.ry + (laAnh ? cur.x * 5 : cur.x * 34 + switchSpin)).toFixed(2)}deg)`;
+                    ` rotateY(${(n.ry + (laAnh ? cur.x * 5 + nghieng : cur.x * 34 + switchSpin)).toFixed(2)}deg)`;
                 if (tr !== rig._tr) { rig.style.transform = tr; rig._tr = tr; }
 
                 gx += n.x * n.o; gy += n.y * n.o; gw += n.o;
