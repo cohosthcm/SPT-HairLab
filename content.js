@@ -324,7 +324,7 @@ window.ROOTLAB_CONTENT = {
       "cardSub": "Bước 1 · Làm sạch",
       "tag": "Bước 1 · Làm sạch chân tóc",
       "desc": "Gel làm sạch sâu chân tóc và nang tóc.<br>Cuốn trôi bã nhờn, bụi bẩn và tế bào chết<br>đang bít lỗ chân lông trên da đầu.",
-      "photo": "",
+      "photo": "sp1-thanh-loc.png",
       "bottle": {
         "body": "#f1f7f4",
         "cap": "#0d2f27",
@@ -357,7 +357,7 @@ window.ROOTLAB_CONTENT = {
       "cardSub": "Bước 2 · Dưỡng tóc",
       "tag": "Bước 2 · Dưỡng & kích thích mọc tóc",
       "desc": "Serum nuôi dưỡng nang tóc từ bên trong.<br>Thẩm thấu vào chân tóc, kích thích mọc tóc mới<br>và giảm gãy rụng theo từng ngày.",
-      "photo": "",
+      "photo": "sp2-nuoi-duong.png",
       "bottle": {
         "body": "#a3600d",
         "cap": "#141009",
@@ -366,7 +366,7 @@ window.ROOTLAB_CONTENT = {
         "l2": "SERUM",
         "sub": "ROOT ACTIVATOR",
         "vn": "Dưỡng tóc & kích thích mọc tóc",
-        "vol": "60 ml"
+        "vol": "100 ml"
       },
       "theme": {
         "inner": "#8a5f12",
@@ -374,7 +374,7 @@ window.ROOTLAB_CONTENT = {
         "outer": "#120a01"
       },
       "price": "690.000",
-      "priceSub": "Serum dưỡng & kích thích mọc tóc · 60ml",
+      "priceSub": "Serum dưỡng & kích thích mọc tóc · 100ml",
       "features": [
         "Dùng được khoảng 6 tuần",
         "Không nhờn, không cần xả lại",
@@ -1000,7 +1000,7 @@ window.ROOTLAB_CONTENT = {
           "cardSub": "Step 2 · Nourish",
           "tag": "Step 2 · Nourish & stimulate growth",
           "desc": "A serum that feeds the follicle from within.<br>It sinks into the root, encourages new growth<br>and reduces breakage day by day.",
-          "priceSub": "Nourishing & growth-stimulating serum · 60ml",
+          "priceSub": "Nourishing & growth-stimulating serum · 100ml",
           "buyBtn": "Buy Growth Serum",
           "features": [
             "Lasts about 6 weeks",
@@ -2356,7 +2356,7 @@ window.ROOTLAB_CONTENT = {
           "cardSub": "ステップ 2 · 育てる",
           "tag": "ステップ 2 · 育毛と栄養",
           "desc": "毛包を内側から育てる美容液。<br>根元まで浸透して新しい髪の成長を促し、<br>切れ毛を日ごとに減らします。",
-          "priceSub": "育毛美容液 · 60ml",
+          "priceSub": "育毛美容液 · 100ml",
           "buyBtn": "Growth Serum を購入",
           "features": [
             "約6週間分",
