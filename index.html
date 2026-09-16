@@ -809,8 +809,8 @@
         }
 
         .card .shot.thap {
-            height: calc(var(--cao) * .70);
-            margin-bottom: calc(var(--cao) * .30);
+            height: calc(var(--cao) * .80);
+            margin-bottom: calc(var(--cao) * .20);
         }
 
         .card:hover .shot {
@@ -3883,7 +3883,7 @@
                 /* CAO_THE: chai chiếm bao nhiêu phần chỗ trống trong thẻ giá.
                    TY_LE_SERUM: serum thấp hơn túp — nếu không nhân thì phép đo
                    tự hiệu chỉnh sẽ kéo hai chai CAO BẰNG NHAU, sai thực tế. */
-                const CAO_THE = 1.04, TY_LE_SERUM = .70;
+                const CAO_THE = 1.04, TY_LE_SERUM = .80;
                 const heSo = SHAPE[k] === 'dropper' ? TY_LE_SERUM : 1;
                 const caoThat = (doCaoChai(k) / scale) || BOTTLE_H[k];
                 priceScale[k] = (r.height * CAO_THE * heSo / caoThat) / scale;
@@ -3911,7 +3911,8 @@
             /* Serum nhỏ hơn túp. Số đo kỹ thuật là 158mm so với 175mm (90%), nhưng
                túp bè ngang gấp rưỡi nên để 90% nhìn serum bị "to lấn". Lấy 78%
                cho cân mắt — đúng như hai sản phẩm nằm cạnh nhau trong hộp quà.
-               (Lần chỉnh này: 78% vẫn bị kêu to, hạ tiếp còn 70%.)
+               (Đã đi qua 90% → 78% → 70% → chốt 80%. Sửa ở ĐÂY và ở hai chỗ
+               nữa là đủ: TY_LE_SERUM của thẻ giá, và .card .shot.thap của thẻ.) 
                Khoảng cách ngang giữa hai chai giữ đều 0.115 màn hình ở mọi màn:
                xa hơn là serum lấn vào cột chữ (màn "Từng tuần một" và "Người
                thật việc thật" từng bị đè chữ vì để cách .17–.18). */
@@ -3924,10 +3925,10 @@
                    cũng rộng như nhau, đây là nhược điểm của cách dựng này.
                    Góc -24 là góc màn "Cách dùng" đang dùng — màn đó chai nhìn
                    đầy đặn, nên lấy đúng góc đó cho màn "Thành phần". */
-                { x: .36, y: .075, s: .571, ry: 0, rx: 0, o: 1 },
-                { x: -.14, y: .035, s: .479, ry: 0, rx: 0, o: 1 },
-                { x: -.175, y: -.02, s: .525, ry: 0, rx: 0, o: 1 },
-                { x: -.205, y: .035, s: .463, ry: 0, rx: 0, o: 1 }
+                { x: .36, y: .075, s: .653, ry: 0, rx: 0, o: 1 },
+                { x: -.14, y: .035, s: .547, ry: 0, rx: 0, o: 1 },
+                { x: -.175, y: -.02, s: .600, ry: 0, rx: 0, o: 1 },
+                { x: -.205, y: .035, s: .529, ry: 0, rx: 0, o: 1 }
             ]
         };
         const smooth = t => t * t * (3 - 2 * t);
@@ -4000,13 +4001,7 @@
                 const laAnh = dungAnh(key);
                 const ry = laAnh ? 0 : lerp(a.ry, b.ry, f);
                 const rx = laAnh ? 0 : lerp(a.rx, b.rx, f);
-                /* Đổi chai: ảnh chụp KHÔNG quay trọn vòng được (quá 90° là lộ mặt
-                   sau, chữ lật ngược) và cũng KHÔNG bóp ngang được (bóp thì chai
-                   dẹp dí như tờ giấy — đã thử, nhìn rất tệ).
-                   Cách dùng ở đây: nghiêng qua lại trong khoảng ±26°, cộng thêm
-                   nhún nhẹ chiều sâu. Mắt đọc ra là chai xoay trong không gian,
-                   mà chai lúc nào cũng dày dặn, không bao giờ dẹp. */
-                const nghieng = laAnh && switchSpin ? Math.sin(switchSpin * Math.PI / 180) * 26 : 0;
+
                 let hien = heroVisible[key];
                 if (hien < 1 && trongDong.includes(key)) hien = Math.max(hien, hienGia);
                 /* Điện thoại: chai chỉ đứng ở đầu trang sản phẩm. Vừa kéo xuống là
@@ -4018,6 +4013,23 @@
                     hien *= clamp01(1 - Math.max(0, window.scrollY - moc) / (vh * .34));
                 }
                 const o = lerp(a.o, b.o, f) * hien;   /* mỗi trang chỉ hiện chai của dòng đó */
+
+                /* ĐỔI CHAI — lật như lật một tấm thẻ.
+                   Chai cũ quay đi, tới lúc gần nghiêng hẳn thì tráo sang chai
+                   mới, rồi chai mới quay về đúng mặt. Mắt đọc ra là "chai xoay
+                   rồi thành chai kia".
+
+                   Bám vào spinPulse chứ KHÔNG bám vào độ mờ: độ mờ của chai đổi
+                   TỨC THÌ (heroVisible nhảy thẳng 0↔1), không có gì để bám. Còn
+                   spinPulse thì chạy mượt 0→1 rồi 1→0 qua hai nhịp.
+                   switchSpin ≤360 là nhịp quay đi, >360 là nhịp quay về — dùng
+                   nó để đảo chiều cho liền mạch.
+
+                   Chặn 52°: chưa tới 90° nên không bao giờ lộ mặt sau (chữ lật
+                   ngược), và chai vẫn còn dày gần một nửa, không bẹp như cách
+                   bóp ngang đã thử ở bản trước (ở 52° chai còn 62% bề ngang). */
+                const lat = (laAnh && spinPulse > .001)
+                    ? spinPulse * 52 * (switchSpin > 360 ? 1 : -1) : 0;
 
                 /* bồng bềnh nhẹ trên máy tính; trên điện thoại đứng yên cho gọn */
                 if (!isNarrow) y += Math.sin(time * 1.05 + bi * 2.1) * 18 * (1 - settle * .8);
@@ -4046,7 +4058,7 @@
                 const tr =
                     `translate3d(${n.x.toFixed(1)}px, ${(n.y - pinned).toFixed(1)}px, 0) scale(${(n.s * scale * (1 - spinPulse * .06)).toFixed(4)})` +
                     ` rotateX(${(n.rx + (laAnh ? cur.y * -3 : -cur.y * 13)).toFixed(2)}deg)` +
-                    ` rotateY(${(n.ry + (laAnh ? cur.x * 5 + nghieng : cur.x * 34 + switchSpin)).toFixed(2)}deg)`;
+                    ` rotateY(${(n.ry + (laAnh ? cur.x * 5 + lat : cur.x * 34 + switchSpin)).toFixed(2)}deg)`;
                 if (tr !== rig._tr) { rig.style.transform = tr; rig._tr = tr; }
 
                 gx += n.x * n.o; gy += n.y * n.o; gw += n.o;
