@@ -595,6 +595,8 @@ window.ROOTLAB_CONTENT = {
     "comboOld": "1.080.000đ",
     "comboNew": "980.000đ",
     "comboBtn": "Mua bộ đôi",
+    "boxEyebrow": "HỘP QUÀ · 2 BƯỚC CHUYÊN SÂU",
+    "boxGift": "Tặng kèm lược massage da đầu",
     "comboLink": "",
     "note": "Giá minh hoạ — thay bằng giá bán thật của bạn."
   },
@@ -745,6 +747,8 @@ window.ROOTLAB_CONTENT = {
         "t2": "Today",
         "comboLabel": "Buy the pair",
         "comboBtn": "Buy the pair",
+        "boxEyebrow": "GIFT BOX · 2-STEP ROUTINE",
+        "boxGift": "Free scalp massage brush included",
         "note": "Illustrative prices — replace with your real selling prices."
       },
       "lines": [
@@ -1197,6 +1201,8 @@ window.ROOTLAB_CONTENT = {
         "t2": "aujourd'hui",
         "comboLabel": "Le duo complet",
         "comboBtn": "Acheter le duo",
+        "boxEyebrow": "COFFRET · RITUEL EN 2 ÉTAPES",
+        "boxGift": "Brosse de massage du cuir chevelu offerte",
         "note": "Prix indicatifs — remplacez-les par vos prix de vente réels."
       },
       "lines": [
@@ -1649,6 +1655,8 @@ window.ROOTLAB_CONTENT = {
         "t2": "oggi",
         "comboLabel": "Il duo completo",
         "comboBtn": "Acquista il duo",
+        "boxEyebrow": "COFANETTO · RITUALE IN 2 FASI",
+        "boxGift": "Spazzola massaggiante per cuoio capelluto in omaggio",
         "note": "Prezzi indicativi — sostituiscili con i tuoi prezzi di vendita reali."
       },
       "lines": [
@@ -2101,6 +2109,8 @@ window.ROOTLAB_CONTENT = {
         "t2": "はじめる",
         "comboLabel": "2本セットで購入",
         "comboBtn": "セットを購入",
+        "boxEyebrow": "ギフトボックス · 2ステップ",
+        "boxGift": "頭皮マッサージブラシをプレゼント",
         "note": "参考価格です。実際の販売価格に差し替えてください。"
       },
       "lines": [
