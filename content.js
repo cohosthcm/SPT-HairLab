@@ -3,7 +3,7 @@
    products= các chai. Một dòng có thể gồm nhiều chai (trường "sp" của dòng).
    i18n    = bản dịch. Khối nào không khai thì tự dùng bản tiếng Việt. */
 window.ROOTLAB_CONTENT = {
-  "brand": "ROOTLAB",
+  "brand": "ROOT & RISE LAB",
   "contactBtn": "Liên hệ",
   "nav": [
     "Trang chủ",
@@ -320,7 +320,7 @@ window.ROOTLAB_CONTENT = {
   "products": [
     {
       "key": "cleanse",
-      "name": "Deep Cleanse",
+      "name": "Thanh lọc da đầu",
       "cardSub": "Bước 1 · Làm sạch",
       "tag": "Bước 1 · Làm sạch chân tóc",
       "desc": "Gel làm sạch sâu chân tóc và nang tóc.<br>Cuốn trôi bã nhờn, bụi bẩn và tế bào chết<br>đang bít lỗ chân lông trên da đầu.",
@@ -329,9 +329,9 @@ window.ROOTLAB_CONTENT = {
         "body": "#f1f7f4",
         "cap": "#0d2f27",
         "ink": "#0b3d33",
-        "l1": "DEEP",
-        "l2": "CLEANSE",
-        "sub": "SCALP & FOLLICLE",
+        "l1": "THANH LỌC",
+        "l2": "DA ĐẦU",
+        "sub": "CHUYÊN SÂU",
         "vn": "Làm sạch chân tóc & nang tóc",
         "vol": "200 ml"
       },
@@ -347,13 +347,13 @@ window.ROOTLAB_CONTENT = {
         "Không sulfate, không paraben",
         "Hợp da đầu dầu và có gàu"
       ],
-      "buyBtn": "Mua Deep Cleanse",
+      "buyBtn": "Mua Thanh lọc da đầu",
       "buyLink": "",
       "shape": "jar"
     },
     {
       "key": "serum",
-      "name": "Growth Serum",
+      "name": "Nuôi dưỡng chân tóc",
       "cardSub": "Bước 2 · Dưỡng tóc",
       "tag": "Bước 2 · Dưỡng & kích thích mọc tóc",
       "desc": "Serum nuôi dưỡng nang tóc từ bên trong.<br>Thẩm thấu vào chân tóc, kích thích mọc tóc mới<br>và giảm gãy rụng theo từng ngày.",
@@ -362,9 +362,9 @@ window.ROOTLAB_CONTENT = {
         "body": "#a3600d",
         "cap": "#141009",
         "ink": "#fff6e2",
-        "l1": "GROWTH",
-        "l2": "SERUM",
-        "sub": "ROOT ACTIVATOR",
+        "l1": "NUÔI DƯỠNG",
+        "l2": "CHÂN TÓC",
+        "sub": "SERUM",
         "vn": "Dưỡng tóc & kích thích mọc tóc",
         "vol": "100 ml"
       },
@@ -380,7 +380,7 @@ window.ROOTLAB_CONTENT = {
         "Không nhờn, không cần xả lại",
         "Dùng được cho cả nam và nữ"
       ],
-      "buyBtn": "Mua Growth Serum",
+      "buyBtn": "Mua Nuôi dưỡng chân tóc",
       "buyLink": "",
       "shape": "dropper"
     },
@@ -600,7 +600,7 @@ window.ROOTLAB_CONTENT = {
   },
   "footer": {
     "tagline": "Chăm sóc tóc từ chân tóc — làm sạch trước, nuôi dưỡng sau.",
-    "copyright": "© 2026 ROOTLAB"
+    "copyright": "© 2026 ROOT & RISE LAB"
   },
   "i18n": {
     "en": {
