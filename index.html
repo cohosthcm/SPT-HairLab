@@ -2031,6 +2031,91 @@
         }
 
         /* ==========================================================
+           BẢNG GIÁ NẰM NGANG (máy tính, từ 761px trở lên)
+
+           Trước đây thẻ giá xếp DỌC: chai ở trên, chữ ở dưới. Đo thật
+           trên màn 1440×900 thì cả khối màn giá cao 943px, trong khi
+           khung nhìn chỉ có 900px — tràn ra cả trên lẫn dưới. Màn giá
+           căn giữa theo chiều dọc nên phần tràn phía trên đẩy tiêu đề
+           "Bắt đầu hôm nay" chui lên sau thanh menu, còn dòng ghi chú
+           dưới cùng thì rơi khỏi màn hình.
+
+           Đặt chai NẰM NGANG bên trái chữ: thẻ tụt từ 479px xuống
+           khoảng 235px. Cộng với việc thu nhỏ ảnh hộp quà, cả màn giá
+           còn chừng 600px — vừa gọn một khung hình, không còn đè chữ.
+
+           Chai 3D tự canh theo ô .price-slot (measureScenes đo ô này
+           rồi thu chai cho vừa), nên đổi kích thước ô là chai tự theo,
+           không phải sửa gì trong phần dựng chai.
+           Mốc 1025px là cố ý: từ 1024px trở xuống trang đã chuyển sang
+           xếp dọc và dùng ảnh chai 2D đặt sẵn trong thẻ (.shot-2d),
+           không dùng chai 3D nữa. Đụng vào khoảng đó là hỏng bản điện
+           thoại/máy tính bảng, nên để nguyên.
+           ========================================================== */
+        @media (min-width: 1025px) {
+            .price-grid { gap: 1.4rem; margin-top: 1.5rem; align-items: stretch; }
+
+            .price-card {
+                width: 452px;
+                display: flex;
+                align-items: stretch;      /* chữ hai thẻ bắt đầu cùng một hàng */
+                gap: 1.15rem;
+                padding: 1.15rem 1.5rem 1.15rem 1.05rem;
+                text-align: left;
+            }
+            .price-slot { flex: 0 0 128px; width: 128px; height: 182px; align-self: center; }
+            /* nút mua tụt xuống đáy để hai thẻ cao bằng nhau vẫn gọn */
+            .price-body { flex: 1 1 auto; min-width: 0; padding: 0; display: flex; flex-direction: column; }
+            .price-card .buy-btn { margin-top: auto; }
+            .price-body h3 { font-size: 1.16rem; }
+            .price-body .sub { font-size: .78rem; margin-top: .25rem; }
+            .price { font-size: 1.62rem; margin: .5rem 0 .55rem; }
+            .price-list { margin-bottom: .85rem; }
+            .price-list li { font-size: .77rem; padding: .22rem 0 .22rem 1.25rem; }
+            .price-list li::before { top: .62rem; width: 6px; height: 6px; }
+            .price-card .buy-btn { padding: .68rem 1rem; font-size: .84rem; }
+
+            /* hộp quà thu lại cho cả màn vừa một khung hình */
+            .combo.hop { margin-top: 1.2rem; padding: .95rem 1.7rem; }
+            .combo-anh { width: clamp(150px, 17vw, 208px); }
+            .combo.hop b { font-size: 1.1rem; }
+            .combo .big { font-size: 1.18rem; }
+        }
+
+        /* laptop hẹp hơn: rút thẻ lại cho hai thẻ vẫn nằm cạnh nhau */
+        @media (min-width: 1025px) and (max-width: 1280px) {
+            .price-card { width: 396px; padding: 1rem 1.25rem 1rem .9rem; }
+            .price-slot { flex: 0 0 108px; width: 108px; height: 156px; }
+            .price-body h3 { font-size: 1.05rem; }
+            .price { font-size: 1.44rem; }
+            .price-list li { font-size: .73rem; padding: .2rem 0 .2rem 1.15rem; }
+        }
+
+        /* Màn hình THẤP (laptop 13–14", cửa sổ không full) — đây chính là
+           kiểu màn của Phil. Trang đã có sẵn một khối @media (max-height:880px)
+           thu nhỏ bảng giá, nhưng khối nằm-ngang này viết sau nên đè lên nó;
+           phải thu lại lần nữa ở đây, không thì màn giá lại cao quá khung hình. */
+        @media (min-width: 1025px) and (max-height: 880px) {
+            .price-grid { margin-top: 1.1rem; gap: 1.2rem; }
+            .price-card { padding: .95rem 1.25rem .95rem .9rem; }
+            .price-slot { flex: 0 0 112px; width: 112px; height: 152px; }
+            .price-body h3 { font-size: 1.06rem; }
+            .price-body .sub { font-size: .74rem; }
+            .price { font-size: 1.42rem; margin: .4rem 0 .45rem; }
+            .price-list { margin-bottom: .7rem; }
+            .price-list li { font-size: .73rem; padding: .18rem 0 .18rem 1.15rem; }
+            .price-list li::before { top: .55rem; }
+            .price-card .buy-btn { padding: .58rem 1rem; font-size: .8rem; }
+
+            .combo.hop { margin-top: .95rem; padding: .8rem 1.5rem; }
+            .combo-anh { width: clamp(132px, 13vw, 168px); }
+            .combo.hop b { font-size: 1rem; }
+            .combo-tang { font-size: .82rem; }
+            .combo .big { font-size: 1.1rem; }
+            .combo-gia .buy-btn { padding: .58rem 1.35rem; }
+        }
+
+        /* ==========================================================
            MÀN CHỌN NHÓM SẢN PHẨM — màn hình đầu tiên khách nhìn thấy
            Rê chuột (hoặc chạm) vào một nhóm → đổi người mẫu.
            Bấm → trang tự trôi xuống đúng trang của sản phẩm đó.
