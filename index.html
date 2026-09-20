@@ -2190,6 +2190,16 @@
         .cs-who { position: absolute; inset: 0; opacity: 0; transition: opacity .45s ease; will-change: transform, filter, clip-path; }
         .cs-who.on { opacity: 1; }
         .cs-who img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+        /* Hình tóc vẽ bằng code. Tranh đã vẽ sẵn một lần, ở đây chỉ cho nó
+           trôi rất chậm để không đứng chết — dịch chuyển và phóng to là hai
+           thứ trình duyệt làm bằng phần cứng, gần như không tốn gì. */
+        .cs-toc-ve { width: 100%; height: 100%; object-fit: cover; display: block;
+            transform-origin: 52% 34%; animation: tocTroi 26s ease-in-out infinite alternate; }
+        @keyframes tocTroi {
+            from { transform: scale(1.06) translate3d(-.8%, -.5%, 0); }
+            to   { transform: scale(1.13) translate3d(.9%, .8%, 0); }
+        }
+        @media (prefers-reduced-motion: reduce) { .cs-toc-ve { animation: none; transform: scale(1.06); } }
         @keyframes csSlice {
             0%   { clip-path: inset(0 0 88% 0); transform: translateX(-16px); }
             10%  { clip-path: inset(76% 0 2% 0); transform: translateX(14px); }
@@ -4590,17 +4600,219 @@
             const chon = document.getElementById('chon');
             if (!plate || !box) return;
 
-            LINES.forEach(d => {
-                const el = document.createElement('div');
-                el.className = 'cs-who'; el.dataset.key = d.key;
-                el.innerHTML = `<img src="${esc(d.nguoi || d.key + '.jpg')}" alt="${esc(d.name)}" loading="eager">`;
-                plate.insertBefore(el, plate.firstChild);
-            });
+            /* ============================================================
+               HÌNH TÓC VẼ BẰNG CODE — thay ảnh người mẫu
+
+               Vì sao bỏ ảnh người: ảnh người thật rất dễ dính bản quyền,
+               mà ảnh có giấy phép thương mại thì đắt và vẫn có rủi ro người
+               trong ảnh khiếu nại. Vẽ bằng code thì hình là của mình, không
+               ai đòi được, lại nhẹ hơn ảnh và đổi màu theo dòng tuỳ ý.
+
+               Mỗi dòng một kiểu khác nhau:
+                 doc   — tóc dài buông dọc, dày, gợn nhẹ  (Phục hồi & Mọc tóc)
+                 ngang — tóc ướt bóng lượn ngang          (Dầu gội)
+                 lua   — dải mềm như lụa, sóng thưa       (Sữa tắm)
+
+               Vẽ MỘT LẦN rồi thôi, không chạy vòng lặp hoạt hình. Nền màn
+               chọn đã có một lớp tóc động rồi; thêm ba lớp động nữa là lag.
+               Chuyển động nhè nhẹ để riêng cho CSS lo (xem .cs-toc-ve).
+
+               Muốn quay lại dùng ảnh thật: chỉ cần điền "ảnh người mẫu"
+               trong trang quản trị — có ảnh thì ảnh thắng, code không vẽ nữa.
+               ============================================================ */
+            const KIEU_TOC = {
+                /* soi     — số sợi vẽ
+                   day     — bề dày sợi (mảnh nhất → dày nhất)
+                   song    — biên độ uốn lượn
+                   xien    — độ xiên của cả khối
+                   bong    — độ mạnh của dải sáng vắt ngang (thứ làm tóc "óng")
+                   tanBot  — sợi xoè ra ở cuối bao nhiêu
+                   dongBo  — các sợi chạy song song nhau tới mức nào (1 = song song hẳn).
+                             Đây là chỗ bản đầu sai: để mỗi sợi uốn một kiểu thì
+                             chúng cắt chéo nhau, nhìn ra mớ rơm chứ không ra tóc.
+                   huong   — 'doc' buông xuống · 'ngang' vắt ngang · 'cheo' chéo mềm */
+                doc:   { soi: 260, day: [.7, 4.2],  song: .34, xien: .12, bong: .95, tanBot: .30, dongBo: .40, huong: 'doc'   },
+                ngang: { soi: 230, day: [.9, 5.0],  song: .52, xien: .16, bong: 1.15, tanBot: .10, dongBo: .90, huong: 'ngang' },
+                /* Kiểu 'lụa' dùng chính công thức vắt ngang rồi XOAY cả khung đi.
+                   Bản đầu tôi viết riêng một công thức chéo: sai, vì lệch giữa các
+                   sợi quá nhỏ nên cả 150 sợi chồng lên nhau thành một vệt. Xoay
+                   khung thì chắc chắn các sợi vẫn cách đều nhau. */
+                lua:   { soi: 170, day: [1.4, 8.0], song: .46, xien: .10, bong: .88, tanBot: .16, dongBo: .86, huong: 'ngang', xoay: -.40 }
+            };
+            const TEN_KIEU = Object.keys(KIEU_TOC);
+
+            /* Màu: nền gần như đen có pha màu nhấn của dòng, sợi tóc thì ấm.
+               Nền tối + sợi sáng vẽ chồng sáng (lighter) là công thức làm ra
+               vẻ óng ả; nền sáng thì sợi nào cũng chìm, nhìn ra mớ chỉ rối. */
+            function bangMauToc(nhan) {
+                const [r, g, b] = [1, 3, 5].map(i => parseInt(nhan.slice(i, i + 2), 16) || 0);
+                return {
+                    nenTrong: `rgb(${Math.round(r * .30 + 26)},${Math.round(g * .30 + 20)},${Math.round(b * .30 + 16)})`,
+                    nenNgoai: `rgb(${Math.round(r * .10 + 7)},${Math.round(g * .10 + 6)},${Math.round(b * .10 + 6)})`,
+                    soi: [
+                        [126, 78, 42],    /* nâu hạt dẻ  */
+                        [168, 112, 56],   /* nâu sáng    */
+                        [212, 156, 84],   /* vàng mật    */
+                        [244, 206, 140],  /* ánh sáng    */
+                        [255, 238, 202]   /* chóp sáng   */
+                    ]
+                };
+            }
+
+            function veToc(cv, kieu, nhan) {
+                const K = KIEU_TOC[kieu] || KIEU_TOC.doc;
+                const M = bangMauToc(nhan);
+                const W = cv.width, H = cv.height, c = cv.getContext('2d');
+                let hat = 20260920 + kieu.length * 7717;
+                const ng = () => (hat = (hat * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+                const ln = (a, b, t) => a + (b - a) * t;
+
+                /* 1. nền tối */
+                const nen = c.createRadialGradient(W * .46, H * .38, 0, W * .5, H * .5, H * .85);
+                nen.addColorStop(0, M.nenTrong); nen.addColorStop(1, M.nenNgoai);
+                c.fillStyle = nen; c.fillRect(0, 0, W, H);
+
+                /* 2. DẢI SÁNG: một vùng sáng vắt ngang khối tóc. Sợi nào đi qua
+                      vùng này thì sáng bừng lên, ra ngoài thì tối lại — đúng như
+                      ánh sáng rọi lên tóc thật. Tính bằng hàm, không vẽ ra. */
+                const tamSang = K.huong === 'ngang' ? .40 : .37;
+                const rongSang = K.huong === 'lua' ? .46 : .40;
+                const doSang = (x, y) => {
+                    const lech = y / H - (x / W - .5) * K.xien * .5;
+                    /* dải sáng chính, và một dải phụ mờ hơn ở phía dưới —
+                       tóc thật luôn có hai vầng sáng như vậy */
+                    const d1 = Math.abs(lech - tamSang);
+                    const d2 = Math.abs(lech - (tamSang + .40));
+                    return Math.max(0, 1 - (d1 / rongSang) ** 1.6)
+                         + Math.max(0, 1 - (d2 / (rongSang * .9)) ** 1.6) * .46;
+                };
+
+                /* 3. các sợi. Mỗi sợi chia thành nhiều đoạn ngắn, mỗi đoạn có
+                      độ mờ và bề dày riêng: mảnh và mờ ở hai đầu, dày và rõ ở
+                      giữa. Đây là thứ khiến sợi trông như ánh sáng bắt trên tóc
+                      chứ không phải một nét vẽ cứng. */
+                c.globalCompositeOperation = 'lighter';
+                /* lineCap phải là 'butt'. Dùng 'round' thì đầu tròn của hai đoạn
+                   liền nhau chồng lên nhau, mà đang vẽ chồng sáng nên mỗi mối nối
+                   thành một chấm sáng — cả sợi hoá ra chuỗi hạt cườm. */
+                c.lineCap = 'butt';
+                const DOAN = 34;
+                /* xoay cả khối sợi (kiểu lụa). Phóng to 1.55 lần để khi xoay
+                   xong vẫn phủ kín khung, không hở góc. */
+                if (K.xoay) { c.save(); c.translate(W / 2, H / 2); c.rotate(K.xoay); c.scale(1.55, 1.55); c.translate(-W / 2, -H / 2); }
+
+                /* Sóng dùng chung: mọi sợi lượn gần giống nhau rồi lệch đi một
+                   chút. Tóc thật là như vậy — cả mái cùng đổ một hướng. */
+                const bienChung = ng() * Math.PI * 2, nhipChung = ln(2.6, 4.2, ng());
+                const tuDo = 1 - K.dongBo;
+                for (let i = 0; i < K.soi; i++) {
+                    const t = ng();                        /* vị trí sợi trong khối   */
+                    const bien = bienChung + (ng() - .5) * tuDo * Math.PI * 2;
+                    const nhip = nhipChung * (1 + (ng() - .5) * tuDo * .9);
+                    const dayGoc = ln(K.day[0], K.day[1], ng() ** 1.8);
+                    const manh = ng();                     /* sợi đậm hay nhạt        */
+                    const mauGoc = M.soi[Math.min(4, Math.floor(ng() ** 1.5 * 4.4))];
+                    const dai = ln(.72, 1.06, ng());       /* sợi dài ngắn khác nhau  */
+                    const batDau = ng() * (1 - dai) * .5;
+
+                    let px = 0, py = 0;
+                    for (let k = 0; k <= DOAN; k++) {
+                        const u = batDau + (k / DOAN) * dai;
+                        let x, y;
+                        if (K.huong === 'ngang') {
+                            x = ln(-W * .12, W * 1.12, u);
+                            y = -H * .08 + t * H * 1.16
+                                + Math.sin(u * nhip + bien) * H * .10 * K.song
+                                + (u - .5) * H * K.xien;
+                        } else if (K.huong === 'cheo') {
+                            x = ln(-W * .16, W * 1.16, u * .78 + t * .34);
+                            y = ln(-H * .1, H * 1.1, u * .9 + (t - .5) * .55)
+                                + Math.sin(u * nhip + bien) * H * .11 * K.song;
+                        } else {
+                            /* buông dọc: toả từ đỉnh, xoè dần ở cuối */
+                            const x0 = ln(-W * .06, W * 1.06, t);
+                            const lech = (x0 / W - .5) * 2;
+                            y = ln(-H * .08, H * 1.08, u);
+                            const p = u;
+                            x = x0 + Math.sin(p * nhip + bien) * W * .05 * K.song
+                                   + lech * p * p * W * K.tanBot;
+                        }
+                        if (k === 0) { px = x; py = y; continue; }
+
+                        /* mảnh và mờ ở hai đầu sợi */
+                        const giua = Math.sin((k / DOAN) * Math.PI) ** .65;
+                        const sang = .34 + doSang((px + x) / 2, (py + y) / 2) * K.bong;
+                        c.lineWidth = dayGoc * (.4 + giua * .6);
+                        c.globalAlpha = Math.min(.95, (.06 + manh * .20) * giua * sang * 2.3);
+                        c.strokeStyle = `rgb(${mauGoc[0]},${mauGoc[1]},${mauGoc[2]})`;
+                        c.beginPath(); c.moveTo(px, py); c.lineTo(x, y); c.stroke();
+                        px = x; py = y;
+                    }
+                }
+
+                if (K.xoay) c.restore();
+
+                /* 4. sương sáng rất mờ phủ lên dải sáng, cho chỗ đó "bừng" hẳn */
+                const gocS = K.xoay || 0, sx = Math.sin(gocS) * W * .5, sy = Math.cos(gocS) * H;
+                const suong = c.createLinearGradient(
+                    W * .5 - sx * (tamSang - rongSang - .5) * 2, sy * (tamSang - rongSang),
+                    W * .5 - sx * (tamSang + rongSang - .5) * 2, sy * (tamSang + rongSang));
+                suong.addColorStop(0, 'rgba(255,232,190,0)');
+                suong.addColorStop(.5, `rgba(255,232,190,${.11 * K.bong})`);
+                suong.addColorStop(1, 'rgba(255,232,190,0)');
+                c.globalAlpha = 1; c.fillStyle = suong; c.fillRect(0, 0, W, H);
+
+                /* 5. vài sợi bay lơi ra ngoài — thiếu nó nhìn rất "máy vẽ" */
+                for (let i = 0; i < 18; i++) {
+                    const t = ng(), bien = bienChung + (ng() - .5) * tuDo * Math.PI;
+                    c.lineWidth = ln(.5, 1.1, ng());
+                    c.globalAlpha = .10 + ng() * .16;
+                    c.strokeStyle = 'rgb(250,224,178)';
+                    c.beginPath();
+                    for (let k = 0; k <= 16; k++) {
+                        const u = k / 16;
+                        const x = K.huong === 'ngang' ? ln(-W * .1, W * 1.1, u) : ln(W * .04, W * .96, t) + Math.sin(u * 3 + bien) * W * .13;
+                        const y = K.huong === 'ngang' ? t * H + Math.sin(u * 3 + bien) * H * .14 : ln(-H * .05, H * 1.05, u);
+                        k ? c.lineTo(x, y) : c.moveTo(x, y);
+                    }
+                    c.stroke();
+                }
+
+                /* 6. tối dần ra rìa cho khối tóc gọn trong khung vòm */
+                c.globalCompositeOperation = 'source-over';
+                c.globalAlpha = 1;
+                const goc = c.createRadialGradient(W * .5, H * .44, H * .22, W * .5, H * .52, H * .86);
+                goc.addColorStop(0, 'rgba(0,0,0,0)');
+                goc.addColorStop(.74, 'rgba(0,0,0,.16)');
+                goc.addColorStop(1, 'rgba(0,0,0,.52)');
+                c.fillStyle = goc; c.fillRect(0, 0, W, H);
+            }
 
             /* Màu nền màn chọn: dựng từ một màu nhấn duy nhất của dòng, luôn có
                vùng sáng ở giữa. Trước đây mượn màu nền của cảnh 3D nên dòng nào
                màu tối là cả màn hình đen kịt. */
             const mauNhan = d => d.accent || (spOf((d.sp || [])[0]).theme || {}).inner || '#0b8a78';
+
+            /* Phải dựng khung hình SAU khi có mauNhan — hình tóc lấy màu từ đó. */
+            LINES.forEach((d, i) => {
+                const el = document.createElement('div');
+                el.className = 'cs-who'; el.dataset.key = d.key;
+                if (d.nguoi) {
+                    /* vẫn còn ảnh thật trong trang quản trị thì dùng ảnh */
+                    el.innerHTML = `<img src="${esc(d.nguoi)}" alt="${esc(d.name)}" loading="eager">`;
+                } else {
+                    const cv = document.createElement('canvas');
+                    cv.className = 'cs-toc-ve';
+                    cv.setAttribute('aria-hidden', 'true');
+                    cv.width = 620; cv.height = 722;          /* đúng tỉ lệ 765/890 của khung */
+                    el.appendChild(cv);
+                    const kieu = d.kieuToc || TEN_KIEU[i % TEN_KIEU.length];
+                    el.dataset.kieu = kieu;
+                    veToc(cv, kieu, mauNhan(d));
+                }
+                plate.insertBefore(el, plate.firstChild);
+            });
+
             const nenChon = d => {
                 const a = mauNhan(d);
                 return `radial-gradient(120% 92% at 50% 44%, ${shade(a, 1.06)} 0%, ${shade(a, .52)} 34%, ` +
