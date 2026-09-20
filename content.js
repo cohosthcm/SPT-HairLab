@@ -326,7 +326,7 @@ window.ROOTLAB_CONTENT = {
       "name": "Thanh lọc da đầu",
       "cardSub": "Bước 1 · Làm sạch",
       "tag": "Bước 1 · Làm sạch chân tóc",
-      "desc": "Gel làm sạch sâu chân tóc và nang tóc.<br>Cuốn trôi bã nhờn, bụi bẩn và tế bào chết<br>đang bít lỗ chân lông trên da đầu.",
+      "desc": "Lấy đi tế bào chết, bụi bẩn và dầu thừa trên da đầu, giữ cho da đầu và mái tóc sạch sẽ.",
       "photo": "sp1-thanh-loc.webp",
       "bottle": {
         "body": "#f1f7f4",
@@ -344,22 +344,23 @@ window.ROOTLAB_CONTENT = {
         "outer": "#011411"
       },
       "price": "390.000",
-      "priceSub": "Gel làm sạch chân tóc & nang tóc · 200ml",
+      "priceSub": "Tẩy tế bào chết & làm sạch da đầu · 200ml",
       "features": [
-        "Dùng được khoảng 8 tuần",
+        "Dùng 1–2 lần mỗi tuần",
         "Không sulfate, không paraben",
         "Hợp da đầu dầu và có gàu"
       ],
       "buyBtn": "Mua Thanh lọc da đầu",
       "buyLink": "",
-      "shape": "jar"
+      "shape": "jar",
+      "inci": "Glycerin, Sodium Chloride, Water, Propylene Glycol, Sodium C14-16 Olefin Sulfonate, Cocamidopropyl Betaine, Glycolic Acid, Lavandula Angustifolia Flower Oil, Phenoxyethanol, Xanthan gum, Menthol, Sodium Hydroxide, Chamomilla Recutita (Matricaria) Flower Extract, Hydroxyethyl Acrylate/Sodium Acryloyldimethyltaurate Copolymer, Allantoin, Chlorphenesin, C15-23 Alkanes, Decyl Glucoside, Tartaric Acid, Pyrus Malus (Apple) Fruit Extract, C13-C14 Alkanes, Citric Acid, Citrus Limon Fruit Extract, Vitis Vinifera (Grape) Skin Extract, Triticum Vulgare (Wheat) Bran Extract, Sodium Benzoate, Sodium Citrate, 1,2-Hexanediol, Potassium Sorbate, Linalool, Limonene, Geraniol, Coumarin."
     },
     {
       "key": "serum",
       "name": "Nuôi dưỡng chân tóc",
       "cardSub": "Bước 2 · Dưỡng tóc",
       "tag": "Bước 2 · Dưỡng & kích thích mọc tóc",
-      "desc": "Serum nuôi dưỡng nang tóc từ bên trong.<br>Thẩm thấu vào chân tóc, kích thích mọc tóc mới<br>và giảm gãy rụng theo từng ngày.",
+      "desc": "Dưỡng ẩm, làm dịu da đầu và hỗ trợ hạn chế rụng tóc do hư tổn.",
       "photo": "sp2-nuoi-duong.webp",
       "bottle": {
         "body": "#a3600d",
@@ -377,15 +378,16 @@ window.ROOTLAB_CONTENT = {
         "outer": "#120a01"
       },
       "price": "690.000",
-      "priceSub": "Serum dưỡng & kích thích mọc tóc · 100ml",
+      "priceSub": "Tinh chất nuôi dưỡng chân tóc · 100ml",
       "features": [
-        "Dùng được khoảng 6 tuần",
+        "Dùng hằng ngày",
         "Không nhờn, không cần xả lại",
         "Dùng được cho cả nam và nữ"
       ],
       "buyBtn": "Mua Nuôi dưỡng chân tóc",
       "buyLink": "",
-      "shape": "dropper"
+      "shape": "dropper",
+      "inci": "Water, Alcohol Denat., Propylene Glycol, Propanediol, Panthenol, PEG-40 Hydrogenated Castor Oil, Glycerin, Phenoxyethanol, Arginine, Lactic Acid, Menthol, Lavandula Angustifolia Flower Oil, Chamomilla Recutita (Matricaria) Flower Extract, Glycine Soja (Soybean) Germ Extract, Triticum Vulgare (Wheat) Germ Extract, Disodium EDTA, Niacinamide, Chlorphenesin, Sodium Hydroxide, T-butyl Alcohol, Scutellaria Baicalensis Root Extract, Gluconolactone, Polygonum Multiflorum Root Extract, Sodium Benzoate, 1,2-Hexanediol, Anetholea Anisata Leaf Extract, Calcium Gluconate, Denatonium Benzoate, Linalool, Limonene, Geraniol, Coumarin."
     },
     {
       "key": "goi",
@@ -458,64 +460,65 @@ window.ROOTLAB_CONTENT = {
     "eyebrow": "THÀNH PHẦN",
     "t1": "Bên trong",
     "t2": "có gì",
-    "lead": "Hai công thức bổ trợ nhau: một bên dọn sạch đường đi cho nang tóc, một bên đưa dưỡng chất vào tận chân tóc.",
+    "lead": "Hai bước bổ trợ nhau. Bước 1 lấy đi lớp tế bào chết và dầu thừa đang bít da đầu. Bước 2 đưa dưỡng chất xuống phần chân tóc vừa được thông thoáng.",
     "items": [
       {
         "chip": "B1",
-        "name": "Salicylic Acid 2%",
-        "desc": "Làm tan bã nhờn và lớp sừng đang bít miệng nang tóc"
+        "name": "Glycolic Acid & AHA từ trái cây",
+        "desc": "Cùng chiết xuất táo, chanh, nho và cám lúa mì — làm bong nhẹ lớp tế bào chết đang bít miệng nang tóc."
       },
       {
         "chip": "B1",
-        "name": "Tinh dầu tràm trà",
-        "desc": "Kháng khuẩn nhẹ, giảm ngứa và gàu trên da đầu"
+        "name": "Cocamidopropyl Betaine & Decyl Glucoside",
+        "desc": "Bộ đôi tạo bọt gốc dừa. Rửa trôi dầu thừa và bụi bẩn mà không làm da đầu khô căng."
       },
       {
         "chip": "B1",
-        "name": "Panthenol B5",
-        "desc": "Làm dịu và giữ ẩm cho da đầu sau khi làm sạch sâu"
+        "name": "Allantoin, hoa cúc La Mã & oải hương",
+        "desc": "Làm dịu da đầu ngay sau khi tẩy tế bào chết. Menthol cho cảm giác mát nhẹ."
       },
       {
         "chip": "B2",
-        "name": "Redensyl 3%",
-        "desc": "Đánh thức nang tóc đang ngủ, kéo dài giai đoạn mọc"
+        "name": "Hà thủ ô đỏ & Hoàng cầm",
+        "desc": "Hai vị thảo dược quen thuộc trong chăm sóc tóc, ở dạng chiết xuất thấm thẳng vào chân tóc."
       },
       {
         "chip": "B2",
-        "name": "Caffeine & Biotin B7",
-        "desc": "Tăng tuần hoàn dưới da đầu và cung cấp nguyên liệu tạo sợi tóc"
+        "name": "Panthenol B5, Niacinamide & Arginine",
+        "desc": "Dưỡng ẩm da đầu, làm dịu vùng đang kích ứng và bổ sung dưỡng chất cho sợi tóc."
       },
       {
         "chip": "B2",
-        "name": "Tinh dầu hương thảo",
-        "desc": "Hỗ trợ giảm rụng tóc theo mùa"
+        "name": "Mầm đậu nành & mầm lúa mì",
+        "desc": "Chiết xuất mầm giàu dưỡng chất, hỗ trợ nuôi phần chân tóc yếu do hư tổn."
       }
     ],
-    "note": "Danh sách mẫu — thay bằng bảng thành phần thật trên nhãn sản phẩm của bạn."
+    "note": "Thành phần ghi đúng như trên nhãn sản phẩm. Bấm vào mục \"Thành phần đầy đủ\" để xem toàn bộ.",
+    "inciLabel": "Thành phần đầy đủ"
   },
   "howto": {
     "eyebrow": "CÁCH DÙNG",
     "t1": "Hai",
     "t2": "bước",
-    "lead": "Không phức tạp. Làm sạch vài lần một tuần, dưỡng mỗi tối trước khi ngủ.",
+    "lead": "Không phức tạp. Tẩy tế bào chết 1–2 lần mỗi tuần, xịt tinh chất mỗi ngày lên da đầu đã khô.",
     "steps": [
       {
         "no": "01",
-        "h": "Làm sạch chân tóc",
-        "p": "Làm ướt tóc, lấy một lượng gel bằng đồng xu, massage trực tiếp lên da đầu 60 giây rồi xả thật kỹ.",
-        "em": "2–3 LẦN / TUẦN"
+        "h": "Tẩy tế bào chết da đầu",
+        "em": "1–2 LẦN / TUẦN",
+        "p": "Để tóc KHÔ, không làm ướt. Lấy một lượng vừa đủ bôi lên chân tóc, dùng lược chuyên dụng massage vùng có sản phẩm 2–3 phút, rồi gội sạch bằng dầu gội dịu nhẹ."
       },
       {
         "no": "02",
-        "h": "Nhỏ serum lên da đầu",
-        "p": "Tóc còn hơi ẩm, rẽ ngôi và chấm serum dọc theo đường rẽ, đặc biệt ở vùng tóc thưa.",
-        "em": "MỖI TỐI"
+        "h": "Sấy khô da đầu",
+        "em": "TRƯỚC KHI XỊT",
+        "p": "Gội xong sấy cho da đầu khô hẳn. Tinh chất cần bám vào da đầu khô mới thấm tốt."
       },
       {
         "no": "03",
-        "h": "Massage 1 phút",
-        "p": "Xoa nhẹ bằng đầu ngón tay theo vòng tròn để serum thấm xuống nang tóc. Không cần xả lại.",
-        "em": "KHÔNG RỬA LẠI"
+        "h": "Xịt tinh chất lên chân tóc",
+        "em": "MỖI NGÀY",
+        "p": "Rẽ ngôi và xịt một lượng vừa đủ lên phần chân tóc, chú ý vùng tóc thưa. Sau đó chỉ sấy mát, không xả lại với nước."
       }
     ]
   },
@@ -632,55 +635,65 @@ window.ROOTLAB_CONTENT = {
         "eyebrow": "INGREDIENTS",
         "t1": "What's",
         "t2": "Inside",
-        "lead": "Two formulas that work together: one clears the way for the follicle, the other carries nutrients down to the root.",
+        "lead": "Two steps that work together. Step 1 lifts away dead skin and excess oil clogging the scalp. Step 2 carries nutrients down to the roots you have just cleared.",
         "items": [
           {
-            "name": "Salicylic Acid 2%",
-            "desc": "Dissolves the sebum and dead skin blocking the follicle opening"
+            "chip": "S1",
+            "name": "Glycolic acid & fruit AHAs",
+            "desc": "With apple, lemon, grape and wheat bran extracts — gently loosens the dead skin blocking each follicle opening."
           },
           {
-            "name": "Tea tree oil",
-            "desc": "Mildly antibacterial — calms itching and flaking on the scalp"
+            "chip": "S1",
+            "name": "Cocamidopropyl betaine & decyl glucoside",
+            "desc": "A coconut-derived foaming pair. Rinses away excess oil and grime without leaving the scalp tight and dry."
           },
           {
-            "name": "Panthenol B5",
-            "desc": "Soothes and rehydrates the scalp after a deep cleanse"
+            "chip": "S1",
+            "name": "Allantoin, chamomile & lavender",
+            "desc": "Calms the scalp right after exfoliation. Menthol adds a light cooling finish."
           },
           {
-            "name": "Redensyl 3%",
-            "desc": "Wakes dormant follicles and lengthens the growth phase"
+            "chip": "S2",
+            "name": "Fo-ti root & Chinese skullcap",
+            "desc": "Two herbs long used in hair care, here as extracts that absorb straight into the roots."
           },
           {
-            "name": "Caffeine & Biotin B7",
-            "desc": "Improves circulation under the scalp and supplies the building blocks for new strands"
+            "chip": "S2",
+            "name": "Panthenol B5, niacinamide & arginine",
+            "desc": "Hydrates the scalp, soothes irritated areas and feeds the hair shaft."
           },
           {
-            "name": "Rosemary oil",
-            "desc": "Helps reduce seasonal hair shedding"
+            "chip": "S2",
+            "name": "Soybean & wheat germ extracts",
+            "desc": "Nutrient-rich germ extracts that support roots weakened by damage."
           }
         ],
-        "note": "Sample list — replace with the real ingredient panel from your product label."
+        "note": "Ingredients exactly as printed on the product label. Tap \"Full ingredient list\" to see everything.",
+        "inciLabel": "Full ingredient list"
       },
       "howto": {
         "eyebrow": "HOW TO USE",
         "t1": "Two",
         "t2": "Steps",
-        "lead": "Nothing complicated. Cleanse a few times a week, nourish every night before bed.",
+        "lead": "Nothing complicated. Exfoliate once or twice a week, then spray the serum daily onto a dry scalp.",
         "steps": [
           {
-            "h": "Cleanse the roots",
-            "p": "Wet the hair, take a coin-sized amount of gel, massage it straight onto the scalp for 60 seconds, then rinse thoroughly.",
-            "em": "2–3 TIMES / WEEK"
+            "no": "01",
+            "h": "Exfoliate the scalp",
+            "em": "1–2 TIMES / WEEK",
+            "p": "Start on DRY hair — do not wet it. Apply a small amount to the roots, massage the treated area with a scalp comb for 2–3 minutes, then wash out with a gentle shampoo."
           },
           {
-            "h": "Apply serum to the scalp",
-            "p": "With hair still damp, part it and trace the serum along the parting, especially where hair is thinning.",
-            "em": "EVERY NIGHT"
+            "no": "02",
+            "h": "Dry the scalp",
+            "em": "BEFORE SPRAYING",
+            "p": "After washing, blow the scalp completely dry. The serum absorbs properly only on a dry scalp."
           },
           {
-            "h": "Massage for one minute",
-            "p": "Work it in with your fingertips in small circles so it reaches the follicle. No need to rinse.",
-            "em": "NO RINSING"
+            "no": "03",
+            "h": "Spray the serum on the roots",
+            "em": "EVERY DAY",
+            "p": "Part the hair and spray a small amount along the roots, especially where hair is thinning. Finish with cool air only — do not rinse it out."
           }
         ]
       },
@@ -992,10 +1005,10 @@ window.ROOTLAB_CONTENT = {
           "cardSub": "Step 1 · Cleanse",
           "tag": "Step 1 · Cleanse the roots",
           "desc": "A deep cleansing gel for roots and follicles.<br>Lifts away the sebum, dirt and dead skin<br>clogging the pores on your scalp.",
-          "priceSub": "Root & follicle cleansing gel · 200ml",
+          "priceSub": "Scalp exfoliating cleanser · 200ml",
           "buyBtn": "Buy Deep Cleanse",
           "features": [
-            "Lasts about 8 weeks",
+            "Use 1–2 times a week",
             "Sulfate-free, paraben-free",
             "Suits oily and flaky scalps"
           ],
@@ -1007,10 +1020,10 @@ window.ROOTLAB_CONTENT = {
           "cardSub": "Step 2 · Nourish",
           "tag": "Step 2 · Nourish & stimulate growth",
           "desc": "A serum that feeds the follicle from within.<br>It sinks into the root, encourages new growth<br>and reduces breakage day by day.",
-          "priceSub": "Nourishing & growth-stimulating serum · 100ml",
+          "priceSub": "Root nourishing serum · 100ml",
           "buyBtn": "Buy Growth Serum",
           "features": [
-            "Lasts about 6 weeks",
+            "For daily use",
             "Non-greasy, no rinsing needed",
             "For both men and women"
           ],
@@ -1086,55 +1099,65 @@ window.ROOTLAB_CONTENT = {
         "eyebrow": "COMPOSITION",
         "t1": "Au",
         "t2": "cœur",
-        "lead": "Deux formules complémentaires : l'une dégage le passage vers le follicule, l'autre apporte les nutriments jusqu'à la racine.",
+        "lead": "Deux étapes complémentaires. L'étape 1 retire les cellules mortes et l'excès de sébum qui obstruent le cuir chevelu. L'étape 2 apporte les nutriments jusqu'aux racines ainsi dégagées.",
         "items": [
           {
-            "name": "Acide salicylique 2 %",
-            "desc": "Dissout le sébum et les cellules mortes qui obstruent l'ouverture du follicule"
+            "chip": "E1",
+            "name": "Acide glycolique & AHA de fruits",
+            "desc": "Avec des extraits de pomme, citron, raisin et son de blé — détache en douceur les cellules mortes qui bouchent l'ouverture du follicule."
           },
           {
-            "name": "Huile d'arbre à thé",
-            "desc": "Légèrement antibactérienne, apaise les démangeaisons et les pellicules"
+            "chip": "E1",
+            "name": "Cocamidopropyl bétaïne & decyl glucoside",
+            "desc": "Duo moussant dérivé de la noix de coco. Élimine le sébum et les impuretés sans laisser le cuir chevelu tiraillé."
           },
           {
-            "name": "Panthénol B5",
-            "desc": "Apaise et réhydrate le cuir chevelu après un nettoyage en profondeur"
+            "chip": "E1",
+            "name": "Allantoïne, camomille & lavande",
+            "desc": "Apaise le cuir chevelu juste après l'exfoliation. Le menthol apporte une fraîcheur légère."
           },
           {
-            "name": "Redensyl 3 %",
-            "desc": "Réveille les follicules endormis et prolonge la phase de croissance"
+            "chip": "E2",
+            "name": "Renouée multiflore & scutellaire",
+            "desc": "Deux plantes traditionnelles du soin capillaire, ici en extraits qui pénètrent directement jusqu'aux racines."
           },
           {
-            "name": "Caféine & Biotine B7",
-            "desc": "Stimule la circulation sous le cuir chevelu et fournit la matière première du cheveu"
+            "chip": "E2",
+            "name": "Panthénol B5, niacinamide & arginine",
+            "desc": "Hydrate le cuir chevelu, apaise les zones irritées et nourrit la fibre capillaire."
           },
           {
-            "name": "Huile de romarin",
-            "desc": "Aide à limiter la chute saisonnière"
+            "chip": "E2",
+            "name": "Extraits de germe de soja & de blé",
+            "desc": "Des extraits de germe riches en nutriments, en soutien des racines fragilisées."
           }
         ],
-        "note": "Liste d'exemple — remplacez-la par la composition réelle figurant sur votre étiquette."
+        "note": "Composition reprise telle quelle de l'étiquette du produit. Touchez « Liste complète des ingrédients » pour tout voir.",
+        "inciLabel": "Liste complète des ingrédients"
       },
       "howto": {
         "eyebrow": "UTILISATION",
         "t1": "Deux",
         "t2": "gestes",
-        "lead": "Rien de compliqué. Nettoyer quelques fois par semaine, nourrir chaque soir avant le coucher.",
+        "lead": "Rien de compliqué. Un gommage une à deux fois par semaine, puis le sérum chaque jour sur cuir chevelu sec.",
         "steps": [
           {
-            "h": "Nettoyer les racines",
-            "p": "Mouillez les cheveux, prenez l'équivalent d'une pièce de gel, massez directement le cuir chevelu 60 secondes puis rincez soigneusement.",
-            "em": "2–3 FOIS / SEMAINE"
+            "no": "01",
+            "h": "Gommer le cuir chevelu",
+            "em": "1 À 2 FOIS / SEMAINE",
+            "p": "Sur cheveux SECS — ne les mouillez pas. Appliquez une petite quantité sur les racines, massez la zone traitée avec un peigne pendant 2 à 3 minutes, puis rincez avec un shampooing doux."
           },
           {
-            "h": "Appliquer le sérum",
-            "p": "Sur cheveux encore humides, faites une raie et déposez le sérum le long de la raie, surtout sur les zones clairsemées.",
-            "em": "CHAQUE SOIR"
+            "no": "02",
+            "h": "Sécher le cuir chevelu",
+            "em": "AVANT LE SÉRUM",
+            "p": "Après le lavage, séchez complètement le cuir chevelu. Le sérum ne pénètre bien que sur un cuir chevelu sec."
           },
           {
-            "h": "Masser une minute",
-            "p": "Faites pénétrer du bout des doigts par petits cercles jusqu'au follicule. Pas besoin de rincer.",
-            "em": "SANS RINÇAGE"
+            "no": "03",
+            "h": "Vaporiser le sérum sur les racines",
+            "em": "CHAQUE JOUR",
+            "p": "Faites une raie et vaporisez une petite quantité sur les racines, surtout là où les cheveux se clairsèment. Terminez à l'air froid — ne rincez pas."
           }
         ]
       },
@@ -1446,12 +1469,12 @@ window.ROOTLAB_CONTENT = {
           "cardSub": "Étape 1 · Nettoyer",
           "tag": "Étape 1 · Nettoyer les racines",
           "desc": "Gel nettoyant pour racines et follicules.<br>Élimine sébum, impuretés et cellules mortes<br>qui obstruent les pores du cuir chevelu.",
-          "priceSub": "Gel nettoyant racines & follicules · 200 ml",
+          "priceSub": "Gommage nettoyant cuir chevelu · 200 ml",
           "buyBtn": "Acheter Deep Cleanse",
           "features": [
-            "Environ 8 semaines d'utilisation",
+            "1 à 2 fois par semaine",
             "Sans sulfate, sans parabène",
-            "Pour cuir chevelu gras ou à pellicules"
+            "Cuir chevelu gras et à pellicules"
           ],
           "bottle": {
             "vn": "Nettoyant racines & follicules"
@@ -1461,12 +1484,12 @@ window.ROOTLAB_CONTENT = {
           "cardSub": "Étape 2 · Nourrir",
           "tag": "Étape 2 · Nourrir & stimuler la pousse",
           "desc": "Un sérum qui nourrit le follicule.<br>Il pénètre jusqu'à la racine, relance la pousse<br>et réduit la casse jour après jour.",
-          "priceSub": "Sérum nourrissant & stimulant la pousse · 60 ml",
+          "priceSub": "Sérum nourrissant racines · 100 ml",
           "buyBtn": "Acheter Growth Serum",
           "features": [
-            "Environ 6 semaines d'utilisation",
+            "Usage quotidien",
             "Non gras, sans rinçage",
-            "Pour les femmes comme pour les hommes"
+            "Pour hommes et femmes"
           ],
           "bottle": {
             "vn": "Nourrit & stimule la pousse"
@@ -1540,55 +1563,65 @@ window.ROOTLAB_CONTENT = {
         "eyebrow": "INGREDIENTI",
         "t1": "Nel",
         "t2": "cuore",
-        "lead": "Due formule che si completano: una libera la strada al follicolo, l'altra porta i nutrienti fino alla radice.",
+        "lead": "Due passaggi complementari. Il primo rimuove cellule morte e sebo in eccesso che ostruiscono il cuoio capelluto. Il secondo porta i nutrienti fino alle radici appena liberate.",
         "items": [
           {
-            "name": "Acido salicilico 2%",
-            "desc": "Scioglie sebo e cellule morte che ostruiscono l'apertura del follicolo"
+            "chip": "P1",
+            "name": "Acido glicolico & AHA della frutta",
+            "desc": "Con estratti di mela, limone, uva e crusca di grano: sciolgono delicatamente le cellule morte che ostruiscono il follicolo."
           },
           {
-            "name": "Olio di tea tree",
-            "desc": "Leggermente antibatterico, calma prurito e forfora del cuoio capelluto"
+            "chip": "P1",
+            "name": "Cocamidopropil betaina & decil glucoside",
+            "desc": "Coppia schiumogena di origine cocco. Rimuove sebo e impurità senza lasciare il cuoio capelluto secco e tirato."
           },
           {
-            "name": "Pantenolo B5",
-            "desc": "Lenisce e reidrata il cuoio capelluto dopo la pulizia profonda"
+            "chip": "P1",
+            "name": "Allantoina, camomilla & lavanda",
+            "desc": "Calmano il cuoio capelluto subito dopo l'esfoliazione. Il mentolo dà una leggera sensazione fresca."
           },
           {
-            "name": "Redensyl 3%",
-            "desc": "Risveglia i follicoli dormienti e allunga la fase di crescita"
+            "chip": "P2",
+            "name": "Poligono multiflora & scutellaria",
+            "desc": "Due erbe della tradizione per la cura dei capelli, qui in estratti che penetrano fino alle radici."
           },
           {
-            "name": "Caffeina & Biotina B7",
-            "desc": "Migliora la circolazione sotto il cuoio capelluto e fornisce il materiale per il nuovo capello"
+            "chip": "P2",
+            "name": "Pantenolo B5, niacinamide & arginina",
+            "desc": "Idratano il cuoio capelluto, leniscono le zone irritate e nutrono la fibra."
           },
           {
-            "name": "Olio di rosmarino",
-            "desc": "Aiuta a ridurre la caduta stagionale"
+            "chip": "P2",
+            "name": "Estratti di germe di soia & di grano",
+            "desc": "Estratti di germe ricchi di nutrienti, a sostegno delle radici indebolite dai danni."
           }
         ],
-        "note": "Elenco di esempio — sostituiscilo con la lista ingredienti reale della tua etichetta."
+        "note": "Ingredienti riportati esattamente come sull’etichetta. Tocca \"Elenco completo degli ingredienti\" per vederli tutti.",
+        "inciLabel": "Elenco completo degli ingredienti"
       },
       "howto": {
         "eyebrow": "COME SI USA",
         "t1": "Due",
         "t2": "passaggi",
-        "lead": "Niente di complicato. Pulire qualche volta a settimana, nutrire ogni sera prima di dormire.",
+        "lead": "Niente di complicato. Scrub una o due volte a settimana, poi il siero ogni giorno sul cuoio capelluto asciutto.",
         "steps": [
           {
-            "h": "Pulire le radici",
-            "p": "Bagna i capelli, preleva una quantità di gel grande come una moneta, massaggia direttamente il cuoio capelluto per 60 secondi e risciacqua a fondo.",
-            "em": "2–3 VOLTE / SETTIMANA"
+            "no": "01",
+            "h": "Esfoliare il cuoio capelluto",
+            "em": "1–2 VOLTE / SETTIMANA",
+            "p": "Su capelli ASCIUTTI — non bagnarli. Applica una piccola quantità sulle radici, massaggia la zona con un pettine per 2–3 minuti, poi lava con uno shampoo delicato."
           },
           {
-            "h": "Applicare il siero",
-            "p": "Con i capelli ancora umidi, fai una riga e distribuisci il siero lungo la riga, soprattutto dove i capelli sono diradati.",
-            "em": "OGNI SERA"
+            "no": "02",
+            "h": "Asciugare il cuoio capelluto",
+            "em": "PRIMA DEL SIERO",
+            "p": "Dopo il lavaggio, asciuga completamente il cuoio capelluto. Il siero si assorbe bene solo sulla cute asciutta."
           },
           {
-            "h": "Massaggiare un minuto",
-            "p": "Fai penetrare con i polpastrelli, con piccoli movimenti circolari, fino al follicolo. Non serve risciacquare.",
-            "em": "SENZA RISCIACQUO"
+            "no": "03",
+            "h": "Spruzzare il siero sulle radici",
+            "em": "OGNI GIORNO",
+            "p": "Fai la riga e spruzza una piccola quantità sulle radici, soprattutto dove i capelli si diradano. Concludi con aria fredda — non risciacquare."
           }
         ]
       },
@@ -1900,12 +1933,12 @@ window.ROOTLAB_CONTENT = {
           "cardSub": "Passo 1 · Pulizia",
           "tag": "Passo 1 · Pulizia delle radici",
           "desc": "Gel detergente profondo per radici e follicoli.<br>Rimuove sebo, impurità e cellule morte<br>che ostruiscono i pori del cuoio capelluto.",
-          "priceSub": "Gel detergente radici & follicoli · 200 ml",
+          "priceSub": "Scrub detergente cuoio capelluto · 200 ml",
           "buyBtn": "Acquista Deep Cleanse",
           "features": [
-            "Dura circa 8 settimane",
+            "1–2 volte a settimana",
             "Senza solfati, senza parabeni",
-            "Per cuoio capelluto grasso o con forfora"
+            "Per cuoio capelluto grasso e con forfora"
           ],
           "bottle": {
             "vn": "Detergente radici & follicoli"
@@ -1915,12 +1948,12 @@ window.ROOTLAB_CONTENT = {
           "cardSub": "Passo 2 · Nutrimento",
           "tag": "Passo 2 · Nutre & stimola la crescita",
           "desc": "Un siero che nutre il follicolo dall'interno.<br>Penetra fino alla radice, stimola la ricrescita<br>e riduce la rottura giorno dopo giorno.",
-          "priceSub": "Siero nutriente e stimolante · 60 ml",
+          "priceSub": "Siero nutriente per le radici · 100 ml",
           "buyBtn": "Acquista Growth Serum",
           "features": [
-            "Dura circa 6 settimane",
-            "Non unge, non serve risciacquare",
-            "Per donne e uomini"
+            "Uso quotidiano",
+            "Non unge, non serve risciacquo",
+            "Per uomo e donna"
           ],
           "bottle": {
             "vn": "Nutre e stimola la crescita"
@@ -1994,55 +2027,65 @@ window.ROOTLAB_CONTENT = {
         "eyebrow": "成分",
         "t1": "中身",
         "t2": "のはなし",
-        "lead": "補い合う二つの処方。片方は毛穴の詰まりを取り除き、もう片方は栄養を根元まで届けます。",
+        "lead": "補い合う二つのステップ。ステップ1は頭皮をふさぐ古い角質と余分な皮脂を取り除きます。ステップ2は、すっきりした毛根へ栄養を届けます。",
         "items": [
           {
-            "name": "サリチル酸 2%",
-            "desc": "毛穴をふさぐ皮脂と古い角質を溶かします"
+            "chip": "S1",
+            "name": "グリコール酸 & フルーツAHA",
+            "desc": "りんご・レモン・ぶどう・小麦ふすまのエキスとともに、毛穴をふさぐ古い角質をやさしくゆるめます。"
           },
           {
-            "name": "ティーツリーオイル",
-            "desc": "おだやかな抗菌作用で、頭皮のかゆみとフケをやわらげます"
+            "chip": "S1",
+            "name": "コカミドプロピルベタイン & デシルグルコシド",
+            "desc": "ココナッツ由来の洗浄成分。余分な皮脂と汚れを落としながら、頭皮のつっぱりを残しません。"
           },
           {
-            "name": "パンテノール B5",
-            "desc": "ディープクレンジング後の頭皮をしずめ、うるおいを戻します"
+            "chip": "S1",
+            "name": "アラントイン・カモミール & ラベンダー",
+            "desc": "角質ケアの直後の頭皮をしずめます。メントールがほのかな清涼感を添えます。"
           },
           {
-            "name": "レデンシル 3%",
-            "desc": "眠っている毛包を目覚めさせ、成長期を長く保ちます"
+            "chip": "S2",
+            "name": "ツルドクダミ根 & オウゴン根",
+            "desc": "髪の手入れに古くから使われてきた二つの植物を、毛根まで届くエキスとして配合。"
           },
           {
-            "name": "カフェイン & ビオチン B7",
-            "desc": "頭皮の血行を促し、新しい髪をつくる材料を届けます"
+            "chip": "S2",
+            "name": "パンテノールB5・ナイアシンアミド & アルギニン",
+            "desc": "頭皮にうるおいを与え、敏感になった部分をしずめ、髪に栄養を補います。"
           },
           {
-            "name": "ローズマリーオイル",
-            "desc": "季節性の抜け毛をやわらげます"
+            "chip": "S2",
+            "name": "大豆胚芽 & 小麦胚芽エキス",
+            "desc": "栄養豊富な胚芽エキスが、傷んで弱った毛根を支えます。"
           }
         ],
-        "note": "サンプル表示です。実際の製品ラベルの全成分に差し替えてください。"
+        "note": "製品ラベルの表記そのままです。「全成分」を開くとすべてご覧いただけます。",
+        "inciLabel": "全成分"
       },
       "howto": {
         "eyebrow": "使い方",
         "t1": "二つ",
         "t2": "の手順",
-        "lead": "むずかしくありません。週に数回洗い、毎晩ねる前に育てる。それだけです。",
+        "lead": "手順はかんたん。週1〜2回の角質ケアと、乾いた頭皮への毎日のセラム。",
         "steps": [
           {
-            "h": "根元を洗う",
-            "p": "髪をぬらし、10円玉ほどのジェルを取り、頭皮に直接60秒なじませてから、しっかりすすぎます。",
-            "em": "週 2〜3 回"
+            "no": "01",
+            "h": "頭皮の角質ケア",
+            "em": "週1〜2回",
+            "p": "髪は乾いたまま、濡らさずに始めます。適量を頭皮につけ、専用コームで2〜3分マッサージしてから、やさしいシャンプーで洗い流します。"
           },
           {
-            "h": "頭皮に美容液をつける",
-            "p": "髪が少し湿った状態で分け目をつくり、分け目に沿って、とくに髪の薄い部分に美容液をなじませます。",
-            "em": "毎晩"
+            "no": "02",
+            "h": "頭皮を乾かす",
+            "em": "スプレーの前に",
+            "p": "洗髪後、頭皮をしっかり乾かします。セラムは乾いた頭皮でこそよくなじみます。"
           },
           {
-            "h": "1分マッサージ",
-            "p": "指の腹で小さく円を描くようにして毛包まで届けます。洗い流す必要はありません。",
-            "em": "洗い流し不要"
+            "no": "03",
+            "h": "根元にセラムをスプレー",
+            "em": "毎日",
+            "p": "分け目をつくり、適量を根元にスプレーします。とくに薄くなった部分に。仕上げは冷風のみ、水で流さないでください。"
           }
         ]
       },
@@ -2354,11 +2397,11 @@ window.ROOTLAB_CONTENT = {
           "cardSub": "ステップ 1 · 洗う",
           "tag": "ステップ 1 · 根元を洗う",
           "desc": "根元と毛包のためのディープクレンジングジェル。<br>頭皮の毛穴をふさぐ皮脂・汚れ・古い角質を<br>やさしく取り除きます。",
-          "priceSub": "根元・毛包用クレンジングジェル · 200ml",
+          "priceSub": "頭皮スクラブクレンザー · 200ml",
           "buyBtn": "Deep Cleanse を購入",
           "features": [
-            "約8週間分",
-            "サルフェート・パラベン不使用",
+            "週1〜2回",
+            "サルフェート・パラベン無配合",
             "脂性・フケが気になる頭皮に"
           ],
           "bottle": {
@@ -2369,11 +2412,11 @@ window.ROOTLAB_CONTENT = {
           "cardSub": "ステップ 2 · 育てる",
           "tag": "ステップ 2 · 育毛と栄養",
           "desc": "毛包を内側から育てる美容液。<br>根元まで浸透して新しい髪の成長を促し、<br>切れ毛を日ごとに減らします。",
-          "priceSub": "育毛美容液 · 100ml",
+          "priceSub": "頭皮用ヘアセラム · 100ml",
           "buyBtn": "Growth Serum を購入",
           "features": [
-            "約6週間分",
-            "ベタつかず、洗い流し不要",
+            "毎日お使いいただけます",
+            "べたつかず、洗い流し不要",
             "男女どちらにも"
           ],
           "bottle": {
