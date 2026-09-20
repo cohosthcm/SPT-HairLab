@@ -812,6 +812,8 @@ body.khung-hong .prev .canhbao{display:block}
             });
             S.push({ id: 'sec-lienhe', label: 'Liên hệ', ic: 'phone', sec: 'lien-he',
                 mo: 'Số điện thoại, Zalo, Shopee… hiện ở chân trang và nút liên hệ.' });
+            S.push({ id: 'sec-phaply', label: 'Pháp lý chân trang', ic: 'gear', sec: 'lien-he',
+                mo: 'Tên công ty, mã số thuế, giấy phép, số công bố mỹ phẩm, huy hiệu Bộ Công Thương. Đây là phần khách khó tính và đối tác nhìn vào để tin trang này là thật.' });
             SECTIONS = S;
         }
         dungSections();
@@ -1215,6 +1217,7 @@ body.khung-hong .prev .canhbao{display:block}
                     h('label', { html: '<b style="color:#16211e">Bảng giá</b>' }),
                     h('div', { class: 'row' }, [field('Giá (không cần chữ đ)', `products.${i}.price`), field('Chữ trên nút mua', `products.${i}.buyBtn`)]),
                     field('Dòng mô tả dưới tên', `products.${i}.priceSub`),
+                    field('Số công bố mỹ phẩm', `products.${i}.cbmp`, { hint: 'Số tiếp nhận Phiếu công bố do Sở Y tế cấp, dạng <b>xxxxxx/26/CBMP-HCM</b>. Điền vào là tự hiện ở khối pháp lý chân trang. Bắt buộc phải có trước khi bán.' }),
                     field('Link khi bấm nút mua', `products.${i}.buyLink`, { hint: 'Dán link giỏ hàng / Shopee / form đặt hàng. Để trống thì nút không làm gì.' }),
                     listEditor('Các gạch đầu dòng', `products.${i}.features`, null, () => 'Dòng mới')
                 ], false, `sec-sp${i}`));
@@ -1243,6 +1246,34 @@ body.khung-hong .prev .canhbao{display:block}
                 ]),
                 field('Câu ghi chú dưới phần liên hệ', 'contact.note', { area: true })
             ], false, 'sec-lienhe'));
+
+            /* Khối pháp lý ở chân trang — thứ khách khó tính và đối tác
+               (nhà thuốc, salon) nhìn vào để tin trang này là thật. */
+            F.append(panel('Thông tin pháp lý ở chân trang', [
+                h('div', { class: 'hint', html: 'Ô nào để trống thì dòng đó <b>không hiện</b> — không để lại chỗ trống hay chữ "đang cập nhật". Có giấy tờ tới đâu điền tới đó.' }),
+                h('div', { class: 'row' }, [
+                    field('Tên công ty (tiếng Việt)', 'contact.company', { hint: 'Ví dụ: CÔNG TY TNHH SPT LAB' }),
+                    field('Tên công ty (tiếng Anh)', 'contact.companyEn', { hint: 'Ví dụ: SPT LAB COMPANY LIMITED' })
+                ]),
+                field('Địa chỉ trụ sở đầy đủ', 'contact.addressFull', { area: true, hint: 'Ghi đúng như trên giấy đăng ký kinh doanh. Khác với ô "Địa chỉ" ở trên — ô kia là địa chỉ ngắn hiện ở cột liên hệ.' }),
+                h('div', { class: 'row' }, [
+                    field('Mã số doanh nghiệp / Mã số thuế', 'contact.taxCode', { hint: '10 chữ số trên giấy đăng ký doanh nghiệp' }),
+                    field('Giấy chứng nhận ĐKKD', 'contact.license', { hint: 'Ví dụ: 0301234567 do Sở KH&ĐT TP.HCM cấp ngày 12/03/2026' })
+                ]),
+                h('div', { class: 'row' }, [
+                    field('Nơi sản xuất', 'contact.factory', { hint: 'Tên và địa chỉ nhà máy gia công. Rất tăng uy tín nếu nhà máy đạt CGMP-ASEAN.' }),
+                    field('Người chịu trách nhiệm nội dung', 'contact.responsible', { hint: 'Họ tên người đại diện' })
+                ]),
+                h('div', { class: 'hint', html: '<b>Bộ Công Thương.</b> Website có chức năng đặt hàng thì <b>bắt buộc</b> phải thông báo tại <a href="https://online.gov.vn" target="_blank" rel="noopener">online.gov.vn</a> (miễn phí). Xong sẽ được cấp logo đỏ "Đã thông báo" — dán vào đây kèm link hồ sơ. Không làm có thể bị phạt 10–20 triệu.' }),
+                h('div', { class: 'row' }, [
+                    field('Link hồ sơ trên online.gov.vn', 'contact.moit', { hint: 'Dán link hồ sơ website của bạn. Chưa có logo thì trang tự hiện huy hiệu chữ.' }),
+                    field('Link ảnh logo "Đã thông báo"', 'contact.moitLogo', { hint: 'Tuỳ chọn. Bộ Công Thương cấp ảnh nào thì dán link ảnh đó vào.' })
+                ]),
+                field('Dòng miễn trừ trách nhiệm', 'contact.disclaimer', { area: true, hint: 'Với mỹ phẩm, câu "không phải là thuốc và không có tác dụng thay thế thuốc chữa bệnh" gần như bắt buộc trong quảng cáo.' }),
+                listEditor('Các trang chính sách', 'contact.policies',
+                    [{ k: 'label', l: 'Tên hiển thị' }, { k: 'link', l: 'Link' }],
+                    () => ({ label: 'Chính sách đổi trả', link: '' }), it => it.label)
+            ], false, 'sec-phaply'));
 
             buildSecNav();
             goToSection(SECTIONS[0].id);
