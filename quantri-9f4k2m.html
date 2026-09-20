@@ -1218,6 +1218,7 @@ body.khung-hong .prev .canhbao{display:block}
                     h('div', { class: 'row' }, [field('Giá (không cần chữ đ)', `products.${i}.price`), field('Chữ trên nút mua', `products.${i}.buyBtn`)]),
                     field('Dòng mô tả dưới tên', `products.${i}.priceSub`),
                     field('Số công bố mỹ phẩm', `products.${i}.cbmp`, { hint: 'Số tiếp nhận Phiếu công bố do Sở Y tế cấp, dạng <b>xxxxxx/26/CBMP-HCM</b>. Điền vào là tự hiện ở khối pháp lý chân trang. Bắt buộc phải có trước khi bán.' }),
+                    field('Thành phần đầy đủ (INCI)', `products.${i}.inci`, { area: true, hint: 'Chép <b>y nguyên</b> danh sách in trên nhãn, cách nhau bằng dấu phẩy. Hiện ở màn Thành phần dưới dạng bảng gập lại. Để trống thì không hiện bảng nào.' }),
                     field('Link khi bấm nút mua', `products.${i}.buyLink`, { hint: 'Dán link giỏ hàng / Shopee / form đặt hàng. Để trống thì nút không làm gì.' }),
                     listEditor('Các gạch đầu dòng', `products.${i}.features`, null, () => 'Dòng mới')
                 ], false, `sec-sp${i}`));
