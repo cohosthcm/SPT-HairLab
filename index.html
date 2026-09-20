@@ -1008,6 +1008,55 @@
             line-height: 1.5;
         }
 
+        /* --- Bảng thành phần đầy đủ (INCI) --- */
+        .inci {
+            margin-top: 1.5rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .035);
+            overflow: hidden;
+        }
+        .inci + .inci { margin-top: .6rem; }
+        .inci > summary {
+            list-style: none;
+            cursor: pointer;
+            padding: .78rem 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            font-size: .82rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, .84);
+            transition: background .25s ease;
+        }
+        .inci > summary::-webkit-details-marker { display: none; }
+        .inci > summary:hover { background: rgba(255, 255, 255, .05); }
+        .inci > summary .mui {
+            margin-left: auto;
+            flex: none;
+            width: 0; height: 0;
+            border-left: 4.5px solid transparent;
+            border-right: 4.5px solid transparent;
+            border-top: 6px solid currentColor;
+            opacity: .55;
+            transition: transform .2s ease;
+        }
+        .inci[open] > summary .mui { transform: rotate(180deg); }
+        .inci > summary .nhan {
+            font-size: .58rem; font-weight: 700; letter-spacing: .1em;
+            padding: .26rem .46rem; border-radius: 5px;
+            background: rgba(255, 255, 255, .09);
+            border: 1px solid var(--glass-border);
+            color: rgba(255, 255, 255, .7);
+        }
+        .inci-than {
+            padding: 0 1.05rem 1rem;
+            font-size: .76rem;
+            line-height: 1.75;
+            color: var(--muted-color);
+            word-break: break-word;
+        }
+
         /* --- Cách dùng --- */
         .step {
             display: flex;
@@ -2561,7 +2610,12 @@
                     <p class="scene-lead reveal d2" data-c="ingredients.lead">Hai công thức bổ trợ nhau: một bên dọn sạch đường đi cho nang tóc, một bên đưa dưỡng chất vào tận chân tóc.</p>
 
                     <div class="reveal d3" data-list="ing"></div>
-                    <p class="note reveal d4" data-c="ingredients.note">Danh sách mẫu — thay bằng bảng thành phần thật trên nhãn sản phẩm của bạn.</p>
+                    <!-- Bảng thành phần đầy đủ (INCI) — đúng như in trên nhãn.
+                         Gập lại cho gọn, ai muốn soi thì mở ra. Có bảng này là
+                         điểm cộng lớn về uy tín, và cũng là thứ đối tác B2B
+                         (nhà thuốc, salon) hỏi tới. -->
+                    <div class="reveal d4" data-list="inci"></div>
+                    <p class="note reveal d4" data-c="ingredients.note"></p>
                 </div>
             </div>
         </section>
@@ -3257,6 +3311,14 @@
                 <div class="ing"><span class="ing-chip">${esc(it.chip)}</span>
                     <div><b>${esc(it.name)}</b><span class="desc">${esc(it.desc)}</span></div>
                 </div>`).join(''));
+
+            /* Bảng thành phần đầy đủ — chỉ dựng cho chai nào đã điền INCI.
+               Lấy từ chính các chai của dòng đang xem, nên đổi dòng là đổi bảng. */
+            fill('inci', DS.filter(p => p.inci).map(p => `
+                <details class="inci">
+                    <summary><span class="nhan">INCI</span>${esc(V.ingredients.inciLabel || 'Thành phần đầy đủ')} — ${esc(p.name)}<span class="mui"></span></summary>
+                    <div class="inci-than">${esc(p.inci)}</div>
+                </details>`).join(''));
 
             fill('steps', V.howto.steps.map((st, i) => `
                 <div class="step reveal d${Math.min(4, i + 2)} in">
