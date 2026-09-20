@@ -2431,5 +2431,17 @@ window.ROOTLAB_CONTENT = {
     "lienHe": "Liên hệ",
     "kenhMua": "Kênh mua hàng"
   },
-  "contact": {}
+  "contact": {
+    "company": "CÔNG TY TNHH SPT LAB",
+    "companyEn": "SPT LAB COMPANY LIMITED",
+    "addressFull": "L17-11, Tầng 17, Toà nhà Vincom Center, 72 Lê Thánh Tôn, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam",
+    "taxCode": "",
+    "license": "",
+    "factory": "",
+    "responsible": "",
+    "moit": "",
+    "moitLogo": "",
+    "policies": [],
+    "disclaimer": "Sản phẩm này là mỹ phẩm, không phải là thuốc và không có tác dụng thay thế thuốc chữa bệnh. Hiệu quả có thể khác nhau tuỳ cơ địa từng người."
+  }
 };
