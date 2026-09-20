@@ -324,7 +324,7 @@ window.ROOTLAB_CONTENT = {
       "cardSub": "Bước 1 · Làm sạch",
       "tag": "Bước 1 · Làm sạch chân tóc",
       "desc": "Gel làm sạch sâu chân tóc và nang tóc.<br>Cuốn trôi bã nhờn, bụi bẩn và tế bào chết<br>đang bít lỗ chân lông trên da đầu.",
-      "photo": "sp1-thanh-loc.png",
+      "photo": "sp1-thanh-loc.webp",
       "bottle": {
         "body": "#f1f7f4",
         "cap": "#0d2f27",
@@ -357,7 +357,7 @@ window.ROOTLAB_CONTENT = {
       "cardSub": "Bước 2 · Dưỡng tóc",
       "tag": "Bước 2 · Dưỡng & kích thích mọc tóc",
       "desc": "Serum nuôi dưỡng nang tóc từ bên trong.<br>Thẩm thấu vào chân tóc, kích thích mọc tóc mới<br>và giảm gãy rụng theo từng ngày.",
-      "photo": "sp2-nuoi-duong.png",
+      "photo": "sp2-nuoi-duong.webp",
       "bottle": {
         "body": "#a3600d",
         "cap": "#141009",
