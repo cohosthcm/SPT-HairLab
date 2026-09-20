@@ -1310,8 +1310,10 @@
             flex-wrap: wrap;
             justify-content: center;
             padding: 1.1rem 1.6rem;
-            border-radius: 100px;
-            background: rgba(255, 255, 255, .08);
+            /* Bo góc 30px — ĐÚNG BẰNG .price-card. Trước để 100px nên ô hộp quà
+               thành viên thuốc bầu dục, nhìn lạc hẳn so với hai thẻ vuông ở trên. */
+            border-radius: 30px;
+            background: rgba(255, 255, 255, .075);
             border: 1px solid var(--glass-border);
         }
 
@@ -1456,6 +1458,75 @@
             margin-top: 1rem;
             line-height: 1.6;
             color: rgba(255, 255, 255, .45);
+        }
+
+        /* ---- khối pháp lý ở chân trang ----
+           Chữ nhỏ, giãn dòng rộng cho dễ đọc. Đây là phần khách khó tính và
+           đối tác (nhà thuốc, salon) tìm đến đầu tiên để xem có thật không. */
+        .foot-phap {
+            max-width: 1180px;
+            margin: 2.4rem auto 0;
+            padding-top: 1.6rem;
+            border-top: 1px solid rgba(255, 255, 255, .07);
+            font-size: .74rem;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, .5);
+        }
+        .foot-phap:empty { display: none; }
+        .foot-phap .ten-cty {
+            display: block;
+            color: rgba(255, 255, 255, .86);
+            font-weight: 600;
+            font-size: .82rem;
+            letter-spacing: .01em;
+            margin-bottom: .45rem;
+        }
+        .foot-phap .dong { margin: 0 0 .2rem; }
+        .foot-phap .dong b { color: rgba(255, 255, 255, .72); font-weight: 500; }
+
+        .foot-huy {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .8rem 1.4rem;
+            margin-top: 1.1rem;
+        }
+        .foot-huy img { height: 38px; width: auto; display: block; }
+        /* huy hiệu chữ — dùng khi chưa tải logo thật của Bộ Công Thương lên */
+        .huy-bct {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .42rem .82rem;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .16);
+            color: rgba(255, 255, 255, .78);
+            text-decoration: none;
+            font-size: .64rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            transition: .25s ease;
+        }
+        .huy-bct:hover { background: rgba(255, 255, 255, .11); color: #fff; }
+        .huy-bct i {
+            width: 15px; height: 15px; flex: none; border-radius: 50%;
+            background: #d63a3a; color: #fff; font-style: normal;
+            display: grid; place-items: center; font-size: .62rem; line-height: 1;
+        }
+        .foot-chinhsach { display: flex; flex-wrap: wrap; gap: .3rem .95rem; }
+        .foot-chinhsach a { color: rgba(255, 255, 255, .6); text-decoration: none; }
+        .foot-chinhsach a:hover { color: #fff; text-decoration: underline; }
+
+        .foot-mientru {
+            margin-top: 1.05rem;
+            padding: .7rem .95rem;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .09);
+            font-size: .71rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, .55);
         }
 
         .foot-bottom {
@@ -2053,10 +2124,15 @@
            thoại/máy tính bảng, nên để nguyên.
            ========================================================== */
         @media (min-width: 1025px) {
-            .price-grid { gap: 1.4rem; margin-top: 1.5rem; align-items: stretch; }
+            /* Một biến duy nhất cho bề rộng thẻ. Ô hộp quà tính theo nó nên
+               luôn rộng đúng bằng hai thẻ cộng khe giữa — mép trái mép phải
+               thẳng hàng tuyệt đối, đổi bề rộng thẻ không phải sửa hai chỗ. */
+            #gia { --the-rong: 452px; --the-khe: 1.4rem; }
+
+            .price-grid { gap: var(--the-khe); margin-top: 1.5rem; align-items: stretch; }
 
             .price-card {
-                width: 452px;
+                width: var(--the-rong);
                 display: flex;
                 align-items: stretch;      /* chữ hai thẻ bắt đầu cùng một hàng */
                 gap: 1.15rem;
@@ -2075,8 +2151,19 @@
             .price-list li::before { top: .62rem; width: 6px; height: 6px; }
             .price-card .buy-btn { padding: .68rem 1rem; font-size: .84rem; }
 
-            /* hộp quà thu lại cho cả màn vừa một khung hình */
-            .combo.hop { margin-top: 1.2rem; padding: .95rem 1.7rem; }
+            /* hộp quà: cùng bo góc, cùng bề rộng, cùng nền với hai thẻ trên */
+            .combo.hop {
+                margin-top: var(--the-khe);
+                padding: .95rem 1.7rem;
+                width: calc(var(--the-rong) * 2 + var(--the-khe));
+                max-width: 100%;
+                justify-content: flex-start;
+            }
+            /* chữ chiếm hết chỗ trống, nút mua dạt hẳn sang mép phải —
+               không để một mảng trống to ở nửa phải ô */
+            .combo-noi { flex: 1 1 auto; min-width: 0; }
+            .combo-gia { width: 100%; }
+            .combo-gia .buy-btn { margin-left: auto; }
             .combo-anh { width: clamp(150px, 17vw, 208px); }
             .combo.hop b { font-size: 1.1rem; }
             .combo .big { font-size: 1.18rem; }
@@ -2084,7 +2171,8 @@
 
         /* laptop hẹp hơn: rút thẻ lại cho hai thẻ vẫn nằm cạnh nhau */
         @media (min-width: 1025px) and (max-width: 1280px) {
-            .price-card { width: 396px; padding: 1rem 1.25rem 1rem .9rem; }
+            #gia { --the-rong: 396px; }
+            .price-card { padding: 1rem 1.25rem 1rem .9rem; }
             .price-slot { flex: 0 0 108px; width: 108px; height: 156px; }
             .price-body h3 { font-size: 1.05rem; }
             .price { font-size: 1.44rem; }
@@ -2562,6 +2650,9 @@
             <div class="foot-col" data-list="contactMain"></div>
             <div class="foot-col" data-list="contactShop"></div>
         </div>
+        <!-- Khối pháp lý: pháp nhân, mã số thuế, số công bố mỹ phẩm, huy hiệu
+             Bộ Công Thương, dòng miễn trừ. Ô nào để trống thì tự ẩn. -->
+        <div class="foot-phap" data-list="phapLy"></div>
         <div class="foot-bottom" data-c="footer.copyright">© 2026 ROOT &amp; RISE LAB</div>
     </footer>
 
@@ -3046,6 +3137,45 @@
                   (k.note ? `<div class="foot-note">${esc(k.note)}</div>` : '')
                 : '');
             fill('contactShop', kenh.length ? `<h4>${esc(k.shopLabel || U.kenhMua || 'Kênh mua hàng')}</h4>${kenh.join('')}` : '');
+
+            /* ---------- KHỐI PHÁP LÝ ----------
+               Mọi ô đều tuỳ chọn: chưa có thì không hiện dòng đó, không để lại
+               chỗ trống hay chữ "chưa cập nhật". Khi Phil có giấy tờ thì điền
+               vào trang quản trị là tự hiện. */
+            const P = [];
+            const nhan = (t, v) => `<p class="dong"><b>${esc(t)}:</b> ${esc(v)}</p>`;
+
+            if (k.company) P.push(`<span class="ten-cty">${esc(k.company)}</span>`);
+            if (k.companyEn && k.companyEn !== k.company)
+                P.push(`<p class="dong">${esc(k.companyEn)}</p>`);
+            if (k.addressFull || k.address) P.push(nhan(U.diaChi || 'Địa chỉ trụ sở', k.addressFull || k.address));
+            if (k.taxCode) P.push(nhan(U.mst || 'Mã số doanh nghiệp / MST', k.taxCode));
+            if (k.license) P.push(nhan(U.gpkd || 'Giấy chứng nhận ĐKKD', k.license));
+            if (k.factory) P.push(nhan(U.noiSx || 'Nơi sản xuất', k.factory));
+
+            /* Số công bố mỹ phẩm lấy từ chính từng chai — mỗi sản phẩm một số */
+            const cbmp = (C.products || []).filter(p => p.cbmp)
+                .map(p => `${esc(p.name)} — ${esc(p.cbmp)}`);
+            if (cbmp.length)
+                P.push(`<p class="dong"><b>${esc(U.soCongBo || 'Số công bố mỹ phẩm')}:</b> ${cbmp.join(' · ')}</p>`);
+
+            if (k.responsible) P.push(nhan(U.chiuTrachNhiem || 'Chịu trách nhiệm nội dung', k.responsible));
+
+            /* hàng huy hiệu + các trang chính sách */
+            const huy = [];
+            if (k.moit) {
+                huy.push(k.moitLogo
+                    ? `<a href="${esc(k.moit)}" target="_blank" rel="noopener nofollow"><img src="${esc(k.moitLogo)}" alt="Đã thông báo Bộ Công Thương" loading="lazy"></a>`
+                    : `<a class="huy-bct" href="${esc(k.moit)}" target="_blank" rel="noopener nofollow"><i>✓</i>${esc(U.daThongBao || 'Đã thông báo Bộ Công Thương')}</a>`);
+            }
+            const cs = (k.policies || []).filter(x => x && x.label)
+                .map(x => x.link ? `<a href="${esc(x.link)}">${esc(x.label)}</a>` : `<a>${esc(x.label)}</a>`);
+            if (cs.length) huy.push(`<div class="foot-chinhsach">${cs.join('')}</div>`);
+            if (huy.length) P.push(`<div class="foot-huy">${huy.join('')}</div>`);
+
+            if (k.disclaimer) P.push(`<div class="foot-mientru">${esc(k.disclaimer)}</div>`);
+
+            fill('phapLy', P.join(''));
 
             if (zaloHref(k.zalo)) dock.push(`<a class="dock-btn" href="${esc(zaloHref(k.zalo))}" target="_blank" rel="noopener">${esc(U.zalo || 'Nhắn Zalo')}</a>`);
             if (telHref(k.phone)) dock.push(`<a class="dock-btn ghost" href="${esc(telHref(k.phone))}">${esc(U.goi || 'Gọi')} ${esc(k.phone)}</a>`);
