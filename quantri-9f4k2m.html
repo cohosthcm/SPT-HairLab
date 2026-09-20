@@ -1047,7 +1047,7 @@ body.khung-hong .prev .canhbao{display:block}
                 const inp = h('input', { type: 'text' }); inp.value = l.nguoi || '';
                 inp.addEventListener('input', () => { l.nguoi = inp.value; save(); });
                 box.append(inp);
-                box.append(h('div', { class: 'hint', html: 'Tên file ảnh đã có sẵn trên web: <b>growth.jpg · shampoo.jpg · serum.jpg · cond.jpg · bath.jpg · scalp.jpg</b>. Hoặc chọn một ảnh mới ở dưới.' }));
+                box.append(h('div', { class: 'hint', html: '<b>Để TRỐNG</b> thì màn chọn tự vẽ hình tóc (không dính bản quyền, nhẹ). Muốn dùng ảnh thật thì gõ tên file có sẵn — <b>growth.jpg · shampoo.jpg · serum.jpg · cond.jpg · bath.jpg · scalp.jpg</b> — hoặc chọn ảnh mới ở dưới; có ảnh thì ảnh thắng.' }));
                 const file = h('input', { type: 'file', accept: 'image/*' });
                 file.addEventListener('change', async () => {
                     const f = file.files[0]; if (!f) return;
@@ -1056,6 +1056,23 @@ body.khung-hong .prev .canhbao{display:block}
                 });
                 box.append(file);
                 if (l.nguoi) box.append(h('div', { class: 'thumb' }, [h('img', { src: l.nguoi })]));
+
+                /* Chọn kiểu tóc khi không dùng ảnh thật */
+                if (!l.nguoi) {
+                    box.append(h('label', { html: 'Kiểu tóc tự vẽ' }));
+                    const sel = h('select');
+                    [['doc', 'Buông dọc — tóc dài, dày'],
+                     ['ngang', 'Vắt ngang — tóc ướt bóng'],
+                     ['lua', 'Chéo mềm — dải như lụa']
+                    ].forEach(([v, t]) => {
+                        const o = h('option', { value: v, html: t });
+                        if ((l.kieuToc || 'doc') === v) o.selected = true;
+                        sel.append(o);
+                    });
+                    sel.addEventListener('change', () => { l.kieuToc = sel.value; save(); });
+                    box.append(sel);
+                    box.append(h('div', { class: 'hint', html: 'Màu tóc tự lấy theo màu nhấn của dòng, không cần chỉnh riêng.' }));
+                }
             };
             render();
             return box;
