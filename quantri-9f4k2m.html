@@ -879,15 +879,25 @@ body.khung-hong .prev .canhbao{display:block}
                 if (!s.group) { box = null; lastGroup = null; nav.append(nutMuc(s)); return; }
                 if (s.group !== lastGroup) {
                     lastGroup = s.group;
-                    box = h('div', { class: 'nhom-box' });
+                    /* LỖI CŨ — ghi rõ để khỏi viết lại y hệt:
+                       trước đây nút bấm dùng `() => box.classList.toggle('mo')`.
+                       `box` là biến DÙNG CHUNG cho cả vòng lặp, nút chỉ nhớ CÁI TÊN
+                       biến chứ không nhớ cái hộp của chính nó. Mục cuối danh sách là
+                       "Liên hệ" — không thuộc nhóm nào — nên vòng lặp gán box = null
+                       trước khi kết thúc. Kết quả: bấm nhóm nào cũng đọc box = null,
+                       văng lỗi, không nhóm nào mở ra được.
+                       Nay mỗi nhóm giữ hộp của riêng mình trong `hop` (khai báo bằng
+                       const ngay trong vòng lặp), nút nhớ đúng hộp của nó. */
+                    const hop = h('div', { class: 'nhom-box' });
                     const than = h('div', { class: 'nhom-than' });
-                    box.append(h('button', {
+                    hop.append(h('button', {
                         class: 'nhom', type: 'button',
-                        onclick: () => box.classList.toggle('mo'),
+                        onclick: () => hop.classList.toggle('mo'),
                         html: `<span>${s.group}</span><i></i>`
                     }), than);
-                    box._than = than;
-                    nav.append(box);
+                    hop._than = than;
+                    nav.append(hop);
+                    box = hop;
                 }
                 box._than.append(nutMuc(s));
             });
