@@ -29,7 +29,8 @@ window.ROOTLAB_CONTENT = {
       "name": "Bộ phục hồi chân tóc",
       "navLabel": "Phục hồi & Mọc tóc",
       "navKicker": "Dòng 01",
-      "nguoi": "growth.jpg",
+      "nguoi": "",
+      "kieuToc": "doc",
       "accent": "#12a08b",
       "sp": [
         "cleanse",
@@ -44,7 +45,8 @@ window.ROOTLAB_CONTENT = {
       "name": "Dầu gội dưỡng chân tóc",
       "navLabel": "Dầu gội",
       "navKicker": "Dòng 02",
-      "nguoi": "shampoo.jpg",
+      "nguoi": "",
+      "kieuToc": "ngang",
       "accent": "#12a2bd",
       "sp": [
         "goi"
@@ -182,7 +184,8 @@ window.ROOTLAB_CONTENT = {
       "name": "Sữa tắm dưỡng da",
       "navLabel": "Sữa tắm",
       "navKicker": "Dòng 03",
-      "nguoi": "bath.jpg",
+      "nguoi": "",
+      "kieuToc": "lua",
       "accent": "#9068c4",
       "sp": [
         "tam"
