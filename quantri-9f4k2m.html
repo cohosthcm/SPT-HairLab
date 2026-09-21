@@ -1045,11 +1045,11 @@ body.khung-hong .prev .canhbao{display:block}
             const render = () => {
                 box.innerHTML = '';
                 const l = D.lines[i];
-                box.append(h('label', { html: 'Ảnh người mẫu ở màn chọn' }));
+                box.append(h('label', { html: 'Ảnh riêng cho màn chọn (tuỳ chọn)' }));
                 const inp = h('input', { type: 'text' }); inp.value = l.nguoi || '';
                 inp.addEventListener('input', () => { l.nguoi = inp.value; save(); });
                 box.append(inp);
-                box.append(h('div', { class: 'hint', html: '<b>Để TRỐNG</b> thì màn chọn tự vẽ hình tóc (không dính bản quyền, nhẹ). Muốn dùng ảnh thật thì gõ tên file có sẵn — <b>growth.jpg · shampoo.jpg · serum.jpg · cond.jpg · bath.jpg · scalp.jpg</b> — hoặc chọn ảnh mới ở dưới; có ảnh thì ảnh thắng.' }));
+                box.append(h('div', { class: 'hint', html: '<b>Để TRỐNG</b> (khuyên dùng) thì màn chọn tự vẽ <b>lọn tóc quấn quanh chai của dòng này</b> — dùng đúng ảnh chai trong mục CHAI SẢN PHẨM, đổi ảnh chai là hình tự đổi theo. Muốn dùng ảnh riêng thì chọn ảnh ở dưới; có ảnh thì ảnh thắng.' }));
                 const file = h('input', { type: 'file', accept: 'image/*' });
                 file.addEventListener('change', async () => {
                     const f = file.files[0]; if (!f) return;
@@ -1061,11 +1061,11 @@ body.khung-hong .prev .canhbao{display:block}
 
                 /* Chọn kiểu tóc khi không dùng ảnh thật */
                 if (!l.nguoi) {
-                    box.append(h('label', { html: 'Kiểu tóc tự vẽ' }));
+                    box.append(h('label', { html: 'Kiểu lọn tóc quấn quanh chai' }));
                     const sel = h('select');
-                    [['doc', 'Buông dọc — tóc dài, dày'],
-                     ['ngang', 'Vắt ngang — tóc ướt bóng'],
-                     ['lua', 'Chéo mềm — dải như lụa']
+                    [['doc', 'Nâu đen, thẳng mượt, đuôi bay phải'],
+                     ['ngang', 'Nâu hạt dẻ, đuôi gợn sóng, bay trái'],
+                     ['lua', 'Vàng mật ong, dải rộng như lụa']
                     ].forEach(([v, t]) => {
                         const o = h('option', { value: v, html: t });
                         if ((l.kieuToc || 'doc') === v) o.selected = true;
@@ -1073,7 +1073,7 @@ body.khung-hong .prev .canhbao{display:block}
                     });
                     sel.addEventListener('change', () => { l.kieuToc = sel.value; save(); });
                     box.append(sel);
-                    box.append(h('div', { class: 'hint', html: 'Màu tóc tự lấy theo màu nhấn của dòng, không cần chỉnh riêng.' }));
+                    box.append(h('div', { class: 'hint', html: 'Chai nào đang gắn cho dòng này (mục sp) thì chai đó được quấn tóc. Dòng có 2 chai thì chai thứ hai đứng cạnh.' }));
                 }
             };
             render();
