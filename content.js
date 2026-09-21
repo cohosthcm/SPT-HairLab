@@ -391,11 +391,11 @@ window.ROOTLAB_CONTENT = {
     },
     {
       "key": "goi",
-      "name": "Root Shampoo",
+      "name": "Dầu gội dưỡng chân tóc",
       "cardSub": "Gội hằng ngày",
       "tag": "Dầu gội dịu nhẹ · không sulfate",
       "desc": "Dầu gội dùng được mỗi ngày.<br>Sạch vừa đủ, giữ lại lớp dầu tự nhiên<br>đang bảo vệ da đầu và chân tóc.",
-      "photo": "",
+      "photo": "sp3-dau-goi-mockup.webp",
       "bottle": {
         "body": "#eaf4f3",
         "cap": "#0a3b45",
@@ -420,15 +420,16 @@ window.ROOTLAB_CONTENT = {
       ],
       "buyBtn": "Mua dầu gội",
       "buyLink": "",
-      "shape": "jar"
+      "shape": "jar",
+      "mockup": true
     },
     {
       "key": "tam",
-      "name": "Root Body Wash",
+      "name": "Sữa tắm dưỡng ẩm da",
       "cardSub": "Tắm hằng ngày",
       "tag": "Sữa tắm dịu nhẹ · không sulfate",
       "desc": "Sữa tắm cùng gốc công thức với dầu gội.<br>Sạch thoáng mà không làm khô da,<br>hợp cả người hay bị ngứa lưng và vai.",
-      "photo": "",
+      "photo": "sp4-sua-tam-mockup.webp",
       "bottle": {
         "body": "#f2ecf6",
         "cap": "#3b2a52",
@@ -453,7 +454,8 @@ window.ROOTLAB_CONTENT = {
       ],
       "buyBtn": "Mua sữa tắm",
       "buyLink": "",
-      "shape": "jar"
+      "shape": "jar",
+      "mockup": true
     }
   ],
   "ingredients": {
