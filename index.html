@@ -4116,8 +4116,21 @@
 
         let scale = 1, vw = window.innerWidth, vh = window.innerHeight, isNarrow = false;
         let snapping = false, snapIdx = 0, snapAllowed = false, lastWheel = 0, lastJump = -9999;
+        /* LỖI ĐÃ GẶP (22/09): trước đây chỉ cần MỘT màn cao hơn màn hình là tắt
+           cuộn-từng-màn cho CẢ TRANG. Thêm bảng thành phần đầy đủ làm màn Thành
+           phần cao thêm ~150px → trên phần lớn màn hình, cả trang mất hiệu ứng
+           "mỗi lần kéo dừng đúng một màn". Nay giữ cuộn-từng-màn ở mọi màn;
+           riêng màn nào cao hơn khung hình thì cho cuộn tự nhiên BÊN TRONG màn
+           đó, cuộn tới mép rồi mới nhảy sang màn kế (xem laManCao, conCuonTrong). */
         function checkSnap() {
-            snapAllowed = !isNarrow && sections.every(s => s.offsetHeight <= vh + 120);
+            snapAllowed = !isNarrow;
+        }
+        const laManCao = s => s.offsetHeight > vh + 40;
+        /* còn cuộn được bên trong màn cao theo hướng dir không? */
+        function conCuonTrong(s, dir) {
+            if (!laManCao(s)) return false;
+            const y = window.scrollY, dau = s.offsetTop, cuoi = s.offsetTop + s.offsetHeight - vh;
+            return dir > 0 ? y < cuoi - 4 : y > dau + 4;
         }
         /* Trên điện thoại, chai nằm trong một VÙNG RIÊNG ở đầu màn hình và chữ bắt
            đầu ngay bên dưới vùng đó. Trước đây chỗ chừa này khai bằng CSS
@@ -4416,7 +4429,12 @@
         const easeInOut = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
         function nearestIndex() {
-            const c = window.scrollY + vh / 2;
+            /* màn nào đang chứa điểm giữa khung nhìn thì là màn hiện tại —
+               đúng cả với màn cao hơn khung hình */
+            const g = window.scrollY + vh / 2;
+            const chua = sections.findIndex(s => g >= s.offsetTop && g < s.offsetTop + s.offsetHeight);
+            if (chua >= 0) return chua;
+            const c = g;
             let best = 0, bd = Infinity;
             sections.forEach((s, i) => {
                 const d = Math.abs(s.offsetTop + s.offsetHeight / 2 - c);
@@ -4440,9 +4458,14 @@
 
         function goTo(i, dur = 780) {
             i = Math.max(0, Math.min(sections.length - 1, i));
+            const tuTren = i >= (snapping ? snapIdx : nearestIndex());
             snapIdx = i; snapping = true;
             const s = sections[i];
-            const to = Math.round(s.offsetTop + (s.offsetHeight - vh) / 2);
+            /* màn vừa khung: căn giữa. Màn cao hơn khung: đi xuống thì dừng ở
+               ĐẦU màn, đi lên thì dừng ở CUỐI màn — không cắt mất tiêu đề */
+            const to = laManCao(s)
+                ? Math.round(tuTren ? s.offsetTop : s.offsetTop + s.offsetHeight - vh)
+                : Math.round(s.offsetTop + (s.offsetHeight - vh) / 2);
             const from = window.scrollY, d = to - from, t0 = performance.now();
             if (Math.abs(d) < 2) { snapping = false; return; }
             (function step(now) {
@@ -4465,6 +4488,21 @@
 
             const dir = e.deltaY > 0 ? 1 : -1;
             const here = snapping ? snapIdx : nearestIndex();
+            /* đang ở màn cao, chưa cuộn tới mép → để trình duyệt cuộn bình thường,
+               nhưng không cho một cú vuốt mạnh trượt quá mép sang màn kế
+               (nếu trượt quá, cú vuốt sau sẽ nhảy lố một màn) */
+            if (!snapping && conCuonTrong(sections[here], dir)) {
+                const s = sections[here];
+                const buoc = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? vh : 1);
+                const dau = s.offsetTop, cuoi = s.offsetTop + s.offsetHeight - vh;
+                const toi = window.scrollY + buoc;
+                if (toi > cuoi || toi < dau) {
+                    e.preventDefault();
+                    window.scrollTo(0, Math.max(dau, Math.min(cuoi, toi)));
+                    lastJump = performance.now();       /* phần đà còn lại không được nhảy màn */
+                }
+                return;
+            }
             const next = here + dir;
             if (next < 0) {
                 /* Cuộn ngược từ màn sản phẩm lên: kéo hẳn về màn chọn dòng,
@@ -4496,11 +4534,13 @@
             const up = k === 'ArrowUp' || k === 'PageUp';
             if (!down && !up) return;
             if (/input|textarea/i.test(document.activeElement?.tagName || '')) return;
+            const hienTai = snapping ? snapIdx : nearestIndex();
+            if (!snapping && conCuonTrong(sections[hienTai], down ? 1 : -1)) return;
             e.preventDefault();
             const now = performance.now();
             if (snapping || now - lastJump < 320) return;
             lastJump = now;
-            const toi = (snapping ? snapIdx : nearestIndex()) + (down ? 1 : -1);
+            const toi = hienTai + (down ? 1 : -1);
             if (toi < 0) { veManChon(); return; }
             goTo(toi);
         });
