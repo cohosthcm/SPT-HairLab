@@ -4410,6 +4410,32 @@
         window.addEventListener('resize', () => { clearTimeout(resizeT); resizeT = setTimeout(fit, 150); });
         window.addEventListener('load', measureScenes);
 
+        /* ĐO LẠI MỖI KHI CHIỀU CAO TRANG ĐỔI — không chỉ lúc đổi cỡ cửa sổ.
+           LỖI ĐÃ GẶP (22/09): chai bay lệch sang đè lên thẻ đánh giá, còn thẻ
+           giá thì trống trơn. Nguyên nhân: khách bấm mở "Thành phần đầy đủ"
+           làm màn Thành phần cao thêm ~440px, mà vị trí các màn chỉ được đo
+           lúc tải trang → mọi màn phía sau bị tính lệch gần nửa màn: ở màn
+           Đánh giá chai tưởng đã đi được nửa đường sang màn Giá, tới màn Giá
+           thì chai tưởng đã qua luôn nên bay khỏi khung hình.
+           Mọi thứ làm trang cao/thấp đi (mở bảng gập, ảnh tải chậm, phông
+           chữ về muộn, màn chọn đổi bố cục…) đều phải kéo theo đo lại. */
+        if ('ResizeObserver' in window) {
+            let caoCu = document.documentElement.scrollHeight, henDo = 0;
+            const roTrang = new ResizeObserver(() => {
+                const cao = document.documentElement.scrollHeight;
+                if (Math.abs(cao - caoCu) < 2) return;
+                caoCu = cao;
+                cancelAnimationFrame(henDo);
+                henDo = requestAnimationFrame(() => { fit(); caoCu = document.documentElement.scrollHeight; });
+            });
+            const mainEl = document.querySelector('main');
+            if (mainEl) roTrang.observe(mainEl);
+            const chonEl = document.getElementById('chon');
+            if (chonEl) roTrang.observe(chonEl);
+        }
+        /* trình duyệt cũ không có ResizeObserver: ít nhất bắt được lúc mở/gập bảng */
+        document.addEventListener('toggle', () => requestAnimationFrame(fit), true);
+
         /* chép ảnh chai 2D từ thẻ ở hero sang thẻ giá — bản điện thoại dùng ảnh này */
         copyShots();
 
@@ -4487,11 +4513,16 @@
             lastWheel = now;
 
             const dir = e.deltaY > 0 ? 1 : -1;
-            const here = snapping ? snapIdx : nearestIndex();
+            /* LỖI CŨ (có từ trước, phát hiện 22/09): đang ở màn chọn dòng — nằm
+               TRÊN màn 1 — thì nearestIndex() vẫn trả về 0, nên cú cuộn đầu tiên
+               nhảy thẳng tới màn 2, bỏ qua luôn màn Trang chủ. Ở màn chọn thì
+               coi như đang ở vị trí -1 để cú cuộn đầu tiên dừng đúng màn 1. */
+            const oManChon = !snapping && window.scrollY + vh / 2 < sections[0].offsetTop;
+            const here = snapping ? snapIdx : oManChon ? -1 : nearestIndex();
             /* đang ở màn cao, chưa cuộn tới mép → để trình duyệt cuộn bình thường,
                nhưng không cho một cú vuốt mạnh trượt quá mép sang màn kế
                (nếu trượt quá, cú vuốt sau sẽ nhảy lố một màn) */
-            if (!snapping && conCuonTrong(sections[here], dir)) {
+            if (!snapping && here >= 0 && conCuonTrong(sections[here], dir)) {
                 const s = sections[here];
                 const buoc = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? vh : 1);
                 const dau = s.offsetTop, cuoi = s.offsetTop + s.offsetHeight - vh;
@@ -4504,6 +4535,7 @@
                 return;
             }
             const next = here + dir;
+            if (here < 0 && dir < 0) return;                          // đang ở màn chọn, cuộn lên: để yên
             if (next < 0) {
                 /* Cuộn ngược từ màn sản phẩm lên: kéo hẳn về màn chọn dòng,
                    không thả tự nhiên rồi kẹt lại giữa hai màn. */
@@ -4534,8 +4566,10 @@
             const up = k === 'ArrowUp' || k === 'PageUp';
             if (!down && !up) return;
             if (/input|textarea/i.test(document.activeElement?.tagName || '')) return;
-            const hienTai = snapping ? snapIdx : nearestIndex();
-            if (!snapping && conCuonTrong(sections[hienTai], down ? 1 : -1)) return;
+            const oManChon = !snapping && window.scrollY + vh / 2 < sections[0].offsetTop;
+            if (oManChon && up) return;
+            const hienTai = snapping ? snapIdx : oManChon ? -1 : nearestIndex();
+            if (!snapping && hienTai >= 0 && conCuonTrong(sections[hienTai], down ? 1 : -1)) return;
             e.preventDefault();
             const now = performance.now();
             if (snapping || now - lastJump < 320) return;
