@@ -121,105 +121,118 @@
     /* ================================================================
        2. POPUP SẢN PHẨM
        ================================================================ */
-    const products = Cx.products || [];
-    const lines = (typeof LINES !== 'undefined' ? LINES : Cx.lines) || [];
-    const lk = Cx.contact || {};
+    /* ================================================================
+       BỘ DỰNG POPUP — tách riêng thành một hàm để TRANG QUẢN TRỊ dùng lại
+       được với nội dung đang sửa (bản nháp trong máy), thay vì phải viết
+       lại lần thứ hai rồi hai bên lệch nhau.
+       Gọi: ROOTLAB_POPUP.boDung(nộiDung, 'vi') → { t, timMa, dung, form }
+       ================================================================ */
+    function boDung(Cx, L) {
+        const t = Object.assign({}, T.vi, T[L] || {});
+        const products = Cx.products || [];
+        const lines = Cx.lines || [];
+        const lk = Cx.contact || {};
 
-    function timMa(ma) {
-        if (!ma) return null;
-        const p = products.find(x => (x.qr || '').toLowerCase() === ma);
-        if (p) return { loai: 'chai', sp: p };
-        const d = lines.find(x => (x.qr || '').toLowerCase() === ma);
-        if (d) {
-            const ds = (d.sp || []).map(k => products.find(p => p.key === k)).filter(Boolean);
-            if (ds.length) return { loai: 'bo', dong: d, ds };
+        function timMa(ma) {
+            if (!ma) return null;
+            const p = products.find(x => (x.qr || '').toLowerCase() === ma);
+            if (p) return { loai: 'chai', sp: p };
+            const d = lines.find(x => (x.qr || '').toLowerCase() === ma);
+            if (d) {
+                const ds = (d.sp || []).map(k => products.find(p => p.key === k)).filter(Boolean);
+                if (ds.length) return { loai: 'bo', dong: d, ds };
+            }
+            return null;
         }
-        return null;
-    }
 
-    const doan = (tieuDe, noiDung, mo = false, lop = '') => noiDung ? `
-        <details class="rp-doan ${lop}"${mo ? ' open' : ''}><summary><span>${h(tieuDe)}</span><i></i></summary>
-        <div class="rp-than">${noiDung}</div></details>` : '';
-    const doanVan = s => String(s || '').split(/\n+/).filter(Boolean).map(x => `<p>${h(x)}</p>`).join('');
+        const doan = (tieuDe, noiDung, mo = false, lop = '') => noiDung ? `
+            <details class="rp-doan ${lop}"${mo ? ' open' : ''}><summary><span>${h(tieuDe)}</span><i></i></summary>
+            <div class="rp-than">${noiDung}</div></details>` : '';
+        const doanVan = s => String(s || '').split(/\n+/).filter(Boolean).map(x => `<p>${h(x)}</p>`).join('');
 
-    function giayPhep(p) {
-        const r = [];
-        if (p.cbmp) r.push([t.soCongBo, p.cbmp]);
-        if (lk.factory) r.push([t.sanXuat, lk.factory]);
-        if (lk.company) r.push([t.phanPhoi, lk.company + (lk.addressFull ? ' — ' + lk.addressFull : '')]);
-        if (lk.taxCode) r.push([t.mst, lk.taxCode]);
-        let html = r.map(([k, v]) => `<div class="rp-hang"><span>${h(k)}</span><b>${h(v)}</b></div>`).join('');
-        (p.certs || []).filter(Boolean).forEach(c => { html += `<div class="rp-chip">✓ ${h(c)}</div>`; });
-        if (lk.moit) html += `<a class="rp-chip rp-bct" href="${h(lk.moit)}" target="_blank" rel="noopener nofollow">✓ ${h(t.bct)}</a>`;
-        return html;
-    }
-    function tem(p) {
-        const ds = (p.stamps || []).filter(x => x && (x.img || x.src));
-        if (!ds.length) return '';
-        return `<div class="rp-tem">${ds.map(x => `<figure><img src="${h(x.img || x.src)}" alt="${h(x.label || '')}" loading="lazy"><figcaption>${h(x.label || '')}</figcaption></figure>`).join('')}</div>`;
-    }
-    function khoiChai(p) {
-        return doan(t.congDung, doanVan(p.func || p.desc), true)
-            + doan(t.cachDung, doanVan(p.use), true)
-            + doan(t.thanhPhan, p.inci ? `<p class="rp-inci">${h(p.inci)}</p>` : '')
-            + doan(t.luuY, doanVan(p.warn))
-            + doan(t.giayPhep, giayPhep(p), true, 'rp-gp')
-            + doan(t.tem, tem(p), true);
-    }
-    const dauChai = p => `
-        <div class="rp-dau">
-            <div class="rp-anh">${p.photo ? `<img src="${h(p.photo)}" alt="${h(p.name)}">` : ''}</div>
-            <div class="rp-ten">
-                <span class="rp-nhan">✓ ${h(t.chinhHang)}</span>
-                <h2 id="rp-td">${h(p.name)}</h2>
-                <p>${h(p.priceSub || '')}</p>
-                ${p.vol && !(p.priceSub || '').includes(p.vol.replace(/\s/g, '')) && !(p.priceSub || '').includes(p.vol) ? `<p class="rp-vol">${h(p.vol)}</p>` : ''}
-                ${p.price ? `<div class="rp-gia">${h(p.price)}<small>đ</small></div>` : ''}
-            </div>
-        </div>`;
-
-    /* tên tiếng Việt gốc — lưu vào danh sách khách cho Phil đọc, dù khách đang xem tiếng nào */
-    const GOC = window.ROOTLAB_CONTENT || Cx;
-    const tenGoc = key => ((GOC.products || []).find(p => p.key === key) || {}).name || key;
-    function dung(k) {
-        if (k.loai === 'chai') return { tieuDe: k.sp.name, sanPham: tenGoc(k.sp.key), html: dauChai(k.sp) + khoiChai(k.sp), dich: k.sp.key };
-        const d = k.dong, pr = Object.assign({}, Cx.pricing || {}, d.pricing || {});
-        const dau = `
-            <div class="rp-dau rp-dau-bo">
-                <div class="rp-anh rp-anh-bo"><img src="bo-qua-tang.png" alt=""></div>
+        function giayPhep(p) {
+            const r = [];
+            if (p.cbmp) r.push([t.soCongBo, p.cbmp]);
+            if (lk.factory) r.push([t.sanXuat, lk.factory]);
+            if (lk.company) r.push([t.phanPhoi, lk.company + (lk.addressFull ? ' — ' + lk.addressFull : '')]);
+            if (lk.taxCode) r.push([t.mst, lk.taxCode]);
+            let html = r.map(([k, v]) => `<div class="rp-hang"><span>${h(k)}</span><b>${h(v)}</b></div>`).join('');
+            (p.certs || []).filter(Boolean).forEach(c => { html += `<div class="rp-chip">✓ ${h(c)}</div>`; });
+            if (lk.moit) html += `<a class="rp-chip rp-bct" href="${h(lk.moit)}" target="_blank" rel="noopener nofollow">✓ ${h(t.bct)}</a>`;
+            return html;
+        }
+        function tem(p) {
+            const ds = (p.stamps || []).filter(x => x && (x.img || x.src));
+            if (!ds.length) return '';
+            return `<div class="rp-tem">${ds.map(x => `<figure><img src="${h(x.img || x.src)}" alt="${h(x.label || '')}" loading="lazy"><figcaption>${h(x.label || '')}</figcaption></figure>`).join('')}</div>`;
+        }
+        function khoiChai(p) {
+            return doan(t.congDung, doanVan(p.func || p.desc), true)
+                + doan(t.cachDung, doanVan(p.use), true)
+                + doan(t.thanhPhan, p.inci ? `<p class="rp-inci">${h(p.inci)}</p>` : '')
+                + doan(t.luuY, doanVan(p.warn))
+                + doan(t.giayPhep, giayPhep(p), true, 'rp-gp')
+                + doan(t.tem, tem(p), true);
+        }
+        const dauChai = p => `
+            <div class="rp-dau">
+                <div class="rp-anh">${p.photo ? `<img src="${h(p.photo)}" alt="${h(p.name)}">` : ''}</div>
                 <div class="rp-ten">
                     <span class="rp-nhan">✓ ${h(t.chinhHang)}</span>
-                    <h2 id="rp-td">${h(pr.boxEyebrow ? t.hopQua : (d.name || t.hopQua))}</h2>
-                    <p>${h(k.ds.map(p => p.name).join(' + '))}</p>
-                    ${pr.comboNew ? `<div class="rp-gia">${h(pr.comboNew)}${pr.comboOld ? ` <s>${h(pr.comboOld)}</s>` : ''}</div>` : ''}
-                    <p class="rp-tang">★ ${h(pr.boxGift || t.tang)}</p>
+                    <h2 id="rp-td">${h(p.name)}</h2>
+                    <p>${h(p.priceSub || '')}</p>
+                    ${p.vol && !(p.priceSub || '').includes(p.vol.replace(/\s/g, '')) && !(p.priceSub || '').includes(p.vol) ? `<p class="rp-vol">${h(p.vol)}</p>` : ''}
+                    ${p.price ? `<div class="rp-gia">${h(p.price)}<small>đ</small></div>` : ''}
                 </div>
             </div>`;
-        const tab = `<div class="rp-tab" role="tablist">${k.ds.map((p, i) =>
-            `<button type="button" role="tab" data-i="${i}" aria-selected="${i === 0}">${h(t.buoc)} ${i + 1} · ${h(p.name)}</button>`).join('')}</div>`;
-        const than = k.ds.map((p, i) => `<div class="rp-buoc" data-i="${i}"${i ? ' hidden' : ''}>${dauChai(p).replace('id="rp-td"', '')}${khoiChai(p)}</div>`).join('');
-        return { tieuDe: t.hopQua, sanPham: T.vi.hopQua, html: dau + tab + than, dich: d.key };
+
+        /* tên tiếng Việt gốc — lưu vào danh sách khách cho Phil đọc, dù khách đang xem tiếng nào */
+        const GOC = window.ROOTLAB_CONTENT || Cx;
+        const tenGoc = key => ((GOC.products || []).find(p => p.key === key) || {}).name || key;
+        function dung(k) {
+            if (k.loai === 'chai') return { tieuDe: k.sp.name, sanPham: tenGoc(k.sp.key), html: dauChai(k.sp) + khoiChai(k.sp), dich: k.sp.key };
+            const d = k.dong, pr = Object.assign({}, Cx.pricing || {}, d.pricing || {});
+            const dau = `
+                <div class="rp-dau rp-dau-bo">
+                    <div class="rp-anh rp-anh-bo"><img src="bo-qua-tang.png" alt=""></div>
+                    <div class="rp-ten">
+                        <span class="rp-nhan">✓ ${h(t.chinhHang)}</span>
+                        <h2 id="rp-td">${h(pr.boxEyebrow ? t.hopQua : (d.name || t.hopQua))}</h2>
+                        <p>${h(k.ds.map(p => p.name).join(' + '))}</p>
+                        ${pr.comboNew ? `<div class="rp-gia">${h(pr.comboNew)}${pr.comboOld ? ` <s>${h(pr.comboOld)}</s>` : ''}</div>` : ''}
+                        <p class="rp-tang">★ ${h(pr.boxGift || t.tang)}</p>
+                    </div>
+                </div>`;
+            const tab = `<div class="rp-tab" role="tablist">${k.ds.map((p, i) =>
+                `<button type="button" role="tab" data-i="${i}" aria-selected="${i === 0}">${h(t.buoc)} ${i + 1} · ${h(p.name)}</button>`).join('')}</div>`;
+            const than = k.ds.map((p, i) => `<div class="rp-buoc" data-i="${i}"${i ? ' hidden' : ''}>${dauChai(p).replace('id="rp-td"', '')}${khoiChai(p)}</div>`).join('');
+            return { tieuDe: t.hopQua, sanPham: T.vi.hopQua, html: dau + tab + than, dich: d.key };
+        }
+
+        function form(sanPham) {
+            const zalo = lk.zalo ? (/^https?:/i.test(lk.zalo) ? lk.zalo : 'https://zalo.me/' + String(lk.zalo).replace(/[^\d]/g, '')) : '';
+            const lienHe = [zalo ? `<a href="${h(zalo)}" target="_blank" rel="noopener">Zalo</a>` : '',
+                lk.phone ? `<a href="tel:${h(String(lk.phone).replace(/[^\d+]/g, ''))}">${h(lk.phone)}</a>` : ''].filter(Boolean).join(' · ');
+            return `
+            <form class="rp-form" novalidate data-sp="${h(sanPham)}" data-lh="${h(lienHe)}">
+                <h3>${h(t.formTieuDe)}</h3><p class="rp-phu">${h(t.formPhu)}</p>
+                <div class="rp-chon">
+                    <label><input type="radio" name="need" value="uu-dai" checked><span>${h(t.uuDai)}</span></label>
+                    <label><input type="radio" name="need" value="tu-van"><span>${h(t.tuVan)}</span></label>
+                </div>
+                <label class="rp-o"><span>${h(t.ten)}</span><input name="name" autocomplete="name" maxlength="80" required></label>
+                <label class="rp-o"><span>${h(t.sdt)}</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="16" required></label>
+                <input class="rp-bay" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <label class="rp-dy"><input type="checkbox" name="consent"><span>${h(t.dongY)}</span></label>
+                <div class="rp-bao" role="status" aria-live="polite"></div>
+                <button type="submit" class="rp-gui">${h(t.gui)}</button>
+            </form>`;
+        }
+        return { t, timMa, dung, form, khoiChai, dauChai };
     }
 
-    function form(sanPham) {
-        const zalo = lk.zalo ? (/^https?:/i.test(lk.zalo) ? lk.zalo : 'https://zalo.me/' + String(lk.zalo).replace(/[^\d]/g, '')) : '';
-        const lienHe = [zalo ? `<a href="${h(zalo)}" target="_blank" rel="noopener">Zalo</a>` : '',
-            lk.phone ? `<a href="tel:${h(String(lk.phone).replace(/[^\d+]/g, ''))}">${h(lk.phone)}</a>` : ''].filter(Boolean).join(' · ');
-        return `
-        <form class="rp-form" novalidate data-sp="${h(sanPham)}" data-lh="${h(lienHe)}">
-            <h3>${h(t.formTieuDe)}</h3><p class="rp-phu">${h(t.formPhu)}</p>
-            <div class="rp-chon">
-                <label><input type="radio" name="need" value="uu-dai" checked><span>${h(t.uuDai)}</span></label>
-                <label><input type="radio" name="need" value="tu-van"><span>${h(t.tuVan)}</span></label>
-            </div>
-            <label class="rp-o"><span>${h(t.ten)}</span><input name="name" autocomplete="name" maxlength="80" required></label>
-            <label class="rp-o"><span>${h(t.sdt)}</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="16" required></label>
-            <input class="rp-bay" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">
-            <label class="rp-dy"><input type="checkbox" name="consent"><span>${h(t.dongY)}</span></label>
-            <div class="rp-bao" role="status" aria-live="polite"></div>
-            <button type="submit" class="rp-gui">${h(t.gui)}</button>
-        </form>`;
-    }
+    const BO = boDung(Cx, L);
+    const { timMa, dung, form } = BO;
 
     let lopPhu = null, truocDo = null;
     function mo(ma) {
@@ -313,7 +326,7 @@
 
     /* ---------- giao diện popup ---------- */
     const css = document.createElement('style');
-    css.textContent = `
+    const CSS = `
     body.pop-mo{overflow:hidden}
     .rp-nen{position:fixed;inset:0;z-index:9999;background:rgba(6,20,17,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
       display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity .25s ease}
@@ -399,11 +412,18 @@
     }
     @media (prefers-reduced-motion:reduce){.rp-nen,.rp-hop{transition:none}}
     `;
+    css.textContent = CSS;
     document.head.appendChild(css);
 
     /* ---------- chạy ---------- */
     window.rootlabPopup = { mo, dong };
+    /* trang quản trị dùng lại bộ dựng + đúng bộ CSS này để xem thử popup */
+    window.ROOTLAB_POPUP = { boDung, CSS, T };
     const batDau = () => {
+        /* Trang quản trị cũng nạp file này để XEM THỬ popup — ở đó chỉ mượn bộ
+           dựng, tuyệt đối không mở popup và không đếm lượt (kẻo Phil tự sửa
+           trang lại thành khách vào web). */
+        if (window.ROOTLAB_ADMIN) return;
         if (QR) { if (!mo(QR)) { /* mã lạ: mở web bình thường */ } }
         setTimeout(ghiLuot, 400);
     };
