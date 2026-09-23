@@ -4512,6 +4512,7 @@
             const gap = now - lastWheel;
             lastWheel = now;
 
+            if (document.body.classList.contains('pop-mo')) return;  // popup sản phẩm đang mở: để popup tự cuộn
             const dir = e.deltaY > 0 ? 1 : -1;
             /* LỖI CŨ (có từ trước, phát hiện 22/09): đang ở màn chọn dòng — nằm
                TRÊN màn 1 — thì nearestIndex() vẫn trả về 0, nên cú cuộn đầu tiên
@@ -4560,7 +4561,7 @@
         }, { passive: false });
 
         window.addEventListener('keydown', e => {
-            if (!snapAllowed) return;
+            if (!snapAllowed || document.body.classList.contains('pop-mo')) return;
             const k = e.key;
             const down = k === 'ArrowDown' || k === 'PageDown' || k === ' ';
             const up = k === 'ArrowUp' || k === 'PageUp';
@@ -5355,6 +5356,8 @@
         });
 
     </script>
+    <!-- popup sản phẩm khi quét mã QR + đếm lượt vào (xem san-pham.js) -->
+    <script src="san-pham.js"></script>
 </body>
 
 </html>
