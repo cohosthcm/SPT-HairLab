@@ -90,8 +90,17 @@ a{color:var(--chinh-dam)}
 .khac .menu{position:absolute;right:0;top:calc(100% + 8px);z-index:60;display:flex;flex-direction:column;
   gap:4px;padding:8px;background:var(--the);border:1px solid var(--vien);border-radius:14px;
   box-shadow:var(--bong-to);min-width:230px}
-.khac .menu button{width:100%;text-align:left;border:0;background:none;padding:9px 12px;border-radius:8px}
+.khac .menu{min-width:300px}
+.khac .menu-dau{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--nhat);
+  font-weight:700;padding:6px 12px 8px}
+.khac .menu button{width:100%;text-align:left;border:0;background:none;padding:10px 12px;border-radius:8px;
+  font-weight:500;line-height:1.35}
+.khac .menu button small{display:block;font-weight:400;font-size:11.5px;color:var(--nhat);margin-top:3px;
+  white-space:normal}
 .khac .menu button:hover{background:#f1f4f3}
+.khac .menu button.danger{color:var(--do)}
+.khac .menu button.danger small{color:#c89a94}
+.khac .menu button.danger:hover{background:var(--do-nhat)}
 
 /* ---------- BỐ CỤC 2 CỘT ---------- */
 .wrap{display:grid;grid-template-columns:238px minmax(0,1fr);
@@ -383,9 +392,13 @@ table.bang .xoa:hover{background:var(--do-nhat)}
             <details class="khac">
                 <summary>⋯ Khác</summary>
                 <div class="menu">
-                    <button id="import" type="button">Nhập file content.js</button>
-                    <button id="export" type="button">Tải content.js về máy</button>
-                    <button id="reset" class="danger" type="button">Bỏ hết thay đổi, lấy lại bản trên web</button>
+                    <div class="menu-dau">Sao lưu &amp; khôi phục nội dung</div>
+                    <button id="export" type="button">Lưu bản sao nội dung về máy
+                        <small>Tải về một file giữ toàn bộ chữ và ảnh của web. Nên làm trước khi sửa nhiều.</small></button>
+                    <button id="import" type="button">Khôi phục từ bản sao đã lưu
+                        <small>Chọn file đã tải về lúc trước để đưa nội dung cũ trở lại.</small></button>
+                    <button id="reset" class="danger" type="button">Bỏ hết thay đổi, lấy lại bản trên web
+                        <small>Xoá những gì đang sửa dở, quay về đúng bản khách đang thấy.</small></button>
                 </div>
             </details>
             <button id="thoat" type="button">Đăng xuất</button>
