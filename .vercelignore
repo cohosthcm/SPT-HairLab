@@ -1,0 +1,4 @@
+# Vercel chỉ cần các file tĩnh. Phần máy chủ (functions/, lib/) là của
+# Cloudflare Pages — để Vercel bỏ qua cho khỏi dựng nhầm.
+functions/
+lib/
