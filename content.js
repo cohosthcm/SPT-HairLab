@@ -38,7 +38,8 @@ window.ROOTLAB_CONTENT = {
       ],
       "heroT1": "Đánh thức",
       "heroT2": "chân tóc",
-      "cta": "Mua bộ đôi"
+      "cta": "Mua bộ đôi",
+      "qr": "bo-doi"
     },
     {
       "key": "goi",
@@ -353,7 +354,14 @@ window.ROOTLAB_CONTENT = {
       "buyBtn": "Mua Thanh lọc da đầu",
       "buyLink": "",
       "shape": "jar",
-      "inci": "Glycerin, Sodium Chloride, Water, Propylene Glycol, Sodium C14-16 Olefin Sulfonate, Cocamidopropyl Betaine, Glycolic Acid, Lavandula Angustifolia Flower Oil, Phenoxyethanol, Xanthan gum, Menthol, Sodium Hydroxide, Chamomilla Recutita (Matricaria) Flower Extract, Hydroxyethyl Acrylate/Sodium Acryloyldimethyltaurate Copolymer, Allantoin, Chlorphenesin, C15-23 Alkanes, Decyl Glucoside, Tartaric Acid, Pyrus Malus (Apple) Fruit Extract, C13-C14 Alkanes, Citric Acid, Citrus Limon Fruit Extract, Vitis Vinifera (Grape) Skin Extract, Triticum Vulgare (Wheat) Bran Extract, Sodium Benzoate, Sodium Citrate, 1,2-Hexanediol, Potassium Sorbate, Linalool, Limonene, Geraniol, Coumarin."
+      "inci": "Glycerin, Sodium Chloride, Water, Propylene Glycol, Sodium C14-16 Olefin Sulfonate, Cocamidopropyl Betaine, Glycolic Acid, Lavandula Angustifolia Flower Oil, Phenoxyethanol, Xanthan gum, Menthol, Sodium Hydroxide, Chamomilla Recutita (Matricaria) Flower Extract, Hydroxyethyl Acrylate/Sodium Acryloyldimethyltaurate Copolymer, Allantoin, Chlorphenesin, C15-23 Alkanes, Decyl Glucoside, Tartaric Acid, Pyrus Malus (Apple) Fruit Extract, C13-C14 Alkanes, Citric Acid, Citrus Limon Fruit Extract, Vitis Vinifera (Grape) Skin Extract, Triticum Vulgare (Wheat) Bran Extract, Sodium Benzoate, Sodium Citrate, 1,2-Hexanediol, Potassium Sorbate, Linalool, Limonene, Geraniol, Coumarin.",
+      "qr": "thanh-loc",
+      "vol": "200 ml",
+      "func": "Giúp làm sạch da đầu. Hỗ trợ nhẹ nhàng loại bỏ tế bào chết, bụi bẩn và dầu thừa trên da đầu, giúp da đầu và mái tóc sạch sẽ.",
+      "use": "Dùng 1–2 lần mỗi tuần. Không làm ướt tóc. Lấy một lượng vừa đủ bôi lên chân tóc, dùng lược chuyên dụng massage vùng có sản phẩm 2–3 phút, sau đó gội sạch bằng dầu gội không chứa quá nhiều dưỡng chất.",
+      "warn": "Chỉ dùng ngoài da. Tránh để dính vào mắt — nếu dính, rửa sạch ngay bằng nước. Ngưng dùng nếu da đầu bị kích ứng. Để xa tầm tay trẻ em. Bảo quản nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp.",
+      "stamps": [],
+      "certs": []
     },
     {
       "key": "serum",
@@ -387,7 +395,14 @@ window.ROOTLAB_CONTENT = {
       "buyBtn": "Mua Nuôi dưỡng chân tóc",
       "buyLink": "",
       "shape": "dropper",
-      "inci": "Water, Alcohol Denat., Propylene Glycol, Propanediol, Panthenol, PEG-40 Hydrogenated Castor Oil, Glycerin, Phenoxyethanol, Arginine, Lactic Acid, Menthol, Lavandula Angustifolia Flower Oil, Chamomilla Recutita (Matricaria) Flower Extract, Glycine Soja (Soybean) Germ Extract, Triticum Vulgare (Wheat) Germ Extract, Disodium EDTA, Niacinamide, Chlorphenesin, Sodium Hydroxide, T-butyl Alcohol, Scutellaria Baicalensis Root Extract, Gluconolactone, Polygonum Multiflorum Root Extract, Sodium Benzoate, 1,2-Hexanediol, Anetholea Anisata Leaf Extract, Calcium Gluconate, Denatonium Benzoate, Linalool, Limonene, Geraniol, Coumarin."
+      "inci": "Water, Alcohol Denat., Propylene Glycol, Propanediol, Panthenol, PEG-40 Hydrogenated Castor Oil, Glycerin, Phenoxyethanol, Arginine, Lactic Acid, Menthol, Lavandula Angustifolia Flower Oil, Chamomilla Recutita (Matricaria) Flower Extract, Glycine Soja (Soybean) Germ Extract, Triticum Vulgare (Wheat) Germ Extract, Disodium EDTA, Niacinamide, Chlorphenesin, Sodium Hydroxide, T-butyl Alcohol, Scutellaria Baicalensis Root Extract, Gluconolactone, Polygonum Multiflorum Root Extract, Sodium Benzoate, 1,2-Hexanediol, Anetholea Anisata Leaf Extract, Calcium Gluconate, Denatonium Benzoate, Linalool, Limonene, Geraniol, Coumarin.",
+      "qr": "nuoi-duong",
+      "vol": "100 ml",
+      "func": "Dưỡng ẩm và làm dịu da đầu, nuôi dưỡng chân tóc, hỗ trợ giảm rụng tóc do chân tóc yếu.",
+      "use": "Kết cấu thấm nhanh, không bết dính, dùng hằng ngày. Sau khi làm sạch và sấy khô da đầu, xịt một lượng vừa đủ lên chân tóc, sau đó chỉ sấy mát, không xả lại với nước.",
+      "warn": "Chỉ dùng ngoài da. Tránh để dính vào mắt — nếu dính, rửa sạch ngay bằng nước. Ngưng dùng nếu da đầu bị kích ứng. Để xa tầm tay trẻ em. Bảo quản nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp.",
+      "stamps": [],
+      "certs": []
     },
     {
       "key": "goi",
@@ -421,7 +436,14 @@ window.ROOTLAB_CONTENT = {
       "buyBtn": "Mua dầu gội",
       "buyLink": "",
       "shape": "jar",
-      "mockup": true
+      "mockup": true,
+      "qr": "dau-goi",
+      "vol": "300 ml",
+      "func": "Làm sạch dịu nhẹ tóc và da đầu mỗi ngày, giữ lại lớp dầu tự nhiên bảo vệ da đầu.",
+      "use": "Làm ướt tóc, lấy một lượng vừa đủ, xoa đều lên da đầu tạo bọt, massage nhẹ 1 phút rồi xả sạch với nước.",
+      "warn": "Chỉ dùng ngoài da. Tránh để dính vào mắt — nếu dính, rửa sạch ngay bằng nước. Ngưng dùng nếu da đầu bị kích ứng. Để xa tầm tay trẻ em. Bảo quản nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp.",
+      "stamps": [],
+      "certs": []
     },
     {
       "key": "tam",
@@ -455,7 +477,14 @@ window.ROOTLAB_CONTENT = {
       "buyBtn": "Mua sữa tắm",
       "buyLink": "",
       "shape": "jar",
-      "mockup": true
+      "mockup": true,
+      "qr": "sua-tam",
+      "vol": "500 ml",
+      "func": "Làm sạch dịu nhẹ, giữ ẩm cho da, không gây khô căng sau khi tắm.",
+      "use": "Làm ướt da, lấy một lượng vừa đủ ra bông tắm hoặc lòng bàn tay, tạo bọt và massage khắp người, sau đó tắm sạch với nước.",
+      "warn": "Chỉ dùng ngoài da. Tránh để dính vào mắt. Ngưng dùng nếu có kích ứng. Để xa tầm tay trẻ em. Bảo quản nơi khô ráo, thoáng mát.",
+      "stamps": [],
+      "certs": []
     }
   ],
   "ingredients": {
@@ -1016,7 +1045,10 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "Root & follicle cleanser"
-          }
+          },
+          "warn": "For external use only. Avoid contact with eyes — if contact occurs, rinse immediately with water. Stop use if scalp irritation occurs. Keep out of reach of children. Store in a cool, dry place away from direct sunlight.",
+          "func": "Cleanses the scalp. Gently helps remove dead skin, dirt and excess oil so the scalp and hair stay clean.",
+          "use": "Use 1–2 times a week on DRY hair — do not wet it first. Apply a small amount to the roots, massage the area with a scalp comb for 2–3 minutes, then wash out with a light shampoo."
         },
         {
           "cardSub": "Step 2 · Nourish",
@@ -1031,7 +1063,10 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "Nourish & stimulate growth"
-          }
+          },
+          "warn": "For external use only. Avoid contact with eyes — if contact occurs, rinse immediately with water. Stop use if scalp irritation occurs. Keep out of reach of children. Store in a cool, dry place away from direct sunlight.",
+          "func": "Hydrates and soothes the scalp, nourishes the roots and helps reduce hair fall caused by weak roots.",
+          "use": "Fast-absorbing and non-greasy, for daily use. After cleansing and drying the scalp, spray a small amount onto the roots, then dry with cool air only — do not rinse."
         },
         {
           "cardSub": "Daily wash",
@@ -1046,7 +1081,8 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "Gentle everyday shampoo"
-          }
+          },
+          "warn": "For external use only. Avoid contact with eyes — if contact occurs, rinse immediately with water. Stop use if scalp irritation occurs. Keep out of reach of children. Store in a cool, dry place away from direct sunlight."
         },
         {
           "cardSub": "Daily wash",
@@ -1061,7 +1097,8 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "Gentle everyday body wash"
-          }
+          },
+          "warn": "For external use only. Avoid contact with eyes — if contact occurs, rinse immediately with water. Stop use if scalp irritation occurs. Keep out of reach of children. Store in a cool, dry place away from direct sunlight."
         }
       ],
       "ui": {
@@ -1480,7 +1517,10 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "Nettoyant racines & follicules"
-          }
+          },
+          "warn": "Usage externe uniquement. Éviter le contact avec les yeux — en cas de contact, rincer immédiatement à l'eau. Cesser l'utilisation en cas d'irritation. Tenir hors de portée des enfants. Conserver dans un endroit frais et sec, à l'abri du soleil.",
+          "func": "Nettoie le cuir chevelu. Aide à éliminer en douceur les cellules mortes, les impuretés et l'excès de sébum pour un cuir chevelu et des cheveux propres.",
+          "use": "1 à 2 fois par semaine, sur cheveux SECS — ne pas les mouiller. Appliquer une petite quantité sur les racines, masser 2 à 3 minutes avec un peigne, puis laver avec un shampooing léger."
         },
         {
           "cardSub": "Étape 2 · Nourrir",
@@ -1495,7 +1535,10 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "Nourrit & stimule la pousse"
-          }
+          },
+          "warn": "Usage externe uniquement. Éviter le contact avec les yeux — en cas de contact, rincer immédiatement à l'eau. Cesser l'utilisation en cas d'irritation. Tenir hors de portée des enfants. Conserver dans un endroit frais et sec, à l'abri du soleil.",
+          "func": "Hydrate et apaise le cuir chevelu, nourrit les racines et aide à réduire la chute due à des racines fragiles.",
+          "use": "Pénètre vite, ne graisse pas, usage quotidien. Après avoir lavé et séché le cuir chevelu, vaporiser une petite quantité sur les racines, puis sécher à l'air froid — ne pas rincer."
         },
         {
           "cardSub": "Lavage quotidien",
@@ -1510,7 +1553,8 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "Shampooing doux quotidien"
-          }
+          },
+          "warn": "Usage externe uniquement. Éviter le contact avec les yeux — en cas de contact, rincer immédiatement à l'eau. Cesser l'utilisation en cas d'irritation. Tenir hors de portée des enfants. Conserver dans un endroit frais et sec, à l'abri du soleil."
         },
         {
           "cardSub": "Douche quotidienne",
@@ -1525,7 +1569,8 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "Gel douche doux quotidien"
-          }
+          },
+          "warn": "Usage externe uniquement. Éviter le contact avec les yeux — en cas de contact, rincer immédiatement à l'eau. Cesser l'utilisation en cas d'irritation. Tenir hors de portée des enfants. Conserver dans un endroit frais et sec, à l'abri du soleil."
         }
       ],
       "ui": {
@@ -1944,7 +1989,10 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "Detergente radici & follicoli"
-          }
+          },
+          "warn": "Solo per uso esterno. Evitare il contatto con gli occhi — in caso di contatto, sciacquare subito con acqua. Sospendere l'uso in caso di irritazione. Tenere fuori dalla portata dei bambini. Conservare in luogo fresco e asciutto, lontano dalla luce diretta del sole.",
+          "func": "Deterge il cuoio capelluto. Aiuta a rimuovere delicatamente cellule morte, impurità e sebo in eccesso per cute e capelli puliti.",
+          "use": "1–2 volte a settimana su capelli ASCIUTTI — non bagnarli. Applicare poco prodotto sulle radici, massaggiare 2–3 minuti con un pettine, poi lavare con uno shampoo leggero."
         },
         {
           "cardSub": "Passo 2 · Nutrimento",
@@ -1959,7 +2007,10 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "Nutre e stimola la crescita"
-          }
+          },
+          "warn": "Solo per uso esterno. Evitare il contatto con gli occhi — in caso di contatto, sciacquare subito con acqua. Sospendere l'uso in caso di irritazione. Tenere fuori dalla portata dei bambini. Conservare in luogo fresco e asciutto, lontano dalla luce diretta del sole.",
+          "func": "Idrata e lenisce il cuoio capelluto, nutre le radici e aiuta a ridurre la caduta dovuta a radici deboli.",
+          "use": "Si assorbe in fretta, non unge, uso quotidiano. Dopo aver lavato e asciugato la cute, spruzzare poco prodotto sulle radici, poi asciugare solo con aria fredda — non risciacquare."
         },
         {
           "cardSub": "Lavaggio quotidiano",
@@ -1974,7 +2025,8 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "Shampoo delicato quotidiano"
-          }
+          },
+          "warn": "Solo per uso esterno. Evitare il contatto con gli occhi — in caso di contatto, sciacquare subito con acqua. Sospendere l'uso in caso di irritazione. Tenere fuori dalla portata dei bambini. Conservare in luogo fresco e asciutto, lontano dalla luce diretta del sole."
         },
         {
           "cardSub": "Doccia quotidiana",
@@ -1989,7 +2041,8 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "Bagnoschiuma delicato quotidiano"
-          }
+          },
+          "warn": "Solo per uso esterno. Evitare il contatto con gli occhi — in caso di contatto, sciacquare subito con acqua. Sospendere l'uso in caso di irritazione. Tenere fuori dalla portata dei bambini. Conservare in luogo fresco e asciutto, lontano dalla luce diretta del sole."
         }
       ],
       "ui": {
@@ -2408,7 +2461,10 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "根元と毛包を洗う"
-          }
+          },
+          "warn": "外用のみ。目に入らないようにしてください。入った場合はすぐに水で洗い流してください。頭皮に異常が出たら使用を中止してください。お子様の手の届かない所に置いてください。直射日光を避け、涼しく乾燥した場所で保管してください。",
+          "func": "頭皮を清潔にします。古い角質・汚れ・余分な皮脂をやさしく取り除き、頭皮と髪を清潔に保ちます。",
+          "use": "週1〜2回、乾いた髪のまま（濡らさずに）使用します。適量を根元につけ、専用コームで2〜3分マッサージしてから、軽めのシャンプーで洗い流します。"
         },
         {
           "cardSub": "ステップ 2 · 育てる",
@@ -2423,7 +2479,10 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "髪を育てる美容液"
-          }
+          },
+          "warn": "外用のみ。目に入らないようにしてください。入った場合はすぐに水で洗い流してください。頭皮に異常が出たら使用を中止してください。お子様の手の届かない所に置いてください。直射日光を避け、涼しく乾燥した場所で保管してください。",
+          "func": "頭皮をうるおし、しずめ、毛根に栄養を与えます。弱った毛根による抜け毛を防ぐのを助けます。",
+          "use": "すばやくなじみ、べたつかず、毎日使えます。洗髪し頭皮を乾かした後、適量を根元にスプレーし、冷風で乾かします。洗い流さないでください。"
         },
         {
           "cardSub": "毎日のシャンプー",
@@ -2438,7 +2497,8 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "毎日使えるやさしいシャンプー"
-          }
+          },
+          "warn": "外用のみ。目に入らないようにしてください。入った場合はすぐに水で洗い流してください。頭皮に異常が出たら使用を中止してください。お子様の手の届かない所に置いてください。直射日光を避け、涼しく乾燥した場所で保管してください。"
         },
         {
           "cardSub": "毎日のボディソープ",
@@ -2453,7 +2513,8 @@ window.ROOTLAB_CONTENT = {
           ],
           "bottle": {
             "vn": "毎日使えるやさしいボディソープ"
-          }
+          },
+          "warn": "外用のみ。目に入らないようにしてください。入った場合はすぐに水で洗い流してください。頭皮に異常が出たら使用を中止してください。お子様の手の届かない所に置いてください。直射日光を避け、涼しく乾燥した場所で保管してください。"
         }
       ],
       "ui": {
