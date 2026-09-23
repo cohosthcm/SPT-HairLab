@@ -1,6 +1,8 @@
+# Trang bán hàng: cho Google, Bing… đọc bình thường.
 User-agent: *
 Allow: /
-Disallow: /quantri-9f4k2m
-Disallow: /quantri-9f4k2m.html
+Disallow: /api/
 
-Sitemap: https://rootlab.vercel.app/sitemap.xml
+# Cố ý KHÔNG ghi địa chỉ trang quản trị ở đây.
+# File này ai cũng đọc được, ghi vào là tự khai chỗ cần giấu.
+# Trang quản trị đã tự chặn bằng thẻ noindex và header X-Robots-Tag.
