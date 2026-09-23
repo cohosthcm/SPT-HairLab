@@ -5,36 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>ROOTLAB — Trang quản trị nội dung</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <title>ROOT &amp; RISE LAB — Quản trị</title>
     <script src="content.js"></script>
+    <script src="qr-lib.js"></script>
     <style>
 /* ==========================================================
-   ROOTLAB — Trang quản trị nội dung
-   Giao diện sáng, menu dọc bên trái, ô nhập rộng — dễ nhìn, khó bấm nhầm.
+   ROOT & RISE LAB — TRANG QUẢN TRỊ
+   Bố cục: thanh trên · menu dọc bên trái · vùng nội dung nền xám,
+   mọi khối nằm trong thẻ trắng bo góc. Không còn khung xem trước.
    ========================================================== */
 *,*::before,*::after{box-sizing:border-box}
 :root{
-  --nen:#f4f6f5; --the:#fff; --vien:#e4e8e6; --vien-dam:#d3dad7;
-  --chu:#16211e; --mo:#6b7b76; --nhat:#93a29d;
-  --chinh:#0b8a78; --chinh-dam:#07695b; --chinh-nhat:#e6f5f1;
-  --do:#c0392b; --do-nhat:#fdecea; --vang-nhat:#fff8e6; --vang:#b8860b;
-  --bong:0 1px 2px rgba(16,40,34,.04), 0 8px 24px -12px rgba(16,40,34,.10);
+  --nen:#f5f6f6; --the:#fff; --vien:#e6e9e8; --vien-dam:#d5dbd9;
+  --chu:#15201d; --mo:#6a7a75; --nhat:#94a29e;
+  --chinh:#0b8a78; --chinh-dam:#07695b; --chinh-nhat:#e8f5f2;
+  --do:#c0392b; --do-nhat:#fdecea; --vang-nhat:#fff8e6; --vang:#9a7207;
+  --cam:#b4551f; --xanh:#4b6cb7; --tim:#9a2f6b;
+  --bong:0 1px 2px rgba(16,40,34,.05);
+  --bong-to:0 1px 2px rgba(16,40,34,.05), 0 10px 30px -18px rgba(16,40,34,.28);
+  --gocto:16px; --goc:10px;
 }
 html,body{height:100%}
 body{margin:0;background:var(--nen);color:var(--chu);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Inter",Roboto,"Helvetica Neue",sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
   font-size:14.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
 button,input,textarea,select{font:inherit;color:inherit}
+a{color:var(--chinh-dam)}
 
 /* ---------- KHOÁ MẬT KHẨU ---------- */
 .khoa{position:fixed;inset:0;z-index:999;display:grid;place-items:center;background:var(--nen);padding:24px}
 .khoa .hop{width:min(380px,92vw);background:var(--the);border:1px solid var(--vien);
-  border-radius:18px;padding:34px 30px;text-align:center;box-shadow:var(--bong)}
-.khoa .dau{font-size:15px;letter-spacing:.3em;font-weight:600;margin:0 0 4px}
+  border-radius:18px;padding:34px 30px;text-align:center;box-shadow:var(--bong-to)}
+.khoa .dau{font-size:14px;letter-spacing:.3em;font-weight:600;margin:0 0 4px;color:var(--chinh-dam)}
 .khoa .phu{font-size:13px;color:var(--mo);margin:0 0 24px}
 .khoa input{width:100%;padding:12px 14px;border:1px solid var(--vien-dam);border-radius:10px;
   text-align:center;background:#fbfcfc;outline:none}
@@ -45,169 +47,231 @@ button,input,textarea,select{font:inherit;color:inherit}
 .khoa .sai{color:var(--do);font-size:12.5px;margin-top:12px;min-height:18px}
 
 /* ---------- THANH TRÊN ---------- */
-.top{height:60px;background:var(--the);border-bottom:1px solid var(--vien);
-  display:flex;align-items:center;gap:10px;padding:0 20px;position:sticky;top:0;z-index:40}
-.top h1{font-size:15.5px;font-weight:600;margin:0;display:flex;align-items:baseline;gap:10px}
+.top{height:58px;background:var(--the);border-bottom:1px solid var(--vien);
+  display:flex;align-items:center;gap:10px;padding:0 18px;position:sticky;top:0;z-index:40}
+.top h1{font-size:15px;font-weight:600;margin:0;display:flex;align-items:baseline;gap:9px}
 .top h1 small{font-weight:400;font-size:12px;color:var(--nhat)}
-.top h1 small.chua-day{color:#b4551f;font-weight:600;background:#fdf0e6;
+.top h1 small.chua-day{color:#92440f;font-weight:600;background:#fdf0e6;
   padding:3px 9px;border-radius:999px;border:1px solid #f0d3bc}
-/* cùng chữ ký thương hiệu với trang chính (màn chọn dòng) */
-.top h1 .hieu{font-weight:500;font-size:14px;letter-spacing:.32em;color:var(--chinh-dam);margin-right:5px}
+.top h1 .hieu{font-weight:500;font-size:13px;letter-spacing:.24em;color:var(--chinh-dam)}
 .top .day{margin-left:auto;display:flex;align-items:center;gap:8px}
-body:has(#state.chua-day) #deploy{box-shadow:0 0 0 3px rgba(180,85,31,.2)}
+body:has(#state.chua-day) #deploy{box-shadow:0 0 0 3px rgba(11,138,120,.18)}
 .bao-ban-moi{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
   padding:12px 20px;background:#fdf0e6;border-bottom:1px solid #f0d3bc;color:#7a3a12;font-size:13.5px}
 .bao-ban-moi b{color:#5d2c0d}
 .bao-ban-moi button{margin-left:auto;border:0;background:var(--chinh);color:#fff;
   padding:8px 14px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600}
 .bao-ban-moi button.phu{margin-left:0;background:none;color:#7a3a12;border:1px solid #e0bfa6;font-weight:500}
-.top button{padding:8px 14px;border:1px solid var(--vien-dam);background:var(--the);
+.top button{padding:8px 13px;border:1px solid var(--vien-dam);background:var(--the);
   border-radius:9px;cursor:pointer;font-size:13.5px;transition:.15s}
-.top button:hover{background:#f0f3f2}
-.top button.pri{background:var(--chinh);border-color:var(--chinh);color:#fff;font-weight:600;padding:9px 20px}
+.top button:hover{background:#f1f4f3}
+.top button.pri{background:var(--chinh);border-color:var(--chinh);color:#fff;font-weight:600;padding:9px 18px}
 .top button.pri:hover{background:var(--chinh-dam)}
 .top button.danger{color:var(--do);border-color:#e8c9c5}
 .top button.danger:hover{background:var(--do-nhat)}
 
 /* menu "Khác" */
 .khac{position:relative}
-.khac>summary{list-style:none;cursor:pointer;padding:8px 14px;border:1px solid var(--vien-dam);
+.khac>summary{list-style:none;cursor:pointer;padding:8px 13px;border:1px solid var(--vien-dam);
   border-radius:9px;font-size:13.5px;color:var(--mo);user-select:none}
 .khac>summary::-webkit-details-marker{display:none}
-.khac>summary:hover{background:#f0f3f2}
+.khac>summary:hover{background:#f1f4f3}
 .khac .menu{position:absolute;right:0;top:calc(100% + 8px);z-index:60;display:flex;flex-direction:column;
   gap:4px;padding:8px;background:var(--the);border:1px solid var(--vien);border-radius:14px;
-  box-shadow:var(--bong);min-width:230px}
+  box-shadow:var(--bong-to);min-width:230px}
 .khac .menu button{width:100%;text-align:left;border:0;background:none;padding:9px 12px;border-radius:8px}
-.khac .menu button:hover{background:#f0f3f2}
+.khac .menu button:hover{background:#f1f4f3}
 
-/* ---------- BỐ CỤC 3 CỘT ---------- */
-/* Cột sửa hẹp lại để khung xem trước rộng hơn 1024px — đủ để trang bên trong
-   dựng đúng khổ máy tính mà KHÔNG phải thu nhỏ bằng transform hay zoom
-   (Safari không vẽ nội dung 3D trong khung bị thu nhỏ). */
-.wrap{display:grid;grid-template-columns:206px minmax(340px,505px) minmax(0,1fr);
-  /* Khai rõ CHIỀU CAO của hàng. Không khai thì hàng lấy chiều cao theo nội dung,
-     mà nội dung của cột xem trước lại là iframe đặt tuyệt đối (không tính chiều cao)
-     → cột co lại còn hơn trăm pixel và chỗ đó hiện ra đen thui.
-     Đây mới là nguyên nhân thật của lỗi "khung xem trước bị đen". */
-  grid-template-rows:minmax(0,1fr);
-  height:calc(100vh - 60px);overflow:hidden}
-body.khong-xem .wrap{grid-template-columns:206px minmax(0,1fr)}
-/* xem to: giấu hẳn hai cột trái, khung xem trước chiếm trọn bề ngang.
-   Ẩn bằng display:none nên lưới chỉ còn MỘT cột — không để lại cột rỗng. */
-body.xem-to .wrap{grid-template-columns:minmax(0,1fr)}
-body.xem-to .nav,body.xem-to .side{display:none}
+/* ---------- BỐ CỤC 2 CỘT ---------- */
+.wrap{display:grid;grid-template-columns:238px minmax(0,1fr);
+  grid-template-rows:minmax(0,1fr);height:calc(100vh - 58px);overflow:hidden}
 
 /* ---------- MENU DỌC ---------- */
-.nav{background:var(--the);border-right:1px solid var(--vien);overflow-y:auto;padding:16px 12px 40px}
-/* nhóm gập được — để danh sách bên trái không quá dài */
-.nav .nhom-box{margin-top:10px}
+.nav{background:var(--the);border-right:1px solid var(--vien);overflow-y:auto;padding:14px 10px 40px}
+.nav .khu{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--nhat);
+  font-weight:700;padding:16px 12px 6px}
+.nav .khu:first-child{padding-top:4px}
+.nav .nhom-box{margin:2px 0}
 .nav .nhom{width:100%;display:flex;align-items:center;gap:8px;border:0;background:none;cursor:pointer;
-  font-family:inherit;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--nhat);
-  padding:9px 12px;font-weight:600;border-radius:9px;text-align:left}
-.nav .nhom:hover{background:#f2f5f4;color:var(--mo)}
-.nav .nhom span{flex:1;min-width:0}
+  font-family:inherit;font-size:12.5px;color:var(--mo);padding:9px 12px;font-weight:500;
+  border-radius:var(--goc);text-align:left}
+.nav .nhom:hover{background:#f2f5f4;color:var(--chu)}
+.nav .nhom span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .nav .nhom i{width:0;height:0;flex:0 0 auto;border-left:4px solid transparent;
   border-right:4px solid transparent;border-top:5px solid currentColor;opacity:.6;transition:transform .18s}
 .nav .nhom-box.mo .nhom i{transform:rotate(180deg)}
-.nav .nhom-than{display:none;padding-left:4px}
+.nav .nhom-than{display:none;padding-left:10px;margin-left:6px;border-left:1px solid var(--vien)}
 .nav .nhom-box.mo .nhom-than{display:block}
-.seclink{width:100%;display:flex;align-items:center;gap:11px;padding:10px 12px;border:0;
-  background:none;border-radius:10px;cursor:pointer;text-align:left;color:var(--mo);font-size:14px;transition:.14s}
+.seclink{width:100%;display:flex;align-items:center;gap:11px;padding:9px 12px;border:0;
+  background:none;border-radius:var(--goc);cursor:pointer;text-align:left;color:var(--mo);
+  font-size:13.8px;transition:.14s}
 .seclink svg{width:17px;height:17px;flex:0 0 17px;stroke:currentColor;fill:none;stroke-width:1.7;
-  stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+  stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+.seclink span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .seclink:hover{background:#f2f5f4;color:var(--chu)}
-.seclink.active{background:var(--chinh-nhat);color:var(--chinh-dam);font-weight:600}
-.seclink.active svg{opacity:1}
+.seclink.active{background:#eef1f0;color:var(--chu);font-weight:600}
+.seclink.active svg{opacity:1;color:var(--chinh)}
 
-/* ---------- KHUNG SỬA ---------- */
-.side{overflow-y:auto;padding:30px clamp(20px,3vw,38px) 80px}
+/* ---------- VÙNG NỘI DUNG ---------- */
+.side{overflow-y:auto;padding:30px clamp(18px,3.4vw,42px) 90px}
 .secbox{display:none}
 .secbox.active{display:block}
-.dau-muc{margin:0 0 26px}
-.dau-muc h2{font-size:26px;font-weight:600;letter-spacing:-.01em;margin:0 0 6px}
-.dau-muc p{margin:0;color:var(--mo);font-size:13.5px;max-width:60ch}
-.sectitle{display:none}          /* tiêu đề cũ, đã thay bằng .dau-muc */
+.dau-muc{margin:0 0 24px;max-width:1080px}
+.dau-muc h2{font-size:27px;font-weight:600;letter-spacing:-.015em;margin:0 0 6px}
+.dau-muc p{margin:0;color:var(--mo);font-size:13.5px;max-width:74ch}
+.sectitle{display:none}
+#form{max-width:1080px}
 
-/* thẻ trắng bọc từng nhóm ô nhập */
-.side .secbox>div>div{margin-bottom:0}
 label{display:block;font-size:12.5px;color:var(--mo);margin:0 0 6px;font-weight:500}
-input[type=text],input[type=password],input[type=number],textarea,select{
-  width:100%;padding:10px 13px;border:1px solid var(--vien-dam);border-radius:10px;
+input[type=text],input[type=password],input[type=number],input[type=search],textarea,select{
+  width:100%;padding:10px 13px;border:1px solid var(--vien-dam);border-radius:var(--goc);
   background:var(--the);outline:none;transition:.15s}
-input:focus,textarea:focus{border-color:var(--chinh);box-shadow:0 0 0 3px var(--chinh-nhat)}
+input:focus,textarea:focus,select:focus{border-color:var(--chinh);box-shadow:0 0 0 3px var(--chinh-nhat)}
 textarea{min-height:92px;resize:vertical;line-height:1.6}
 .f{margin-bottom:18px}
-/* mỗi khối nội dung nằm trong một thẻ trắng, giống Dilaca */
-#form>.secbox>div{background:var(--the);border:1px solid var(--vien);border-radius:16px;
+/* mỗi khối nội dung nằm trong một thẻ trắng */
+#form>.secbox>div{background:var(--the);border:1px solid var(--vien);border-radius:var(--gocto);
   padding:22px 22px 6px;box-shadow:var(--bong)}
+/* các mục kinh doanh tự dựng thẻ riêng nên bỏ thẻ bọc ngoài */
+#form>.secbox.tran>div{background:none;border:0;padding:0;box-shadow:none}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.hint{font-size:12px;color:var(--nhat);margin-top:6px}
-/* tiêu đề nhỏ trong khối (Chữ in trên thân chai, Màu chai…) */
+.hint{font-size:12px;color:var(--nhat);margin-top:6px;line-height:1.6}
 label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
   margin:22px 0 2px;padding-top:16px;border-top:1px solid var(--vien)}
 #form label:first-child>b{margin-top:0;padding-top:0;border-top:0}
+.colorrow{display:flex;gap:8px;align-items:center}
+.colorrow input[type=color]{width:46px;height:40px;padding:2px;border:1px solid var(--vien-dam);
+  border-radius:9px;background:var(--the);cursor:pointer;flex:0 0 46px}
+.thumb{margin-top:10px;padding:12px;border:1px solid var(--vien);border-radius:12px;background:#fbfcfc}
+.thumb img{max-height:150px;display:block;margin-bottom:8px}
 
 /* khối danh sách (thành phần, bước dùng, đánh giá…) */
 .list{border:1px solid var(--vien);border-radius:14px;background:var(--the);
-  padding:16px;margin-bottom:20px;box-shadow:var(--bong)}
+  padding:16px;margin-bottom:20px}
 .item{border:1px solid var(--vien);border-radius:12px;padding:15px;margin-bottom:12px;background:#fbfcfc}
 .item .hd{display:flex;align-items:center;gap:6px;margin-bottom:14px;
   padding-bottom:11px;border-bottom:1px solid var(--vien)}
 .item .hd b{font-size:13.5px;font-weight:600;margin-right:auto;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.item .hd button.sm{width:30px;height:30px;flex:0 0 30px;padding:0;display:grid;place-items:center;
+.item .hd button.sm{min-width:30px;height:30px;padding:0 8px;display:grid;place-items:center;
   border:1px solid var(--vien-dam);background:var(--the);border-radius:8px;cursor:pointer;
   font-size:13px;color:var(--mo);line-height:1}
-.item .hd button.sm:hover{background:#f0f3f2;color:var(--chu)}
+.item .hd button.sm:hover{background:#f1f4f3;color:var(--chu)}
 .item .hd button.sm.danger{color:var(--do);border-color:#e8c9c5}
 .item .hd button.sm.danger:hover{background:var(--do-nhat)}
 .item label{margin-top:14px}
 .item>label:first-of-type{margin-top:0}
-/* nút "thêm mục" ở cuối danh sách */
-.list>button.sm,#form>div>div>button.sm{padding:9px 16px;border:1px dashed var(--vien-dam);
-  background:none;border-radius:10px;cursor:pointer;color:var(--chinh-dam);font-size:13.5px;font-weight:500}
-.list>button.sm:hover,#form>div>div>button.sm:hover{background:var(--chinh-nhat);border-style:solid}
+.list>button.sm,#form>div>div>button.sm,button.them{padding:9px 16px;border:1px dashed var(--vien-dam);
+  background:none;border-radius:var(--goc);cursor:pointer;color:var(--chinh-dam);font-size:13.5px;font-weight:500}
+.list>button.sm:hover,#form>div>div>button.sm:hover,button.them:hover{background:var(--chinh-nhat);border-style:solid}
 
-/* ---------- KHUNG XEM TRƯỚC ---------- */
-.prev{position:relative;background:#0b1512;border-left:1px solid var(--vien);overflow:hidden;
-  height:100%;min-height:0}
-/* KHÔNG transform, KHÔNG zoom, KHÔNG chiều cao phần trăm.
-   Đặt tuyệt đối theo khung cha — cách duy nhất mà mọi trình duyệt đều tính ra
-   kích thước rõ ràng. Safari hay cho iframe cao 0 khi chiều cao khai 100%
-   bên trong một khung flex/grid, và chỗ đó hiện ra đen thui. */
-/* PHẢI khai height rõ ràng. iframe là "phần tử thay thế": để top:0;bottom:0 mà
-   height:auto thì nó KHÔNG giãn ra, nó giữ nguyên chiều cao mặc định 150px —
-   phần còn lại của cột là nền tối, nhìn ra đúng như "khung xem trước bị đen". */
-/* canh giữa bằng left/right + margin auto, KHÔNG dùng transform
-   (mã cũ có chỗ gán transform:none làm hỏng việc canh giữa) */
-#preview{position:absolute;top:0;left:0;right:0;margin:0 auto;
-  border:0;display:block;width:100%;height:100%;background:#0b1512}
-body.kho-dt #preview{width:390px;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
-/* Khung không dựng được thì nói thẳng ra và mời mở cửa sổ riêng, đừng để đen im lặng */
-.prev .canhbao{position:absolute;left:50%;translate:-50% 0;bottom:96px;z-index:7;width:min(420px,86%);
-  padding:16px 18px;border-radius:14px;background:rgba(18,30,27,.97);color:#dcece7;
-  border:1px solid rgba(255,255,255,.18);font-size:13px;line-height:1.6;display:none}
-body.khung-hong .prev .canhbao{display:block}
-.prev .canhbao b{color:#fff}
-.prev .canhbao button{margin-top:11px;border:0;background:var(--chinh);color:#fff;
-  padding:9px 15px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600}
-.prev .canhbao .chitiet{margin-top:11px;padding-top:10px;border-top:1px solid rgba(255,255,255,.14);
-  font-size:11px;line-height:1.5;color:#8faea5;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-.prev .kho{position:absolute;bottom:44px;right:14px;z-index:5;display:flex;gap:4px;
-  padding:4px;border-radius:999px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.12)}
-.prev .kho button{border:0;background:none;color:#cfe0da;font-size:11.5px;padding:5px 13px;
-  border-radius:999px;cursor:pointer}
-.prev .kho button.on{background:#fff;color:#0b1512;font-weight:600}
-.prev .kho.tieng{bottom:82px}
-.prev .kho.tieng button{padding:5px 9px;letter-spacing:.06em;font-weight:600}
-.prev .bar-nut{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.08);color:#dcece7;
-  font-size:11.5px;padding:3px 11px;border-radius:999px;cursor:pointer;margin-left:12px}
-.prev .bar-nut:hover{background:rgba(255,255,255,.18)}
-.prev .bar-link{color:#8fd9c6;text-decoration:underline;margin-left:12px}
-.prev .bar{position:absolute;left:0;right:0;bottom:0;padding:8px 14px;background:rgba(0,0,0,.55);
-  color:#b9cdc6;font-size:11.5px;display:flex;gap:8px;align-items:center;backdrop-filter:blur(6px)}
+/* ==========================================================
+   PHẦN KINH DOANH: thẻ, ô số, biểu đồ, bảng khách
+   ========================================================== */
+.the{background:var(--the);border:1px solid var(--vien);border-radius:var(--gocto);
+  padding:20px 22px;box-shadow:var(--bong);margin-bottom:18px}
+.the>h3{margin:0 0 3px;font-size:15.5px;font-weight:600}
+.the>h3+p{margin:0 0 16px;font-size:12.5px;color:var(--mo)}
+.the-dau{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.the-dau h3{margin:0;font-size:15.5px;font-weight:600;margin-right:auto}
+
+/* ô số liệu */
+.o-so{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  background:var(--vien);border:1px solid var(--vien);border-radius:var(--gocto);
+  overflow:hidden;margin-bottom:18px}
+.o{background:var(--the);padding:16px 18px}
+.o .nhan{font-size:12px;color:var(--mo);margin-bottom:5px}
+.o .so{font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.15;
+  font-variant-numeric:tabular-nums}
+.o .phu{font-size:11.5px;color:var(--nhat);margin-top:3px}
+.o .so.nhanh{color:var(--chinh-dam)}
+
+/* nút chọn khoảng thời gian */
+.seg{display:inline-flex;gap:2px;padding:3px;background:#eef1f0;border-radius:999px}
+.seg button{border:0;background:none;padding:6px 14px;border-radius:999px;cursor:pointer;
+  font-size:12.5px;color:var(--mo)}
+.seg button.on{background:var(--chinh);color:#fff;font-weight:600}
+
+/* biểu đồ cột */
+.bieudo{position:relative}
+.bieudo svg{display:block;width:100%;height:auto;overflow:visible}
+.bd-luoi{stroke:#eceeed;stroke-width:1}
+.bd-truc{font-size:10.5px;fill:#94a29e}
+.bd-cot{fill:var(--chinh)}
+.bd-cot.cam{fill:var(--cam)}
+.bd-hit{fill:transparent;cursor:pointer}
+.bd-hit:hover+.bd-cot,.bd-cot.dang{fill:var(--chinh-dam)}
+.chu-thich{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--mo);margin-top:10px}
+.chu-thich i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:6px}
+.meo{position:absolute;z-index:8;pointer-events:none;background:#15201d;color:#fff;
+  font-size:12px;padding:7px 10px;border-radius:9px;white-space:nowrap;opacity:0;transition:opacity .12s;
+  box-shadow:0 10px 24px -12px rgba(0,0,0,.6)}
+.meo.on{opacity:1}
+.meo b{font-weight:600}
+
+/* thanh ngang xếp hạng (nguồn khách, tỉnh, máy…) */
+.hang{display:grid;grid-template-columns:minmax(90px,38%) 1fr auto;gap:10px;align-items:center;
+  padding:7px 0;font-size:13px}
+.hang+.hang{border-top:1px solid #f1f3f2}
+.hang .ten{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--chu)}
+.hang .thanh{height:8px;border-radius:999px;background:#eef1f0;overflow:hidden}
+.hang .thanh i{display:block;height:100%;border-radius:999px;background:var(--chinh)}
+.hang .n{font-variant-numeric:tabular-nums;color:var(--mo);font-size:12.5px}
+.cot2{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
+
+/* bảng khách hàng */
+.bang-cuon{overflow-x:auto;margin:0 -22px;padding:0 22px}
+table.bang{width:100%;border-collapse:collapse;font-size:13.2px}
+table.bang th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--nhat);padding:0 12px 9px;border-bottom:1px solid var(--vien);
+  white-space:nowrap}
+table.bang td{padding:11px 12px;border-bottom:1px solid #f1f3f2;vertical-align:top}
+table.bang tr:last-child td{border-bottom:0}
+table.bang td.sdt{font-variant-numeric:tabular-nums;white-space:nowrap}
+table.bang td:first-child{white-space:nowrap;color:var(--mo);font-size:12.5px}
+table.bang td.sdt a{text-decoration:none;font-weight:600}
+table.bang select{padding:6px 9px;border-radius:8px;font-size:12.5px;width:auto;min-width:110px}
+table.bang input[type=text]{padding:7px 10px;font-size:12.5px;min-width:150px}
+table.bang .xoa{border:1px solid #e8c9c5;background:none;color:var(--do);border-radius:8px;
+  padding:5px 9px;cursor:pointer;font-size:12px}
+table.bang .xoa:hover{background:var(--do-nhat)}
+.nhan-tt{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:600}
+.tt-moi{background:var(--chinh-nhat);color:var(--chinh-dam)}
+.tt-da-goi{background:#eaf0fb;color:#2f4d91}
+.tt-da-mua{background:#e9f6ea;color:#276b2e}
+.tt-khong-nghe{background:#f2f3f3;color:#6a7a75}
+.loc{display:flex;gap:6px;flex-wrap:wrap}
+.loc button{border:1px solid var(--vien-dam);background:var(--the);border-radius:999px;
+  padding:6px 13px;font-size:12.5px;cursor:pointer;color:var(--mo)}
+.loc button.on{background:var(--chu);border-color:var(--chu);color:#fff;font-weight:600}
+.trong{padding:26px 4px;color:var(--nhat);font-size:13.5px;text-align:center}
+.hop-loi{background:var(--vang-nhat);border:1px solid #f0e0b8;color:#6b5310;
+  padding:14px 16px;border-radius:12px;font-size:13px;line-height:1.65}
+.hop-loi b{color:#5a4409}
+
+/* link theo kênh */
+.link-hang{display:flex;gap:10px;align-items:center;padding:9px 0;font-size:13px;flex-wrap:wrap}
+.link-hang+.link-hang{border-top:1px solid #f1f3f2}
+.link-hang b{flex:0 0 104px;font-weight:600}
+.link-hang code{flex:1;min-width:210px;font-size:11.8px;color:var(--mo);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.link-hang button{border:1px solid var(--vien-dam);background:var(--the);border-radius:8px;
+  padding:6px 12px;font-size:12.5px;cursor:pointer}
+.link-hang button:hover{background:#f1f4f3}
+
+/* ---------- MÃ QR ---------- */
+.qr-luoi{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:16px}
+.qr-o{border:1px solid var(--vien);border-radius:14px;padding:16px;text-align:center;background:#fbfcfc}
+.qr-o canvas,.qr-o img{width:168px;height:168px;display:block;margin:0 auto 10px;
+  background:#fff;border-radius:8px}
+.qr-o .ten{font-weight:600;font-size:13.5px;margin-bottom:2px}
+.qr-o .ma{font-size:11.5px;color:var(--nhat);font-family:ui-monospace,Menlo,monospace;margin-bottom:10px}
+.qr-o .nut{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.qr-o .nut button,.qr-o .nut a{border:1px solid var(--vien-dam);background:var(--the);border-radius:8px;
+  padding:6px 11px;font-size:12px;cursor:pointer;text-decoration:none;color:var(--chu)}
+.qr-o .nut button:hover,.qr-o .nut a:hover{background:#f1f4f3}
+.qr-o .dem{margin-top:9px;font-size:12px;color:var(--mo)}
+.qr-o .dem b{color:var(--chinh-dam)}
 
 /* ---------- HỘP ĐẨY LÊN WEB ---------- */
 .modal{position:fixed;inset:0;z-index:200;background:rgba(12,24,20,.5);display:grid;place-items:center;padding:22px}
@@ -219,7 +283,7 @@ body.khung-hong .prev .canhbao{display:block}
 .sheet .row{grid-template-columns:1fr 1fr 1fr}
 .sheet button{padding:10px 16px;border:1px solid var(--vien-dam);background:var(--the);
   border-radius:10px;cursor:pointer}
-.sheet button:hover{background:#f0f3f2}
+.sheet button:hover{background:#f1f4f3}
 .sheet button.pri{background:var(--chinh);border-color:var(--chinh);color:#fff;font-weight:600}
 .sheet button.pri:hover{background:var(--chinh-dam)}
 .sheet button.danger{color:var(--do);border-color:#e8c9c5}
@@ -228,20 +292,46 @@ body.khung-hong .prev .canhbao{display:block}
   padding:12px 14px;border-radius:11px;font-size:12.5px;margin-top:10px;line-height:1.6}
 #ghLog{margin-top:14px;font-size:12.5px;color:var(--mo);white-space:pre-wrap;
   max-height:180px;overflow-y:auto}
+#ghLog .good{color:var(--chinh-dam)}
+#ghLog .bad{color:var(--do)}
 
 /* ---------- BÁO NHANH ---------- */
-.toast{position:fixed;left:50%;bottom:26px;translate:-50% 0;z-index:300;background:#16211e;color:#fff;
+.toast{position:fixed;left:50%;bottom:26px;translate:-50% 0;z-index:300;background:#15201d;color:#fff;
   padding:11px 20px;border-radius:999px;font-size:13.5px;opacity:0;pointer-events:none;transition:.25s;
   box-shadow:0 12px 30px -10px rgba(0,0,0,.5)}
 .toast.on{opacity:1;translate:-50% -6px}
 
-@media (max-width:1100px){
+/* ---------- MÀN HÌNH NHỎ ---------- */
+@media (max-width:980px){
   .wrap{grid-template-columns:1fr;height:auto;overflow:visible}
-  .nav{border-right:0;border-bottom:1px solid var(--vien);display:flex;flex-wrap:wrap;gap:6px;padding:12px}
-  .nav .nhom{width:100%;padding:8px 4px 2px}
-  .seclink{width:auto}
-  .prev{display:none}
-  .side{height:auto}
+  /* menu dài quá thì cuộn trong khung của nó, đừng đẩy nội dung xuống tận đáy */
+  .nav{border-right:0;border-bottom:1px solid var(--vien);max-height:42vh;overflow-y:auto;padding:10px}
+  .nav .khu{padding:10px 12px 4px}
+  .side{height:auto;padding:22px 16px 80px}
+  .dau-muc h2{font-size:22px}
+  .row{grid-template-columns:1fr}
+  .bang-cuon{margin:0 -18px;padding:0 18px}
+}
+/* Điện thoại: thanh trên xuống hai hàng cho khỏi bẹp chữ */
+@media (max-width:700px){
+  .top{height:auto;flex-wrap:wrap;padding:10px 12px;gap:8px;position:static}
+  .top h1{width:100%;font-size:14px;gap:7px;flex-wrap:wrap;align-items:center}
+  .top h1 .hieu{font-size:11px;letter-spacing:.16em}
+  .top h1 small{width:100%;font-size:11.5px}
+  .top h1 small.chua-day{width:auto}
+  .top .day{margin-left:0;width:100%}
+  .top .day .khac{margin-right:auto}
+  .top button{padding:8px 12px;font-size:13px}
+  .top button.pri{padding:9px 15px}
+  .khac .menu{left:0;right:auto}
+  .o .so{font-size:22px}
+  .dau-muc h2{font-size:20px}
+}
+@media print{
+  .top,.nav,.toast,.modal{display:none!important}
+  .wrap{display:block;height:auto}
+  .side{overflow:visible;padding:0}
+  .qr-o{break-inside:avoid;page-break-inside:avoid}
 }
 </style>
 </head>
@@ -251,8 +341,8 @@ body.khung-hong .prev .canhbao{display:block}
     <!-- Khoá: nhập đúng mật khẩu mới vào được -->
     <div class="khoa" id="khoa">
         <div class="hop">
-            <div class="dau">ROOTLAB</div>
-            <p class="phu">Trang quản trị nội dung</p>
+            <div class="dau">ROOT &amp; RISE LAB</div>
+            <p class="phu">Trang quản trị</p>
             <input id="mk" type="password" placeholder="Mật khẩu" autocomplete="current-password">
             <button id="mkOk">Vào</button>
             <div class="sai" id="mkSai"></div>
@@ -260,18 +350,17 @@ body.khung-hong .prev .canhbao{display:block}
     </div>
 
     <div class="top">
-        <h1><b class="hieu">ROOTLAB</b> · Quản trị<small id="state">Bản nháp tự lưu trong trình duyệt này</small></h1>
+        <h1><b class="hieu">ROOT &amp; RISE LAB</b> · Quản trị<small id="state">Bản nháp tự lưu trong trình duyệt này</small></h1>
         <div class="day">
             <details class="khac">
                 <summary>⋯ Khác</summary>
                 <div class="menu">
-                    <button id="reload" type="button">Làm mới khung xem trước</button>
-                    <button id="togglePrev" type="button">Ẩn / hiện khung xem trước</button>
                     <button id="import" type="button">Nhập file content.js</button>
                     <button id="export" type="button">Tải content.js về máy</button>
                     <button id="reset" class="danger" type="button">Đặt lại — xoá bản nháp</button>
                 </div>
             </details>
+            <button id="thoat" type="button">Đăng xuất</button>
             <button id="deploy" class="pri">Đẩy lên web</button>
         </div>
     </div>
@@ -279,35 +368,8 @@ body.khung-hong .prev .canhbao{display:block}
     <div class="wrap">
         <nav class="nav" id="secnav"></nav>
         <div class="side">
-            <div class="dau-muc"><h2 id="mucTen">Chung</h2><p id="mucMo"></p></div>
+            <div class="dau-muc"><h2 id="mucTen">Tổng quan</h2><p id="mucMo"></p></div>
             <div id="form"></div>
-        </div>
-        <div class="prev">
-            <div class="kho tieng">
-                <button data-l="vi" class="on">VI</button>
-                <button data-l="en">EN</button>
-                <button data-l="fr">FR</button>
-                <button data-l="it">IT</button>
-                <button data-l="ja">JA</button>
-            </div>
-            <div class="kho">
-                <button data-w="1440" class="on">Máy tính</button>
-                <button data-w="390">Điện thoại</button>
-            </div>
-            <iframe id="preview" src="index.html?preview=1&lang=vi"></iframe>
-            <div class="canhbao">
-                <b>Khung xem trước không dựng được trong trang này.</b><br>
-                Trình duyệt của bạn không vẽ được trang 3D bên trong khung nhỏ.
-                Bấm nút dưới để mở khung xem trước ra một cửa sổ riêng — bấm mục nào
-                bên trái thì cửa sổ đó vẫn tự nhảy tới đúng chỗ.
-                <br><button type="button" class="mo-cua-so">Mở cửa sổ xem trước</button>
-                <div id="kho-chitiet" class="chitiet"></div>
-            </div>
-            <div class="bar"><span id="kho-nhan">Xem trước</span>
-                <button type="button" id="xemTo" class="bar-nut">Xem to</button>
-                <button type="button" id="moCuaSo" class="bar-nut">Cửa sổ riêng</button>
-                <a href="index.html?preview=1" target="_blank" rel="noopener" class="bar-link">Mở ở tab mới</a>
-                <span style="margin-left:auto">Xong bấm <b>Đẩy lên web</b></span></div>
         </div>
     </div>
 
@@ -319,7 +381,7 @@ body.khung-hong .prev .canhbao{display:block}
     <div class="modal" id="deployBox" hidden>
         <div class="sheet">
             <h2>Đẩy lên web</h2>
-            <div style="color:var(--muted);font-size:.82rem">Lưu thẳng lên GitHub, Vercel tự dựng lại trang sau khoảng 1 phút.</div>
+            <div style="color:var(--mo);font-size:.82rem">Lưu thẳng lên GitHub, trang web tự dựng lại sau khoảng 1 phút.</div>
 
             <div class="row">
                 <div><label>Chủ kho (owner)</label><input type="text" id="ghOwner" placeholder="cohosthcm"></div>
@@ -340,7 +402,7 @@ body.khung-hong .prev .canhbao{display:block}
 
             <button id="ghPushContent" class="pri" style="width:100%">Đẩy nội dung đang sửa (content.js)</button>
 
-            <label>Hoặc đẩy file bất kỳ từ máy (index.html, admin.html…)</label>
+            <label style="margin-top:1rem">Hoặc đẩy file bất kỳ từ máy (index.html, san-pham.js…)</label>
             <input type="file" id="ghFiles" multiple>
             <button id="ghPushFiles" style="margin-top:.6rem;width:100%">Đẩy các file đã chọn</button>
 
@@ -471,18 +533,12 @@ body.khung-hong .prev .canhbao{display:block}
             document.body.insertBefore(bar, document.body.firstChild);
         }
 
-        let saveT;
-        function save(refresh = true) {
+        /* Lưu bản nháp vào trình duyệt này. Trang quản trị KHÔNG còn khung xem
+           trước — muốn xem thật thì bấm "Đẩy lên web" rồi mở sptlab.co. */
+        function save() {
             localStorage.setItem('rootlab_draft', JSON.stringify(D));
             try { localStorage.setItem(KHOA_BASE, vtBase()); } catch (e) { }
             try { capNhatTrangThai(); } catch (e) { }
-            if (!refresh) return;
-            clearTimeout(saveT);
-            saveT = setTimeout(() => {
-                try { document.getElementById('preview').contentWindow.location.reload(); } catch (e) { }
-                /* cửa sổ xem trước riêng cũng phải cập nhật theo */
-                try { if (cuaSoXem && !cuaSoXem.closed) cuaSoXem.location.reload(); } catch (e) { }
-            }, 450);
         }
 
         /* ---------- công cụ dựng form ---------- */
@@ -566,8 +622,8 @@ body.khung-hong .prev .canhbao{display:block}
             return box;
         }
 
-        function panel(title, kids, open = false, id = '') {
-            const attrs = { class: 'secbox' };
+        function panel(title, kids, open = false, id = '', them = '') {
+            const attrs = { class: 'secbox' + (them ? ' ' + them : '') };
             if (id) attrs.id = id;
             const d = h('div', attrs);
             d.append(h('h2', { class: 'sectitle', html: title }), h('div', {}, kids));
@@ -638,17 +694,55 @@ body.khung-hong .prev .canhbao{display:block}
            KHÔNG chặn người rành kỹ thuật. Lớp chính vẫn là địa chỉ khó đoán.
            ============================================================ */
         const MK_HASH = '11ecea4acd8df0fb9f04832673a856615ae1f61187dd7d01cc7e07fb77def9cf';
+
+        /* ---------- vé đăng nhập của máy chủ ----------
+           Có máy chủ (Cloudflare) thì mật khẩu được kiểm ở máy chủ và đổi lấy
+           một "vé" để đọc thống kê / danh sách khách. Chưa có máy chủ thì rơi về
+           cách cũ: so mật khẩu ngay trong trình duyệt. */
+        const VE_KEY = 'rootlab_ve';
+        let VE = '';
+        try { VE = sessionStorage.getItem(VE_KEY) || ''; } catch (e) { }
+        let COMAYCHU = null;          /* null = chưa biết, true/false = đã thử */
+
+        async function dangNhapMayChu(mk) {
+            try {
+                const r = await fetch('/api/admin/login', {
+                    method: 'POST', headers: { 'content-type': 'application/json' },
+                    body: JSON.stringify({ password: mk })
+                });
+                /* Máy chủ tĩnh (Vercel, python -m http.server) trả 404/405/501 cho
+                   POST vào đường này — nghĩa là CHƯA có máy chủ, không phải sai mật khẩu. */
+                if ([404, 405, 501, 502, 503].includes(r.status)) return { co: false };
+                const t = await r.text();
+                let d = null; try { d = JSON.parse(t); } catch (e) { return { co: false }; }
+                if (r.ok && d && d.token) return { co: true, ok: true, token: d.token };
+                return { co: true, ok: false };
+            } catch (e) { return { co: false }; }
+        }
+
         (function () {
             const lop = document.getElementById('khoa'), o = document.getElementById('mk'),
                   nut = document.getElementById('mkOk'), sai = document.getElementById('mkSai');
             if (!lop) return;
-            if (sessionStorage.getItem('rootlab_ok') === '1') { lop.remove(); return; }
+            const vao = () => { lop.remove(); try { moMucDau(); } catch (e) { } };
+            if (sessionStorage.getItem('rootlab_ok') === '1') { vao(); return; }
             const bam = async t => {
                 const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t));
                 return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
             };
             const thu = async () => {
-                if (await bam(o.value) === MK_HASH) { sessionStorage.setItem('rootlab_ok', '1'); lop.remove(); vuaKhung(); }
+                const mk = o.value;
+                sai.textContent = 'Đang kiểm tra…';
+                const kq = await dangNhapMayChu(mk);
+                COMAYCHU = kq.co;
+                if (kq.co && kq.ok) {
+                    VE = kq.token;
+                    try { sessionStorage.setItem(VE_KEY, VE); } catch (e) { }
+                    sessionStorage.setItem('rootlab_ok', '1'); vao(); return;
+                }
+                if (kq.co && !kq.ok) { sai.textContent = 'Sai mật khẩu'; o.select(); return; }
+                /* chưa có máy chủ → kiểm ngay trong trình duyệt như trước */
+                if (await bam(mk) === MK_HASH) { sessionStorage.setItem('rootlab_ok', '1'); vao(); }
                 else { sai.textContent = 'Sai mật khẩu'; o.select(); }
             };
             nut.addEventListener('click', thu);
@@ -656,111 +750,17 @@ body.khung-hong .prev .canhbao{display:block}
             setTimeout(() => o.focus(), 60);
         })();
 
-        /* ============================================================
-           KHUNG XEM TRƯỚC
-           Dựng ở đúng khổ máy tính rồi thu nhỏ lại → nhìn giống hệt web thật,
-           thay vì bị co thành bản điện thoại như trước.
-           ============================================================ */
-        /* Khung xem trước KHÔNG thu nhỏ nữa.
-           Trước đây thu nhỏ bằng transform rồi bằng zoom, Safari đều vẽ sai
-           (khung đen, hoặc khung bé xíu). Nay khung rộng đúng bằng chỗ nó có:
-           cột xem trước rộng hơn 1024px nên trang bên trong tự dựng khổ máy tính.
-           Cần xem đúng khổ thật thì bấm "Xem to" — giấu hai cột trái đi. */
-        function vuaKhung() {
-            const fr = document.getElementById('preview');
-            if (!fr) return;
-            const box = document.querySelector('.prev');
-            const rong = box?.clientWidth || 0;
-            /* Đặt kích thước bằng PIXEL THẬT, không để phần trăm.
-               height:100% phải suy ra qua chuỗi cha–con; chuỗi đó đứt một mắt là
-               iframe rơi về 150px mặc định và cả cột thành đen. Gán pixel thì
-               không trình duyệt nào tính sai được. */
-            if (box && box.clientHeight > 40) {
-                fr.style.height = box.clientHeight + 'px';
-                fr.style.width = document.body.classList.contains('kho-dt')
-                    ? '390px' : Math.max(320, rong) + 'px';
-            }
-            const nhan = document.getElementById('kho-nhan');
-            if (nhan) nhan.textContent = document.body.classList.contains('kho-dt')
-                ? '390px · khổ điện thoại'
-                : Math.round(rong) + 'px · ' + (rong >= 1024 ? 'khổ máy tính' : 'khổ máy tính bảng — bấm Xem to để thấy đúng khổ máy tính');
-            /* kiểm vài lần cách nhau — trang bên trong cần chút thời gian để dựng xong,
-               kiểm một lần dễ báo nhầm là hỏng */
-            [500, 1400, 3000].forEach(t => setTimeout(() => { try { kiemTraKhung(); } catch (e) { } }, t));
-        }
-        window.addEventListener('resize', vuaKhung);
-        document.querySelectorAll('.prev .kho:not(.tieng) button').forEach(b => b.addEventListener('click', () => {
-            document.querySelectorAll('.prev .kho:not(.tieng) button').forEach(x => x.classList.remove('on'));
-            b.classList.add('on');
-            document.body.classList.toggle('kho-dt', b.dataset.w === '390');
-            vuaKhung();
-        }));
-        document.getElementById('xemTo')?.addEventListener('click', () => {
-            const to = document.body.classList.toggle('xem-to');
-            document.getElementById('xemTo').textContent = to ? 'Thu lại' : 'Xem to';
-            setTimeout(vuaKhung, 60);
-        });
+        document.getElementById('thoat').onclick = () => {
+            try { sessionStorage.removeItem('rootlab_ok'); sessionStorage.removeItem(VE_KEY); } catch (e) { }
+            location.reload();
+        };
 
-        /* ============================================================
-           CỬA SỔ XEM TRƯỚC RIÊNG
-           Đường thoát chắc chắn: một cửa sổ trình duyệt thật, không phải khung
-           nhúng — nên không dính bất kỳ lỗi vẽ khung nhúng nào. Bấm mục nào ở
-           cột trái thì cửa sổ này vẫn tự nhảy tới đúng chỗ, sửa gì cũng tự tải lại.
-           ============================================================ */
+        /* Trang quản trị đã BỎ khung xem trước (nhìn rối, lại hay lỗi ở Safari).
+           Vài hàm cũ còn được gọi rải rác nên giữ lại dạng rỗng cho khỏi văng lỗi. */
+        function vuaKhung() { }
         let cuaSoXem = null;
-        const cuaSoConSong = () => { try { return cuaSoXem && !cuaSoXem.closed; } catch (e) { return false; } };
-        function moCuaSoXem() {
-            const url = 'index.html?preview=1&lang=' + TIENG_XEM;
-            try {
-                cuaSoXem = window.open(url, 'rootlab_xem', 'width=1440,height=900');
-                if (cuaSoXem) { cuaSoXem.focus(); toast('Đã mở cửa sổ xem trước'); }
-                else alert('Trình duyệt chặn cửa sổ bật lên. Cho phép sptlab.co mở cửa sổ rồi bấm lại.');
-            } catch (e) { }
-        }
-        document.getElementById('moCuaSo')?.addEventListener('click', moCuaSoXem);
-        document.querySelector('.prev .canhbao .mo-cua-so')?.addEventListener('click', moCuaSoXem);
+        const cuaSoConSong = () => false;
 
-        /* Khung nhúng dựng xong chưa? Không thì hiện lời nhắc thay vì để đen im lặng. */
-        function kiemTraKhung() {
-            const fr = document.getElementById('preview');
-            let hong = false, chiTiet = '', vi = [];
-            try {
-                const r = fr.getBoundingClientRect();
-                const cao = Math.round(r.height), rong = Math.round(r.width);
-                let w = null, d = null, trong = 0, soNut = -1, tieuDe = '?';
-                try { w = fr.contentWindow; d = w && w.document; trong = (w && w.innerWidth) || 0; } catch (e) { vi.push('không đọc được cửa sổ bên trong'); }
-                try { soNut = d ? d.querySelectorAll('.cs-node').length : -1; tieuDe = (d && d.title) || '?'; } catch (e) { vi.push('không đọc được nội dung bên trong'); }
-                if (rong < 80) vi.push('khung rộng ' + rong + 'px');
-                if (cao < 80) vi.push('khung cao ' + cao + 'px');
-                if (!trong) vi.push('bên trong báo rộng 0px');
-                if (soNut === 0) vi.push('bên trong chưa dựng xong mục nào');
-                if (soNut < 0) vi.push('không đếm được mục bên trong');
-                hong = vi.length > 0;
-                chiTiet = 'khung ' + rong + '×' + cao + ' · bên trong ' + trong + 'px · '
-                        + (soNut < 0 ? 'không đọc được' : soNut + ' mục') + ' · "' + String(tieuDe).slice(0, 34) + '"';
-            } catch (e) { hong = true; chiTiet = 'lỗi: ' + e.message; }
-            document.body.classList.toggle('khung-hong', hong);
-            const n = document.getElementById('kho-chitiet');
-            if (n) n.textContent = (hong ? 'Vì sao: ' + vi.join(' · ') + ' — ' : '') + chiTiet;
-            return !hong;
-        }
-
-        /* xem trước từng thứ tiếng */
-        let TIENG_XEM = 'vi';
-        document.querySelectorAll('.prev .kho.tieng button').forEach(b => b.addEventListener('click', () => {
-            document.querySelectorAll('.prev .kho.tieng button').forEach(x => x.classList.remove('on'));
-            b.classList.add('on'); TIENG_XEM = b.dataset.l;
-            const fr = document.getElementById('preview');
-            fr.src = 'index.html?preview=1&lang=' + TIENG_XEM;
-        }));
-        document.getElementById('preview').addEventListener('load', vuaKhung);
-        vuaKhung();
-
-        document.getElementById('togglePrev').addEventListener('click', () => {
-            document.body.classList.toggle('khong-xem');
-            document.querySelector('.khac').removeAttribute('open');
-            setTimeout(vuaKhung, 60);
-        });
         /* bấm ra ngoài thì đóng menu Khác */
         document.addEventListener('click', e => {
             const d = document.querySelector('.khac');
@@ -777,42 +777,59 @@ body.khung-hong .prev .canhbao{display:block}
             chart: '<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>',
             sao: '<path d="M12 2l3 6.5 7 .9-5 4.8 1.2 7L12 17.8 5.8 21.2 7 14.2 2 9.4l7-.9z"/>',
             gia: '<path d="M20.6 13.4L13 21a1.9 1.9 0 0 1-2.7 0l-7.6-7.6A2 2 0 0 1 2 12V4a2 2 0 0 1 2-2h8a2 2 0 0 1 1.4.6l7.2 7.2a1.9 1.9 0 0 1 0 2.6z"/><path d="M7 7h.01"/>',
+            nha: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.8V21h14V9.8"/><path d="M9.5 21v-6h5v6"/>',
+            nguoi: '<path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.9"/>',
+            qr: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14h1M14 20h3M20 17v4"/>',
+            giay: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',
             phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.7 2z"/>',
         };
-        /* Danh sách mục bên trái dựng theo đúng các dòng sản phẩm đang có,
-           nên thêm một dòng mới là tự có đủ 6 mục nội dung của dòng đó. */
+        /* Danh sách mục bên trái. Chia làm bốn khu cho dễ tìm:
+           KINH DOANH (số liệu, khách) · SẢN PHẨM & QR · NỘI DUNG WEB · CẤU HÌNH. */
         let SECTIONS = [];
         function dungSections() {
             const S = [
-                { id: 'sec-chung', label: 'Chung', ic: 'gear', sec: 'home',
-                  mo: 'Tên thương hiệu, chữ trên menu, chân trang — những thứ hiện ở mọi màn.' },
-                { id: 'sec-manchon', label: 'Màn chọn dòng', ic: 'man', sec: 'chon',
-                  mo: 'Màn hình đầu tiên: khách chọn dòng sản phẩm. Thêm, xoá, đổi tên các dòng ở đây.' },
-                { id: 'sec-hero', label: 'Khung chung màn 1', ic: 'ds', sec: 'home',
-                  mo: 'Những chữ dùng chung cho mọi dòng ở màn sản phẩm: tiêu đề bên phải, dòng cam kết, gợi ý cuộn.' }
+                { id: 'sec-tongquan', khu: 'KINH DOANH', label: 'Tổng quan', ic: 'nha', kd: 1,
+                  mo: 'Nhìn một cái là biết hôm nay có bao nhiêu người vào web và bao nhiêu khách để lại số.' },
+                { id: 'sec-khach', khu: 'KINH DOANH', label: 'Khách để lại số', ic: 'nguoi', kd: 1,
+                  mo: 'Danh sách khách điền form trong popup. Gọi xong thì đổi trạng thái để khỏi gọi trùng.' },
+                { id: 'sec-thongke', khu: 'KINH DOANH', label: 'Thống kê', ic: 'chart', kd: 1,
+                  mo: 'Khách tới từ đâu, dùng máy gì, ở tỉnh nào, quét mã QR nào — theo từng khoảng thời gian.' },
+
+                { id: 'sec-qr', khu: 'SẢN PHẨM & QR', label: 'Mã QR & popup', ic: 'qr', kd: 1,
+                  mo: 'Mỗi sản phẩm và cả bộ có một mã QR riêng. Khách quét là web mở ra popup đúng sản phẩm đó.' }
             ];
+            D.products.forEach((p, i) => {
+                S.push({ id: `sec-sp${i}`, khu: 'SẢN PHẨM & QR', label: p.name || ('Chai ' + (i + 1)), ic: 'chai',
+                    group: 'CHAI SẢN PHẨM', sp: i,
+                    mo: 'Tên, dung tích, công dụng, cách dùng, lưu ý, giá, màu chai — và cả nội dung hiện trong popup khi quét QR.' });
+            });
+
+            S.push({ id: 'sec-chung', khu: 'NỘI DUNG WEB', label: 'Chung', ic: 'gear',
+                mo: 'Tên thương hiệu, logo, chữ trên menu, chân trang — những thứ hiện ở mọi màn.' });
+            S.push({ id: 'sec-manchon', khu: 'NỘI DUNG WEB', label: 'Màn chọn dòng', ic: 'man',
+                mo: 'Màn hình đầu tiên: khách chọn dòng sản phẩm. Thêm, xoá, đổi tên các dòng ở đây.' });
+            S.push({ id: 'sec-hero', khu: 'NỘI DUNG WEB', label: 'Khung chung màn 1', ic: 'ds',
+                mo: 'Những chữ dùng chung cho mọi dòng ở màn sản phẩm: tiêu đề bên phải, dòng cam kết, gợi ý cuộn.' });
             D.lines.forEach((l, i) => {
                 const g = 'DÒNG ' + (i + 1) + ' · ' + (l.navLabel || l.name || '');
-                S.push({ id: `sec-d${i}`, label: 'Giới thiệu dòng', ic: 'man', group: g, sec: 'home', dong: i,
-                    mo: 'Tên dòng, ảnh người mẫu ở màn chọn, tiêu đề lớn và nút mua của trang này.' });
-                S.push({ id: `sec-d${i}-tp`, label: 'Thành phần', ic: 'ds', group: g, sec: 'thanh-phan', dong: i,
+                const k = 'NỘI DUNG WEB';
+                S.push({ id: `sec-d${i}`, khu: k, label: 'Giới thiệu dòng', ic: 'man', group: g, dong: i,
+                    mo: 'Tên dòng, ảnh ở màn chọn, tiêu đề lớn và nút mua của trang này.' });
+                S.push({ id: `sec-d${i}-tp`, khu: k, label: 'Thành phần', ic: 'ds', group: g, dong: i,
                     mo: 'Danh sách hoạt chất và tác dụng — của riêng dòng này.' });
-                S.push({ id: `sec-d${i}-cd`, label: 'Cách dùng', ic: 'buoc', group: g, sec: 'cach-dung', dong: i,
+                S.push({ id: `sec-d${i}-cd`, khu: k, label: 'Cách dùng', ic: 'buoc', group: g, dong: i,
                     mo: 'Các bước dùng, kèm tần suất (mỗi tối, 2–3 lần/tuần…).' });
-                S.push({ id: `sec-d${i}-hq`, label: 'Hiệu quả', ic: 'chart', group: g, sec: 'hieu-qua', dong: i,
+                S.push({ id: `sec-d${i}-hq`, khu: k, label: 'Hiệu quả', ic: 'chart', group: g, dong: i,
                     mo: 'Mốc thời gian theo tuần và các ô số liệu. Nhớ thay bằng khảo sát thật trước khi bán.' });
-                S.push({ id: `sec-d${i}-dg`, label: 'Đánh giá', ic: 'sao', group: g, sec: 'danh-gia', dong: i,
+                S.push({ id: `sec-d${i}-dg`, khu: k, label: 'Đánh giá', ic: 'sao', group: g, dong: i,
                     mo: 'Phản hồi khách hàng. Nhớ thay bằng đánh giá thật.' });
-                S.push({ id: `sec-d${i}-gia`, label: 'Bảng giá', ic: 'gia', group: g, sec: 'gia', dong: i,
-                    mo: 'Chữ trên màn giá và ô mua cả bộ. Giá từng chai nằm ở mục CHAI bên dưới.' });
+                S.push({ id: `sec-d${i}-gia`, khu: k, label: 'Bảng giá', ic: 'gia', group: g, dong: i,
+                    mo: 'Chữ trên màn giá và ô mua cả bộ. Giá từng chai nằm ở mục CHAI SẢN PHẨM.' });
             });
-            D.products.forEach((p, i) => {
-                S.push({ id: `sec-sp${i}`, label: p.name || ('Chai ' + (i + 1)), ic: 'chai', group: 'CHAI SẢN PHẨM',
-                    sec: 'home', sp: i, mo: 'Tên, mô tả, giá, màu chai và chữ in trên thân chai 3D.' });
-            });
-            S.push({ id: 'sec-lienhe', label: 'Liên hệ', ic: 'phone', sec: 'lien-he',
+
+            S.push({ id: 'sec-lienhe', khu: 'CẤU HÌNH', label: 'Liên hệ', ic: 'phone',
                 mo: 'Số điện thoại, Zalo, Shopee… hiện ở chân trang và nút liên hệ.' });
-            S.push({ id: 'sec-phaply', label: 'Pháp lý chân trang', ic: 'gear', sec: 'lien-he',
+            S.push({ id: 'sec-phaply', khu: 'CẤU HÌNH', label: 'Pháp lý chân trang', ic: 'giay',
                 mo: 'Tên công ty, mã số thuế, giấy phép, số công bố mỹ phẩm, huy hiệu Bộ Công Thương. Đây là phần khách khó tính và đối tác nhìn vào để tin trang này là thật.' });
             SECTIONS = S;
         }
@@ -828,6 +845,9 @@ body.khung-hong .prev .canhbao{display:block}
             });
         }
 
+        /* Mỗi mục có thể đăng ký một việc cần làm mỗi lần mở ra
+           (ví dụ mục Thống kê phải tải lại số liệu). */
+        const KHI_MO = {};
         function goToSection(id) {
             document.querySelectorAll('#form > .secbox').forEach(s => { s.classList.toggle('active', s.id === id); });
             setActiveSection(id);
@@ -837,37 +857,22 @@ body.khung-hong .prev .canhbao{display:block}
             if (m) {
                 document.getElementById('mucTen').textContent = m.label;
                 document.getElementById('mucMo').textContent = m.mo || '';
-                nhayToi(m);        /* khung xem trước nhảy tới đúng đoạn đang sửa */
             }
+            try { localStorage.setItem('rootlab_muc', id); } catch (e) { }
+            if (typeof KHI_MO[id] === 'function') { try { KHI_MO[id](); } catch (e) { } }
         }
 
-        /* Bảo mọi khung xem trước đang mở nhảy tới đúng màn (và đúng dòng) đang sửa.
-           Có bao nhiêu chỗ đang xem thì nhảy hết: khung nhúng và cửa sổ riêng. */
-        function nhayToi(m) {
-            if (!m || !m.sec) return;
-            /* mục của một dòng thì nhảy tới đúng dòng, mục của một chai thì nhảy tới chai */
-            const sp = (m.dong != null && D.lines[m.dong]) ? D.lines[m.dong].key
-                : (m.sp != null && D.products[m.sp]) ? D.products[m.sp].key : null;
-            const dich = [];
-            const fr = document.getElementById('preview');
-            if (fr && fr.contentWindow) dich.push(fr.contentWindow);
-            if (cuaSoConSong()) dich.push(cuaSoXem);
-            dich.forEach(w => {
-                /* cùng tên miền nên gọi thẳng được — không phải sửa index.html */
-                try {
-                    if (sp && typeof w.rootlabGoto === 'function') w.rootlabGoto(sp);
-                    else if (sp && typeof w.switchProduct === 'function') w.switchProduct(sp);
-                    /* màn chọn nằm trên cùng — cuộn thẳng về 0 để thanh menu tự ẩn đi */
-                    if (m.sec === 'chon') { w.scrollTo(0, 0); return; }
-                    const el = w.document.getElementById(m.sec);
-                    if (el) { el.scrollIntoView({ behavior: 'auto', block: 'start' }); return; }
-                } catch (e) { /* khác tên miền thì rơi xuống cách dưới */ }
-                try { w.postMessage({ rootlab: 'goto', sec: m.sec, sp }, '*'); } catch (e) { }
-                try { w.location.hash = '#' + m.sec; } catch (e) { }
-            });
+        /* Mở lại đúng mục đang xem lần trước, không có thì mở Tổng quan. */
+        function moMucDau() {
+            let cu = '';
+            try { cu = localStorage.getItem('rootlab_muc') || ''; } catch (e) { }
+            goToSection(SECTIONS.some(s => s.id === cu) ? cu : SECTIONS[0].id);
         }
 
-        /* Danh sách mục: các nhóm gập lại cho gọn, bấm mới mở ra. */
+        /* Danh sách mục: chia khu, trong khu có thể có nhóm gập lại cho gọn.
+           LỖI CŨ — ghi rõ để khỏi viết lại y hệt: trước đây nút mở nhóm dùng
+           biến `box` DÙNG CHUNG cho cả vòng lặp nên bấm nhóm nào cũng đọc ra
+           nhóm cuối. Nay mỗi nhóm giữ hộp của riêng nó trong `hop`. */
         function buildSecNav() {
             const nav = document.getElementById('secnav');
             nav.innerHTML = '';
@@ -876,20 +881,15 @@ body.khung-hong .prev .canhbao{display:block}
                 onclick: () => goToSection(s.id),
                 html: `<svg viewBox="0 0 24 24">${IC[s.ic] || ''}</svg><span>${s.label}</span>`
             });
-            let box = null, lastGroup = null;
+            let box = null, lastGroup = null, lastKhu = null;
             SECTIONS.forEach(s => {
+                if (s.khu && s.khu !== lastKhu) {
+                    lastKhu = s.khu; lastGroup = null; box = null;
+                    nav.append(h('div', { class: 'khu', html: s.khu }));
+                }
                 if (!s.group) { box = null; lastGroup = null; nav.append(nutMuc(s)); return; }
                 if (s.group !== lastGroup) {
                     lastGroup = s.group;
-                    /* LỖI CŨ — ghi rõ để khỏi viết lại y hệt:
-                       trước đây nút bấm dùng `() => box.classList.toggle('mo')`.
-                       `box` là biến DÙNG CHUNG cho cả vòng lặp, nút chỉ nhớ CÁI TÊN
-                       biến chứ không nhớ cái hộp của chính nó. Mục cuối danh sách là
-                       "Liên hệ" — không thuộc nhóm nào — nên vòng lặp gán box = null
-                       trước khi kết thúc. Kết quả: bấm nhóm nào cũng đọc box = null,
-                       văng lỗi, không nhóm nào mở ra được.
-                       Nay mỗi nhóm giữ hộp của riêng mình trong `hop` (khai báo bằng
-                       const ngay trong vòng lặp), nút nhớ đúng hộp của nó. */
                     const hop = h('div', { class: 'nhom-box' });
                     const than = h('div', { class: 'nhom-than' });
                     hop.append(h('button', {
@@ -903,10 +903,6 @@ body.khung-hong .prev .canhbao{display:block}
                 }
                 box._than.append(nutMuc(s));
             });
-            setActiveSection(SECTIONS[0].id);
-            const d = SECTIONS[0];
-            document.getElementById('mucTen').textContent = d.label;
-            document.getElementById('mucMo').textContent = d.mo || '';
         }
 
         /* ---------- công cụ riêng cho dòng sản phẩm ---------- */
@@ -1090,10 +1086,678 @@ body.khung-hong .prev .canhbao{display:block}
             if (giu && SECTIONS.some(s => s.id === giu)) goToSection(giu);
         }
 
+        /* ---------- tem chống giả / tem kiểm định của một chai ----------
+           Mỗi tem là một ảnh + một dòng chú thích. Chưa có tem thì để trống,
+           khối "Tem" trong popup tự ẩn đi chứ không hiện ô rỗng. */
+        function temList(pi) {
+            const p = D.products[pi];
+            const box = h('div', { class: 'list' });
+            const render = () => {
+                box.innerHTML = '';
+                box.append(h('label', { html: 'Tem chống hàng giả / tem kiểm định' }));
+                const arr = p.stamps = Array.isArray(p.stamps) ? p.stamps : [];
+                arr.forEach((t, i) => {
+                    const card = h('div', { class: 'item' });
+                    card.append(h('div', { class: 'hd' }, [
+                        h('b', { html: t.label || ('Tem ' + (i + 1)) }),
+                        h('button', {
+                            class: 'sm danger', title: 'Xoá', html: '✕',
+                            onclick: () => { if (confirm('Xoá tem này?')) { arr.splice(i, 1); save(); render(); } }
+                        })
+                    ]));
+                    const nhan = h('input', { type: 'text' });
+                    nhan.value = t.label || '';
+                    nhan.addEventListener('input', () => { t.label = nhan.value; save(); });
+                    card.append(h('label', { html: 'Chú thích dưới ảnh' }), nhan);
+                    const file = h('input', { type: 'file', accept: 'image/*' });
+                    file.addEventListener('change', async () => {
+                        const f = file.files[0]; if (!f) return;
+                        try { t.img = await nenAnh(f, 400); save(); render(); toast('Đã đổi ảnh tem'); }
+                        catch (e) { alert('Không đọc được ảnh này'); }
+                    });
+                    card.append(h('label', { html: 'Ảnh tem' }), file);
+                    if (t.img) card.append(h('div', { class: 'thumb' }, [h('img', { src: t.img, style: 'max-height:110px' })]));
+                    box.append(card);
+                });
+                box.append(h('button', {
+                    class: 'sm', html: '+ Thêm tem',
+                    onclick: () => { arr.push({ img: '', label: 'Tem chống hàng giả' }); save(); render(); }
+                }));
+                box.append(h('div', { class: 'hint', html: 'Để trống hết thì popup <b>không hiện</b> khối tem — không có tem giả vờ. Có tem thật rồi thì chụp cận cảnh, nền sáng, tải lên đây.' }));
+            };
+            render();
+            return box;
+        }
+
+        /* ============================================================
+           PHẦN KINH DOANH — TỔNG QUAN · KHÁCH · THỐNG KÊ · MÃ QR
+           Số liệu lấy từ máy chủ (/api/admin/*). Chưa gắn máy chủ thì các mục
+           này vẫn mở được và nói rõ "chưa kết nối", không báo lỗi khó hiểu.
+           ============================================================ */
+        const so = n => Number(n || 0).toLocaleString('vi-VN');
+        const ngayGon = d => {
+            const [y, m, g] = String(d || '').split('-');
+            return g ? g + '/' + m : (d || '');
+        };
+        const gioVN = ts => new Date(Number(ts) || 0).toLocaleString('vi-VN',
+            { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+
+        let MAYCHU = null;   /* null = chưa thử · true = có · false = chưa gắn */
+
+        async function goiAPI(duong, opt = {}) {
+            let r;
+            try {
+                r = await fetch('/api/admin/' + duong, {
+                    method: opt.method || 'GET',
+                    headers: {
+                        authorization: 'Bearer ' + VE,
+                        ...(opt.body ? { 'content-type': 'application/json' } : {})
+                    },
+                    body: opt.body ? JSON.stringify(opt.body) : undefined
+                });
+            } catch (e) { MAYCHU = false; throw new Error('CHUA_CO'); }
+            if ([404, 405, 501, 502, 503].includes(r.status)) { MAYCHU = false; throw new Error('CHUA_CO'); }
+            if (r.status === 401) { MAYCHU = true; throw new Error('HET_VE'); }
+            const t = await r.text();
+            let d = null;
+            try { d = JSON.parse(t); } catch (e) { MAYCHU = false; throw new Error('CHUA_CO'); }
+            if (!r.ok) { throw new Error((d && d.err) || ('Máy chủ báo lỗi ' + r.status)); }
+            MAYCHU = true;
+            return d;
+        }
+
+        /* Khối báo "chưa có máy chủ" — nói thẳng phải làm gì để có số liệu. */
+        const hopChuaCo = () => h('div', {
+            class: 'hop-loi', html:
+                '<b>Chưa kết nối máy chủ.</b> Trang web hiện chạy trên Vercel — chỗ này chỉ chứa '
+                + 'file tĩnh nên không ghi được số liệu. Sau khi chuyển sang Cloudflare Pages '
+                + '(xem file <b>cai-dat-cloudflare.html</b>) thì phần thống kê và danh sách khách '
+                + 'ở đây tự chạy, không phải sửa gì thêm.'
+        });
+        const hopHetVe = () => h('div', {
+            class: 'hop-loi', html: '<b>Phiên đăng nhập hết hạn.</b> Bấm <b>Đăng xuất</b> ở góc phải rồi đăng nhập lại.'
+        });
+        const hopLoi = e => e.message === 'CHUA_CO' ? hopChuaCo()
+            : e.message === 'HET_VE' ? hopHetVe()
+            : h('div', { class: 'hop-loi', html: '<b>Không lấy được số liệu.</b> ' + e.message });
+
+        /* ---------- ô số liệu ---------- */
+        function oSo(dsach) {
+            return h('div', { class: 'o-so' }, dsach.map(x => h('div', { class: 'o' }, [
+                h('div', { class: 'nhan', html: x.nhan }),
+                h('div', { class: 'so' + (x.nhanh ? ' nhanh' : ''), html: x.so }),
+                x.phu ? h('div', { class: 'phu', html: x.phu }) : null
+            ])));
+        }
+
+        /* ---------- biểu đồ cột theo ngày ----------
+           Một biểu đồ = MỘT loại số (lượt xem riêng, khách riêng). Gộp hai loại
+           chênh nhau hàng trăm lần vào một trục thì cột nhỏ bẹp dí, nhìn không ra. */
+        function veCot(rows, { lay, mau = 'var(--chinh)', donvi = '' }) {
+            const box = h('div', { class: 'bieudo' });
+            const meo = h('div', { class: 'meo' });
+            const n = rows.length || 1;
+            const W = 760, H = 168, TREN = 10, DUOI = 22, TRAI = 34;
+            const vung = { w: W - TRAI - 4, h: H - TREN - DUOI };
+            const max = Math.max(1, ...rows.map(lay));
+            /* làm tròn mốc trên cho số đẹp */
+            const buoc = Math.pow(10, Math.floor(Math.log10(max)));
+            const dinh = Math.ceil(max / (buoc / 2)) * (buoc / 2) || 1;
+            const khoang = vung.w / n;
+            /* luôn chừa khe hở giữa hai cột, kể cả khi vẽ cả năm — cột dính liền
+               nhau thì nhìn thành một mảng đặc, không đếm được ngày nào ra ngày nào */
+            const khe = Math.max(1, Math.min(3, khoang * 0.28));
+            const bw = Math.max(1.2, Math.min(26, khoang - khe));
+            const cotPath = (x, y, w, hh, r) => {
+                r = Math.min(r, w / 2, hh);
+                return `M${x} ${y + hh} L${x} ${y + r} Q${x} ${y} ${x + r} ${y} L${x + w - r} ${y} Q${x + w} ${y} ${x + w} ${y + r} L${x + w} ${y + hh} Z`;
+            };
+            let svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img">`;
+            [0, .5, 1].forEach(t => {
+                const y = TREN + vung.h * (1 - t);
+                svg += `<line class="bd-luoi" x1="${TRAI}" y1="${y}" x2="${W}" y2="${y}"/>`;
+                svg += `<text class="bd-truc" x="0" y="${y + 3.5}">${so(Math.round(dinh * t))}</text>`;
+            });
+            rows.forEach((r, i) => {
+                const v = lay(r) || 0;
+                const hh = v <= 0 ? 0 : Math.max(2, vung.h * (v / dinh));
+                const x = TRAI + i * khoang + (khoang - bw) / 2;
+                const y = TREN + vung.h - hh;
+                /* màu đặt trong style, KHÔNG đặt bằng thuộc tính fill:
+                   fill="var(--cam)" là sai cú pháp SVG nên cột nào cũng ra màu mặc định */
+                if (hh > 0) svg += `<path class="bd-cot" d="${cotPath(x, y, bw, hh, 4)}" style="fill:${mau}"/>`;
+                svg += `<rect class="bd-hit" data-i="${i}" x="${TRAI + i * khoang}" y="${TREN}" width="${khoang}" height="${vung.h}"/>`;
+            });
+            /* mốc ngày: chỉ ghi vài mốc cho khỏi chồng chữ */
+            const buocNgay = Math.max(1, Math.ceil(n / 7));
+            rows.forEach((r, i) => {
+                if (i % buocNgay && i !== n - 1) return;
+                const x = TRAI + i * khoang + khoang / 2;
+                svg += `<text class="bd-truc" x="${x}" y="${H - 6}" text-anchor="middle">${ngayGon(r.day)}</text>`;
+            });
+            svg += '</svg>';
+            box.innerHTML = svg;
+            box.append(meo);
+            /* chạm vào cột nào thì hiện số của đúng ngày đó */
+            box.querySelectorAll('.bd-hit').forEach(el => {
+                const i = +el.dataset.i, r = rows[i];
+                const hien = ev => {
+                    meo.innerHTML = `<b>${so(lay(r))}</b> ${donvi} · ${ngayGon(r.day)}`;
+                    const b = box.getBoundingClientRect();
+                    meo.style.left = Math.min(b.width - 130, Math.max(0, ev.clientX - b.left - 50)) + 'px';
+                    meo.style.top = '4px';
+                    meo.classList.add('on');
+                };
+                el.addEventListener('mousemove', hien);
+                el.addEventListener('mouseenter', hien);
+                el.addEventListener('mouseleave', () => meo.classList.remove('on'));
+            });
+            return box;
+        }
+
+        /* ---------- bảng xếp hạng dạng thanh ngang ---------- */
+        function xepHang(arr, { mau = 'var(--chinh)', doi } = {}) {
+            /* gộp những dòng đổi ra CÙNG một tên tiếng Việt (ví dụ truc-tiep và
+               truc_tiep đều là "Gõ thẳng địa chỉ") — không thì bảng hiện hai dòng
+               trùng tên, nhìn như đếm sai. */
+            const gop = new Map();
+            (arr || []).filter(x => x.k).forEach(x => {
+                const ten = doi ? doi(x.k) : x.k;
+                gop.set(ten, (gop.get(ten) || 0) + Number(x.n || 0));
+            });
+            const ds = [...gop].map(([k, n]) => ({ k, n })).sort((a, b) => b.n - a.n);
+            if (!ds.length) return h('div', { class: 'trong', html: 'Chưa có dữ liệu.' });
+            const max = Math.max(1, ...ds.map(x => x.n));
+            return h('div', {}, ds.slice(0, 9).map(x => h('div', { class: 'hang' }, [
+                h('div', { class: 'ten', title: x.k, html: escHtml(x.k) }),
+                h('div', { class: 'thanh' }, [h('i', { style: `width:${Math.max(3, x.n / max * 100)}%;background:${mau}` })]),
+                h('div', { class: 'n', html: so(x.n) })
+            ])));
+        }
+
+        /* ============================================================
+           MỤC 1 — TỔNG QUAN
+           ============================================================ */
+        function panelTongQuan() {
+            const box = h('div');
+            KHI_MO['sec-tongquan'] = () => napTongQuan(box);
+            box.append(h('div', { class: 'trong', html: 'Đang tải…' }));
+            return panel('Tổng quan', [box], false, 'sec-tongquan', 'tran');
+        }
+
+        async function napTongQuan(box) {
+            box.innerHTML = '';
+            let d, ds;
+            try {
+                [d, ds] = await Promise.all([goiAPI('stats?days=30'), goiAPI('leads')]);
+            } catch (e) { box.append(hopLoi(e)); box.append(theHuongDan()); return; }
+            const L = (ds.leads || ds.items || []).slice(0, 6);
+            box.append(oSo([
+                { nhan: 'Hôm nay — lượt xem', so: so(d.homNay.views), nhanh: 1 },
+                { nhan: 'Hôm nay — khách để lại số', so: so(d.homNay.leads), nhanh: 1 },
+                { nhan: '30 ngày — lượt xem', so: so(d.tong.views), phu: so(d.tong.sessions) + ' lượt vào' },
+                { nhan: '30 ngày — khách để lại số', so: so(d.tong.leads), phu: so(d.tong.leadsMoi) + ' người chưa gọi' },
+                { nhan: '30 ngày — quét mã QR', so: so(d.tong.qr) }
+            ]));
+
+            const the = h('div', { class: 'the' });
+            the.append(h('div', { class: 'the-dau' }, [
+                h('h3', { html: 'Khách mới nhất' }),
+                h('button', { class: 'them', onclick: () => goToSection('sec-khach'), html: 'Xem tất cả' })
+            ]));
+            the.append(L.length ? bangKhachGon(L) : h('div', { class: 'trong', html: 'Chưa có khách nào để lại số.' }));
+            box.append(the);
+
+            const t2 = h('div', { class: 'the' });
+            t2.append(h('h3', { html: 'Lượt xem 30 ngày qua' }));
+            t2.append(veCot(d.series, { lay: r => r.views, donvi: 'lượt xem' }));
+            box.append(t2);
+            box.append(theHuongDan());
+        }
+
+        function bangKhachGon(items) {
+            const t = h('table', { class: 'bang' });
+            t.innerHTML = '<thead><tr><th>Lúc</th><th>Tên</th><th>Điện thoại</th><th>Cần gì</th><th>Trạng thái</th></tr></thead>';
+            const tb = h('tbody');
+            items.forEach(x => {
+                const tr = h('tr');
+                tr.append(h('td', { html: gioVN(x.ts) }),
+                    h('td', { html: escHtml(x.name) }),
+                    h('td', { class: 'sdt', html: `<a href="tel:${escHtml(x.phone)}">${escHtml(x.phone)}</a>` }),
+                    h('td', { html: escHtml(x.product || '') }),
+                    h('td', { html: `<span class="nhan-tt tt-${x.status || 'moi'}">${TEN_TT[x.status] || 'Mới'}</span>` }));
+                tb.append(tr);
+            });
+            t.append(tb);
+            return h('div', { class: 'bang-cuon' }, [t]);
+        }
+
+        function theHuongDan() {
+            const the = h('div', { class: 'the' });
+            the.append(h('h3', { html: 'Sửa xong nhớ bấm “Đẩy lên web”' }),
+                h('p', { html: 'Mọi thay đổi trong trang này chỉ nằm trong trình duyệt của bạn cho tới khi bấm nút xanh ở góc phải. Dòng chữ cạnh tên trang luôn cho biết đã đẩy hay chưa.' }));
+            return the;
+        }
+
+        const TEN_TT = { moi: 'Mới', 'da-goi': 'Đã gọi', 'da-mua': 'Đã mua', 'khong-nghe': 'Không nghe máy' };
+        const escHtml = s => String(s == null ? '' : s)
+            .replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+        /* ============================================================
+           MỤC 2 — KHÁCH ĐỂ LẠI SỐ
+           ============================================================ */
+        let KHACH = [], LOC_TT = 'tat-ca', TIM = '';
+        function panelKhach() {
+            const box = h('div');
+            KHI_MO['sec-khach'] = () => napKhach(box);
+            box.append(h('div', { class: 'trong', html: 'Đang tải…' }));
+            return panel('Khách để lại số', [box], false, 'sec-khach', 'tran');
+        }
+
+        async function napKhach(box) {
+            box.innerHTML = '';
+            box.append(h('div', { class: 'trong', html: 'Đang tải…' }));
+            let d;
+            try { d = await goiAPI('leads'); }
+            catch (e) { box.innerHTML = ''; box.append(hopLoi(e)); return; }
+            KHACH = d.leads || d.items || [];
+            veKhach(box);
+        }
+
+        function veKhach(box) {
+            box.innerHTML = '';
+            const dem = tt => KHACH.filter(x => tt === 'tat-ca' || (x.status || 'moi') === tt).length;
+            box.append(oSo([
+                { nhan: 'Tổng số khách', so: so(KHACH.length) },
+                { nhan: 'Chưa gọi', so: so(dem('moi')), nhanh: 1 },
+                { nhan: 'Đã gọi', so: so(dem('da-goi')) },
+                { nhan: 'Đã mua', so: so(dem('da-mua')) }
+            ]));
+
+            /* Có khách nào mà email thông báo không gửi được thì nói ngay —
+               không thì tưởng không có khách trong khi khách vẫn nằm trong danh sách. */
+            const hong = KHACH.filter(x => x.mail_err);
+            if (hong.length) box.append(h('div', {
+                class: 'hop-loi', style: 'margin-bottom:18px', html:
+                    '<b>' + hong.length + ' khách không gửi được email thông báo.</b> '
+                    + 'Khách vẫn được lưu đầy đủ ở bảng dưới, chỉ là hộp thư của bạn không nhận được tin. '
+                    + 'Lý do máy chủ báo: <b>' + escHtml(hong[0].mail_err) + '</b> — thường là sai hoặc hết hạn '
+                    + 'RESEND_API_KEY trong Cloudflare.'
+            }));
+
+            const the = h('div', { class: 'the' });
+            const dau = h('div', { class: 'the-dau' }, [h('h3', { html: 'Danh sách khách' })]);
+            const oTim = h('input', { type: 'search', placeholder: 'Tìm theo tên hoặc số điện thoại…', style: 'width:230px' });
+            oTim.value = TIM;
+            oTim.addEventListener('input', () => { TIM = oTim.value.trim().toLowerCase(); veBang(); });
+            dau.append(oTim);
+            dau.append(h('button', { class: 'them', html: 'Tải file Excel (CSV)', onclick: () => taiCSV() }));
+            dau.append(h('button', { class: 'them', html: 'Làm mới', onclick: () => napKhach(box) }));
+            the.append(dau);
+
+            const loc = h('div', { class: 'loc', style: 'margin-bottom:14px' });
+            [['tat-ca', 'Tất cả'], ['moi', 'Chưa gọi'], ['da-goi', 'Đã gọi'], ['da-mua', 'Đã mua'], ['khong-nghe', 'Không nghe máy']]
+                .forEach(([k, t]) => {
+                    const b = h('button', { type: 'button', html: t + ' (' + dem(k) + ')' });
+                    if (LOC_TT === k) b.classList.add('on');
+                    b.onclick = () => { LOC_TT = k; veKhach(box); };
+                    loc.append(b);
+                });
+            the.append(loc);
+
+            const noi = h('div');
+            the.append(noi);
+            box.append(the);
+
+            function locDs() {
+                return KHACH.filter(x => (LOC_TT === 'tat-ca' || (x.status || 'moi') === LOC_TT)
+                    && (!TIM || (String(x.name || '') + ' ' + String(x.phone || '')).toLowerCase().includes(TIM)));
+            }
+
+            function veBang() {
+                noi.innerHTML = '';
+                const ds = locDs();
+                if (!ds.length) { noi.append(h('div', { class: 'trong', html: 'Chưa có khách nào ở mục này.' })); return; }
+                const t = h('table', { class: 'bang' });
+                t.innerHTML = '<thead><tr><th>Lúc</th><th>Tên</th><th>Điện thoại</th><th>Cần gì</th>'
+                    + '<th>Sản phẩm</th><th>Nguồn</th><th>Trạng thái</th><th>Ghi chú</th><th></th></tr></thead>';
+                const tb = h('tbody');
+                ds.forEach(x => {
+                    const tr = h('tr');
+                    const sel = h('select');
+                    Object.entries(TEN_TT).forEach(([k, v]) => {
+                        const o = h('option', { value: k, html: v });
+                        if ((x.status || 'moi') === k) o.selected = true;
+                        sel.append(o);
+                    });
+                    sel.onchange = async () => {
+                        try { await goiAPI('leads', { method: 'POST', body: { id: x.id, status: sel.value } }); x.status = sel.value; toast('Đã lưu'); veKhach(box); }
+                        catch (e) { alert('Không lưu được: ' + e.message); }
+                    };
+                    const ghi = h('input', { type: 'text', placeholder: 'Ghi chú…' });
+                    ghi.value = x.note || '';
+                    let tGhi;
+                    ghi.addEventListener('input', () => {
+                        clearTimeout(tGhi);
+                        tGhi = setTimeout(async () => {
+                            try { await goiAPI('leads', { method: 'POST', body: { id: x.id, note: ghi.value } }); x.note = ghi.value; toast('Đã lưu ghi chú'); }
+                            catch (e) { }
+                        }, 700);
+                    });
+                    const xoa = h('button', { class: 'xoa', html: 'Xoá' });
+                    xoa.onclick = async () => {
+                        if (!confirm('Xoá khách “' + (x.name || '') + '”? Không lấy lại được.')) return;
+                        try { await goiAPI('leads', { method: 'DELETE', body: { id: x.id } }); KHACH = KHACH.filter(y => y.id !== x.id); veKhach(box); toast('Đã xoá'); }
+                        catch (e) { alert('Không xoá được: ' + e.message); }
+                    };
+                    tr.append(
+                        h('td', { html: gioVN(x.ts) }),
+                        h('td', { html: escHtml(x.name) }),
+                        h('td', { class: 'sdt', html: `<a href="tel:${escHtml(x.phone)}">${escHtml(x.phone)}</a>` }),
+                        h('td', { html: x.need === 'uu-dai' ? 'Nhận ưu đãi' : 'Nhờ tư vấn' }),
+                        h('td', { html: escHtml(x.product || '') }),
+                        h('td', { html: escHtml(x.qr ? 'Quét QR · ' + TEN_QR(x.qr) : (TEN_NGUON[x.src] || x.src || '')) }),
+                        h('td', {}, [sel]),
+                        h('td', {}, [ghi]),
+                        h('td', {}, [xoa])
+                    );
+                    tb.append(tr);
+                });
+                t.append(tb);
+                noi.append(h('div', { class: 'bang-cuon' }, [t]));
+                noi.append(h('div', { class: 'hint', html: 'Đang xem ' + ds.length + ' / ' + KHACH.length + ' khách.' }));
+            }
+            veBang();
+        }
+
+        /* Xuất ra file mở được bằng Excel. Có BOM ở đầu để Excel không vỡ tiếng Việt. */
+        function taiCSV() {
+            const cot = ['Thời gian', 'Tên', 'Điện thoại', 'Cần gì', 'Sản phẩm', 'Nguồn', 'Mã QR', 'Tỉnh/TP', 'Máy', 'Trạng thái', 'Ghi chú'];
+            const o = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+            const dong = KHACH.map(x => [gioVN(x.ts), x.name, "'" + (x.phone || ''),
+                x.need === 'uu-dai' ? 'Nhận ưu đãi' : 'Nhờ tư vấn', x.product, x.src, x.qr, x.region,
+                x.device, TEN_TT[x.status] || 'Mới', x.note].map(o).join(','));
+            const txt = '﻿' + cot.map(o).join(',') + '\n' + dong.join('\n');
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([txt], { type: 'text/csv;charset=utf-8' }));
+            a.download = 'khach-hang-' + new Date().toISOString().slice(0, 10) + '.csv';
+            a.click();
+            toast('Đã tải ' + KHACH.length + ' khách');
+        }
+
+        /* ============================================================
+           MỤC 3 — THỐNG KÊ
+           ============================================================ */
+        let NGAY = 30;
+        function panelThongKe() {
+            const box = h('div');
+            KHI_MO['sec-thongke'] = () => napThongKe(box);
+            box.append(h('div', { class: 'trong', html: 'Đang tải…' }));
+            return panel('Thống kê', [box], false, 'sec-thongke', 'tran');
+        }
+
+        async function napThongKe(box) {
+            box.innerHTML = '';
+            const dau = h('div', { class: 'the-dau', style: 'margin-bottom:16px' }, [
+                h('h3', { html: 'Khoảng thời gian' })
+            ]);
+            const seg = h('div', { class: 'seg' });
+            [[30, '30 ngày'], [90, '3 tháng'], [180, '6 tháng'], [365, '1 năm']].forEach(([n, t]) => {
+                const b = h('button', { type: 'button', html: t });
+                if (NGAY === n) b.classList.add('on');
+                b.onclick = () => { NGAY = n; napThongKe(box); };
+                seg.append(b);
+            });
+            dau.append(seg);
+            box.append(dau);
+            const than = h('div', {}, [h('div', { class: 'trong', html: 'Đang tải…' })]);
+            box.append(than);
+
+            let d;
+            try { d = await goiAPI('stats?days=' + NGAY); }
+            catch (e) { than.innerHTML = ''; than.append(hopLoi(e)); return; }
+            than.innerHTML = '';
+
+            than.append(oSo([
+                { nhan: 'Lượt xem', so: so(d.tong.views) },
+                { nhan: 'Lượt vào web', so: so(d.tong.sessions), phu: 'mỗi lần mở web tính 1' },
+                { nhan: 'Quét mã QR', so: so(d.tong.qr), nhanh: 1 },
+                { nhan: 'Khách để lại số', so: so(d.tong.leads), nhanh: 1 },
+                { nhan: 'Tỉ lệ để lại số', so: d.tong.sessions ? (d.tong.leads / d.tong.sessions * 100).toFixed(1) + '%' : '—', phu: 'trên mỗi lượt vào' }
+            ]));
+
+            const t1 = h('div', { class: 'the' });
+            t1.append(h('h3', { html: 'Lượt xem theo ngày' }), h('p', { html: 'Rê chuột vào cột để xem số của từng ngày.' }));
+            t1.append(veCot(d.series, { lay: r => r.views, donvi: 'lượt xem' }));
+            than.append(t1);
+
+            const t2 = h('div', { class: 'the' });
+            t2.append(h('h3', { html: 'Khách để lại số theo ngày' }),
+                h('p', { html: 'Để riêng một biểu đồ vì số này nhỏ hơn lượt xem rất nhiều — vẽ chung thì cột bẹp dí không thấy gì.' }));
+            t2.append(veCot(d.series, { lay: r => r.leads, mau: 'var(--cam)', donvi: 'khách' }));
+            than.append(t2);
+
+            const cap = [
+                ['Khách tới từ đâu', d.nguon, 'var(--chinh)', k => TEN_NGUON[k] || k],
+                ['Mã QR được quét', d.qr, 'var(--cam)', k => TEN_QR(k)],
+                ['Tỉnh / thành phố', d.tinh, 'var(--xanh)', null],
+                ['Loại máy', d.may, 'var(--chinh)', k => ({ mobile: 'Điện thoại', tablet: 'Máy tính bảng', desktop: 'Máy tính' }[k] || k)],
+                ['Hãng máy', d.hang, 'var(--tim)', null],
+                ['Hệ điều hành', d.hdh, 'var(--xanh)', null],
+                ['Trình duyệt / ứng dụng', d.trinh, 'var(--chinh)', null],
+                ['Ngôn ngữ trang đang xem', d.tieng, 'var(--cam)', k => ({ vi: 'Tiếng Việt', en: 'Tiếng Anh', fr: 'Tiếng Pháp', it: 'Tiếng Ý', ja: 'Tiếng Nhật' }[k] || k)]
+            ];
+            const luoi = h('div', { class: 'cot2' });
+            cap.forEach(([ten, arr, mau, doi]) => {
+                const the = h('div', { class: 'the' });
+                the.append(h('h3', { html: ten }));
+                the.append(xepHang(arr, { mau, doi }));
+                luoi.append(the);
+            });
+            than.append(luoi);
+            than.append(theLinkKenh());
+        }
+
+        const TEN_NGUON = {
+            qr: 'Quét mã QR', facebook: 'Facebook', tiktok: 'TikTok', zalo: 'Zalo',
+            instagram: 'Instagram', google: 'Google', truc_tiep: 'Gõ thẳng địa chỉ',
+            'truc-tiep': 'Gõ thẳng địa chỉ', khac: 'Nơi khác'
+        };
+        function TEN_QR(ma) {
+            const p = (D.products || []).find(x => x.qr === ma);
+            if (p) return p.name || ma;
+            const l = (D.lines || []).find(x => x.qr === ma);
+            if (l) return (l.navLabel || l.name || ma) + ' (cả bộ)';
+            return ma;
+        }
+
+        /* ---------- link gắn sẵn nguồn, dán lên từng kênh ---------- */
+        const GOC_KEY = 'rootlab_goc';
+        const gocWeb = () => {
+            let g = '';
+            try { g = localStorage.getItem(GOC_KEY) || ''; } catch (e) { }
+            if (g) return g.replace(/\/+$/, '');
+            return location.protocol.startsWith('http') && !/localhost|127\./.test(location.host)
+                ? location.origin : 'https://sptlab.co';
+        };
+        function theLinkKenh() {
+            const the = h('div', { class: 'the' });
+            the.append(h('h3', { html: 'Link đăng lên từng kênh' }),
+                h('p', { html: 'Mỗi kênh một link riêng. Dán đúng link của kênh nào thì phần “Khách tới từ đâu” mới đếm đúng kênh đó.' }));
+            [['facebook', 'Facebook'], ['tiktok', 'TikTok'], ['zalo', 'Zalo'],
+             ['instagram', 'Instagram'], ['google', 'Google'], ['namecard', 'Danh thiếp / tờ rơi']
+            ].forEach(([k, t]) => {
+                const url = gocWeb() + '/?utm_source=' + k;
+                const nut = h('button', { type: 'button', html: 'Sao chép' });
+                nut.onclick = async () => {
+                    try { await navigator.clipboard.writeText(url); toast('Đã sao chép link ' + t); }
+                    catch (e) { prompt('Chép link này:', url); }
+                };
+                the.append(h('div', { class: 'link-hang' }, [
+                    h('b', { html: t }), h('code', { html: escHtml(url) }), nut
+                ]));
+            });
+            return the;
+        }
+
+        /* ============================================================
+           MỤC 4 — MÃ QR & POPUP
+           ============================================================ */
+        function panelQR() {
+            const box = h('div');
+            KHI_MO['sec-qr'] = () => napQR(box);
+            box.append(h('div', { class: 'trong', html: 'Đang tải…' }));
+            return panel('Mã QR & popup', [box], false, 'sec-qr', 'tran');
+        }
+
+        /* Danh sách những thứ có mã QR: cả bộ (mỗi dòng) + từng chai. */
+        function dsQR() {
+            const r = [];
+            (D.lines || []).forEach(l => {
+                if (l.qr) r.push({ ma: l.qr, ten: (l.navLabel || l.name || 'Bộ sản phẩm'), loai: 'Cả bộ' });
+            });
+            (D.products || []).forEach(p => {
+                if (p.qr) r.push({ ma: p.qr, ten: p.name || 'Chai', loai: p.bottle?.vol || p.vol || 'Từng chai' });
+            });
+            return r;
+        }
+
+        function veQRvaoCanvas(cv, text, px) {
+            const q = qrcode(0, 'Q');          /* mức Q: mất 25% mã vẫn quét được */
+            q.addData(text);
+            q.make();
+            const n = q.getModuleCount(), le = 4;
+            const o = Math.max(2, Math.floor(px / (n + le * 2)));
+            const size = o * (n + le * 2);
+            cv.width = size; cv.height = size;
+            const c = cv.getContext('2d');
+            c.fillStyle = '#fff'; c.fillRect(0, 0, size, size);
+            c.fillStyle = '#15201d';
+            for (let y = 0; y < n; y++) for (let x = 0; x < n; x++)
+                if (q.isDark(y, x)) c.fillRect((x + le) * o, (y + le) * o, o, o);
+            return q;
+        }
+
+        async function napQR(box) {
+            box.innerHTML = '';
+
+            /* ô sửa địa chỉ web */
+            const the0 = h('div', { class: 'the' });
+            the0.append(h('h3', { html: 'Địa chỉ web in trong mã' }),
+                h('p', { html: 'Mã QR chứa đúng đường dẫn này. Đổi tên miền thì sửa ở đây rồi in lại mã.' }));
+            const oGoc = h('input', { type: 'text', placeholder: 'https://sptlab.co' });
+            oGoc.value = gocWeb();
+            oGoc.addEventListener('change', () => {
+                try { localStorage.setItem(GOC_KEY, oGoc.value.trim().replace(/\/+$/, '')); } catch (e) { }
+                napQR(box);
+            });
+            the0.append(oGoc);
+            the0.append(h('div', { class: 'hint', html: 'Mã QR <b>không hết hạn</b> và không tốn phí — nó chỉ là một đường dẫn được vẽ ra. Miễn là địa chỉ web còn sống thì mã in trên tem vẫn quét được mãi.' }));
+            box.append(the0);
+
+            const ds = dsQR();
+            const the = h('div', { class: 'the' });
+            const dau = h('div', { class: 'the-dau' }, [h('h3', { html: 'Mã QR từng sản phẩm' })]);
+            dau.append(h('button', { class: 'them', html: 'In tất cả mã', onclick: () => inTatCa(ds) }));
+            the.append(dau);
+            if (!ds.length) {
+                the.append(h('div', { class: 'trong', html: 'Chưa sản phẩm nào có mã. Vào mục từng chai, điền ô “Mã QR”.' }));
+                box.append(the); return;
+            }
+
+            const luoi = h('div', { class: 'qr-luoi' });
+            ds.forEach(x => {
+                const url = gocWeb() + '/?qr=' + encodeURIComponent(x.ma);
+                const o = h('div', { class: 'qr-o' });
+                const cv = h('canvas');
+                o.append(cv);
+                veQRvaoCanvas(cv, url, 660);
+                cv.style.width = '168px'; cv.style.height = '168px';
+                o.append(h('div', { class: 'ten', html: escHtml(x.ten) }),
+                    h('div', { class: 'ma', html: escHtml(x.loai + ' · ' + x.ma) }));
+                const nut = h('div', { class: 'nut' });
+                nut.append(h('button', {
+                    type: 'button', html: 'Tải PNG', onclick: () => {
+                        const a = document.createElement('a');
+                        a.href = cv.toDataURL('image/png');
+                        a.download = 'qr-' + x.ma + '.png'; a.click();
+                    }
+                }));
+                nut.append(h('button', {
+                    type: 'button', html: 'Tải SVG', onclick: () => {
+                        const q = qrcode(0, 'Q'); q.addData(url); q.make();
+                        const svg = q.createSvgTag({ cellSize: 8, margin: 4 });
+                        const a = document.createElement('a');
+                        a.href = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+                        a.download = 'qr-' + x.ma + '.svg'; a.click();
+                    }
+                }));
+                nut.append(h('a', { href: url, target: '_blank', rel: 'noopener', html: 'Thử mở' }));
+                o.append(nut);
+                o.append(h('div', { class: 'dem', 'data-ma': x.ma, html: '…' }));
+                luoi.append(o);
+            });
+            the.append(luoi);
+            the.append(h('div', { class: 'hint', html: 'In trên tem: <b>tối thiểu 2×2 cm</b>, để chừa viền trắng quanh mã, nền sáng mã tối. Tải SVG nếu nhà in đòi file vector.' }));
+            box.append(the);
+
+            const the2 = h('div', { class: 'the' });
+            the2.append(h('h3', { html: 'Khách quét mã thấy gì' }),
+                h('p', { html: 'Quét xong web mở ra và popup hiện ngay: tên, dung tích, công dụng, cách dùng, thành phần đầy đủ, lưu ý, giấy phép và tem. Đóng popup là xem trang web bình thường. Sửa nội dung popup ở mục từng chai bên trái.' }));
+            the2.append(h('div', { class: 'hint', html: 'Xem thử mà KHÔNG bị tính vào thống kê: thêm <code>&preview=1</code> vào cuối đường dẫn.' }));
+            box.append(the2);
+
+            /* số lần quét từng mã — có máy chủ thì điền vào, không thì ghi rõ */
+            try {
+                const d = await goiAPI('stats?days=365');
+                const m = {};
+                (d.qr || []).forEach(x => m[x.k] = x.n);
+                box.querySelectorAll('.qr-o .dem').forEach(el => {
+                    const n = m[el.dataset.ma] || 0;
+                    el.innerHTML = 'Đã quét <b>' + so(n) + '</b> lần (1 năm)';
+                });
+            } catch (e) {
+                box.querySelectorAll('.qr-o .dem').forEach(el => { el.textContent = 'Chưa đếm được lượt quét'; });
+                box.insertBefore(hopLoi(e), the.nextSibling);
+            }
+        }
+
+        /* Trang in: mỗi mã một ô, in ra cắt dán lên tem. */
+        function inTatCa(ds) {
+            const w = window.open('', '_blank');
+            if (!w) { alert('Trình duyệt chặn cửa sổ mới. Cho phép rồi bấm lại.'); return; }
+            const o = ds.map(x => {
+                const url = gocWeb() + '/?qr=' + encodeURIComponent(x.ma);
+                const cv = document.createElement('canvas');
+                veQRvaoCanvas(cv, url, 900);
+                return `<div class="o"><img src="${cv.toDataURL('image/png')}"><div class="t">${escHtml(x.ten)}</div><div class="m">${escHtml(x.ma)}</div></div>`;
+            }).join('');
+            w.document.write(`<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8">
+<title>Mã QR sản phẩm — ${escHtml(D.brand || 'ROOT & RISE LAB')}</title><style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:26px;color:#15201d}
+h1{font-size:17px;margin:0 0 18px}
+.luoi{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.o{border:1px solid #ddd;border-radius:12px;padding:14px;text-align:center;break-inside:avoid}
+.o img{width:100%;max-width:200px;image-rendering:pixelated}
+.t{font-weight:600;font-size:13px;margin-top:6px}
+.m{font-size:11px;color:#888;font-family:monospace}
+</style></head><body><h1>Mã QR sản phẩm — ${escHtml(D.brand || 'ROOT & RISE LAB')}</h1>
+<div class="luoi">${o}</div>
+<script>setTimeout(function(){window.print()},400)<\/script></body></html>`);
+            w.document.close();
+        }
+
+
         /* ---------- dựng toàn bộ form ---------- */
         function buildForm() {
             const F = document.getElementById('form');
             F.innerHTML = '';
+
+            /* --- khu KINH DOANH --- */
+            F.append(panelTongQuan());
+            F.append(panelKhach());
+            F.append(panelThongKe());
+            F.append(panelQR());
 
             F.append(panel('Chung', [
                 anhLogo(),
@@ -1217,6 +1881,20 @@ body.khung-hong .prev .canhbao{display:block}
                     h('label', { html: '<b style="color:#16211e">Bảng giá</b>' }),
                     h('div', { class: 'row' }, [field('Giá (không cần chữ đ)', `products.${i}.price`), field('Chữ trên nút mua', `products.${i}.buyBtn`)]),
                     field('Dòng mô tả dưới tên', `products.${i}.priceSub`),
+                    h('label', { html: '<b style="color:#16211e">Nội dung hiện trong popup khi khách quét mã QR</b>' }),
+                    h('div', { class: 'hint', html: 'Khách quét mã trên chai là web mở ra và hiện ngay bảng thông tin này. Chép <b>đúng như in trên nhãn</b> — đây là chỗ khách dò lại xem hàng có thật không.' }),
+                    h('div', { class: 'row' }, [
+                        field('Mã QR của chai này', `products.${i}.qr`, { hint: 'Chữ không dấu, không khoảng trắng — ví dụ <b>dau-goi</b>. Đổi mã thì mã QR đã in trên tem cũ sẽ không mở đúng sản phẩm nữa.' }),
+                        field('Dung tích ghi trong popup', `products.${i}.vol`, { hint: 'Ví dụ: 100 ml' })
+                    ]),
+                    field('Công dụng', `products.${i}.func`, { area: true, hint: 'Mỗi ý một dòng. Nói đúng mức mỹ phẩm — tránh chữ "trị", "chữa", "khỏi hẳn".' }),
+                    field('Hướng dẫn sử dụng', `products.${i}.use`, { area: true, hint: 'Mỗi bước một dòng.' }),
+                    field('Lưu ý khi dùng', `products.${i}.warn`, { area: true, hint: 'Mỗi ý một dòng. Nên có: tránh vùng mắt, ngưng dùng nếu kích ứng, để xa tầm tay trẻ em, bảo quản nơi mát.' }),
+                    listEditor('Chứng nhận / giấy phép của chai này', `products.${i}.certs`, null,
+                        () => 'Nhà máy đạt CGMP-ASEAN'),
+                    h('div', { class: 'hint', html: 'Mỗi dòng là một huy hiệu nhỏ trong popup. Chỉ ghi thứ <b>có giấy tờ thật</b>.' }),
+                    temList(i),
+
                     field('Số công bố mỹ phẩm', `products.${i}.cbmp`, { hint: 'Số tiếp nhận Phiếu công bố do Sở Y tế cấp, dạng <b>xxxxxx/26/CBMP-HCM</b>. Điền vào là tự hiện ở khối pháp lý chân trang. Bắt buộc phải có trước khi bán.' }),
                     field('Thành phần đầy đủ (INCI)', `products.${i}.inci`, { area: true, hint: 'Chép <b>y nguyên</b> danh sách in trên nhãn, cách nhau bằng dấu phẩy. Hiện ở màn Thành phần dưới dạng bảng gập lại. Để trống thì không hiện bảng nào.' }),
                     field('Link khi bấm nút mua', `products.${i}.buyLink`, { hint: 'Dán link giỏ hàng / Shopee / form đặt hàng. Để trống thì nút không làm gì.' }),
@@ -1277,16 +1955,11 @@ body.khung-hong .prev .canhbao{display:block}
             ], false, 'sec-phaply'));
 
             buildSecNav();
-            goToSection(SECTIONS[0].id);
+            if (!document.getElementById('khoa')) moMucDau();
         }
         buildForm();
 
         /* ---------- các nút trên cùng ---------- */
-        document.getElementById('reload').onclick = () => {
-            document.getElementById('preview').contentWindow.location.reload();
-            toast('Đã làm mới');
-        };
-
         document.getElementById('reset').onclick = () => {
             if (!confirm('Bỏ hết thay đổi, quay về nội dung trong content.js?')) return;
             localStorage.removeItem('rootlab_draft');
@@ -1521,7 +2194,7 @@ body.khung-hong .prev .canhbao{display:block}
         /* Kiểm tra bản nháp cũ TRƯỚC khi save() — save() ghi lại vân tay của
            content.js nên gọi sau thì không còn phát hiện được nữa. */
         try { kiemTraBanMoi(); } catch (e) { }
-        save(false);
+        save();
         try { capNhatTrangThai(); } catch (e) { }
     </script>
 </body>
