@@ -8,6 +8,10 @@
     <title>ROOT &amp; RISE LAB — Quản trị</title>
     <script src="content.js"></script>
     <script src="qr-lib.js"></script>
+    <!-- Mượn đúng bộ dựng popup của trang web để xem thử ngay trong đây.
+         Cờ ROOTLAB_ADMIN báo cho nó biết: chỉ mượn, đừng chạy gì cả. -->
+    <script>window.ROOTLAB_ADMIN = true;</script>
+    <script src="san-pham.js"></script>
     <style>
 /* ==========================================================
    ROOT & RISE LAB — TRANG QUẢN TRỊ
@@ -55,18 +59,15 @@ a{color:var(--chinh-dam)}
   padding:3px 9px;border-radius:999px;border:1px solid #f0d3bc}
 .top h1 .hieu{font-weight:500;font-size:13px;letter-spacing:.24em;color:var(--chinh-dam)}
 .top .day{margin-left:auto;display:flex;align-items:center;gap:8px}
-body:has(#state.chua-day) #deploy{box-shadow:0 0 0 3px rgba(11,138,120,.18)}
-.bao-ban-moi{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-  padding:12px 20px;background:#fdf0e6;border-bottom:1px solid #f0d3bc;color:#7a3a12;font-size:13.5px}
-.bao-ban-moi b{color:#5d2c0d}
-.bao-ban-moi button{margin-left:auto;border:0;background:var(--chinh);color:#fff;
-  padding:8px 14px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600}
-.bao-ban-moi button.phu{margin-left:0;background:none;color:#7a3a12;border:1px solid #e0bfa6;font-weight:500}
 .top button{padding:8px 13px;border:1px solid var(--vien-dam);background:var(--the);
   border-radius:9px;cursor:pointer;font-size:13.5px;transition:.15s}
 .top button:hover{background:#f1f4f3}
 .top button.pri{background:var(--chinh);border-color:var(--chinh);color:#fff;font-weight:600;padding:9px 18px}
 .top button.pri:hover{background:var(--chinh-dam)}
+/* không có gì mới để đăng thì nút nằm im, không rủ rê bấm */
+.top button.pri.lang{background:var(--the);border-color:var(--vien-dam);color:var(--nhat);font-weight:500}
+.top button.pri.lang:hover{background:#f1f4f3;color:var(--mo)}
+.top h1 small{display:inline-flex;align-items:center;gap:5px;color:var(--chinh-dam);font-weight:500}
 .top button.danger{color:var(--do);border-color:#e8c9c5}
 .top button.danger:hover{background:var(--do-nhat)}
 
@@ -174,6 +175,11 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
 .the>h3+p{margin:0 0 16px;font-size:12.5px;color:var(--mo)}
 .the-dau{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
 .the-dau h3{margin:0;font-size:15.5px;font-weight:600;margin-right:auto}
+/* các ô nhập trong thẻ: cách nhau cho dễ đọc, đừng dính vào dòng ghi chú trên */
+.the>div>label{margin-top:16px}
+.the>div>.hint+label{margin-top:0}
+.the>div.row{margin-top:4px}
+.the>button.them{margin-top:14px}
 
 /* ô số liệu */
 .o-so{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
@@ -350,18 +356,18 @@ table.bang .xoa:hover{background:var(--do-nhat)}
     </div>
 
     <div class="top">
-        <h1><b class="hieu">ROOT &amp; RISE LAB</b> · Quản trị<small id="state">Bản nháp tự lưu trong trình duyệt này</small></h1>
+        <h1><b class="hieu">ROOT &amp; RISE LAB</b> · Quản trị<small id="state"></small></h1>
         <div class="day">
             <details class="khac">
                 <summary>⋯ Khác</summary>
                 <div class="menu">
                     <button id="import" type="button">Nhập file content.js</button>
                     <button id="export" type="button">Tải content.js về máy</button>
-                    <button id="reset" class="danger" type="button">Đặt lại — xoá bản nháp</button>
+                    <button id="reset" class="danger" type="button">Bỏ hết thay đổi, lấy lại bản trên web</button>
                 </div>
             </details>
             <button id="thoat" type="button">Đăng xuất</button>
-            <button id="deploy" class="pri">Đẩy lên web</button>
+            <button id="deploy" class="pri">Đăng lên web</button>
         </div>
     </div>
 
@@ -420,10 +426,53 @@ table.bang .xoa:hover{background:var(--do-nhat)}
         const FALLBACK = { brand: 'ROOTLAB', products: [{}, {}] };
         const BASE = window.ROOTLAB_CONTENT || FALLBACK;
         const clone = o => JSON.parse(JSON.stringify(o));
+        /* ============================================================
+           GỘP BẢN NHÁP TRONG MÁY VỚI BẢN ĐANG CHẠY TRÊN WEB
+           Trước đây bản nháp ĐÈ NGUYÊN KHỐI lên bản trên web. Hậu quả thật:
+           web được bổ sung ô "Mã QR" cho từng chai, nhưng máy Phil còn bản
+           nháp cũ (chưa có ô đó) nên mục Mã QR báo "chưa sản phẩm nào có mã".
+           Nay gộp theo từng ô: ô nào Phil đã sửa thì giữ của Phil, ô nào chỉ
+           web mới có thì lấy thêm của web. Không còn phải hỏi "giữ bản nào".
+           ============================================================ */
+        const laObj = v => v && typeof v === 'object' && !Array.isArray(v);
+        let COPHANMOI = false;
+        function gopSau(web, nhap) {
+            if (nhap === undefined) return web;
+            if (Array.isArray(web) && Array.isArray(nhap)) {
+                const r = nhap.map((it, i) => {
+                    if (laObj(it) && it.key) {
+                        const g = web.find(x => laObj(x) && x.key === it.key);
+                        return g ? gopSau(g, it) : it;
+                    }
+                    return (laObj(it) && laObj(web[i])) ? gopSau(web[i], it) : it;
+                });
+                /* Chai / dòng có trên web mà bản nháp chưa có (web được thêm sau
+                   lần sửa gần nhất) thì thêm vào cuối — thà thừa còn hơn mất hẳn
+                   một sản phẩm đang bán. Xoá nhầm thì xoá lại một cái là xong. */
+                if (nhap.some(x => laObj(x) && x.key)) {
+                    web.forEach(g => {
+                        if (laObj(g) && g.key && !nhap.some(x => laObj(x) && x.key === g.key)) {
+                            r.push(g); COPHANMOI = true;
+                        }
+                    });
+                }
+                return r;
+            }
+            if (laObj(web) && laObj(nhap)) {
+                const r = {};
+                Object.keys(web).forEach(k => { r[k] = web[k]; });
+                Object.keys(nhap).forEach(k => { r[k] = gopSau(web[k], nhap[k]); });
+                /* web có ô mới mà nháp chưa có → đã lấy thêm ở trên */
+                if (Object.keys(web).some(k => !(k in nhap))) COPHANMOI = true;
+                return r;
+            }
+            return nhap;
+        }
+
         let D = clone(BASE);
         try {
             const nhap = localStorage.getItem('rootlab_draft');
-            if (nhap) D = Object.assign(clone(BASE), JSON.parse(nhap));
+            if (nhap) D = gopSau(clone(BASE), JSON.parse(nhap));
         } catch (e) { }
 
         /* ---------- dòng sản phẩm ----------
@@ -493,45 +542,28 @@ table.bang .xoa:hover{background:var(--do-nhat)}
         }
         function capNhatTrangThai() {
             const el = document.getElementById('state');
+            const nut = document.getElementById('deploy');
             if (!el) return;
             let daDay = '';
             try { daDay = localStorage.getItem(DAU_DAY) || ''; } catch (e) { }
             const khop = daDay && daDay === vanTay(JSON.stringify(D));
-            const soDong = (D.lines || []).length;
-            el.textContent = khop
-                ? soDong + ' dòng · đã khớp với web'
-                : soDong + ' dòng · CÓ THAY ĐỔI CHƯA ĐẨY LÊN WEB';
+            /* Chỉ hai câu, không kèm số dòng cho rối:
+               đã đăng rồi  ·  hay còn thay đổi chưa đăng. */
+            el.textContent = khop ? '✓ Đã đăng lên web' : '● Có thay đổi chưa đăng';
             el.classList.toggle('chua-day', !khop);
+            if (nut) {
+                nut.textContent = khop ? 'Đã đăng' : 'Đăng lên web';
+                nut.classList.toggle('lang', !!khop);
+                nut.title = khop ? 'Không có gì mới. Bấm vẫn đăng lại được.'
+                    : 'Đưa nội dung đang sửa lên sptlab.co';
+            }
         }
 
-        /* Bản nháp trong máy có thể CŨ HƠN content.js trên web (ví dụ web vừa được
-           bổ sung bản dịch). Cứ để bản nháp đè lên thì bấm "Đẩy lên web" là xoá mất
-           phần mới. Nên hỏi rõ một câu thay vì lặng lẽ ghi đè. */
         const KHOA_BASE = 'rootlab_base';
         const vtBase = () => vanTay(JSON.stringify(BASE));
-        function kiemTraBanMoi() {
-            let cu = '', coNhap = false;
-            try { cu = localStorage.getItem(KHOA_BASE) || ''; coNhap = !!localStorage.getItem('rootlab_draft'); } catch (e) { }
-            if (!coNhap || !cu || cu === vtBase()) {
-                try { localStorage.setItem(KHOA_BASE, vtBase()); } catch (e) { }
-                return;
-            }
-            const bar = document.createElement('div');
-            bar.className = 'bao-ban-moi';
-            bar.innerHTML = '<span><b>Web đã có bản mới hơn bản nháp trong máy bạn.</b> '
-                + 'Giữ bản nháp thì phần mới trên web sẽ bị ghi đè khi bấm Đẩy lên web.</span>';
-            const b1 = document.createElement('button');
-            b1.textContent = 'Lấy bản mới từ web';
-            b1.onclick = () => {
-                try { localStorage.removeItem('rootlab_draft'); localStorage.setItem(KHOA_BASE, vtBase()); } catch (e) { }
-                location.reload();
-            };
-            const b2 = document.createElement('button');
-            b2.className = 'phu'; b2.textContent = 'Giữ bản nháp của tôi';
-            b2.onclick = () => { try { localStorage.setItem(KHOA_BASE, vtBase()); } catch (e) { } bar.remove(); };
-            bar.append(b1, b2);
-            document.body.insertBefore(bar, document.body.firstChild);
-        }
+
+        /* Mục Popup gắn hàm vào đây để mỗi lần lưu là khung xem thử vẽ lại. */
+        let CAP_NHAT_XEM = null;
 
         /* Lưu bản nháp vào trình duyệt này. Trang quản trị KHÔNG còn khung xem
            trước — muốn xem thật thì bấm "Đẩy lên web" rồi mở sptlab.co. */
@@ -539,6 +571,7 @@ table.bang .xoa:hover{background:var(--do-nhat)}
             localStorage.setItem('rootlab_draft', JSON.stringify(D));
             try { localStorage.setItem(KHOA_BASE, vtBase()); } catch (e) { }
             try { capNhatTrangThai(); } catch (e) { }
+            try { if (CAP_NHAT_XEM) CAP_NHAT_XEM(); } catch (e) { }
         }
 
         /* ---------- công cụ dựng form ---------- */
@@ -779,6 +812,7 @@ table.bang .xoa:hover{background:var(--do-nhat)}
             gia: '<path d="M20.6 13.4L13 21a1.9 1.9 0 0 1-2.7 0l-7.6-7.6A2 2 0 0 1 2 12V4a2 2 0 0 1 2-2h8a2 2 0 0 1 1.4.6l7.2 7.2a1.9 1.9 0 0 1 0 2.6z"/><path d="M7 7h.01"/>',
             nha: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.8V21h14V9.8"/><path d="M9.5 21v-6h5v6"/>',
             nguoi: '<path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.9"/>',
+            the: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 13h7M7 16h10"/>',
             qr: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14h1M14 20h3M20 17v4"/>',
             giay: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',
             phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.7 2z"/>',
@@ -795,8 +829,10 @@ table.bang .xoa:hover{background:var(--do-nhat)}
                 { id: 'sec-thongke', khu: 'KINH DOANH', label: 'Thống kê', ic: 'chart', kd: 1,
                   mo: 'Khách tới từ đâu, dùng máy gì, ở tỉnh nào, quét mã QR nào — theo từng khoảng thời gian.' },
 
-                { id: 'sec-qr', khu: 'SẢN PHẨM & QR', label: 'Mã QR & popup', ic: 'qr', kd: 1,
-                  mo: 'Mỗi sản phẩm và cả bộ có một mã QR riêng. Khách quét là web mở ra popup đúng sản phẩm đó.' }
+                { id: 'sec-popup', khu: 'SẢN PHẨM & QR', label: 'Popup sản phẩm', ic: 'the', kd: 1,
+                  mo: 'Xem thử đúng cái khách thấy khi quét mã, và sửa nội dung bên trong popup ngay tại đây.' },
+                { id: 'sec-qr', khu: 'SẢN PHẨM & QR', label: 'Mã QR', ic: 'qr', kd: 1,
+                  mo: 'Mã QR của từng sản phẩm và cả bộ: tải về, in ra, đếm số lần khách quét.' }
             ];
             D.products.forEach((p, i) => {
                 S.push({ id: `sec-sp${i}`, khu: 'SẢN PHẨM & QR', label: p.name || ('Chai ' + (i + 1)), ic: 'chai',
@@ -1748,6 +1784,173 @@ h1{font-size:17px;margin:0 0 18px}
         }
 
 
+        /* ============================================================
+           MỤC 5 — POPUP SẢN PHẨM (xem thử + sửa nội dung)
+           Dùng lại ĐÚNG bộ dựng popup của trang web (san-pham.js) nên cái
+           thấy ở đây là cái khách thấy, không phải bản vẽ lại cho giống.
+           ============================================================ */
+        let POP_MA = '', POP_DT = false;
+        try { POP_MA = localStorage.getItem('rootlab_pop_ma') || ''; } catch (e) { }
+
+        function panelPopup() {
+            const box = h('div');
+            KHI_MO['sec-popup'] = () => veTrangPopup(box);
+            box.append(h('div', { class: 'trong', html: 'Đang dựng…' }));
+            return panel('Popup sản phẩm', [box], false, 'sec-popup', 'tran');
+        }
+
+        /* gắn CSS thật của popup vào trang quản trị, chỉ một lần */
+        let daGanCssPopup = false;
+        function ganCssPopup() {
+            if (daGanCssPopup) return;
+            const P = window.ROOTLAB_POPUP;
+            if (!P || !P.CSS) return;
+            const st = document.createElement('style');
+            st.textContent = P.CSS + `
+            /* trong trang quản trị: popup nằm gọn trong một khung, không phủ kín màn */
+            .xem-pop{background:#e9ecec;border-radius:14px;padding:18px;display:flex;justify-content:center}
+            .xem-pop .khung{width:100%;max-width:560px;transition:max-width .2s}
+            .xem-pop.dt .khung{max-width:390px}
+            .xem-pop .rp-nen{position:static;inset:auto;z-index:auto;padding:0;background:none;
+              backdrop-filter:none;-webkit-backdrop-filter:none;opacity:1;display:block}
+            .xem-pop .rp-hop{width:100%;max-height:none;transform:none;
+              box-shadow:0 14px 34px -20px rgba(16,40,34,.5)}
+            .xem-pop .rp-cuon{max-height:620px}
+            .xem-pop .rp-x{display:none}`;
+            document.head.appendChild(st);
+            daGanCssPopup = true;
+        }
+
+        function veTrangPopup(box) {
+            ganCssPopup();
+            box.innerHTML = '';
+            const ds = dsQR();
+            if (!ds.length) {
+                box.append(h('div', { class: 'the' }, [
+                    h('h3', { html: 'Chưa sản phẩm nào có mã QR' }),
+                    h('p', { html: 'Popup chỉ bật khi khách quét một mã. Vào mục CHAI SẢN PHẨM, điền ô “Mã QR của chai này” rồi quay lại đây.' })
+                ]));
+                return;
+            }
+            if (!ds.some(x => x.ma === POP_MA)) POP_MA = ds[0].ma;
+
+            /* --- chọn sản phẩm --- */
+            const the1 = h('div', { class: 'the' });
+            const dau = h('div', { class: 'the-dau' }, [h('h3', { html: 'Xem thử popup của' })]);
+            const khoT = h('div', { class: 'seg' });
+            [[false, 'Máy tính'], [true, 'Điện thoại']].forEach(([v, ten]) => {
+                const b = h('button', { type: 'button', html: ten });
+                if (POP_DT === v) b.classList.add('on');
+                b.onclick = () => { POP_DT = v; veTrangPopup(box); };
+                khoT.append(b);
+            });
+            dau.append(khoT);
+            the1.append(dau);
+            const loc = h('div', { class: 'loc' });
+            ds.forEach(x => {
+                const b = h('button', { type: 'button', html: escHtml(x.ten) });
+                if (x.ma === POP_MA) b.classList.add('on');
+                b.onclick = () => {
+                    POP_MA = x.ma;
+                    try { localStorage.setItem('rootlab_pop_ma', POP_MA); } catch (e) { }
+                    veTrangPopup(box);
+                };
+                loc.append(b);
+            });
+            the1.append(loc);
+            box.append(the1);
+
+            /* --- khung xem thử --- */
+            const the2 = h('div', { class: 'the' });
+            the2.append(h('h3', { html: 'Khách quét mã sẽ thấy đúng thế này' }),
+                h('p', { html: 'Bản tiếng Việt. Sửa ở phần dưới là khung này đổi theo ngay. Các bản dịch nằm trong file content.js, không sửa ở đây.' }));
+            const noi = h('div', { class: 'xem-pop' + (POP_DT ? ' dt' : '') });
+            the2.append(noi);
+            box.append(the2);
+
+            /* --- sửa nội dung --- */
+            box.append(oSuaPopup());
+
+            const ve = () => veKhungPopup(noi, POP_MA);
+            ve();
+            /* mỗi lần gõ vào ô nào là dựng lại khung xem thử (chờ 350ms cho đỡ giật) */
+            let hen;
+            CAP_NHAT_XEM = () => {
+                if (!document.getElementById('sec-popup')?.classList.contains('active')) return;
+                clearTimeout(hen); hen = setTimeout(ve, 350);
+            };
+        }
+
+        function veKhungPopup(noi, ma) {
+            const P = window.ROOTLAB_POPUP;
+            if (!P || !P.boDung) {
+                noi.innerHTML = '<div class="trong">Không xem thử được — thiếu file <b>san-pham.js</b> trong kho.</div>';
+                return;
+            }
+            let bo, k;
+            try { bo = P.boDung(D, 'vi'); k = bo.timMa(ma); }
+            catch (e) { noi.innerHTML = '<div class="trong">Lỗi dựng popup: ' + escHtml(e.message) + '</div>'; return; }
+            if (!k) { noi.innerHTML = '<div class="trong">Mã “' + escHtml(ma) + '” chưa gắn với sản phẩm nào.</div>'; return; }
+            const v = bo.dung(k);
+            noi.innerHTML = `<div class="khung"><div class="rp-nen hien"><div class="rp-hop">
+                <div class="rp-cuon">${v.html}${bo.form(v.sanPham)}</div></div></div></div>`;
+            /* popup cả bộ có tab Bước 1 / Bước 2 — cho bấm được như ngoài web */
+            noi.querySelectorAll('.rp-tab button').forEach(b => b.addEventListener('click', () => {
+                noi.querySelectorAll('.rp-tab button').forEach(x => x.setAttribute('aria-selected', x === b));
+                noi.querySelectorAll('.rp-buoc').forEach(x => { x.hidden = x.dataset.i !== b.dataset.i; });
+            }));
+            /* đây chỉ là xem thử — không gửi form đi đâu */
+            const f = noi.querySelector('.rp-form');
+            if (f) f.addEventListener('submit', e => {
+                e.preventDefault();
+                toast('Đây là khung xem thử — form chỉ chạy thật trên web');
+            });
+        }
+
+        /* Ô sửa nội dung popup của sản phẩm đang chọn. */
+        function oSuaPopup() {
+            const the = h('div', { class: 'the' });
+            const bo = (D.lines || []).find(l => l.qr === POP_MA);
+            if (bo) {
+                the.append(h('h3', { html: 'Nội dung popup của bộ “' + escHtml(bo.navLabel || bo.name || '') + '”' }),
+                    h('p', { html: 'Popup cả bộ ghép từ các chai bên trong. Muốn sửa chữ trong đó thì chọn từng chai ở hàng nút phía trên.' }));
+                the.append(field('Mã QR của cả bộ', 'lines.' + D.lines.indexOf(bo) + '.qr',
+                    { hint: 'Chữ không dấu, không dấu cách. Đổi mã thì tem đã in theo mã cũ sẽ không mở đúng nữa.' }));
+                const pr = 'lines.' + D.lines.indexOf(bo) + '.pricing.';
+                the.append(h('div', { class: 'row' }, [
+                    field('Giá cả bộ (hiện trên popup)', pr + 'comboNew'),
+                    field('Giá gạch ngang', pr + 'comboOld')
+                ]));
+                the.append(field('Dòng quà tặng kèm', pr + 'boxGift', { hint: 'Ví dụ: Tặng kèm lược massage da đầu. Để trống thì dùng câu mặc định.' }));
+                return the;
+            }
+            const i = (D.products || []).findIndex(p => p.qr === POP_MA);
+            if (i < 0) { the.append(h('div', { class: 'trong', html: 'Chưa chọn sản phẩm nào.' })); return the; }
+            const p = D.products[i];
+            the.append(h('h3', { html: 'Nội dung popup của “' + escHtml(p.name || '') + '”' }),
+                h('p', { html: 'Chép <b>đúng như in trên nhãn</b>. Đây là chỗ khách dò lại xem hàng có thật không.' }));
+            the.append(h('div', { class: 'row' }, [
+                field('Mã QR của chai này', `products.${i}.qr`, { hint: 'Chữ không dấu, không dấu cách — ví dụ <b>dau-goi</b>.' }),
+                field('Dung tích', `products.${i}.vol`, { hint: 'Ví dụ: 100 ml' })
+            ]));
+            the.append(field('Công dụng', `products.${i}.func`, { area: true, hint: 'Mỗi ý một dòng. Nói đúng mức mỹ phẩm — tránh chữ “trị”, “chữa”, “khỏi hẳn”.' }));
+            the.append(field('Hướng dẫn sử dụng', `products.${i}.use`, { area: true, hint: 'Mỗi bước một dòng.' }));
+            the.append(field('Lưu ý khi dùng', `products.${i}.warn`, { area: true, hint: 'Mỗi ý một dòng. Nên có: tránh vùng mắt, ngưng dùng nếu kích ứng, để xa tầm tay trẻ em, bảo quản nơi mát.' }));
+            the.append(listEditor('Chứng nhận / giấy phép của chai này', `products.${i}.certs`, null,
+                () => 'Nhà máy đạt CGMP-ASEAN'));
+            the.append(h('div', { class: 'hint', html: 'Mỗi dòng là một huy hiệu nhỏ trong popup. Chỉ ghi thứ <b>có giấy tờ thật</b>.' }));
+            the.append(temList(i));
+            const nut = h('div', { class: 'loc', style: 'margin-top:4px' });
+            nut.append(h('button', {
+                type: 'button', html: 'Sửa tên, giá, ảnh, thành phần đầy đủ →',
+                onclick: () => goToSection('sec-sp' + i)
+            }));
+            the.append(nut);
+            the.append(h('div', { class: 'hint', html: 'Tên, giá, ảnh chai, <b>thành phần đầy đủ (INCI)</b> và <b>số công bố mỹ phẩm</b> nằm ở mục của chai — vì mấy thứ đó còn hiện cả ngoài trang web, không riêng popup.' }));
+            return the;
+        }
+
+
         /* ---------- dựng toàn bộ form ---------- */
         function buildForm() {
             const F = document.getElementById('form');
@@ -1757,6 +1960,7 @@ h1{font-size:17px;margin:0 0 18px}
             F.append(panelTongQuan());
             F.append(panelKhach());
             F.append(panelThongKe());
+            F.append(panelPopup());
             F.append(panelQR());
 
             F.append(panel('Chung', [
@@ -1881,19 +2085,13 @@ h1{font-size:17px;margin:0 0 18px}
                     h('label', { html: '<b style="color:#16211e">Bảng giá</b>' }),
                     h('div', { class: 'row' }, [field('Giá (không cần chữ đ)', `products.${i}.price`), field('Chữ trên nút mua', `products.${i}.buyBtn`)]),
                     field('Dòng mô tả dưới tên', `products.${i}.priceSub`),
-                    h('label', { html: '<b style="color:#16211e">Nội dung hiện trong popup khi khách quét mã QR</b>' }),
-                    h('div', { class: 'hint', html: 'Khách quét mã trên chai là web mở ra và hiện ngay bảng thông tin này. Chép <b>đúng như in trên nhãn</b> — đây là chỗ khách dò lại xem hàng có thật không.' }),
-                    h('div', { class: 'row' }, [
-                        field('Mã QR của chai này', `products.${i}.qr`, { hint: 'Chữ không dấu, không khoảng trắng — ví dụ <b>dau-goi</b>. Đổi mã thì mã QR đã in trên tem cũ sẽ không mở đúng sản phẩm nữa.' }),
-                        field('Dung tích ghi trong popup', `products.${i}.vol`, { hint: 'Ví dụ: 100 ml' })
-                    ]),
-                    field('Công dụng', `products.${i}.func`, { area: true, hint: 'Mỗi ý một dòng. Nói đúng mức mỹ phẩm — tránh chữ "trị", "chữa", "khỏi hẳn".' }),
-                    field('Hướng dẫn sử dụng', `products.${i}.use`, { area: true, hint: 'Mỗi bước một dòng.' }),
-                    field('Lưu ý khi dùng', `products.${i}.warn`, { area: true, hint: 'Mỗi ý một dòng. Nên có: tránh vùng mắt, ngưng dùng nếu kích ứng, để xa tầm tay trẻ em, bảo quản nơi mát.' }),
-                    listEditor('Chứng nhận / giấy phép của chai này', `products.${i}.certs`, null,
-                        () => 'Nhà máy đạt CGMP-ASEAN'),
-                    h('div', { class: 'hint', html: 'Mỗi dòng là một huy hiệu nhỏ trong popup. Chỉ ghi thứ <b>có giấy tờ thật</b>.' }),
-                    temList(i),
+                    h('label', { html: '<b style="color:#16211e">Nội dung popup khi khách quét mã QR</b>' }),
+                    h('div', { class: 'hint', html: 'Công dụng, cách dùng, lưu ý, chứng nhận, tem và mã QR của chai này nằm ở mục <b>Popup sản phẩm</b> — ở đó vừa sửa vừa thấy ngay khách sẽ nhìn ra sao.' }),
+                    h('button', {
+                        class: 'them', type: 'button', style: 'margin:2px 0 18px',
+                        html: 'Mở mục Popup sản phẩm →',
+                        onclick: () => { POP_MA = D.products[i].qr || POP_MA; goToSection('sec-popup'); }
+                    }),
 
                     field('Số công bố mỹ phẩm', `products.${i}.cbmp`, { hint: 'Số tiếp nhận Phiếu công bố do Sở Y tế cấp, dạng <b>xxxxxx/26/CBMP-HCM</b>. Điền vào là tự hiện ở khối pháp lý chân trang. Bắt buộc phải có trước khi bán.' }),
                     field('Thành phần đầy đủ (INCI)', `products.${i}.inci`, { area: true, hint: 'Chép <b>y nguyên</b> danh sách in trên nhãn, cách nhau bằng dấu phẩy. Hiện ở màn Thành phần dưới dạng bảng gập lại. Để trống thì không hiện bảng nào.' }),
@@ -2193,7 +2391,6 @@ h1{font-size:17px;margin:0 0 18px}
 
         /* Kiểm tra bản nháp cũ TRƯỚC khi save() — save() ghi lại vân tay của
            content.js nên gọi sau thì không còn phát hiện được nữa. */
-        try { kiemTraBanMoi(); } catch (e) { }
         save();
         try { capNhatTrangThai(); } catch (e) { }
     </script>
