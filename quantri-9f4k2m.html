@@ -49,6 +49,8 @@ a{color:var(--chinh-dam)}
   background:var(--chinh);color:#fff;font-weight:600;cursor:pointer}
 .khoa button:hover{background:var(--chinh-dam)}
 .khoa .sai{color:var(--do);font-size:12.5px;margin-top:12px;min-height:18px}
+.khoa .ghi{color:var(--nhat);font-size:11.5px;line-height:1.6;margin-top:2px}
+.khoa input+input{margin-top:8px}
 
 /* ---------- THANH TRÊN ---------- */
 .top{height:58px;background:var(--the);border-bottom:1px solid var(--vien);
@@ -354,9 +356,11 @@ table.bang .xoa:hover{background:var(--do-nhat)}
         <div class="hop">
             <div class="dau">ROOT &amp; RISE LAB</div>
             <p class="phu">Trang quản trị</p>
+            <input id="ten" type="text" placeholder="Tên đăng nhập" autocomplete="username" spellcheck="false">
             <input id="mk" type="password" placeholder="Mật khẩu" autocomplete="current-password">
             <button id="mkOk">Vào</button>
             <div class="sai" id="mkSai"></div>
+            <div class="ghi" id="mkGhi"></div>
         </div>
     </div>
 
@@ -726,65 +730,102 @@ table.bang .xoa:hover{background:var(--do-nhat)}
 
 
         /* ============================================================
-           KHOÁ MẬT KHẨU
-           Đổi mật khẩu: nhờ Claude tạo lại dòng MK_HASH bên dưới.
-           Nói thật: đây là khoá phía trình duyệt — chặn người thường,
-           KHÔNG chặn người rành kỹ thuật. Lớp chính vẫn là địa chỉ khó đoán.
+           KHOÁ TRANG QUẢN TRỊ
+           Hai lớp, tuỳ lúc:
+           1) CÓ máy chủ (sau khi chuyển Cloudflare): tên đăng nhập và mật khẩu
+              nằm trong Variables & Secrets của Cloudflare, kiểm ở máy chủ, sai
+              5 lần là khoá 15 phút. Đây mới là khoá thật.
+           2) CHƯA có máy chủ (đang chạy Vercel): so ngay trong trình duyệt với
+              một chuỗi đã băm kèm muối. Nói thật: lớp này chỉ chặn người đi
+              ngang, KHÔNG chặn người rành kỹ thuật — vì vậy mới cần lớp 1.
+           Muốn đổi mật khẩu tạm của lớp 2: nhờ Claude tạo lại dòng MK_HASH.
            ============================================================ */
-        const MK_HASH = '11ecea4acd8df0fb9f04832673a856615ae1f61187dd7d01cc7e07fb77def9cf';
+        const MK_MUOI = 'd61202c1de8da92621cd9f977fc4e04e';
+        const MK_HASH = '743cf2765af5303cefe87bfc12c2ccc4f8bcb16a655e1b3a8922315f3e0c3b4f';
+        const TEN_MAC_DINH = 'admin';
 
-        /* ---------- vé đăng nhập của máy chủ ----------
-           Có máy chủ (Cloudflare) thì mật khẩu được kiểm ở máy chủ và đổi lấy
-           một "vé" để đọc thống kê / danh sách khách. Chưa có máy chủ thì rơi về
-           cách cũ: so mật khẩu ngay trong trình duyệt. */
+        /* ---------- vé đăng nhập của máy chủ ---------- */
         const VE_KEY = 'rootlab_ve';
         let VE = '';
         try { VE = sessionStorage.getItem(VE_KEY) || ''; } catch (e) { }
         let COMAYCHU = null;          /* null = chưa biết, true/false = đã thử */
 
-        async function dangNhapMayChu(mk) {
+        async function dangNhapMayChu(ten, mk) {
             try {
                 const r = await fetch('/api/admin/login', {
                     method: 'POST', headers: { 'content-type': 'application/json' },
-                    body: JSON.stringify({ password: mk })
+                    body: JSON.stringify({ user: ten, password: mk })
                 });
                 /* Máy chủ tĩnh (Vercel, python -m http.server) trả 404/405/501 cho
                    POST vào đường này — nghĩa là CHƯA có máy chủ, không phải sai mật khẩu. */
-                if ([404, 405, 501, 502, 503].includes(r.status)) return { co: false };
+                if ([404, 405, 501, 502].includes(r.status)) return { co: false };
                 const t = await r.text();
                 let d = null; try { d = JSON.parse(t); } catch (e) { return { co: false }; }
+                if (r.status === 503) return { co: false };   /* có file nhưng chưa gắn biến */
                 if (r.ok && d && d.token) return { co: true, ok: true, token: d.token };
-                return { co: true, ok: false };
+                return { co: true, ok: false, loi: (d && d.err) || 'Sai tên đăng nhập hoặc mật khẩu',
+                         khoa: !!(d && d.khoa), conLai: d && d.conLai };
             } catch (e) { return { co: false }; }
         }
 
+        /* ---------- đếm lần gõ sai ngay trong máy (cho lúc chưa có máy chủ) ---------- */
+        const SAI_KEY = 'rootlab_sai', SAI_TOI_DA = 5, SAI_PHUT = 15;
+        const docSai = () => { try { return JSON.parse(localStorage.getItem(SAI_KEY) || '{}'); } catch (e) { return {}; } };
+        const ghiSai = o => { try { localStorage.setItem(SAI_KEY, JSON.stringify(o)); } catch (e) { } };
+        const conKhoa = () => { const o = docSai(); return o.den && o.den > Date.now() ? Math.ceil((o.den - Date.now()) / 60000) : 0; };
+
         (function () {
-            const lop = document.getElementById('khoa'), o = document.getElementById('mk'),
-                  nut = document.getElementById('mkOk'), sai = document.getElementById('mkSai');
+            const lop = document.getElementById('khoa'), oTen = document.getElementById('ten'),
+                  o = document.getElementById('mk'), nut = document.getElementById('mkOk'),
+                  sai = document.getElementById('mkSai'), ghi = document.getElementById('mkGhi');
             if (!lop) return;
             const vao = () => { lop.remove(); try { moMucDau(); } catch (e) { } };
             if (sessionStorage.getItem('rootlab_ok') === '1') { vao(); return; }
+            try { oTen.value = localStorage.getItem('rootlab_ten') || TEN_MAC_DINH; } catch (e) { oTen.value = TEN_MAC_DINH; }
+
             const bam = async t => {
                 const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t));
                 return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
             };
+            const nhac = () => {
+                const p = conKhoa();
+                if (p) { sai.textContent = 'Sai nhiều lần quá. Thử lại sau ' + p + ' phút.'; nut.disabled = true; return true; }
+                nut.disabled = false; return false;
+            };
             const thu = async () => {
-                const mk = o.value;
-                sai.textContent = 'Đang kiểm tra…';
-                const kq = await dangNhapMayChu(mk);
+                if (nhac()) return;
+                const ten = (oTen.value || '').trim(), mk = o.value;
+                sai.textContent = 'Đang kiểm tra…'; ghi.textContent = '';
+                const kq = await dangNhapMayChu(ten, mk);
                 COMAYCHU = kq.co;
                 if (kq.co && kq.ok) {
                     VE = kq.token;
-                    try { sessionStorage.setItem(VE_KEY, VE); } catch (e) { }
+                    try { sessionStorage.setItem(VE_KEY, VE); localStorage.setItem('rootlab_ten', ten); localStorage.removeItem(SAI_KEY); } catch (e) { }
                     sessionStorage.setItem('rootlab_ok', '1'); vao(); return;
                 }
-                if (kq.co && !kq.ok) { sai.textContent = 'Sai mật khẩu'; o.select(); return; }
-                /* chưa có máy chủ → kiểm ngay trong trình duyệt như trước */
-                if (await bam(mk) === MK_HASH) { sessionStorage.setItem('rootlab_ok', '1'); vao(); }
-                else { sai.textContent = 'Sai mật khẩu'; o.select(); }
+                if (kq.co && !kq.ok) {
+                    sai.textContent = kq.loi;
+                    if (!kq.khoa && kq.conLai != null) ghi.textContent = 'Còn ' + kq.conLai + ' lần trước khi bị khoá 15 phút.';
+                    o.select(); return;
+                }
+                /* chưa có máy chủ → so ngay trong trình duyệt */
+                if (await bam((ten || TEN_MAC_DINH) + ':' + mk + ':' + MK_MUOI) === MK_HASH) {
+                    try { localStorage.removeItem(SAI_KEY); localStorage.setItem('rootlab_ten', ten); } catch (e) { }
+                    sessionStorage.setItem('rootlab_ok', '1'); vao(); return;
+                }
+                const s = docSai();
+                s.n = (s.n || 0) + 1;
+                if (s.n >= SAI_TOI_DA) { s.den = Date.now() + SAI_PHUT * 60000; s.n = 0; }
+                ghiSai(s);
+                if (!nhac()) {
+                    sai.textContent = 'Sai tên đăng nhập hoặc mật khẩu';
+                    ghi.textContent = 'Còn ' + (SAI_TOI_DA - s.n) + ' lần trước khi bị khoá ' + SAI_PHUT + ' phút.';
+                }
+                o.select();
             };
             nut.addEventListener('click', thu);
-            o.addEventListener('keydown', e => { if (e.key === 'Enter') thu(); });
+            [oTen, o].forEach(el => el.addEventListener('keydown', e => { if (e.key === 'Enter') thu(); }));
+            nhac();
             setTimeout(() => o.focus(), 60);
         })();
 
