@@ -58,7 +58,16 @@ a{color:var(--chinh-dam)}
 .khoa button.lai{margin-top:6px;background:none;color:var(--mo);border:1px solid var(--vien-dam);font-weight:500;padding:9px}
 .khoa button.lai:hover:not(:disabled){background:#f1f4f3;color:var(--chu)}
 .khoa button:disabled{opacity:.5;cursor:not-allowed}
-.khoa input+input{margin-top:8px}
+.khoa .o-mk{position:relative;margin-top:8px}
+.khoa .o-mk input{padding-right:46px}
+.khoa button.mat{position:absolute;right:6px;top:50%;translate:0 -50%;width:34px;height:34px;margin:0;
+  padding:0;background:none;border:0;border-radius:8px;display:grid;place-items:center;cursor:pointer}
+.khoa button.mat:hover{background:#eef1f0}
+.khoa button.mat svg{width:19px;height:19px;stroke:var(--mo);fill:none;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.khoa button.mat .m2{opacity:1}
+.khoa button.mat.mo .m2{opacity:0}
+.khoa button.mat.mo svg{stroke:var(--chinh-dam)}
 
 /* ---------- THANH TRÊN ---------- */
 .top{height:58px;background:var(--the);border-bottom:1px solid var(--vien);
@@ -374,7 +383,12 @@ table.bang .xoa:hover{background:var(--do-nhat)}
             <div class="dau">ROOT &amp; RISE LAB</div>
             <p class="phu">Trang quản trị</p>
             <input id="ten" type="text" placeholder="Tên đăng nhập" autocomplete="username" spellcheck="false">
-            <input id="mk" type="password" placeholder="Mật khẩu" autocomplete="current-password">
+            <div class="o-mk">
+                <input id="mk" type="password" placeholder="Mật khẩu" autocomplete="current-password">
+                <button type="button" id="hienMk" class="mat" aria-label="Hiện mật khẩu" title="Hiện mật khẩu">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path class="m1" d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle class="m1" cx="12" cy="12" r="3.2"/><path class="m2" d="M4 20 20 4"/></svg>
+                </button>
+            </div>
             <div id="hopMa" hidden>
                 <div class="ma-nhan" id="maNhan"></div>
                 <input id="ma" type="text" inputmode="numeric" maxlength="6" placeholder="Mã 6 số" autocomplete="one-time-code">
@@ -787,7 +801,9 @@ table.bang .xoa:hover{background:var(--do-nhat)}
                 if ([404, 405, 501, 502].includes(r.status)) return { co: false };
                 const t = await r.text();
                 let d = null; try { d = JSON.parse(t); } catch (e) { return { co: false }; }
-                if (r.status === 503) return { co: false };   /* có file nhưng chưa gắn biến */
+                /* 503 = máy chủ CÓ nhưng chưa nhận biến ADMIN_PASSWORD. Đây KHÔNG phải
+                   gõ sai — nói thẳng ra, đừng để anh gõ tới khi bị khoá. */
+                if (r.status === 503) return { co: false, chuaCai: true, loi: (d && d.err) || '' };
                 if (r.ok && d && d.token) return { co: true, ok: true, token: d.token };
                 return { co: true, ok: false, loi: (d && d.err) || 'Sai tên đăng nhập hoặc mật khẩu',
                          khoa: !!(d && d.khoa), conLai: d && d.conLai,
@@ -858,6 +874,15 @@ table.bang .xoa:hover{background:var(--do-nhat)}
                 sai.textContent = 'Đang kiểm tra…'; sai.classList.remove('tin'); ghi.textContent = '';
                 const kq = await dangNhapMayChu(ten, mk, dangDoiMa ? oMa.value : '');
                 COMAYCHU = kq.co;
+                if (kq.chuaCai) {
+                    sai.textContent = 'Máy chủ chưa nhận mật khẩu.';
+                    sai.classList.remove('tin');
+                    ghi.innerHTML = 'Vào Cloudflare → dự án <b>spt-hairlab</b> → <b>Settings</b> → '
+                        + '<b>Variables and secrets</b>: kiểm tra có đủ <b>ADMIN_USER</b> và <b>ADMIN_PASSWORD</b> '
+                        + '(đúng môi trường <b>Production</b>), rồi qua tab <b>Deployments</b> → dấu ⋯ → '
+                        + '<b>Retry deployment</b>. Lần gõ này KHÔNG bị tính là sai.';
+                    return;
+                }
                 if (kq.co && kq.ok) {
                     VE = kq.token;
                     try { sessionStorage.setItem(VE_KEY, VE); localStorage.setItem('rootlab_ten', ten); localStorage.removeItem(SAI_KEY); } catch (e) { }
@@ -888,6 +913,16 @@ table.bang .xoa:hover{background:var(--do-nhat)}
                 }
                 o.select();
             };
+            /* nút con mắt: bấm để xem mật khẩu vừa gõ, bấm lại để giấu */
+            const conMat = document.getElementById('hienMk');
+            conMat.addEventListener('click', () => {
+                const hien = o.type === 'password';
+                o.type = hien ? 'text' : 'password';
+                conMat.classList.toggle('mo', hien);
+                conMat.title = conMat.ariaLabel = hien ? 'Giấu mật khẩu' : 'Hiện mật khẩu';
+                o.focus();
+            });
+
             nut.addEventListener('click', thu);
             [oTen, o, oMa].forEach(el => el.addEventListener('keydown', e => { if (e.key === 'Enter') thu(); }));
             oMa.addEventListener('input', () => { oMa.value = oMa.value.replace(/\D/g, '').slice(0, 6); });
