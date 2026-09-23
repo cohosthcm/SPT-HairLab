@@ -175,6 +175,11 @@ label>b{display:block;font-size:13px;font-weight:600;color:var(--chu);
 .the>h3+p{margin:0 0 16px;font-size:12.5px;color:var(--mo)}
 .the-dau{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
 .the-dau h3{margin:0;font-size:15.5px;font-weight:600;margin-right:auto}
+/* mục Popup: bên trái là chỗ SỬA, bên phải là cái KHÁCH THẤY, nhìn cùng lúc */
+.pop-2cot{display:grid;grid-template-columns:minmax(0,1fr) minmax(370px,470px);gap:18px;align-items:start}
+.pop-2cot>.the{margin-bottom:0}
+.pop-xem{position:sticky;top:16px}
+@media (max-width:1180px){.pop-2cot{grid-template-columns:1fr}.pop-xem{position:static}}
 /* các ô nhập trong thẻ: cách nhau cho dễ đọc, đừng dính vào dòng ghi chú trên */
 .the>div>label{margin-top:16px}
 .the>div>.hint+label{margin-top:0}
@@ -1808,14 +1813,14 @@ h1{font-size:17px;margin:0 0 18px}
             const st = document.createElement('style');
             st.textContent = P.CSS + `
             /* trong trang quản trị: popup nằm gọn trong một khung, không phủ kín màn */
-            .xem-pop{background:#e9ecec;border-radius:14px;padding:18px;display:flex;justify-content:center}
+            .xem-pop{background:#e9ecec;border-radius:14px;padding:16px;display:flex;justify-content:center}
             .xem-pop .khung{width:100%;max-width:560px;transition:max-width .2s}
             .xem-pop.dt .khung{max-width:390px}
             .xem-pop .rp-nen{position:static;inset:auto;z-index:auto;padding:0;background:none;
               backdrop-filter:none;-webkit-backdrop-filter:none;opacity:1;display:block}
             .xem-pop .rp-hop{width:100%;max-height:none;transform:none;
               box-shadow:0 14px 34px -20px rgba(16,40,34,.5)}
-            .xem-pop .rp-cuon{max-height:620px}
+            .xem-pop .rp-cuon{max-height:560px}
             .xem-pop .rp-x{display:none}`;
             document.head.appendChild(st);
             daGanCssPopup = true;
@@ -1860,16 +1865,19 @@ h1{font-size:17px;margin:0 0 18px}
             the1.append(loc);
             box.append(the1);
 
-            /* --- khung xem thử --- */
-            const the2 = h('div', { class: 'the' });
+            /* --- hai cột: trái sửa · phải xem --- */
+            const hai = h('div', { class: 'pop-2cot' });
+
+            const theSua = oSuaPopup();
+            hai.append(theSua);
+
+            const the2 = h('div', { class: 'the pop-xem' });
             the2.append(h('h3', { html: 'Khách quét mã sẽ thấy đúng thế này' }),
-                h('p', { html: 'Bản tiếng Việt. Sửa ở phần dưới là khung này đổi theo ngay. Các bản dịch nằm trong file content.js, không sửa ở đây.' }));
+                h('p', { html: 'Bản tiếng Việt. Sửa ở cột bên trái là khung này đổi theo ngay.' }));
             const noi = h('div', { class: 'xem-pop' + (POP_DT ? ' dt' : '') });
             the2.append(noi);
-            box.append(the2);
-
-            /* --- sửa nội dung --- */
-            box.append(oSuaPopup());
+            hai.append(the2);
+            box.append(hai);
 
             const ve = () => veKhungPopup(noi, POP_MA);
             ve();
@@ -1911,12 +1919,29 @@ h1{font-size:17px;margin:0 0 18px}
         function oSuaPopup() {
             const the = h('div', { class: 'the' });
             const bo = (D.lines || []).find(l => l.qr === POP_MA);
+
             if (bo) {
-                the.append(h('h3', { html: 'Nội dung popup của bộ “' + escHtml(bo.navLabel || bo.name || '') + '”' }),
-                    h('p', { html: 'Popup cả bộ ghép từ các chai bên trong. Muốn sửa chữ trong đó thì chọn từng chai ở hàng nút phía trên.' }));
-                the.append(field('Mã QR của cả bộ', 'lines.' + D.lines.indexOf(bo) + '.qr',
+                const iL = D.lines.indexOf(bo);
+                the.append(h('h3', { html: '✏️ Sửa popup cả bộ “' + escHtml(bo.navLabel || bo.name || '') + '”' }),
+                    h('p', { html: 'Popup cả bộ ghép từ các chai bên trong. Muốn sửa công dụng / cách dùng / lưu ý thì bấm đúng chai ở đây:' }));
+                const nut = h('div', { class: 'loc', style: 'margin-bottom:6px' });
+                (bo.sp || []).forEach((k, i) => {
+                    const p = (D.products || []).find(x => x.key === k);
+                    if (!p) return;
+                    nut.append(h('button', {
+                        type: 'button', html: 'Sửa bước ' + (i + 1) + ' · ' + escHtml(p.name || k),
+                        onclick: () => {
+                            if (!p.qr) { alert('Chai này chưa có mã QR. Điền ô “Mã QR của chai này” trước.'); return; }
+                            POP_MA = p.qr;
+                            try { localStorage.setItem('rootlab_pop_ma', POP_MA); } catch (e) { }
+                            veTrangPopup(document.querySelector('#sec-popup > div'));
+                        }
+                    }));
+                });
+                the.append(nut);
+                the.append(field('Mã QR của cả bộ', 'lines.' + iL + '.qr',
                     { hint: 'Chữ không dấu, không dấu cách. Đổi mã thì tem đã in theo mã cũ sẽ không mở đúng nữa.' }));
-                const pr = 'lines.' + D.lines.indexOf(bo) + '.pricing.';
+                const pr = 'lines.' + iL + '.pricing.';
                 the.append(h('div', { class: 'row' }, [
                     field('Giá cả bộ (hiện trên popup)', pr + 'comboNew'),
                     field('Giá gạch ngang', pr + 'comboOld')
@@ -1924,32 +1949,34 @@ h1{font-size:17px;margin:0 0 18px}
                 the.append(field('Dòng quà tặng kèm', pr + 'boxGift', { hint: 'Ví dụ: Tặng kèm lược massage da đầu. Để trống thì dùng câu mặc định.' }));
                 return the;
             }
+
             const i = (D.products || []).findIndex(p => p.qr === POP_MA);
             if (i < 0) { the.append(h('div', { class: 'trong', html: 'Chưa chọn sản phẩm nào.' })); return the; }
             const p = D.products[i];
-            the.append(h('h3', { html: 'Nội dung popup của “' + escHtml(p.name || '') + '”' }),
-                h('p', { html: 'Chép <b>đúng như in trên nhãn</b>. Đây là chỗ khách dò lại xem hàng có thật không.' }));
+            the.append(h('h3', { html: '✏️ Sửa popup của “' + escHtml(p.name || '') + '”' }),
+                h('p', { html: 'Gõ tới đâu, khung bên phải đổi tới đó. Chép <b>đúng như in trên nhãn</b> — đây là chỗ khách dò lại xem hàng có thật không.' }));
             the.append(h('div', { class: 'row' }, [
                 field('Mã QR của chai này', `products.${i}.qr`, { hint: 'Chữ không dấu, không dấu cách — ví dụ <b>dau-goi</b>.' }),
                 field('Dung tích', `products.${i}.vol`, { hint: 'Ví dụ: 100 ml' })
             ]));
+            the.append(field('Dòng mô tả dưới tên', `products.${i}.priceSub`, { hint: 'Câu ngắn ngay dưới tên sản phẩm trong popup.' }));
             the.append(field('Công dụng', `products.${i}.func`, { area: true, hint: 'Mỗi ý một dòng. Nói đúng mức mỹ phẩm — tránh chữ “trị”, “chữa”, “khỏi hẳn”.' }));
             the.append(field('Hướng dẫn sử dụng', `products.${i}.use`, { area: true, hint: 'Mỗi bước một dòng.' }));
+            the.append(field('Thành phần đầy đủ (INCI)', `products.${i}.inci`, { area: true, hint: 'Chép y nguyên danh sách in trên nhãn, cách nhau bằng dấu phẩy. Hiện cả trong popup lẫn màn Thành phần ngoài web.' }));
             the.append(field('Lưu ý khi dùng', `products.${i}.warn`, { area: true, hint: 'Mỗi ý một dòng. Nên có: tránh vùng mắt, ngưng dùng nếu kích ứng, để xa tầm tay trẻ em, bảo quản nơi mát.' }));
+            the.append(field('Số công bố mỹ phẩm', `products.${i}.cbmp`, { hint: 'Dạng <b>xxxxxx/26/CBMP-HCM</b>. Điền vào là hiện trong popup và ở khối pháp lý chân trang.' }));
             the.append(listEditor('Chứng nhận / giấy phép của chai này', `products.${i}.certs`, null,
                 () => 'Nhà máy đạt CGMP-ASEAN'));
             the.append(h('div', { class: 'hint', html: 'Mỗi dòng là một huy hiệu nhỏ trong popup. Chỉ ghi thứ <b>có giấy tờ thật</b>.' }));
             the.append(temList(i));
             const nut = h('div', { class: 'loc', style: 'margin-top:4px' });
             nut.append(h('button', {
-                type: 'button', html: 'Sửa tên, giá, ảnh, thành phần đầy đủ →',
+                type: 'button', html: 'Sửa tên, giá, ảnh chai →',
                 onclick: () => goToSection('sec-sp' + i)
             }));
             the.append(nut);
-            the.append(h('div', { class: 'hint', html: 'Tên, giá, ảnh chai, <b>thành phần đầy đủ (INCI)</b> và <b>số công bố mỹ phẩm</b> nằm ở mục của chai — vì mấy thứ đó còn hiện cả ngoài trang web, không riêng popup.' }));
             return the;
         }
-
 
         /* ---------- dựng toàn bộ form ---------- */
         function buildForm() {
@@ -2084,17 +2111,14 @@ h1{font-size:17px;margin:0 0 18px}
 
                     h('label', { html: '<b style="color:#16211e">Bảng giá</b>' }),
                     h('div', { class: 'row' }, [field('Giá (không cần chữ đ)', `products.${i}.price`), field('Chữ trên nút mua', `products.${i}.buyBtn`)]),
-                    field('Dòng mô tả dưới tên', `products.${i}.priceSub`),
                     h('label', { html: '<b style="color:#16211e">Nội dung popup khi khách quét mã QR</b>' }),
-                    h('div', { class: 'hint', html: 'Công dụng, cách dùng, lưu ý, chứng nhận, tem và mã QR của chai này nằm ở mục <b>Popup sản phẩm</b> — ở đó vừa sửa vừa thấy ngay khách sẽ nhìn ra sao.' }),
+                    h('div', { class: 'hint', html: 'Mã QR, dung tích, công dụng, cách dùng, <b>thành phần đầy đủ</b>, lưu ý, số công bố, chứng nhận và tem của chai này nằm ở mục <b>Popup sản phẩm</b> — ở đó vừa sửa vừa thấy ngay khách sẽ nhìn ra sao.' }),
                     h('button', {
                         class: 'them', type: 'button', style: 'margin:2px 0 18px',
                         html: 'Mở mục Popup sản phẩm →',
                         onclick: () => { POP_MA = D.products[i].qr || POP_MA; goToSection('sec-popup'); }
                     }),
 
-                    field('Số công bố mỹ phẩm', `products.${i}.cbmp`, { hint: 'Số tiếp nhận Phiếu công bố do Sở Y tế cấp, dạng <b>xxxxxx/26/CBMP-HCM</b>. Điền vào là tự hiện ở khối pháp lý chân trang. Bắt buộc phải có trước khi bán.' }),
-                    field('Thành phần đầy đủ (INCI)', `products.${i}.inci`, { area: true, hint: 'Chép <b>y nguyên</b> danh sách in trên nhãn, cách nhau bằng dấu phẩy. Hiện ở màn Thành phần dưới dạng bảng gập lại. Để trống thì không hiện bảng nào.' }),
                     field('Link khi bấm nút mua', `products.${i}.buyLink`, { hint: 'Dán link giỏ hàng / Shopee / form đặt hàng. Để trống thì nút không làm gì.' }),
                     listEditor('Các gạch đầu dòng', `products.${i}.features`, null, () => 'Dòng mới')
                 ], false, `sec-sp${i}`));
