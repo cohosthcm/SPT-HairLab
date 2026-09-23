@@ -25,7 +25,7 @@
             dong: 'Đóng', xemTrang: 'Xem trang sản phẩm', buoc: 'Bước', hopQua: 'Hộp quà 2 bước chuyên sâu', tang: 'Tặng kèm lược massage da đầu',
             formTieuDe: 'Nhận ưu đãi & tư vấn miễn phí', formPhu: 'Để lại số điện thoại, chúng tôi gọi lại trong giờ làm việc.',
             ten: 'Họ tên', sdt: 'Số điện thoại', uuDai: 'Nhận ưu đãi', tuVan: 'Cần tư vấn', gui: 'Gửi thông tin', dangGui: 'Đang gửi…',
-            dongY: 'Tôi đồng ý để CÔNG TY TNHH SPT LAB lưu họ tên, số điện thoại của tôi để liên hệ tư vấn và gửi ưu đãi. Tôi có thể yêu cầu xoá bất cứ lúc nào.',
+            dongY: 'Tôi đồng ý để CÔNG TY TNHH SPT LAB lưu họ tên, số điện thoại của tôi để liên hệ tư vấn và gửi ưu đãi.',
             camOn: 'Cảm ơn bạn! Chúng tôi sẽ liên hệ sớm.', loi: 'Chưa gửi được. Bạn nhắn Zalo hoặc gọi giúp mình nhé:', thuLai: 'Chưa gửi được, bạn thử lại sau ít phút nhé.',
             loiTen: 'Bạn nhập họ tên giúp mình', loiSdt: 'Số điện thoại chưa đúng', loiDongY: 'Bạn cần tick đồng ý để gửi' },
         en: { chinhHang: 'Genuine ROOT & RISE LAB', congDung: 'Benefits', cachDung: 'How to use', thanhPhan: 'Full ingredient list',
@@ -34,7 +34,7 @@
             dong: 'Close', xemTrang: 'View product page', buoc: 'Step', hopQua: '2-step gift box', tang: 'Free scalp massage comb included',
             formTieuDe: 'Get offers & free advice', formPhu: 'Leave your number and we will call you back during business hours.',
             ten: 'Full name', sdt: 'Phone number', uuDai: 'Get offers', tuVan: 'Need advice', gui: 'Send', dangGui: 'Sending…',
-            dongY: 'I agree that SPT LAB COMPANY LIMITED may store my name and phone number to contact me with advice and offers. I can ask for deletion at any time.',
+            dongY: 'I agree that SPT LAB COMPANY LIMITED may store my name and phone number to contact me with advice and offers.',
             camOn: 'Thank you! We will contact you soon.', loi: 'Could not send. Please message or call us:', thuLai: 'Could not send, please try again in a few minutes.',
             loiTen: 'Please enter your name', loiSdt: 'Phone number looks wrong', loiDongY: 'Please tick to agree' },
         fr: { chinhHang: 'Authentique ROOT & RISE LAB', congDung: 'Bienfaits', cachDung: 'Utilisation', thanhPhan: 'Liste complète des ingrédients',
@@ -43,7 +43,7 @@
             dong: 'Fermer', xemTrang: 'Voir la page produit', buoc: 'Étape', hopQua: 'Coffret 2 étapes', tang: 'Peigne de massage offert',
             formTieuDe: 'Offres & conseil gratuit', formPhu: 'Laissez votre numéro, nous vous rappelons aux heures d’ouverture.',
             ten: 'Nom', sdt: 'Téléphone', uuDai: 'Recevoir les offres', tuVan: 'Besoin de conseil', gui: 'Envoyer', dangGui: 'Envoi…',
-            dongY: 'J’accepte que SPT LAB COMPANY LIMITED conserve mon nom et mon numéro pour me conseiller et m’envoyer des offres. Je peux demander leur suppression à tout moment.',
+            dongY: 'J’accepte que SPT LAB COMPANY LIMITED conserve mon nom et mon numéro pour me conseiller et m’envoyer des offres.',
             camOn: 'Merci ! Nous vous contactons bientôt.', loi: 'Envoi impossible. Écrivez-nous ou appelez :', thuLai: 'Envoi impossible, réessayez dans quelques minutes.',
             loiTen: 'Indiquez votre nom', loiSdt: 'Numéro incorrect', loiDongY: 'Cochez la case pour accepter' },
         it: { chinhHang: 'Originale ROOT & RISE LAB', congDung: 'Benefici', cachDung: 'Modo d’uso', thanhPhan: 'Elenco completo degli ingredienti',
@@ -52,7 +52,7 @@
             dong: 'Chiudi', xemTrang: 'Vai alla pagina prodotto', buoc: 'Passo', hopQua: 'Confezione regalo in 2 passi', tang: 'Pettine massaggiante in omaggio',
             formTieuDe: 'Offerte e consulenza gratuita', formPhu: 'Lascia il tuo numero, ti richiamiamo in orario d’ufficio.',
             ten: 'Nome', sdt: 'Telefono', uuDai: 'Ricevi offerte', tuVan: 'Vorrei un consiglio', gui: 'Invia', dangGui: 'Invio…',
-            dongY: 'Acconsento che SPT LAB COMPANY LIMITED conservi nome e numero per contattarmi con consigli e offerte. Posso chiederne la cancellazione in qualsiasi momento.',
+            dongY: 'Acconsento che SPT LAB COMPANY LIMITED conservi nome e numero per contattarmi con consigli e offerte.',
             camOn: 'Grazie! Ti contatteremo presto.', loi: 'Invio non riuscito. Scrivici o chiamaci:', thuLai: 'Invio non riuscito, riprova tra qualche minuto.',
             loiTen: 'Inserisci il nome', loiSdt: 'Numero non valido', loiDongY: 'Spunta la casella per acconsentire' },
         ja: { chinhHang: 'ROOT & RISE LAB 正規品', congDung: '効果', cachDung: '使い方', thanhPhan: '全成分',
@@ -61,7 +61,7 @@
             dong: '閉じる', xemTrang: '商品ページを見る', buoc: 'ステップ', hopQua: '2ステップ ギフトボックス', tang: '頭皮マッサージコーム付き',
             formTieuDe: '特典・無料相談', formPhu: '電話番号を残していただければ、営業時間内にご連絡します。',
             ten: 'お名前', sdt: '電話番号', uuDai: '特典を受け取る', tuVan: '相談したい', gui: '送信', dangGui: '送信中…',
-            dongY: 'SPT LAB COMPANY LIMITED が相談・特典のご連絡のため、氏名と電話番号を保存することに同意します。いつでも削除を依頼できます。',
+            dongY: 'SPT LAB COMPANY LIMITED が相談・特典のご連絡のため、氏名と電話番号を保存することに同意します。',
             camOn: 'ありがとうございます。まもなくご連絡します。', loi: '送信できませんでした。こちらからご連絡ください：', thuLai: '送信できませんでした。数分後にもう一度お試しください。',
             loiTen: 'お名前を入力してください', loiSdt: '電話番号が正しくありません', loiDongY: '同意にチェックしてください' }
     };
@@ -175,10 +175,10 @@
                 + doan(t.tem, tem(p), true);
         }
         const dauChai = p => `
+            <span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>
             <div class="rp-dau">
                 <div class="rp-anh">${p.photo ? `<img src="${h(p.photo)}" alt="${h(p.name)}">` : ''}</div>
                 <div class="rp-ten">
-                    <span class="rp-nhan">✓ ${h(t.chinhHang)}</span>
                     <h2 id="rp-td">${h(p.name)}</h2>
                     <p>${h(p.priceSub || '')}</p>
                     ${p.vol && !(p.priceSub || '').includes(p.vol.replace(/\s/g, '')) && !(p.priceSub || '').includes(p.vol) ? `<p class="rp-vol">${h(p.vol)}</p>` : ''}
@@ -193,10 +193,10 @@
             if (k.loai === 'chai') return { tieuDe: k.sp.name, sanPham: tenGoc(k.sp.key), html: dauChai(k.sp) + khoiChai(k.sp), dich: k.sp.key };
             const d = k.dong, pr = Object.assign({}, Cx.pricing || {}, d.pricing || {});
             const dau = `
+                <span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>
                 <div class="rp-dau rp-dau-bo">
                     <div class="rp-anh rp-anh-bo"><img src="bo-qua-tang.png" alt=""></div>
                     <div class="rp-ten">
-                        <span class="rp-nhan">✓ ${h(t.chinhHang)}</span>
                         <h2 id="rp-td">${h(pr.boxEyebrow ? t.hopQua : (d.name || t.hopQua))}</h2>
                         <p>${h(k.ds.map(p => p.name).join(' + '))}</p>
                         ${pr.comboNew ? `<div class="rp-gia">${h(pr.comboNew)}${pr.comboOld ? ` <s>${h(pr.comboOld)}</s>` : ''}</div>` : ''}
@@ -296,6 +296,20 @@
         /* dùng f.elements[...] — f.name là thuộc tính riêng của thẻ form, không phải ô "Họ tên" */
         const o = n => f.elements.namedItem(n);
         const bao1 = (s, loai = 'loi', coHtml = false) => { bao.className = 'rp-bao ' + loai; if (coHtml) bao.innerHTML = s; else bao.textContent = s; };
+
+        /* CHƯA TICK ĐỒNG Ý thì nút Gửi tắt hẳn — luật dữ liệu cá nhân bắt buộc
+           phải có sự đồng ý trước, và để nút sáng rồi mới báo lỗi thì khách bực. */
+        const oDy = o('consent');
+        const khoaNut = () => {
+            const duoc = !!(oDy && oDy.checked);
+            nut.disabled = !duoc;
+            nut.classList.toggle('khoa', !duoc);
+            nut.title = duoc ? '' : t.loiDongY;
+            if (duoc && bao.textContent === t.loiDongY) bao1('', '');
+        };
+        if (oDy) oDy.addEventListener('change', khoaNut);
+        khoaNut();
+
         f.addEventListener('submit', async e => {
             e.preventDefault();
             const name = o('name').value.trim();
@@ -335,21 +349,29 @@
       box-shadow:0 40px 90px -30px rgba(0,0,0,.6);overflow:hidden;display:flex;flex-direction:column;
       transform:translateY(18px) scale(.98);transition:transform .3s cubic-bezier(.2,.9,.25,1);font-family:var(--font-main,system-ui),system-ui,sans-serif}
     .rp-nen.hien .rp-hop{transform:none}
-    .rp-cuon{overflow-y:auto;overscroll-behavior:contain;padding:26px 26px 22px;-webkit-overflow-scrolling:touch}
+    .rp-cuon{overflow-y:auto;overscroll-behavior:contain;padding:26px 26px 22px;-webkit-overflow-scrolling:touch;
+      scrollbar-width:none;-ms-overflow-style:none}
+    /* giấu thanh cuộn cho gọn mắt — vẫn cuộn được bằng chuột, bằng ngón tay, bằng phím */
+    .rp-cuon::-webkit-scrollbar{width:0;height:0;display:none}
     .rp-x{position:absolute;top:12px;right:12px;z-index:2;width:38px;height:38px;border-radius:50%;border:0;background:rgba(35,32,27,.08);
       color:#23201b;font-size:24px;line-height:1;cursor:pointer}
     .rp-x:hover{background:rgba(35,32,27,.15)}
     .rp-x:focus-visible,.rp-hop button:focus-visible,.rp-hop summary:focus-visible,.rp-hop input:focus-visible{outline:2px solid #0f6b5c;outline-offset:2px}
-    .rp-dau{display:flex;gap:18px;align-items:center;margin:0 0 16px;padding-right:34px}
+    .rp-dau{display:flex;gap:18px;align-items:center;margin:0 0 16px}
     .rp-anh{flex:0 0 108px;height:170px;display:flex;align-items:flex-end;justify-content:center;
       background:radial-gradient(90% 70% at 50% 60%,#efe3cf,#f7f1e8 72%);border-radius:18px;padding:10px}
     .rp-anh img{max-height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 10px 14px rgba(80,55,20,.25))}
     .rp-anh-bo{flex-basis:150px;height:130px;padding:0;background:none}
     .rp-anh-bo img{border-radius:12px;filter:drop-shadow(0 12px 18px rgba(80,55,20,.28))}
-    .rp-ten h2{margin:4px 0 4px;font-size:22px;line-height:1.25;letter-spacing:-.01em}
+    .rp-ten h2{margin:0 0 4px;font-size:22px;line-height:1.25;letter-spacing:-.01em}
     .rp-ten p{margin:0;color:#6b6358;font-size:14px;line-height:1.45}
     .rp-vol{margin-top:2px!important}
-    .rp-nhan{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#0f6b5c;background:#e3f1ed;padding:4px 9px;border-radius:99px}
+    .rp-nhan{display:inline-flex;align-items:center;gap:5px;max-width:100%;margin:0 46px 10px 0;
+      font-size:10.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#1a4f8a;
+      background:#e8f0fb;padding:4px 10px 4px 6px;border-radius:99px}
+    /* một hàng, không ngắt dòng; khung hẹp quá thì tự thu chữ chứ không xuống dòng */
+    .rp-nhan b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
+    .rp-vr{width:15px;height:15px;flex:none;display:block}
     .rp-gia{margin-top:8px;font-size:22px;font-weight:700;color:#23201b}
     .rp-gia small{font-size:14px;margin-left:1px}
     .rp-gia s{font-size:14px;font-weight:400;color:#9a9186;margin-left:6px}
@@ -358,6 +380,7 @@
     .rp-tab button{flex:1;border:0;background:none;padding:10px 8px;border-radius:10px;font:600 13.5px/1.25 inherit;color:#6b6358;cursor:pointer}
     .rp-tab button[aria-selected=true]{background:#fff;color:#23201b;box-shadow:0 2px 8px rgba(0,0,0,.08)}
     .rp-buoc .rp-dau{margin-top:2px}
+    .rp-buoc>.rp-nhan{margin-right:0}
     .rp-doan{border-top:1px solid #e7ded1}
     .rp-doan summary{list-style:none;display:flex;align-items:center;gap:10px;padding:14px 2px;cursor:pointer;font-weight:700;font-size:15px}
     .rp-doan summary::-webkit-details-marker{display:none}
@@ -392,11 +415,13 @@
     .rp-bay{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
     .rp-dy{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.5;color:#6b6358;cursor:pointer;margin:4px 0 10px}
     .rp-dy input{flex:none;width:18px;height:18px;margin-top:1px;accent-color:#0f6b5c}
+    .rp-form:has(.rp-dy input:not(:checked)) .rp-dy{color:#4a463f}
     .rp-bao{min-height:0;font-size:13.5px;margin-bottom:8px}
     .rp-bao.loi{color:#b42323}
     .rp-bao a{color:#0f6b5c;font-weight:700}
     .rp-gui{width:100%;border:0;border-radius:14px;padding:14px;background:#0f6b5c;color:#fff;font:700 16px inherit;cursor:pointer}
     .rp-gui:disabled{opacity:.6;cursor:wait}
+    .rp-gui.khoa{background:#cfc9bf;color:#fff;cursor:not-allowed;opacity:1}
     .rp-xong{text-align:center;padding:16px 4px}
     .rp-xong b{display:inline-grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#e3f1ed;color:#0f6b5c;font-size:22px}
     .rp-xong p{margin:10px 0 0;font-weight:600}
