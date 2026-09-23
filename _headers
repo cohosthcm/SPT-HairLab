@@ -1,0 +1,17 @@
+# Cloudflare Pages đọc file này. Vercel bỏ qua, không sao.
+
+/*
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+
+# Trang quản trị: không cho máy tìm kiếm lưu, không cho nhúng vào khung
+# của trang khác (kiểu lừa bấm nhầm), không cho trình duyệt giữ bản cũ.
+/quantri-9f4k2m.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+  X-Frame-Options: DENY
+  Cache-Control: no-store
+
+# Dữ liệu khách hàng: tuyệt đối không được nằm lại trong bộ nhớ đệm nào
+/api/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex
