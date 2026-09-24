@@ -16,14 +16,19 @@ export async function onRequestGet({ request, env }) {
     const nhom = cot => q(`SELECT COALESCE(NULLIF(${cot},''),'Không rõ') k, COUNT(*) n, COUNT(DISTINCT sid) s
         FROM visits WHERE day >= ? GROUP BY k ORDER BY n DESC LIMIT 20`, tu);
 
-    const [tong, homnay, theoNgay, leadNgay, tongLead, leadMoi, nguon, tinh, may, hdh, hang, trinh, qr, tieng] = await db.batch([
+    /* ngày/tháng theo giờ UTC — đúng cách Resend tính hạn mức gói miễn phí */
+    const isoNow = new Date().toISOString(), ngayUTC = isoNow.slice(0, 10), thangUTC = isoNow.slice(0, 7);
+
+    const [tong, homnay, theoNgay, leadNgay, tongLead, leadMoi, nguon, tinh, may, hdh, hang, trinh, qr, tieng, thuNgay, thuThang] = await db.batch([
         q(`SELECT COUNT(*) views, COUNT(DISTINCT sid) sessions, SUM(qr IS NOT NULL) qr FROM visits WHERE day >= ?`, tu),
         q(`SELECT COUNT(*) views, COUNT(DISTINCT sid) sessions, SUM(qr IS NOT NULL) qr FROM visits WHERE day = ?`, homNay),
         q(`SELECT day, COUNT(*) views, COUNT(DISTINCT sid) sessions, SUM(qr IS NOT NULL) qr FROM visits WHERE day >= ? GROUP BY day ORDER BY day`, tu),
         q(`SELECT date(ts/1000 + 25200, 'unixepoch') day, COUNT(*) n FROM leads WHERE ts >= ? GROUP BY day`, tuTs),
         q(`SELECT COUNT(*) n FROM leads WHERE ts >= ?`, tuTs),
         q(`SELECT COUNT(*) n FROM leads WHERE status = 'moi'`),
-        nhom('src'), nhom('region'), nhom('device'), nhom('os'), nhom('brand'), nhom('browser'), nhom('qr'), nhom('lang')
+        nhom('src'), nhom('region'), nhom('device'), nhom('os'), nhom('brand'), nhom('browser'), nhom('qr'), nhom('lang'),
+        q(`SELECT COALESCE(SUM(so_nguoi),0) n FROM thu_da_gui WHERE ngay = ?`, ngayUTC),
+        q(`SELECT COALESCE(SUM(so_nguoi),0) n FROM thu_da_gui WHERE thang = ?`, thangUTC)
     ]);
     const r = x => x.results || [];
     const lead1 = Object.fromEntries(r(leadNgay).map(x => [x.day, x.n]));
@@ -40,6 +45,12 @@ export async function onRequestGet({ request, env }) {
         homNay: r(homnay)[0],
         series,
         nguon: r(nguon), tinh: r(tinh), may: r(may), hdh: r(hdh), hang: r(hang), trinh: r(trinh),
-        qr: r(qr).filter(x => x.k !== 'Không rõ'), tieng: r(tieng)
+        qr: r(qr).filter(x => x.k !== 'Không rõ'), tieng: r(tieng),
+        /* dùng cho khối "Sức chứa còn lại" ở Tổng quan — hạn mức gói Free của Resend
+           (nguồn: resend.com/docs/knowledge-base/account-quotas-and-limits, tra 09/2026) */
+        sucChua: {
+            thuHomNay: r(thuNgay)[0].n, thuHomNayGioiHan: 100,
+            thuThangNay: r(thuThang)[0].n, thuThangNayGioiHan: 3000
+        }
     });
 }
