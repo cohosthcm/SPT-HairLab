@@ -1,10 +1,4 @@
-/* Nội dung trang ROOTLAB — sửa bằng trang quản trị rồi tải file này về, ghi đè lên đây.
-   lines   = các DÒNG SẢN PHẨM ở màn đầu. Mỗi dòng là một trang riêng.
-   products= các chai. Một dòng có thể gồm nhiều chai (trường "sp" của dòng).
-   i18n    = bản dịch. Khối nào không khai thì tự dùng bản tiếng Việt.
-   sanSang = false trên một dòng: dòng đó CHƯA có hàng, nút chọn ở màn đầu
-   bị khoá (không bấm/mua được) nhưng vẫn xem trước được (rê chuột/chạm),
-   để khách biết dòng đó sắp ra mắt. Bỏ trường này (hoặc true) là mở lại. */
+/* Nội dung trang ROOTLAB — xuất từ admin.html lúc 23:19:42 24/9/2026 */
 window.ROOTLAB_CONTENT = {
   "brand": "ROOT & RISE LAB",
   "contactBtn": "Liên hệ",
@@ -42,14 +36,164 @@ window.ROOTLAB_CONTENT = {
       "heroT1": "Đánh thức",
       "heroT2": "chân tóc",
       "cta": "Mua bộ đôi",
-      "qr": "bo-doi"
+      "qr": "bo-doi",
+      "ingredients": {
+        "eyebrow": "THÀNH PHẦN",
+        "t1": "Bên trong",
+        "t2": "có gì",
+        "lead": "Hai bước bổ trợ nhau. Bước 1 lấy đi lớp tế bào chết và dầu thừa đang bít da đầu. Bước 2 đưa dưỡng chất xuống phần chân tóc vừa được thông thoáng.",
+        "items": [
+          {
+            "chip": "B1",
+            "name": "Glycolic Acid & AHA từ trái cây",
+            "desc": "Cùng chiết xuất táo, chanh, nho và cám lúa mì — làm bong nhẹ lớp tế bào chết đang bít miệng nang tóc."
+          },
+          {
+            "chip": "B1",
+            "name": "Cocamidopropyl Betaine & Decyl Glucoside",
+            "desc": "Bộ đôi tạo bọt gốc dừa. Rửa trôi dầu thừa và bụi bẩn mà không làm da đầu khô căng."
+          },
+          {
+            "chip": "B1",
+            "name": "Allantoin, hoa cúc La Mã & oải hương",
+            "desc": "Làm dịu da đầu ngay sau khi tẩy tế bào chết. Menthol cho cảm giác mát nhẹ."
+          },
+          {
+            "chip": "B2",
+            "name": "Hà thủ ô đỏ & Hoàng cầm",
+            "desc": "Hai vị thảo dược quen thuộc trong chăm sóc tóc, ở dạng chiết xuất thấm thẳng vào chân tóc."
+          },
+          {
+            "chip": "B2",
+            "name": "Panthenol B5, Niacinamide & Arginine",
+            "desc": "Dưỡng ẩm da đầu, làm dịu vùng đang kích ứng và bổ sung dưỡng chất cho sợi tóc."
+          },
+          {
+            "chip": "B2",
+            "name": "Mầm đậu nành & mầm lúa mì",
+            "desc": "Chiết xuất mầm giàu dưỡng chất, hỗ trợ nuôi phần chân tóc yếu do hư tổn."
+          }
+        ],
+        "note": "Thành phần ghi đúng như trên nhãn sản phẩm. Bấm vào mục \"Thành phần đầy đủ\" để xem toàn bộ.",
+        "inciLabel": "Thành phần đầy đủ"
+      },
+      "howto": {
+        "eyebrow": "CÁCH DÙNG",
+        "t1": "Ba",
+        "t2": "bước",
+        "lead": "Không phức tạp. Tẩy tế bào chết 1–2 lần mỗi tuần, xịt tinh chất mỗi ngày lên da đầu đã khô.",
+        "steps": [
+          {
+            "no": "01",
+            "h": "Tẩy tế bào chết da đầu",
+            "em": "1–2 LẦN / TUẦN",
+            "p": "Để tóc KHÔ, không làm ướt. Lấy một lượng vừa đủ bôi lên chân tóc, dùng lược chuyên dụng massage vùng có sản phẩm 2–3 phút, rồi gội sạch bằng dầu gội dịu nhẹ."
+          },
+          {
+            "no": "02",
+            "h": "Sấy khô da đầu",
+            "em": "TRƯỚC KHI XỊT",
+            "p": "Gội xong sấy cho da đầu khô hẳn. Tinh chất cần bám vào da đầu khô mới thấm tốt."
+          },
+          {
+            "no": "03",
+            "h": "Xịt tinh chất lên chân tóc",
+            "em": "MỖI NGÀY",
+            "p": "Rẽ ngôi và xịt một lượng vừa đủ lên phần chân tóc, chú ý vùng tóc thưa. Sau đó chỉ sấy mát, không xả lại với nước."
+          }
+        ]
+      },
+      "results": {
+        "eyebrow": "HIỆU QUẢ",
+        "t1": "Từng",
+        "t2": "tuần một",
+        "lead": "Tóc mọc theo chu kỳ, không theo ngày. Đây là mốc thời gian thực tế bạn nên kỳ vọng.",
+        "weeks": [
+          {
+            "b": "Tuần 2",
+            "s": "Da đầu sạch, hết bết và ngứa"
+          },
+          {
+            "b": "Tuần 4",
+            "s": "Tóc rụng khi gội giảm rõ"
+          },
+          {
+            "b": "Tuần 8",
+            "s": "Tóc con nhú lên ở vùng thưa"
+          },
+          {
+            "b": "Tuần 12",
+            "s": "Tóc dày hơn thấy được bằng mắt"
+          }
+        ],
+        "tiles": [
+          {
+            "val": "89%",
+            "lbl": "Người dùng thấy giảm rụng sau 8 tuần"
+          },
+          {
+            "val": "3,2×",
+            "lbl": "Số sợi tóc con mới so với trước khi dùng"
+          },
+          {
+            "val": "12",
+            "lbl": "Số tuần trung bình để thấy tóc dày lên"
+          }
+        ],
+        "note": "Số liệu minh hoạ — thay bằng kết quả khảo sát thật của bạn trước khi phát hành trang."
+      },
+      "reviews": {
+        "eyebrow": "ĐÁNH GIÁ",
+        "t1": "Người thật",
+        "t2": "việc thật",
+        "items": [
+          {
+            "stars": 5,
+            "text": "Da đầu mình dầu kinh khủng, gội hôm trước hôm sau đã bết. Dùng bước 1 được ba tuần thì tóc nhẹ hẳn, không còn ngứa nữa.",
+            "name": "Minh Anh, 29 tuổi",
+            "meta": "Đã dùng 3 tháng"
+          },
+          {
+            "stars": 5,
+            "text": "Mình rụng tóc sau sinh, hai bên thái dương thưa hẳn. Sau hai tháng dùng serum thì thấy lớp tóc con mọc lên, hơi lún phún nhưng có thật.",
+            "name": "Thu Hà, 33 tuổi",
+            "meta": "Đã dùng 2 tháng"
+          },
+          {
+            "stars": 4,
+            "text": "Serum không nhờn, để qua đêm sáng dậy tóc vẫn khô ráo. Trừ nửa sao vì mùi hương thảo hơi nồng với mình.",
+            "name": "Đức Huy, 27 tuổi",
+            "meta": "Đã dùng 6 tuần"
+          },
+          {
+            "stars": 5,
+            "text": "Dùng đủ bộ đôi mới thấy khác. Trước mình chỉ xịt serum mà da đầu còn bẩn nên gần như không ăn thua.",
+            "name": "Lan Phương, 41 tuổi",
+            "meta": "Đã dùng 4 tháng"
+          }
+        ],
+        "note": "Đánh giá mẫu — thay bằng phản hồi thật của khách hàng."
+      },
+      "pricing": {
+        "eyebrow": "BẢNG GIÁ",
+        "t1": "Bắt đầu",
+        "t2": "hôm nay",
+        "comboLabel": "Mua cả bộ đôi",
+        "comboOld": "980.000đ",
+        "comboNew": "879.000đ",
+        "comboBtn": "Mua bộ đôi",
+        "boxEyebrow": "HỘP QUÀ · 2 BƯỚC CHUYÊN SÂU",
+        "boxGift": "Tặng kèm lược massage da đầu",
+        "boxBadge": "Bán chạy nhất",
+        "comboLink": "",
+        "note": "Giá minh hoạ — thay bằng giá bán thật của bạn."
+      }
     },
     {
       "key": "goi",
       "name": "Dầu gội dưỡng chân tóc",
       "navLabel": "Dầu gội",
       "navKicker": "Dòng 02",
-      "sanSang": false,
       "nguoi": "",
       "kieuToc": "ngang",
       "accent": "#12a2bd",
@@ -189,7 +333,6 @@ window.ROOTLAB_CONTENT = {
       "name": "Sữa tắm dưỡng da",
       "navLabel": "Sữa tắm",
       "navKicker": "Dòng 03",
-      "sanSang": false,
       "nguoi": "",
       "kieuToc": "lua",
       "accent": "#9068c4",
@@ -742,15 +885,15 @@ window.ROOTLAB_CONTENT = {
         "weeks": [
           {
             "b": "Week 2",
-            "s": "Clean scalp, noticeably less grease and itch"
+            "s": "Scalp clean, no more greasiness or itching"
           },
           {
             "b": "Week 4",
-            "s": "Noticeably less hair falling out when washing"
+            "s": "Noticeably less hair falling out when you wash"
           },
           {
             "b": "Week 8",
-            "s": "Baby hairs start appearing in thin areas"
+            "s": "Baby hairs appearing in the thin areas"
           },
           {
             "b": "Week 12",
@@ -1081,7 +1224,7 @@ window.ROOTLAB_CONTENT = {
           "name": "Shampoo",
           "cardSub": "Daily wash",
           "tag": "Gentle shampoo · sulfate-free",
-          "desc": "A shampoo for everyday use.<br>Cleans strongly, while keeping the natural oil<br>that protects your scalp and roots.",
+          "desc": "A shampoo you can use every day.<br>Clean enough, while keeping the natural oil<br>that protects your scalp and roots.",
           "priceSub": "Gentle sulfate-free shampoo · 300ml",
           "buyBtn": "Buy shampoo",
           "features": [
@@ -1116,16 +1259,13 @@ window.ROOTLAB_CONTENT = {
         "zalo": "Chat on Zalo",
         "goi": "Call",
         "lienHe": "Contact",
-        "kenhMua": "Where to buy",
-        "sapCoHang": "Coming soon"
+        "kenhMua": "Where to buy"
       },
       "contact": {
         "heading": "Order & advice",
         "note": "Message us on Zalo for free advice before you buy. Any field left blank is hidden automatically.",
         "hours": "8:00 – 21:00 · Monday – Sunday",
-        "shopLabel": "Where to buy",
-        "addressFullEn": "Company address: L17-11, Floor 17, Vincom Centre, 72 Lê Thánh Tôn, Phường Sài Gòn, Ho Chi Minh City, Vietnam",
-        "disclaimerEn": "This product is a cosmetic, not a drug, and is not intended to replace medication for treating illness. Results may vary depending on each individual's body."
+        "shopLabel": "Where to buy"
       }
     },
     "fr": {
@@ -1596,8 +1736,7 @@ window.ROOTLAB_CONTENT = {
         "zalo": "Écrire sur Zalo",
         "goi": "Appeler",
         "lienHe": "Contact",
-        "kenhMua": "Où acheter",
-        "sapCoHang": "Bientôt disponible"
+        "kenhMua": "Où acheter"
       },
       "contact": {
         "heading": "Commande & conseils",
@@ -2074,8 +2213,7 @@ window.ROOTLAB_CONTENT = {
         "zalo": "Scrivi su Zalo",
         "goi": "Chiama",
         "lienHe": "Contatti",
-        "kenhMua": "Dove acquistare",
-        "sapCoHang": "Prossimamente"
+        "kenhMua": "Dove acquistare"
       },
       "contact": {
         "heading": "Ordini & consulenza",
@@ -2552,8 +2690,7 @@ window.ROOTLAB_CONTENT = {
         "zalo": "Zaloで連絡",
         "goi": "電話",
         "lienHe": "お問い合わせ",
-        "kenhMua": "購入できる場所",
-        "sapCoHang": "近日公開"
+        "kenhMua": "購入できる場所"
       },
       "contact": {
         "heading": "ご注文・ご相談",
@@ -2567,14 +2704,12 @@ window.ROOTLAB_CONTENT = {
     "zalo": "Nhắn Zalo",
     "goi": "Gọi",
     "lienHe": "Liên hệ",
-    "kenhMua": "Kênh mua hàng",
-    "sapCoHang": "Sắp có hàng"
+    "kenhMua": "Kênh mua hàng"
   },
   "contact": {
     "company": "CÔNG TY TNHH SPT LAB",
     "companyEn": "SPT LAB COMPANY LIMITED",
     "addressFull": "L17-11, Tầng 17, Toà nhà Vincom Center, 72 Lê Thánh Tôn, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam",
-    "addressFullEn": "",
     "taxCode": "",
     "license": "",
     "factory": "",
@@ -2582,7 +2717,6 @@ window.ROOTLAB_CONTENT = {
     "moit": "",
     "moitLogo": "",
     "policies": [],
-    "disclaimer": "Sản phẩm này là mỹ phẩm, không phải là thuốc và không có tác dụng thay thế thuốc chữa bệnh. Hiệu quả có thể khác nhau tuỳ cơ địa từng người.",
-    "disclaimerEn": ""
+    "disclaimer": "Sản phẩm này là mỹ phẩm, không phải là thuốc và không có tác dụng thay thế thuốc chữa bệnh. Hiệu quả có thể khác nhau tuỳ cơ địa từng người."
   }
 };
