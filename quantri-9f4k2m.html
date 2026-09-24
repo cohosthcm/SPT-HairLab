@@ -2132,12 +2132,12 @@ h1{font-size:17px;margin:0 0 18px}
                 the.append(field('Dòng quà tặng kèm', pr + 'boxGift', { hint: 'Ví dụ: Tặng kèm lược massage da đầu. Để trống thì dùng câu mặc định.' }));
                 the.append(field('Nhãn nổi bật (huy hiệu vàng)', pr + 'boxBadge',
                     { hint: 'Ví dụ: Bán chạy nhất, Ưu đãi tháng này. Để trống thì không hiện. Gõ sao hiện vậy, không tự dịch qua tiếng khác.' }));
-                the.append(h('div', { class: 'row' }, [
-                    photoFieldPath('Ảnh hộp — mặt chính', pr + 'boxPhoto',
-                        'Ảnh hiện trước tiên trên popup hộp quà. Để trống thì dùng ảnh mặc định.', 700),
-                    photoFieldPath('Ảnh hộp — mặt xoay/nghiêng', pr + 'boxPhotoGoc',
-                        'Ảnh tự đổi qua lại với ảnh mặt chính. Để trống thì dùng ảnh mặc định.', 700)
-                ]));
+                the.append(photoFieldPath('Ảnh huy hiệu (hình tròn vàng)', pr + 'badgeImage',
+                    'Thay cho hình huy chương vàng mặc định. Chỉ hiện khi ô "Nhãn nổi bật" ở trên có chữ. Để trống thì dùng hình mặc định.', 300));
+                the.append(photoFieldPath('Ảnh hộp — mặt chính', pr + 'boxPhoto',
+                    'Ảnh hiện trước tiên trên popup hộp quà. Để trống thì dùng ảnh mặc định.', 700));
+                the.append(photoFieldPath('Ảnh hộp — mặt xoay/nghiêng', pr + 'boxPhotoGoc',
+                    'Ảnh tự đổi qua lại với ảnh mặt chính. Để trống thì dùng ảnh mặc định.', 700));
                 return the;
             }
 

@@ -303,7 +303,7 @@
                         </div>
                         <div class="rp-hero-dots"><i class="on"></i><i></i></div>
                     </div>
-                    ${pr.boxBadge ? `<img class="rp-bestseller" src="bestseller.png" alt="${h(pr.boxBadge)}">` : ''}
+                    ${pr.boxBadge ? `<img class="rp-bestseller" src="${h(pr.badgeImage || 'bestseller.png')}" alt="${h(pr.boxBadge)}">` : ''}
                 </div>
                 <span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>
                 <div class="rp-ten rp-ten-bo">
