@@ -789,7 +789,7 @@ window.ROOTLAB_CONTENT = {
     "note": "Giá minh hoạ — thay bằng giá bán thật của bạn."
   },
   "footer": {
-    "tagline": "Chăm sóc tóc từ chân tóc — làm sạch trước, nuôi dưỡng sau.",
+    "tagline": "Tóc khoẻ tự nhiên",
     "copyright": "© 2026 ROOT & RISE LAB"
   },
   "i18n": {
