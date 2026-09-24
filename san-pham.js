@@ -160,9 +160,6 @@
             return null;
         }
 
-        const doan = (tieuDe, noiDung, mo = false, lop = '') => noiDung ? `
-            <details class="rp-doan ${lop}"${mo ? ' open' : ''}><summary><span>${h(tieuDe)}</span><i></i></summary>
-            <div class="rp-than">${noiDung}</div></details>` : '';
         const doanVan = s => String(s || '').split(/\n+/).filter(Boolean).map(x => `<p>${h(x)}</p>`).join('');
 
         function giayPhep(p) {
@@ -180,14 +177,6 @@
             const ds = (p.stamps || []).filter(x => x && (x.img || x.src));
             if (!ds.length) return '';
             return `<div class="rp-tem">${ds.map(x => `<figure><img src="${h(x.img || x.src)}" alt="${h(x.label || '')}" loading="lazy"><figcaption>${h(x.label || '')}</figcaption></figure>`).join('')}</div>`;
-        }
-        function khoiChai(p) {
-            return doan(t.congDung, doanVan(p.func || p.desc), true)
-                + doan(t.cachDung, doanVan(p.use), true)
-                + doan(t.thanhPhan, p.inci ? `<p class="rp-inci">${h(p.inci)}</p>` : '')
-                + doan(t.luuY, doanVan(p.warn))
-                + doan(t.giayPhep, giayPhep(p), true, 'rp-gp')
-                + doan(t.tem, tem(p), true);
         }
         const dauChai = (p, nhan = true, gia = true) => `
             ${nhan ? `<span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>` : ''}
@@ -276,8 +265,9 @@
            2-3 dòng nội dung thật mờ dần xuống để khách biết còn nội dung mà bấm vào xem tiếp
            (không lặp lại từng mục Công dụng/Cách dùng riêng cho mỗi chai như trước nữa). */
         function khoiChaiGop(ds) {
+            const nhieuChai = ds.length > 1;
             let noiDung = ds.map((p, i) => `
-                <h5 class="rp-buoc-nhan-gop">${h(t.buoc)} ${i + 1} · ${h(p.name)}</h5>
+                ${nhieuChai ? `<h5 class="rp-buoc-nhan-gop">${h(t.buoc)} ${i + 1} · ${h(p.name)}</h5>` : ''}
                 <div class="rp-sec"><h4>${h(t.congDung)}</h4>${doanVan(p.func || p.desc)}</div>
                 <div class="rp-sec"><h4>${h(t.cachDung)}</h4>${doanVan(p.use)}</div>
                 ${p.inci ? `<div class="rp-sec"><h4>${h(t.thanhPhan)}</h4><p class="rp-inci">${h(p.inci)}</p></div>` : ''}
@@ -298,7 +288,7 @@
         const GOC = window.ROOTLAB_CONTENT || Cx;
         const tenGoc = key => ((GOC.products || []).find(p => p.key === key) || {}).name || key;
         function dung(k) {
-            if (k.loai === 'chai') return { tieuDe: k.sp.name, sanPham: tenGoc(k.sp.key), html: dauChai(k.sp) + khoiChai(k.sp), dich: k.sp.key };
+            if (k.loai === 'chai') return { tieuDe: k.sp.name, sanPham: tenGoc(k.sp.key), html: dauChai(k.sp) + khoiChaiGop([k.sp]), dich: k.sp.key };
             const d = k.dong, pr = Object.assign({}, Cx.pricing || {}, d.pricing || {});
             /* ảnh hộp: mặt có cửa sổ thấy sản phẩm ↔ góc nghiêng — tự đổi qua lại, không xoay ảnh phẳng
                (xem rootlab-landing/doi-chai-khong-duoc-xoay.md — lùi mờ ra xa rồi tiến rõ lại gần) */
@@ -349,7 +339,7 @@
                 </div></details>
             </form>`;
         }
-        return { t, timMa, dung, form, khoiChai, dauChai };
+        return { t, timMa, dung, form, khoiChaiGop, dauChai };
     }
 
     const BO = boDung(Cx, L);
@@ -590,8 +580,9 @@
     .rp-chon{display:flex;gap:8px;margin-bottom:12px}
     .rp-chon label{flex:1;cursor:pointer}
     .rp-chon input{position:absolute;opacity:0;pointer-events:none}
-    .rp-chon span{display:block;text-align:center;padding:10px 6px;border:1px solid #ddd3c4;border-radius:12px;font-size:14px;font-weight:600;color:#6b6358}
-    .rp-chon input:checked+span{border-color:#0f6b5c;background:#e3f1ed;color:#0f6b5c}
+    .rp-chon span{display:block;text-align:center;padding:10px 6px;border:1px solid #ddd3c4;border-radius:12px;font-size:14px;font-weight:600;color:#6b6358;
+      transition:background .25s ease,border-color .25s ease,color .25s ease,transform .2s ease}
+    .rp-chon input:checked+span{border-color:#0f6b5c;background:#e3f1ed;color:#0f6b5c;transform:scale(1.02)}
     .rp-chon input:focus-visible+span{outline:2px solid #0f6b5c;outline-offset:2px}
     .rp-o{display:block;margin-bottom:10px}
     .rp-o span{display:block;font-size:12.5px;color:#6b6358;margin-bottom:4px}
@@ -625,6 +616,7 @@
     @media (prefers-reduced-motion:reduce){
       .rp-nen,.rp-hop{transition:none}
       .rp-hero-img img{transition:none}
+      .rp-chon span{transition:none}
     }
     `;
     css.textContent = CSS;

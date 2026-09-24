@@ -1525,11 +1525,8 @@
         .foot-social {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.6rem 1.8rem;
-            max-width: 1180px;
-            margin: 2.2rem auto 0;
-            padding-top: 1.6rem;
-            border-top: 1px solid rgba(255, 255, 255, .1);
+            gap: .9rem;
+            margin: 1.3rem 0 0;
         }
 
         .foot-social .foot-item {
@@ -1560,17 +1557,15 @@
         }
 
         .foot-social .foot-item:hover {
-            background: var(--d1);
-            border-color: var(--d1);
-            color: #fff;
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--accent-ink);
             transform: translateY(-3px);
         }
 
         .foot-social:empty {
             display: none;
-            border-top: none;
             margin-top: 0;
-            padding-top: 0;
         }
 
         /* ---- khối pháp lý ở chân trang ----
@@ -2081,6 +2076,10 @@
             }
 
             .foot-item {
+                justify-content: center;
+            }
+
+            .foot-social {
                 justify-content: center;
             }
 
@@ -2801,7 +2800,8 @@
         <div class="foot-grid">
             <div class="foot-col foot-brand">
                 <div class="logo" id="logo-chan"><span class="logo-chu" data-c="brand">ROOT &amp; RISE LAB</span></div>
-                <p data-c="footer.tagline">Chăm sóc tóc từ chân tóc — làm sạch trước, nuôi dưỡng sau.</p>
+                <p data-c="footer.tagline">Tóc khoẻ tự nhiên</p>
+                <div class="foot-social" data-list="social"></div>
             </div>
             <div class="foot-col" data-list="contactMain"></div>
             <div class="foot-col" data-list="contactShop"></div>
@@ -2809,7 +2809,6 @@
         <!-- Khối pháp lý: pháp nhân, mã số thuế, số công bố mỹ phẩm, huy hiệu
              Bộ Công Thương, dòng miễn trừ. Ô nào để trống thì tự ẩn. -->
         <div class="foot-phap" data-list="phapLy"></div>
-        <div class="foot-social" data-list="social"></div>
         <div class="foot-bottom" data-c="footer.copyright">© 2026 ROOT &amp; RISE LAB</div>
     </footer>
 

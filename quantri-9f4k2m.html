@@ -722,6 +722,38 @@ table.bang .xoa:hover{background:var(--do-nhat)}
             return box;
         }
 
+        /* tải ảnh theo đường dẫn bất kỳ trong D (dùng get/set) — để dùng lại
+           cho ảnh hộp quà, ảnh huy hiệu... không chỉ ảnh chai như photoField() */
+        function photoFieldPath(labelText, path, hint, maxH) {
+            const box = h('div');
+            const render = () => {
+                box.innerHTML = '';
+                box.append(h('label', { html: labelText }));
+                const file = h('input', { type: 'file', accept: 'image/*' });
+                file.addEventListener('change', async () => {
+                    const f = file.files[0]; if (!f) return;
+                    try {
+                        set(path, await nenAnh(f, maxH || 900));
+                        save(); render();
+                        toast('Đã thêm ảnh');
+                    } catch (e) { alert('Không đọc được ảnh này'); }
+                });
+                box.append(file);
+                const cur = get(path);
+                if (cur) {
+                    box.append(h('div', { class: 'thumb' }, [
+                        h('img', { src: cur }),
+                        h('button', {
+                            class: 'sm danger', onclick: () => { set(path, ''); save(); render(); }, html: 'Bỏ ảnh'
+                        })
+                    ]));
+                }
+                if (hint) box.append(h('div', { class: 'hint', html: hint }));
+            };
+            render();
+            return box;
+        }
+
         /* thu nhỏ ảnh để file content.js không phình to */
         function nenAnh(file, maxH) {
             return new Promise((res, rej) => {
@@ -2100,6 +2132,12 @@ h1{font-size:17px;margin:0 0 18px}
                 the.append(field('Dòng quà tặng kèm', pr + 'boxGift', { hint: 'Ví dụ: Tặng kèm lược massage da đầu. Để trống thì dùng câu mặc định.' }));
                 the.append(field('Nhãn nổi bật (huy hiệu vàng)', pr + 'boxBadge',
                     { hint: 'Ví dụ: Bán chạy nhất, Ưu đãi tháng này. Để trống thì không hiện. Gõ sao hiện vậy, không tự dịch qua tiếng khác.' }));
+                the.append(h('div', { class: 'row' }, [
+                    photoFieldPath('Ảnh hộp — mặt chính', pr + 'boxPhoto',
+                        'Ảnh hiện trước tiên trên popup hộp quà. Để trống thì dùng ảnh mặc định.', 700),
+                    photoFieldPath('Ảnh hộp — mặt xoay/nghiêng', pr + 'boxPhotoGoc',
+                        'Ảnh tự đổi qua lại với ảnh mặt chính. Để trống thì dùng ảnh mặc định.', 700)
+                ]));
                 return the;
             }
 
