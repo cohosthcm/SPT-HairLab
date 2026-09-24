@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>ROOT &amp; RISE LAB — Quản trị</title>
-    <script src="content.js?v=ff1ed2ee"></script>
+    <script src="content.js?v=8424e7af"></script>
     <script src="qr-lib.js?v=4c560aab"></script>
     <!-- Mượn đúng bộ dựng popup của trang web để xem thử ngay trong đây.
          Cờ ROOTLAB_ADMIN báo cho nó biết: chỉ mượn, đừng chạy gì cả. -->
     <script>window.ROOTLAB_ADMIN = true;</script>
-    <script src="san-pham.js?v=c3676ada"></script>
+    <script src="san-pham.js?v=de939a23"></script>
     <style>
 /* ==========================================================
    ROOT & RISE LAB — TRANG QUẢN TRỊ
@@ -749,6 +749,49 @@ table.bang .xoa:hover{background:var(--do-nhat)}
                     ]));
                 }
                 if (hint) box.append(h('div', { class: 'hint', html: hint }));
+            };
+            render();
+            return box;
+        }
+
+        /* ô huy hiệu dán góc ảnh (BESTSELLER…) — dùng chung cho hộp quà và từng chai lẻ.
+           Mặc định để trống = không có huy hiệu. Có 3 cách: tải ảnh riêng lên, bấm dùng
+           hình Bestseller vàng có sẵn, hoặc "Bỏ huy hiệu" để gỡ hẳn. */
+        function badgeField(path) {
+            const box = h('div');
+            const render = () => {
+                box.innerHTML = '';
+                box.append(h('label', { html: 'Huy hiệu góc ảnh (ví dụ BESTSELLER)' }));
+                const cur = get(path);
+                if (cur) {
+                    box.append(h('div', { class: 'thumb' }, [
+                        h('img', { src: cur, style: 'max-height:84px;width:auto' }),
+                        h('button', {
+                            class: 'sm danger', type: 'button', html: 'Bỏ huy hiệu',
+                            onclick: () => { set(path, ''); save(); render(); toast('Đã bỏ huy hiệu'); }
+                        })
+                    ]));
+                }
+                const file = h('input', { type: 'file', accept: 'image/*' });
+                file.addEventListener('change', async () => {
+                    const f = file.files[0]; if (!f) return;
+                    try {
+                        set(path, await nenAnh(f, 300));
+                        save(); render();
+                        toast('Đã thay huy hiệu');
+                    } catch (e) { alert('Không đọc được ảnh này'); }
+                });
+                box.append(file);
+                if (cur !== 'bestseller.png') {
+                    box.append(h('button', {
+                        class: 'sm', type: 'button', style: 'margin-top:8px',
+                        html: 'Dùng huy hiệu Bestseller vàng có sẵn',
+                        onclick: () => { set(path, 'bestseller.png'); save(); render(); toast('Đã gắn huy hiệu Bestseller'); }
+                    }));
+                }
+                box.append(h('div', { class: 'hint', html: cur
+                    ? 'Muốn đổi hình khác thì bấm chọn ảnh ở trên (nên dùng PNG nền trong suốt).'
+                    : 'Đang để trống — popup <b>không có</b> huy hiệu. Chọn ảnh để thêm, hoặc bấm nút dùng hình có sẵn.' }));
             };
             render();
             return box;
@@ -2130,10 +2173,7 @@ h1{font-size:17px;margin:0 0 18px}
                     field('Giá gạch ngang', pr + 'comboOld')
                 ]));
                 the.append(field('Dòng quà tặng kèm', pr + 'boxGift', { hint: 'Ví dụ: Tặng kèm lược massage da đầu. Để trống thì dùng câu mặc định.' }));
-                the.append(field('Nhãn nổi bật (huy hiệu vàng)', pr + 'boxBadge',
-                    { hint: 'Ví dụ: Bán chạy nhất, Ưu đãi tháng này. Để trống thì không hiện. Gõ sao hiện vậy, không tự dịch qua tiếng khác.' }));
-                the.append(photoFieldPath('Ảnh huy hiệu (hình tròn vàng)', pr + 'badgeImage',
-                    'Thay cho hình huy chương vàng mặc định. Chỉ hiện khi ô "Nhãn nổi bật" ở trên có chữ. Để trống thì dùng hình mặc định.', 300));
+                the.append(badgeField(pr + 'badgeImage'));
                 the.append(photoFieldPath('Ảnh hộp — mặt chính', pr + 'boxPhoto',
                     'Ảnh hiện trước tiên trên popup hộp quà. Để trống thì dùng ảnh mặc định.', 700));
                 the.append(photoFieldPath('Ảnh hộp — mặt xoay/nghiêng', pr + 'boxPhotoGoc',
@@ -2151,6 +2191,7 @@ h1{font-size:17px;margin:0 0 18px}
                 field('Dung tích', `products.${i}.vol`, { hint: 'Ví dụ: 100 ml' })
             ]));
             the.append(field('Dòng mô tả dưới tên', `products.${i}.priceSub`, { hint: 'Câu ngắn ngay dưới tên sản phẩm trong popup.' }));
+            the.append(badgeField(`products.${i}.badgeImage`));
             the.append(field('Công dụng', `products.${i}.func`, { area: true, hint: 'Mỗi ý một dòng. Nói đúng mức mỹ phẩm — tránh chữ “trị”, “chữa”, “khỏi hẳn”.' }));
             the.append(field('Hướng dẫn sử dụng', `products.${i}.use`, { area: true, hint: 'Mỗi bước một dòng.' }));
             the.append(field('Thành phần đầy đủ (INCI)', `products.${i}.inci`, { area: true, hint: 'Chép y nguyên danh sách in trên nhãn, cách nhau bằng dấu phẩy. Hiện cả trong popup lẫn màn Thành phần ngoài web.' }));

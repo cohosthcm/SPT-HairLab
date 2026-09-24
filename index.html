@@ -2590,7 +2590,9 @@
     <header class="chooser" id="chon">
         <canvas class="cs-toc" id="cs-toc" aria-hidden="true"></canvas>
         <div class="cs-bar">
-            <div class="cs-brand" id="logo-chon"><span class="logo-chu">SPT LAB</span></div>
+            <!-- 25/09: bỏ chữ SPT LAB ở màn đầu theo ý anh Phil; giữ khung trống để nút
+                 ngôn ngữ vẫn nằm đúng góc phải -->
+            <div class="cs-brand" id="logo-chon"></div>
             <div id="tieng-chon"></div>
         </div>
         <div class="cs-stage">
@@ -2854,7 +2856,7 @@
     </svg>
 
     <!-- nội dung trang: sửa bằng admin.html rồi thay file này -->
-    <script src="content.js?v=ff1ed2ee"></script>
+    <script src="content.js?v=8424e7af"></script>
     <script>
         /* ============================================================
            0. NỘI DUNG TRANG — mọi chữ và cấu hình chai nằm ở đây.
@@ -3563,7 +3565,8 @@
         /* Logo: có ảnh trong C.logo thì dùng ảnh, không có thì giữ biểu tượng + chữ. */
         function veLogo() {
             const anh = (C.logo || '').trim();
-            ['logo-menu', 'logo-chan', 'logo-chon'].forEach(id => {
+            /* logo-chon (màn đầu) đã bỏ chữ SPT LAB từ 25/09 — không gắn logo vào đó nữa */
+            ['logo-menu', 'logo-chan'].forEach(id => {
                 const o = document.getElementById(id);
                 if (!o) return;
                 o.querySelector('.logo-anh')?.remove();
@@ -5478,7 +5481,7 @@
 
     </script>
     <!-- popup sản phẩm khi quét mã QR + đếm lượt vào (xem san-pham.js) -->
-    <script src="san-pham.js?v=c3676ada"></script>
+    <script src="san-pham.js?v=de939a23"></script>
 </body>
 
 </html>

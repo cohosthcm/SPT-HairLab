@@ -185,6 +185,7 @@ window.ROOTLAB_CONTENT = {
         "boxEyebrow": "HỘP QUÀ · 2 BƯỚC CHUYÊN SÂU",
         "boxGift": "Tặng kèm lược massage da đầu",
         "boxBadge": "Bán chạy nhất",
+        "badgeImage": "bestseller.png",
         "comboLink": "",
         "note": "Giá minh hoạ — thay bằng giá bán thật của bạn."
       }

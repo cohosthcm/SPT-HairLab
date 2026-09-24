@@ -182,6 +182,13 @@
            đổi mặt vì chai lẻ chỉ có 1 ảnh) — để popup 1 chai và popup hộp quà giống hệt
            nhau về bố cục, không chỉ giống mỗi khung "xem đầy đủ". Chưa có ảnh thì bỏ hẳn
            khối hero, giữ bố cục cũ (không hụt khoảng trống). */
+        /* huy hiệu dán góc ảnh (vd. BESTSELLER) — v15: CHỈ hiện khi có ảnh huy hiệu, mặc định
+           không có gì. Trước đây cứ có chữ "Nhãn nổi bật" là tự lôi hình bestseller.png ra, nên
+           bấm "Bỏ ảnh" trong trang quản trị cũng không gỡ được. Giờ hộp quà lẫn từng chai lẻ
+           đều có ô ảnh huy hiệu riêng: để trống = không có huy hiệu. */
+        const huyHieu = (anh, chu) => anh
+            ? `<img class="rp-bestseller" src="${h(anh)}" alt="${h(chu || '')}">` : '';
+
         const dauChai = (p, nhan = true, gia = true) => {
             const coAnh = !!p.photo;
             return `
@@ -190,6 +197,7 @@
                 <div class="rp-hero-stage">
                     <div class="rp-hero-img"><img class="hf" src="${h(p.photo)}" alt="${h(p.name)}"></div>
                 </div>
+                ${huyHieu(p.badgeImage, p.badgeAlt)}
             </div>` : ''}
             ${nhan ? `<span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>` : ''}
             <div class="rp-ten${coAnh ? ' rp-ten-bo' : ''}">
@@ -313,7 +321,7 @@
                         </div>
                         <div class="rp-hero-dots"><i class="on"></i><i></i></div>
                     </div>
-                    ${pr.boxBadge ? `<img class="rp-bestseller" src="${h(pr.badgeImage || 'bestseller.png')}" alt="${h(pr.boxBadge)}">` : ''}
+                    ${huyHieu(pr.badgeImage, pr.boxBadge)}
                 </div>
                 <span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>
                 <div class="rp-ten rp-ten-bo">
@@ -363,8 +371,28 @@
         truocDo = document.activeElement;
         lopPhu = document.createElement('div');
         lopPhu.className = 'rp-nen';
+        /* v15: nút đổi ngôn ngữ ngay trên popup — trước đây nút ngôn ngữ của trang nằm khuất
+           sau popup, khách người nước ngoài quét mã không biết cách đổi. Dùng đúng danh sách
+           TIENG và hàm doiTieng() của trang: chọn tiếng là tải lại trang, ?qr= vẫn còn trên
+           địa chỉ nên popup tự mở lại đúng sản phẩm, bằng tiếng mới (chữ + nội dung đã dịch
+           trong content.js). Máy chủ không đếm trùng lượt vào trong 30 phút nên thống kê
+           không bị tăng ảo. */
+        const coTieng = typeof TIENG !== 'undefined' && Array.isArray(TIENG) && TIENG.length > 1
+            && typeof doiTieng === 'function';
+        const tiengDang = coTieng ? (TIENG.find(x => x.ma === L) || TIENG[0]) : null;
+        const nutTieng = coTieng ? `
+                <div class="rp-tieng">
+                    <button type="button" class="rp-tieng-nut" aria-haspopup="listbox" aria-expanded="false" aria-label="Ngôn ngữ / Language">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z"/></svg>
+                        <span>${h(tiengDang.tat)}</span><i></i>
+                    </button>
+                    <div class="rp-tieng-menu" role="listbox">
+                        ${TIENG.map(x => `<button type="button" role="option" data-ma="${h(x.ma)}"${x.ma === tiengDang.ma ? ' class="on" aria-selected="true"' : ''}>${h(x.ten)}</button>`).join('')}
+                    </div>
+                </div>` : '';
         lopPhu.innerHTML = `
             <div class="rp-hop" role="dialog" aria-modal="true" aria-labelledby="rp-td">
+                ${nutTieng}
                 <button type="button" class="rp-x" aria-label="${h(t.dong)}">×</button>
                 <div class="rp-cuon">${v.html}${form(v.sanPham)}
                     <button type="button" class="rp-xem">${h(t.xemTrang)} →</button>
@@ -381,6 +409,24 @@
         lopPhu.addEventListener('click', e => { if (e.target === lopPhu) dong(); });
         $('.rp-x', lopPhu).addEventListener('click', dong);
         $('.rp-xem', lopPhu).addEventListener('click', dong);
+        const oTieng = $('.rp-tieng', lopPhu);
+        if (oTieng) {
+            const nutT = $('.rp-tieng-nut', oTieng);
+            const dongMenu = () => { oTieng.classList.remove('mo'); nutT.setAttribute('aria-expanded', 'false'); };
+            nutT.addEventListener('click', e => {
+                e.stopPropagation();
+                const mo = !oTieng.classList.contains('mo');
+                oTieng.classList.toggle('mo', mo);
+                nutT.setAttribute('aria-expanded', String(mo));
+            });
+            oTieng.querySelectorAll('.rp-tieng-menu button').forEach(b => b.addEventListener('click', e => {
+                e.stopPropagation();
+                const ma = b.dataset.ma;
+                if (ma === L) { dongMenu(); return; }
+                try { doiTieng(ma); } catch (err) { dongMenu(); }
+            }));
+            $('.rp-hop', lopPhu).addEventListener('click', e => { if (!oTieng.contains(e.target)) dongMenu(); });
+        }
         /* mục "xem đầy đủ" gộp — bấm vào khu vực hé lộ mờ cũng mở accordion ra luôn */
         const rpDoanGop = $('.rp-doan-gop', lopPhu), rpPeek = $('.rp-peek', lopPhu);
         if (rpDoanGop && rpPeek) rpPeek.addEventListener('click', () => { rpDoanGop.open = true; });
@@ -525,6 +571,26 @@
     .rp-cuon::-webkit-scrollbar{width:0;height:0;display:none}
     .rp-x{position:absolute;top:12px;right:12px;z-index:2;width:38px;height:38px;border-radius:50%;border:0;background:rgba(35,32,27,.08);
       color:#23201b;font-size:24px;line-height:1;cursor:pointer}
+    /* nút ngôn ngữ trên popup — nằm ngay bên trái nút đóng */
+    .rp-tieng{position:absolute;top:12px;right:58px;z-index:4}
+    .rp-tieng-nut{display:flex;align-items:center;gap:6px;height:38px;padding:0 12px;border:0;border-radius:99px;
+      background:rgba(255,255,255,.88);box-shadow:inset 0 0 0 1px rgba(35,32,27,.14);color:#23201b;
+      font-family:inherit;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;
+      -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+    .rp-tieng-nut svg{width:16px;height:16px;flex:none}
+    .rp-tieng-nut i{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #8b8276;
+      transition:transform .2s}
+    .rp-tieng.mo .rp-tieng-nut i{transform:rotate(180deg)}
+    .rp-tieng-menu{position:absolute;top:44px;right:0;min-width:160px;padding:6px;background:#fff;border:1px solid #e7ded1;
+      border-radius:14px;box-shadow:0 14px 34px rgba(35,32,27,.18);opacity:0;visibility:hidden;transform:translateY(-4px);
+      transition:opacity .18s ease,transform .18s ease,visibility 0s linear .18s}
+    .rp-tieng.mo .rp-tieng-menu{opacity:1;visibility:visible;transform:none;transition:opacity .18s ease,transform .18s ease}
+    .rp-tieng-menu button{display:block;width:100%;text-align:left;padding:10px 12px;border:0;border-radius:10px;background:none;
+      font-family:inherit;font-size:14px;font-weight:500;color:#23201b;cursor:pointer}
+    .rp-tieng-menu button:hover{background:#f3eee6}
+    .rp-tieng-menu button.on{background:#e3f1ed;color:#0f6b5c;font-weight:700}
+    /* chai chưa có ảnh (không có khối ảnh lớn): nhãn Chính hãng nằm dòng đầu — chừa chỗ cho nút ngôn ngữ + nút đóng */
+    .rp-cuon > .rp-nhan:first-child{margin-right:132px}
     .rp-x:hover{background:rgba(35,32,27,.15)}
     .rp-x:focus-visible,.rp-hop button:focus-visible,.rp-hop summary:focus-visible,.rp-hop input:focus-visible{outline:2px solid #0f6b5c;outline-offset:2px}
     .rp-dau{display:flex;gap:18px;align-items:center;margin:0 0 16px}
