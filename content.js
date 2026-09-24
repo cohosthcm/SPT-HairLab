@@ -329,6 +329,7 @@ window.ROOTLAB_CONTENT = {
       "tag": "Bước 1 · Làm sạch chân tóc",
       "desc": "Lấy đi tế bào chết, bụi bẩn và dầu thừa trên da đầu, giữ cho da đầu và mái tóc sạch sẽ.",
       "photo": "sp1-thanh-loc.webp",
+      "photoBack": "sp1-thanh-loc-sau.webp",
       "bottle": {
         "body": "#f1f7f4",
         "cap": "#0d2f27",
@@ -370,6 +371,7 @@ window.ROOTLAB_CONTENT = {
       "tag": "Bước 2 · Dưỡng & kích thích mọc tóc",
       "desc": "Dưỡng ẩm, làm dịu da đầu và hỗ trợ hạn chế rụng tóc do hư tổn.",
       "photo": "sp2-nuoi-duong.webp",
+      "photoBack": "sp2-nuoi-duong-sau.webp",
       "bottle": {
         "body": "#a3600d",
         "cap": "#141009",
@@ -629,8 +631,8 @@ window.ROOTLAB_CONTENT = {
     "t1": "Bắt đầu",
     "t2": "hôm nay",
     "comboLabel": "Mua cả bộ đôi",
-    "comboOld": "1.080.000đ",
-    "comboNew": "980.000đ",
+    "comboOld": "980.000đ",
+    "comboNew": "869.000đ",
     "comboBtn": "Mua bộ đôi",
     "boxEyebrow": "HỘP QUÀ · 2 BƯỚC CHUYÊN SÂU",
     "boxGift": "Tặng kèm lược massage da đầu",
