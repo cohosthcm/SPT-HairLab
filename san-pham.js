@@ -355,7 +355,7 @@
     const BO = boDung(Cx, L);
     const { timMa, dung, form } = BO;
 
-    let lopPhu = null, truocDo = null, heroTimer = null;
+    let lopPhu = null, truocDo = null, heroTimer = null, doDoiCo = null;
     function mo(ma) {
         const k = timMa(ma);
         if (!k) return false;
@@ -387,6 +387,29 @@
         ganForm($('.rp-form', lopPhu));
         setTimeout(() => $('.rp-x', lopPhu)?.focus(), 60);
 
+        /* nút "nhấn vào đây để nhận ưu đãi…" nằm gọn 1 dòng: thu nhỏ chữ dần (15px → 12.5px)
+           tới khi vừa. Màn quá hẹp (điện thoại nhỏ) mà 12.5px vẫn không vừa thì cho xuống dòng
+           lại, không cắt mất chữ. Đo lại khi xoay/đổi cỡ màn hình và khi font tải xong. */
+        const nutUuDai = $('.rp-uu-dai summary span', lopPhu);
+        const vuaMotDong = () => {
+            if (!nutUuDai || !nutUuDai.isConnected) return;
+            let co = 15;
+            nutUuDai.style.fontSize = co + 'px';
+            nutUuDai.classList.add('mot-dong');
+            while (nutUuDai.scrollWidth > nutUuDai.clientWidth + 1 && co > 12.5) {
+                co -= 0.5;
+                nutUuDai.style.fontSize = co + 'px';
+            }
+            if (nutUuDai.scrollWidth > nutUuDai.clientWidth + 1) {
+                nutUuDai.classList.remove('mot-dong');
+                nutUuDai.style.fontSize = '';
+            }
+        };
+        vuaMotDong();
+        try { document.fonts && document.fonts.ready.then(vuaMotDong); } catch (e) { }
+        window.addEventListener('resize', vuaMotDong);
+        doDoiCo = vuaMotDong;
+
         /* hộp quà tự đổi mặt — chỉ chạy khi có 2 ảnh thật để đổi qua lại (.hb); chai lẻ (v13)
            cũng dùng khối .rp-hero nhưng chỉ có 1 ảnh (.hf), không có .hb nên không tự đổi mặt */
         const hero = $('.rp-hero', lopPhu);
@@ -405,6 +428,7 @@
     function dong() {
         if (!lopPhu) return;
         if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
+        if (doDoiCo) { window.removeEventListener('resize', doDoiCo); doDoiCo = null; }
         const x = lopPhu; lopPhu = null;
         x.classList.remove('hien');
         document.body.classList.remove('pop-mo');
@@ -581,12 +605,20 @@
     .rp-tem figure{margin:0;width:120px;text-align:center}
     .rp-tem img{width:100%;border-radius:10px;border:1px solid #e7ded1;background:#fff}
     .rp-tem figcaption{font-size:12px;color:#6b6358;margin-top:4px}
-    .rp-form{margin-top:10px;padding:18px;background:#fff;border:1px solid #e7ded1;border-radius:18px}
-    /* nút gọn "nhấn để nhận ưu đãi" — bấm mới hiện form đầy đủ, đỡ rối mắt */
-    .rp-uu-dai{border-top:0;border:1px solid #cfe4dc;border-radius:14px;background:#e3f1ed;overflow:hidden}
-    .rp-uu-dai summary{padding:14px;font-size:15px;color:#0f6b5c}
-    .rp-uu-dai[open]{background:none;border-color:#e7ded1}
-    .rp-uu-dai .rp-than{padding:0 2px 2px}
+    /* v14: bỏ khung ngoài của form — trước đây form là 1 khung trắng, bên trong lại có
+       khung xanh "nhấn để nhận ưu đãi" nữa, mở ra thành 2 khung lồng nhau, chữ và ô nhập
+       dính sát viền khung trong. Giờ chỉ còn đúng 1 khung (chính là nút xanh), mở ra thì
+       khung đó chuyển nền trắng và có lề trong đàng hoàng. */
+    .rp-form{margin-top:10px}
+    .rp-uu-dai{border-top:0;border:1px solid #cfe4dc;border-radius:14px;background:#e3f1ed;overflow:hidden;
+      transition:background .25s ease,border-color .25s ease}
+    .rp-uu-dai summary{padding:14px 16px;font-size:15px;color:#0f6b5c}
+    .rp-uu-dai summary span{min-width:0}
+    /* JS (vuaMotDong) gắn lớp này khi đo thấy thu cỡ chữ lại là vừa 1 dòng */
+    .rp-uu-dai summary span.mot-dong{white-space:nowrap;overflow:hidden}
+    .rp-uu-dai[open]{background:#fff;border-color:#e7ded1}
+    .rp-uu-dai .rp-than{padding:4px 16px 18px}
+    .rp-xong{background:#fff;border:1px solid #e7ded1;border-radius:14px}
     .rp-form h3{margin:0 0 2px;font-size:17px}
     .rp-phu{margin:0 0 12px;color:#6b6358;font-size:13.5px}
     .rp-chon{display:flex;gap:8px;margin-bottom:12px}

@@ -241,6 +241,20 @@
         .cs-brand .logo-anh { height: 40px; max-width: 240px; margin-bottom: 4px; }
         @media (max-width: 620px) { .logo-anh { height: 26px; max-width: 140px; } }
 
+        /* Logo chữ R trên thanh menu (thay cho chữ ROOT & RISE LAB). Dùng r-logo.png làm
+           khuôn, tô bằng màu chữ của thanh menu (currentColor) — nền tối thì R trắng,
+           không cần làm thêm file ảnh màu trắng riêng. Tỉ lệ ảnh gốc 128×170. */
+        .logo-r {
+            display: block;
+            height: 36px;
+            width: 27px;
+            background: currentColor;
+            -webkit-mask: url(r-logo.png) center / contain no-repeat;
+            mask: url(r-logo.png) center / contain no-repeat;
+            cursor: pointer;
+        }
+        @media (max-width: 620px) { .logo-r { height: 30px; width: 23px; } }
+
         .nav {
             display: flex;
             gap: .35rem;
@@ -2641,7 +2655,7 @@
 
     <header class="header">
         <div class="logo" id="logo-menu">
-            <span class="logo-chu" data-c="brand">ROOT &amp; RISE LAB</span>
+            <span class="logo-hinh logo-r" role="img" aria-label="ROOT &amp; RISE LAB"></span>
         </div>
         <nav class="nav" data-list="nav"></nav>
         <div class="header-right">
@@ -5464,7 +5478,7 @@
 
     </script>
     <!-- popup sản phẩm khi quét mã QR + đếm lượt vào (xem san-pham.js) -->
-    <script src="san-pham.js?v=817e86cd"></script>
+    <script src="san-pham.js?v=c3676ada"></script>
 </body>
 
 </html>
