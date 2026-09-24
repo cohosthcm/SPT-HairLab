@@ -27,7 +27,8 @@
             ten: 'Họ tên', sdt: 'Số điện thoại', uuDai: 'Nhận ưu đãi', tuVan: 'Cần tư vấn', gui: 'Gửi thông tin', dangGui: 'Đang gửi…',
             dongY: 'Tôi đồng ý để CÔNG TY TNHH SPT LAB lưu họ tên, số điện thoại của tôi để liên hệ tư vấn và gửi ưu đãi.',
             camOn: 'Cảm ơn bạn! Chúng tôi sẽ liên hệ sớm.', loi: 'Chưa gửi được. Bạn nhắn Zalo hoặc gọi giúp mình nhé:', thuLai: 'Chưa gửi được, bạn thử lại sau ít phút nhé.',
-            loiTen: 'Bạn nhập họ tên giúp mình', loiSdt: 'Số điện thoại chưa đúng', loiDongY: 'Bạn cần tick đồng ý để gửi' },
+            loiTen: 'Bạn nhập họ tên giúp mình', loiSdt: 'Số điện thoại chưa đúng', loiDongY: 'Bạn cần tick đồng ý để gửi',
+            xemDayDu: 'Bấm vào để xem đầy đủ thông tin sản phẩm và chứng nhận', xemThem: 'Xem thêm' },
         en: { chinhHang: 'Genuine ROOT & RISE LAB', congDung: 'Benefits', cachDung: 'How to use', thanhPhan: 'Full ingredient list',
             luuY: 'Precautions', giayPhep: 'Certificates & licences', tem: 'Anti-counterfeit & quality seals', soCongBo: 'Cosmetic notification no.',
             sanXuat: 'Manufactured at', phanPhoi: 'Responsible for placing on the market', mst: 'Business registration no.', bct: 'Registered with the Ministry of Industry and Trade',
@@ -36,7 +37,8 @@
             ten: 'Full name', sdt: 'Phone number', uuDai: 'Get offers', tuVan: 'Need advice', gui: 'Send', dangGui: 'Sending…',
             dongY: 'I agree that SPT LAB COMPANY LIMITED may store my name and phone number to contact me with advice and offers.',
             camOn: 'Thank you! We will contact you soon.', loi: 'Could not send. Please message or call us:', thuLai: 'Could not send, please try again in a few minutes.',
-            loiTen: 'Please enter your name', loiSdt: 'Phone number looks wrong', loiDongY: 'Please tick to agree' },
+            loiTen: 'Please enter your name', loiSdt: 'Phone number looks wrong', loiDongY: 'Please tick to agree',
+            xemDayDu: 'Tap to see full product info & certificates', xemThem: 'See more' },
         fr: { chinhHang: 'Authentique ROOT & RISE LAB', congDung: 'Bienfaits', cachDung: 'Utilisation', thanhPhan: 'Liste complète des ingrédients',
             luuY: 'Précautions', giayPhep: 'Certificats & autorisations', tem: 'Sceaux anti-contrefaçon & contrôle', soCongBo: 'N° de notification cosmétique',
             sanXuat: 'Fabriqué par', phanPhoi: 'Responsable de la mise sur le marché', mst: "N° d'immatriculation", bct: 'Déclaré au ministère de l’Industrie et du Commerce',
@@ -45,7 +47,8 @@
             ten: 'Nom', sdt: 'Téléphone', uuDai: 'Recevoir les offres', tuVan: 'Besoin de conseil', gui: 'Envoyer', dangGui: 'Envoi…',
             dongY: 'J’accepte que SPT LAB COMPANY LIMITED conserve mon nom et mon numéro pour me conseiller et m’envoyer des offres.',
             camOn: 'Merci ! Nous vous contactons bientôt.', loi: 'Envoi impossible. Écrivez-nous ou appelez :', thuLai: 'Envoi impossible, réessayez dans quelques minutes.',
-            loiTen: 'Indiquez votre nom', loiSdt: 'Numéro incorrect', loiDongY: 'Cochez la case pour accepter' },
+            loiTen: 'Indiquez votre nom', loiSdt: 'Numéro incorrect', loiDongY: 'Cochez la case pour accepter',
+            xemDayDu: 'Appuyez pour voir toutes les infos produit et les certificats', xemThem: 'Voir plus' },
         it: { chinhHang: 'Originale ROOT & RISE LAB', congDung: 'Benefici', cachDung: 'Modo d’uso', thanhPhan: 'Elenco completo degli ingredienti',
             luuY: 'Avvertenze', giayPhep: 'Certificati e licenze', tem: 'Sigilli anticontraffazione e di controllo', soCongBo: 'N. di notifica cosmetica',
             sanXuat: 'Prodotto da', phanPhoi: 'Responsabile dell’immissione in commercio', mst: 'N. di registro imprese', bct: 'Registrato presso il Ministero dell’Industria e del Commercio',
@@ -54,7 +57,8 @@
             ten: 'Nome', sdt: 'Telefono', uuDai: 'Ricevi offerte', tuVan: 'Vorrei un consiglio', gui: 'Invia', dangGui: 'Invio…',
             dongY: 'Acconsento che SPT LAB COMPANY LIMITED conservi nome e numero per contattarmi con consigli e offerte.',
             camOn: 'Grazie! Ti contatteremo presto.', loi: 'Invio non riuscito. Scrivici o chiamaci:', thuLai: 'Invio non riuscito, riprova tra qualche minuto.',
-            loiTen: 'Inserisci il nome', loiSdt: 'Numero non valido', loiDongY: 'Spunta la casella per acconsentire' },
+            loiTen: 'Inserisci il nome', loiSdt: 'Numero non valido', loiDongY: 'Spunta la casella per acconsentire',
+            xemDayDu: 'Tocca per vedere tutte le info sul prodotto e i certificati', xemThem: 'Vedi altro' },
         ja: { chinhHang: 'ROOT & RISE LAB 正規品', congDung: '効果', cachDung: '使い方', thanhPhan: '全成分',
             luuY: '使用上の注意', giayPhep: '認証・許可', tem: '偽造防止・検査シール', soCongBo: '化粧品届出番号',
             sanXuat: '製造所', phanPhoi: '製造販売元', mst: '法人番号', bct: '商工省届出済み',
@@ -63,7 +67,8 @@
             ten: 'お名前', sdt: '電話番号', uuDai: '特典を受け取る', tuVan: '相談したい', gui: '送信', dangGui: '送信中…',
             dongY: 'SPT LAB COMPANY LIMITED が相談・特典のご連絡のため、氏名と電話番号を保存することに同意します。',
             camOn: 'ありがとうございます。まもなくご連絡します。', loi: '送信できませんでした。こちらからご連絡ください：', thuLai: '送信できませんでした。数分後にもう一度お試しください。',
-            loiTen: 'お名前を入力してください', loiSdt: '電話番号が正しくありません', loiDongY: '同意にチェックしてください' }
+            loiTen: 'お名前を入力してください', loiSdt: '電話番号が正しくありません', loiDongY: '同意にチェックしてください',
+            xemDayDu: 'タップして商品情報と認証をすべて見る', xemThem: 'もっと見る' }
     };
     const t = Object.assign({}, T.vi, T[L] || {});
 
@@ -174,7 +179,7 @@
                 + doan(t.giayPhep, giayPhep(p), true, 'rp-gp')
                 + doan(t.tem, tem(p), true);
         }
-        const dauChai = (p, nhan = true) => `
+        const dauChai = (p, nhan = true, gia = true) => `
             ${nhan ? `<span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>` : ''}
             <div class="rp-dau">
                 <div class="rp-anh">${p.photo ? `<img src="${h(p.photo)}" alt="${h(p.name)}">` : ''}</div>
@@ -182,9 +187,102 @@
                     <h2 id="rp-td">${h(p.name)}</h2>
                     <p>${h(p.priceSub || '')}</p>
                     ${p.vol && !(p.priceSub || '').includes(p.vol.replace(/\s/g, '')) && !(p.priceSub || '').includes(p.vol) ? `<p class="rp-vol">${h(p.vol)}</p>` : ''}
-                    ${p.price ? `<div class="rp-gia">${h(p.price)}<small>đ</small></div>` : ''}
+                    ${gia && p.price ? `<div class="rp-gia">${h(p.price)}<small>đ</small></div>` : ''}
                 </div>
             </div>`;
+
+        /* huy chương vàng "Bán chạy nhất" — vẽ bằng SVG riêng (không dùng ảnh stock có bản quyền):
+           viền răng cưa kiểu con dấu vàng + vòng chữ R + 2 dải ruy băng đỏ + ánh sáng lướt qua. */
+        function vienRangCua(cx, cy, rNgoai, songs, rTrongTru) {
+            let d = '';
+            const step = (Math.PI * 2) / songs;
+            for (let i = 0; i < songs; i++) {
+                const a0 = i * step - Math.PI / 2, a1 = a0 + step, mid = (a0 + a1) / 2;
+                const xOuterMid = cx + rNgoai * Math.cos(mid), yOuterMid = cy + rNgoai * Math.sin(mid);
+                const xStart = cx + rTrongTru * Math.cos(a0), yStart = cy + rTrongTru * Math.sin(a0);
+                const xEnd = cx + rTrongTru * Math.cos(a1), yEnd = cy + rTrongTru * Math.sin(a1);
+                d += (i === 0 ? `M${xStart.toFixed(2)},${yStart.toFixed(2)} ` : '') +
+                    `Q${xOuterMid.toFixed(2)},${yOuterMid.toFixed(2)} ${xEnd.toFixed(2)},${yEnd.toFixed(2)} `;
+            }
+            return d + 'Z';
+        }
+        function ngoiSao(cx, cy, rNgoai, rTrong, canh) {
+            let d = '';
+            for (let i = 0; i < canh * 2; i++) {
+                const r = i % 2 === 0 ? rNgoai : rTrong;
+                const a = (Math.PI * i / canh) - Math.PI / 2;
+                d += (i === 0 ? 'M' : 'L') + (cx + r * Math.cos(a)).toFixed(2) + ',' + (cy + r * Math.sin(a)).toFixed(2) + ' ';
+            }
+            return d + 'Z';
+        }
+        function vongChuR(cx, cy, r, soLuong) {
+            let out = '';
+            for (let i = 0; i < soLuong; i++) {
+                const a = (Math.PI * 2 * i) / soLuong - Math.PI / 2;
+                const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a) + 1.9;
+                out += `<text x="${x.toFixed(2)}" y="${y.toFixed(2)}" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-weight="700" font-size="5.6" fill="#4a2f0c" opacity=".82">R</text>`;
+            }
+            return out;
+        }
+        function medal(text) {
+            const cx = 50, cy = 50;
+            const outer = vienRangCua(cx, cy, 46, 20, 40.5);
+            const ribbonTrai = 'M44,86 L54,86 L38,150 L46,138 L20,150 Z';
+            const ribbonPhai = 'M56,86 L46,86 L62,150 L54,138 L80,150 Z';
+            return `<div class="rp-medal">
+                <span class="rp-spark s1">✦</span><span class="rp-spark s2">✦</span><span class="rp-spark s3">✦</span>
+                <svg viewBox="0 0 100 150" class="rp-medal-svg" aria-hidden="true" focusable="false">
+                    <defs>
+                        <radialGradient id="rpGgFace" cx="35%" cy="28%" r="80%">
+                            <stop offset="0%" stop-color="#fff8e2"/><stop offset="45%" stop-color="#ffcf4d"/><stop offset="100%" stop-color="#c98a1f"/>
+                        </radialGradient>
+                        <linearGradient id="rpGgRibbon" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#d94a5e"/><stop offset="100%" stop-color="#7a1626"/>
+                        </linearGradient>
+                        <linearGradient id="rpGgText" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#fff8e2"/><stop offset="55%" stop-color="#ffcf4d"/><stop offset="100%" stop-color="#d99a2b"/>
+                        </linearGradient>
+                        <clipPath id="rpGgClip"><path d="${outer}"/></clipPath>
+                    </defs>
+                    <path d="${ribbonPhai}" fill="url(#rpGgRibbon)"/>
+                    <path d="${ribbonTrai}" fill="url(#rpGgRibbon)"/>
+                    <path d="${outer}" fill="url(#rpGgFace)" stroke="#a8721f" stroke-width="1.2"/>
+                    <circle cx="${cx}" cy="${cy}" r="37.4" fill="none" stroke="#a8721f" stroke-width=".7" opacity=".6"/>
+                    <circle cx="${cx}" cy="${cy}" r="35.6" fill="none" stroke="#a8721f" stroke-width=".7" opacity=".6"/>
+                    ${vongChuR(cx, cy, 40.5, 13)}
+                    <path d="${ngoiSao(24, 34, 2.6, 1.1, 5)}" fill="#4a2f0c"/>
+                    <path d="${ngoiSao(35, 28, 3.4, 1.5, 5)}" fill="#4a2f0c"/>
+                    <path d="${ngoiSao(50, 25, 5.5, 2.4, 5)}" fill="#4a2f0c"/>
+                    <path d="${ngoiSao(65, 28, 3.4, 1.5, 5)}" fill="#4a2f0c"/>
+                    <path d="${ngoiSao(76, 34, 2.6, 1.1, 5)}" fill="#4a2f0c"/>
+                    <text x="50" y="61.2" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="12" letter-spacing="-.3" fill="#3a2408" opacity=".85">${h(text)}</text>
+                    <text x="50" y="60" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="12" letter-spacing="-.3" fill="url(#rpGgText)" stroke="#5c3a12" stroke-width=".4" paint-order="stroke">${h(text)}</text>
+                    <g clip-path="url(#rpGgClip)"><rect x="-20" y="0" width="18" height="100" fill="rgba(255,255,255,.65)" class="rp-medal-sweep"/></g>
+                </svg>
+            </div>`;
+        }
+
+        /* mục "xem đầy đủ" gộp chung cho cả hộp quà: đóng lại mặc định, bên dưới hé lộ
+           2-3 dòng nội dung thật mờ dần xuống để khách biết còn nội dung mà bấm vào xem tiếp
+           (không lặp lại từng mục Công dụng/Cách dùng riêng cho mỗi chai như trước nữa). */
+        function khoiChaiGop(ds) {
+            let noiDung = ds.map((p, i) => `
+                <h5 class="rp-buoc-nhan-gop">${h(t.buoc)} ${i + 1} · ${h(p.name)}</h5>
+                <div class="rp-sec"><h4>${h(t.congDung)}</h4>${doanVan(p.func || p.desc)}</div>
+                <div class="rp-sec"><h4>${h(t.cachDung)}</h4>${doanVan(p.use)}</div>
+                ${p.inci ? `<div class="rp-sec"><h4>${h(t.thanhPhan)}</h4><p class="rp-inci">${h(p.inci)}</p></div>` : ''}
+                ${p.warn ? `<div class="rp-sec"><h4>${h(t.luuY)}</h4>${doanVan(p.warn)}</div>` : ''}
+            `).join('');
+            const gp = giayPhep(ds[0] || {});
+            if (gp) noiDung += `<div class="rp-sec"><h4>${h(t.giayPhep)}</h4>${gp}</div>`;
+            const temHtml = ds.map(p => tem(p)).join('');
+            if (temHtml) noiDung += `<div class="rp-sec"><h4>${h(t.tem)}</h4>${temHtml}</div>`;
+            const p0 = ds[0] || {};
+            const peek = h(String((p0.func || p0.desc || '') + ' ' + (p0.use || '')).trim());
+            return `<details class="rp-doan rp-doan-gop"><summary><span>${h(t.xemDayDu)}</span><i></i></summary>
+                <div class="rp-than">${noiDung}</div></details>
+                <div class="rp-peek" id="rpPeek"><p>${peek}</p><span class="rp-peek-goi">▾ ${h(t.xemThem)}</span></div>`;
+        }
 
         /* tên tiếng Việt gốc — lưu vào danh sách khách cho Phil đọc, dù khách đang xem tiếng nào */
         const GOC = window.ROOTLAB_CONTENT || Cx;
@@ -192,23 +290,42 @@
         function dung(k) {
             if (k.loai === 'chai') return { tieuDe: k.sp.name, sanPham: tenGoc(k.sp.key), html: dauChai(k.sp) + khoiChai(k.sp), dich: k.sp.key };
             const d = k.dong, pr = Object.assign({}, Cx.pricing || {}, d.pricing || {});
+            /* ảnh hộp: mặt có cửa sổ thấy sản phẩm ↔ góc nghiêng — tự đổi qua lại, không xoay ảnh phẳng
+               (xem rootlab-landing/doi-chai-khong-duoc-xoay.md — lùi mờ ra xa rồi tiến rõ lại gần) */
+            const hopMat1 = pr.boxPhoto || 'hop-qua-2buoc.webp', hopMat2 = pr.boxPhotoGoc || 'hop-qua-goc-nghieng.webp';
+            /* dải chai chạy trang trí — chỉ có ở hộp quà, không có khi xem riêng 1 chai qua mã QR */
+            const carDs = k.ds.concat(k.ds).map((p, i) => p.photo
+                ? `<img src="${h(p.photo)}" alt="" style="--nghieng:${(i % 2 ? -1 : 1) * (7 + (i * 5) % 10)}deg;--nhip:${9 + (i % 3) * 2}s;--tre:${(i * -1.4).toFixed(1)}s">`
+                : '').join('');
             const dau = `
-                ${pr.boxBadge ? `<span class="rp-best">★ ${h(pr.boxBadge)}</span>` : ''}
-                <span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>
-                <div class="rp-dau rp-dau-bo">
-                    <div class="rp-anh rp-anh-bo"><img src="bo-qua-tang.png" alt=""></div>
-                    <div class="rp-ten">
-                        <h2 id="rp-td">${h(pr.boxEyebrow ? t.hopQua : (d.name || t.hopQua))}</h2>
-                        <p>${h(k.ds.map(p => p.name).join(' + '))}</p>
-                        ${pr.comboNew ? `<div class="rp-gia">${h(pr.comboNew)}${pr.comboOld ? ` <s>${h(pr.comboOld)}</s>` : ''}</div>` : ''}
-                        <p class="rp-tang">★ ${h(pr.boxGift || t.tang)}</p>
+                <div class="rp-hero">
+                    <div class="rp-hero-stage">
+                        ${pr.boxBadge ? medal(pr.boxBadge) : ''}
+                        <span class="rp-brand"><img src="r-logo.png" alt=""></span>
+                        <div class="rp-hero-img">
+                            <img class="hf" src="${h(hopMat1)}" alt="">
+                            <img class="hb" src="${h(hopMat2)}" alt="">
+                        </div>
+                        <div class="rp-hero-dots"><i class="on"></i><i></i></div>
                     </div>
+                    <div class="rp-carousel" aria-hidden="true"><div class="rp-car-track">${carDs}</div></div>
+                </div>
+                <span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>
+                <div class="rp-ten rp-ten-bo">
+                    <h2 id="rp-td">${h(pr.boxEyebrow ? t.hopQua : (d.name || t.hopQua))}</h2>
+                    <p>${h(k.ds.map(p => p.name).join(' + '))}</p>
+                    ${pr.comboNew ? `<div class="rp-gia">${h(pr.comboNew)}${pr.comboOld ? ` <s>${h(pr.comboOld)}</s>` : ''}</div>` : ''}
+                    <p class="rp-tang">★ ${h(pr.boxGift || t.tang)}</p>
                 </div>`;
-            const tab = `<div class="rp-tab" role="tablist">${k.ds.map((p, i) =>
-                `<button type="button" role="tab" data-i="${i}" aria-selected="${i === 0}">${h(t.buoc)} ${i + 1} · ${h(p.name)}</button>`).join('')}</div>`;
-            /* nhãn "Chính hãng" đã hiện 1 lần ở đầu hộp — từng bước bên trong không lặp lại nữa */
-            const than = k.ds.map((p, i) => `<div class="rp-buoc" data-i="${i}"${i ? ' hidden' : ''}>${dauChai(p, false).replace('id="rp-td"', '')}${khoiChai(p)}</div>`).join('');
-            return { tieuDe: t.hopQua, sanPham: T.vi.hopQua, html: dau + tab + than, dich: d.key };
+            /* không còn tab Bước 1/Bước 2 — hiện luôn ảnh + tên từng chai nối tiếp nhau,
+               còn phần thông tin chi tiết (công dụng/cách dùng/thành phần/chứng nhận) gộp
+               chung vào một mục "xem đầy đủ" đóng sẵn, hé lộ vài dòng mờ dần bên dưới. */
+            const than = k.ds.map((p, i) => `
+                <div class="rp-buoc" data-i="${i}">
+                    <p class="rp-buoc-nhan">${h(t.buoc)} ${i + 1}</p>
+                    ${dauChai(p, false, false).replace('id="rp-td"', '')}
+                </div>`).join('') + khoiChaiGop(k.ds);
+            return { tieuDe: t.hopQua, sanPham: T.vi.hopQua, html: dau + than, dich: d.key };
         }
 
         function form(sanPham) {
@@ -236,7 +353,7 @@
     const BO = boDung(Cx, L);
     const { timMa, dung, form } = BO;
 
-    let lopPhu = null, truocDo = null;
+    let lopPhu = null, truocDo = null, heroTimer = null;
     function mo(ma) {
         const k = timMa(ma);
         if (!k) return false;
@@ -262,16 +379,28 @@
         lopPhu.addEventListener('click', e => { if (e.target === lopPhu) dong(); });
         $('.rp-x', lopPhu).addEventListener('click', dong);
         $('.rp-xem', lopPhu).addEventListener('click', dong);
-        lopPhu.querySelectorAll('.rp-tab button').forEach(b => b.addEventListener('click', () => {
-            lopPhu.querySelectorAll('.rp-tab button').forEach(x => x.setAttribute('aria-selected', x === b));
-            lopPhu.querySelectorAll('.rp-buoc').forEach(x => { x.hidden = x.dataset.i !== b.dataset.i; });
-        }));
+        /* mục "xem đầy đủ" gộp — bấm vào khu vực hé lộ mờ cũng mở accordion ra luôn */
+        const rpDoanGop = $('.rp-doan-gop', lopPhu), rpPeek = $('.rp-peek', lopPhu);
+        if (rpDoanGop && rpPeek) rpPeek.addEventListener('click', () => { rpDoanGop.open = true; });
         ganForm($('.rp-form', lopPhu));
         setTimeout(() => $('.rp-x', lopPhu)?.focus(), 60);
+
+        /* hộp quà tự đổi mặt — chỉ chạy khi popup này có khối .rp-hero (không có ở popup xem 1 chai riêng) */
+        const hero = $('.rp-hero', lopPhu);
+        const chamMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (hero && !chamMotion) {
+            const cham = [...lopPhu.querySelectorAll('.rp-hero-dots i')];
+            heroTimer = setInterval(() => {
+                const lat = hero.classList.toggle('lat');
+                cham.forEach((c, i) => c.classList.toggle('on', (i === 1) === lat));
+            }, 3200);
+        }
+
         return true;
     }
     function dong() {
         if (!lopPhu) return;
+        if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
         const x = lopPhu; lopPhu = null;
         x.classList.remove('hien');
         document.body.classList.remove('pop-mo');
@@ -311,6 +440,10 @@
         };
         if (oDy) oDy.addEventListener('change', khoaNut);
         khoaNut();
+
+        /* số điện thoại: chỉ nhận chữ số khi gõ (giữ dấu + ở đầu nếu khách gõ dạng +84…) */
+        const oSdt = o('phone');
+        if (oSdt) oSdt.addEventListener('input', () => { oSdt.value = oSdt.value.replace(/(?!^\+)[^\d]/g, ''); });
 
         f.addEventListener('submit', async e => {
             e.preventDefault();
@@ -365,6 +498,41 @@
     .rp-anh img{max-height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 10px 14px rgba(80,55,20,.25))}
     .rp-anh-bo{flex-basis:150px;height:130px;padding:0;background:none}
     .rp-anh-bo img{border-radius:12px;filter:drop-shadow(0 12px 18px rgba(80,55,20,.28))}
+    /* ---- khối ảnh lớn của hộp quà: hộp tự đổi mặt, dải chai chạy trang trí ---- */
+    .rp-hero{margin:-2px -2px 16px;border-radius:20px;overflow:hidden;background:radial-gradient(120% 130% at 50% 12%,#fff8ea 0%,#f6e9cc 55%,#ecdcb4 100%)}
+    .rp-hero-stage{position:relative;height:220px;display:flex;align-items:center;justify-content:center;perspective:1200px}
+    .rp-hero-img{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+    .rp-hero-img img{position:absolute;max-height:82%;max-width:74%;object-fit:contain;
+      filter:drop-shadow(0 16px 16px rgba(60,40,10,.25));will-change:transform,opacity;
+      transition:transform 1.1s cubic-bezier(.45,0,.2,1),opacity 1.1s cubic-bezier(.45,0,.2,1)}
+    .rp-hero-img img.hf{opacity:1;transform:translateZ(0) scale(1)}
+    .rp-hero-img img.hb{opacity:0;transform:translateZ(-220px) scale(.84)}
+    .rp-hero.lat .rp-hero-img img.hf{opacity:0;transform:translateZ(-220px) scale(.84)}
+    .rp-hero.lat .rp-hero-img img.hb{opacity:1;transform:translateZ(0) scale(1)}
+    .rp-hero-dots{position:absolute;bottom:9px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:2}
+    .rp-hero-dots i{width:6px;height:6px;border-radius:50%;background:#d8c79a;transition:background .3s,transform .3s}
+    .rp-hero-dots i.on{background:#5c3c0a;transform:scale(1.25)}
+    .rp-medal{position:absolute;top:-6px;left:8px;z-index:3;width:46px;height:69px;filter:drop-shadow(0 6px 10px rgba(50,30,0,.4))}
+    .rp-medal-svg{width:100%;height:100%;display:block;overflow:visible}
+    .rp-spark{position:absolute;color:#fff9dd;font-size:9px;line-height:1;pointer-events:none;
+      text-shadow:0 0 4px #fff3c4,0 0 8px #ffd77a;animation:rpTwinkle 1.8s ease-in-out infinite}
+    .rp-spark.s1{top:-2px;right:-5px;animation-delay:0s;font-size:10px}
+    .rp-spark.s2{top:26%;left:-7px;animation-delay:.6s;font-size:7px}
+    .rp-spark.s3{top:48%;right:-6px;animation-delay:1.15s;font-size:8px}
+    @keyframes rpTwinkle{0%,100%{opacity:0;transform:scale(.3) rotate(0deg)}50%{opacity:1;transform:scale(1.15) rotate(25deg)}}
+    .rp-medal-sweep{animation:rpSweepMedal 2.8s ease-in-out infinite}
+    @keyframes rpSweepMedal{0%,20%{transform:translateX(-140%) rotate(18deg)}55%,100%{transform:translateX(140%) rotate(18deg)}}
+    .rp-brand{position:absolute;bottom:9px;right:10px;z-index:2;width:32px;height:32px;border-radius:50%;background:#fff;
+      display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(30,20,10,.18);overflow:hidden}
+    .rp-brand img{width:46%;height:64%;object-fit:contain}
+    .rp-carousel{position:relative;height:64px;overflow:hidden;background:rgba(255,255,255,.35);border-top:1px solid rgba(140,105,40,.15)}
+    .rp-car-track{position:absolute;top:0;left:0;height:100%;display:flex;align-items:center;gap:34px;padding:0 17px;
+      animation:rpCarRun 16s linear infinite}
+    .rp-car-track img{height:52px;width:auto;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(60,40,10,.2));
+      transform:rotate(var(--nghieng,0deg));animation:rpCarXoay var(--nhip,10s) linear infinite;animation-delay:var(--tre,0s)}
+    @keyframes rpCarRun{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @keyframes rpCarXoay{from{transform:rotate(var(--nghieng,0deg))}to{transform:rotate(calc(var(--nghieng,0deg) + 360deg))}}
+    .rp-ten-bo{padding:14px 2px 0}
     .rp-ten h2{margin:0 0 4px;font-size:22px;line-height:1.25;letter-spacing:-.01em}
     .rp-ten p{margin:0;color:#6b6358;font-size:14px;line-height:1.45}
     .rp-vol{margin-top:2px!important}
@@ -381,11 +549,10 @@
     .rp-gia small{font-size:14px;margin-left:1px}
     .rp-gia s{font-size:14px;font-weight:400;color:#9a9186;margin-left:6px}
     .rp-tang{margin-top:6px!important;color:#b5530b!important;font-weight:600}
-    .rp-tab{display:flex;gap:6px;background:#efe8dd;padding:4px;border-radius:14px;margin:4px 0 16px}
-    .rp-tab button{flex:1;border:0;background:none;padding:10px 8px;border-radius:10px;font:600 13.5px/1.25 inherit;color:#6b6358;cursor:pointer}
-    .rp-tab button[aria-selected=true]{background:#fff;color:#23201b;box-shadow:0 2px 8px rgba(0,0,0,.08)}
     .rp-buoc .rp-dau{margin-top:2px}
     .rp-buoc>.rp-nhan{margin-right:0}
+    .rp-buoc-nhan{margin:0 0 8px;font-size:11.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#8b8276}
+    .rp-buoc:not(:first-child){margin-top:16px;padding-top:16px;border-top:1px dashed #e7ded1}
     .rp-doan{border-top:1px solid #e7ded1}
     .rp-doan summary{list-style:none;display:flex;align-items:center;gap:10px;padding:14px 2px;cursor:pointer;font-weight:700;font-size:15px}
     .rp-doan summary::-webkit-details-marker{display:none}
@@ -395,6 +562,19 @@
     .rp-than{padding:0 2px 14px;font-size:14.5px;line-height:1.65;color:#3b362f}
     .rp-than p{margin:0 0 8px}
     .rp-inci{font-size:12.5px!important;line-height:1.7!important;color:#6b6358}
+    .rp-doan-gop{margin-top:2px}
+    .rp-buoc-nhan-gop{font-size:13.5px;font-weight:700;color:#23201b;margin:16px 0 8px;padding-top:14px;border-top:1px dashed #e7ded1}
+    .rp-buoc-nhan-gop:first-child{margin-top:0;padding-top:0;border-top:0}
+    .rp-sec{margin-bottom:4px}
+    .rp-sec h4{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#0f6b5c;margin:0 0 4px;font-weight:700}
+    .rp-peek{position:relative;border:1px solid #e7ded1;border-top:none;border-radius:0 0 14px 14px;
+      background:#fff;padding:10px 14px 14px;margin:-1px 0 4px;cursor:pointer;max-height:62px;overflow:hidden}
+    .rp-doan-gop[open] ~ .rp-peek{display:none}
+    .rp-peek p{font-size:13px;line-height:1.55;color:#5a5344;margin:0}
+    .rp-peek::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34px;
+      background:linear-gradient(to bottom, rgba(255,255,255,0), #fff 85%);pointer-events:none}
+    .rp-peek-goi{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-size:10.5px;
+      color:#8b8276;font-weight:700;letter-spacing:.02em}
     .rp-hang{display:flex;flex-direction:column;gap:1px;padding:8px 0;border-bottom:1px dashed #e7ded1}
     .rp-hang:last-of-type{border-bottom:0}
     .rp-hang span{font-size:12px;color:#8b8276}
@@ -439,8 +619,16 @@
       .rp-anh{flex-basis:88px;height:140px}
       .rp-anh-bo{flex-basis:120px;height:104px}
       .rp-ten h2{font-size:19px}
+      .rp-hero-stage{height:180px}
+      .rp-medal{width:40px;height:60px;top:-4px;left:6px}
+      .rp-brand{width:28px;height:28px}
     }
-    @media (prefers-reduced-motion:reduce){.rp-nen,.rp-hop{transition:none}}
+    @media (prefers-reduced-motion:reduce){
+      .rp-nen,.rp-hop{transition:none}
+      .rp-hero-img img{transition:none}
+      .rp-car-track,.rp-car-track img{animation:none}
+      .rp-spark,.rp-medal-sweep{animation:none;opacity:0}
+    }
     `;
     css.textContent = CSS;
     document.head.appendChild(css);
