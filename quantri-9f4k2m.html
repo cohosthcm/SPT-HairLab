@@ -287,6 +287,26 @@ table.bang .xoa:hover{background:var(--do-nhat)}
 .hop-loi{background:var(--vang-nhat);border:1px solid #f0e0b8;color:#6b5310;
   padding:14px 16px;border-radius:12px;font-size:13px;line-height:1.65}
 .hop-loi b{color:#5a4409}
+.hop-loi.gap{background:var(--do-nhat);border-color:#f0c7c1;color:#7a281e}
+.hop-loi.gap b{color:#6b1f16}
+
+/* khối "Sức chứa còn lại" */
+.suc-the .the-dau{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.phu-nho{margin:-4px 0 14px;font-size:12.5px;color:var(--nhat)}
+.suc-nhan{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px;white-space:nowrap}
+.suc-nhan.suc-xanh{background:var(--chinh-nhat);color:var(--chinh-dam)}
+.suc-nhan.suc-cam{background:#fbeee3;color:var(--cam)}
+.suc-nhan.suc-do{background:var(--do-nhat);color:var(--do)}
+.suc-hang{display:grid;grid-template-columns:minmax(110px,34%) 1fr auto;gap:12px;align-items:center;padding:8px 0;font-size:13px}
+.suc-hang+.suc-hang{border-top:1px solid #f1f3f2}
+.suc-ten{color:var(--chu)}
+.suc-so{font-variant-numeric:tabular-nums;color:var(--nhat);font-size:12.5px;white-space:nowrap}
+.suc-thanh{height:8px;border-radius:999px;background:#eef1f0;overflow:hidden}
+.suc-thanh i{display:block;height:100%;border-radius:999px}
+.suc-thanh i.suc-xanh{background:var(--chinh)}
+.suc-thanh i.suc-cam{background:var(--cam)}
+.suc-thanh i.suc-do{background:var(--do)}
+.suc-canhbao{margin-top:12px}
 
 /* link theo kênh */
 .link-hang{display:flex;gap:10px;align-items:center;padding:9px 0;font-size:13px;flex-wrap:wrap}
@@ -1495,7 +1515,41 @@ table.bang .xoa:hover{background:var(--do-nhat)}
             t2.append(h('h3', { html: 'Lượt xem 30 ngày qua' }));
             t2.append(veCot(d.series, { lay: r => r.views, donvi: 'lượt xem' }));
             box.append(t2);
+            if (d.sucChua) box.append(theSucChua(d.sucChua));
             box.append(theHuongDan());
+        }
+
+        /* ---------- khối "Sức chứa còn lại": báo trước khi web sắp chạm giới hạn
+           gói MIỄN PHÍ (hiện chỉ theo dõi số thư gửi qua Resend — thứ dễ chạm nhất
+           với quy mô web này). Yên tâm khi còn thấp, chuyển màu khi gần đầy. ---------- */
+        function theSucChua(sc) {
+            const hang = [
+                { ten: 'Thư gửi hôm nay', dung: sc.thuHomNay, han: sc.thuHomNayGioiHan },
+                { ten: 'Thư gửi tháng này', dung: sc.thuThangNay, han: sc.thuThangNayGioiHan }
+            ].map(x => ({ ...x, pt: x.han ? Math.min(100, Math.round(x.dung / x.han * 100)) : 0 }));
+            const mucCao = Math.max(...hang.map(x => x.pt));
+            const mau = mucCao >= 90 ? 'do' : mucCao >= 70 ? 'cam' : 'xanh';
+            const the = h('div', { class: 'the suc-the' });
+            the.append(h('div', { class: 'the-dau' }, [h('h3', { html: 'Sức chứa còn lại' }),
+                h('span', { class: 'suc-nhan suc-' + mau,
+                    html: mau === 'do' ? 'Gần đầy' : mau === 'cam' ? 'Sắp gần đầy' : 'Còn nhiều chỗ' })
+            ]));
+            the.append(h('p', { class: 'phu-nho', html: 'Theo hạn mức gói <b>Resend miễn phí</b>: 100 thư/ngày · 3.000 thư/tháng — tính theo giờ UTC.' }));
+            hang.forEach(x => {
+                const rTen = h('div', { class: 'suc-ten', html: x.ten });
+                const rSo = h('div', { class: 'suc-so', html: so(x.dung) + ' / ' + so(x.han) });
+                const thanh = h('div', { class: 'suc-thanh' }, [h('i', { class: 'suc-' + mau, style: 'width:' + x.pt + '%' })]);
+                the.append(h('div', { class: 'suc-hang' }, [rTen, thanh, rSo]));
+            });
+            if (mucCao >= 70) {
+                the.append(h('div', { class: 'hop-loi suc-canhbao' + (mucCao >= 90 ? ' gap' : ''), html:
+                    (mucCao >= 90
+                        ? '<b>Sắp hết hạn mức gửi thư miễn phí.</b> '
+                        : '<b>Sắp gần chạm hạn mức gửi thư miễn phí.</b> ')
+                    + 'Hết hạn mức thì thư báo khách mới và mã đăng nhập sẽ gửi không được (khách vẫn được lưu đủ, chỉ là không có thư báo). '
+                    + 'Cách xử lý: nâng gói Resend lên bản trả phí tại resend.com/pricing, hoặc chờ qua ngày/tháng mới hạn mức tự về 0.' }));
+            }
+            return the;
         }
 
         function bangKhachGon(items) {
