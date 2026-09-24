@@ -45,6 +45,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const gio = new Date(ts + 7 * 3600e3).toISOString().replace('T', ' ').slice(0, 16);
     const dong = (k, v) => `<tr><td style="padding:6px 14px 6px 0;color:#666">${k}</td><td style="padding:6px 0"><b>${esc(v)}</b></td></tr>`;
     const viec = guiThu(env, {
+        loai: 'khach-moi',
         subject: `Khách mới: ${name} · ${NHU_CAU[need]}${product ? ' · ' + product : ''}`,
         html: `<div style="font-family:Arial,sans-serif;font-size:15px;color:#222">
             <h2 style="margin:0 0 12px">Có khách vừa để lại thông tin</h2>
