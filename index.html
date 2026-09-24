@@ -226,6 +226,8 @@
             font-size: 1.05rem;
             font-family: var(--font-main);
             letter-spacing: .3em;
+            flex: none;
+            white-space: nowrap;
         }
 
         .logo svg {
@@ -250,7 +252,16 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            /* Nếu chữ (tuỳ font máy khách) dài hơn dự tính, khung menu tự co lại
+               và CUỘN NGANG bên trong nó — không bao giờ tràn đè lên chữ Liên hệ /
+               ô chọn ngôn ngữ đứng kế bên nữa. flex-grow để 0 để không tự giãn
+               ra chiếm chỗ trống khi màn rộng (chỉ co lại khi màn hẹp thôi). */
+            flex: 0 1 auto;
+            min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
         }
+        .nav::-webkit-scrollbar { display: none; }
 
         .nav-item {
             font-family: 'Manrope', sans-serif;
@@ -281,6 +292,8 @@
             font-size: .85rem;
             cursor: pointer;
             transition: all .3s ease;
+            white-space: nowrap;
+            flex: none;
         }
 
         .contact-btn:hover {
@@ -2430,7 +2443,7 @@
            Hai thứ này đứng cạnh nhau ở góc phải. Để cả hai đều là "viên thuốc"
            thì chúng đá nhau; nên ngôn ngữ làm chữ trơn, liên hệ mới là nút đặc —
            mắt đọc theo đúng thứ tự: chọn tiếng trước, hành động sau. */
-        .header-right { display: flex; align-items: center; gap: 1.5rem; }
+        .header-right { display: flex; align-items: center; gap: 1.5rem; flex: none; }
         .ngonngu { position: relative; }
         .ngonngu .ng-nut { display: flex; align-items: center; gap: .42rem; cursor: pointer;
             border: 0; background: none; padding: .3rem 0;
