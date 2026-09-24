@@ -1522,6 +1522,27 @@
             color: rgba(255, 255, 255, .45);
         }
 
+        .foot-social {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.6rem 1.8rem;
+            max-width: 1180px;
+            margin: 2.2rem auto 0;
+            padding-top: 1.6rem;
+            border-top: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        .foot-social .foot-item {
+            margin-bottom: 0;
+        }
+
+        .foot-social:empty {
+            display: none;
+            border-top: none;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
         /* ---- khối pháp lý ở chân trang ----
            Chữ nhỏ, giãn dòng rộng cho dễ đọc. Đây là phần khách khó tính và
            đối tác (nhà thuốc, salon) tìm đến đầu tiên để xem có thật không. */
@@ -2328,7 +2349,10 @@
         .cs-bar .hint { font-size: 10px; letter-spacing: .22em; opacity: .55; text-transform: uppercase; }
 
         .cs-stage { position: relative; z-index: 2; width: min(1240px, 94vw); height: min(88svh, 830px); display: grid; place-items: center; }
-        .cs-wrap, .cs-nodes { grid-area: 1/1; }
+        .cs-wrap, .cs-nodes, .cs-stage-brand { grid-area: 1/1; }
+        .cs-stage-brand { align-self: start; justify-self: center; margin-top: 4px; text-align: center;
+            font-family: var(--font-main); font-size: 15px; letter-spacing: .28em; font-weight: 500; color: #f1f7f4; opacity: .85; }
+        .cs-stage-brand small { display: block; font-size: 8px; letter-spacing: .28em; opacity: .55; margin-top: 5px; font-weight: 400; text-transform: uppercase; }
         .cs-nodes { position: relative; width: 100%; height: 100%; pointer-events: none; }
         .cs-nodes .cs-node { pointer-events: auto; }
         .cs-wrap { position: relative; display: grid; place-items: center; }
@@ -2418,7 +2442,8 @@
            thấy hai bên khung không đủ chỗ đặt nút (lớp .hep). */
         @media (max-width: 920px) {
             .cs-stage { height: auto; padding: 88px 0 96px; display: flex; flex-direction: column; gap: 20px; }
-            .cs-wrap, .cs-nodes { grid-area: auto; }
+            .cs-wrap, .cs-nodes, .cs-stage-brand { grid-area: auto; }
+            .cs-stage-brand { align-self: center; margin-top: 0; font-size: 13px; order: -1; }
             .cs-plate { width: min(66vw, 300px); }
             .cs-name { position: static; translate: none; margin-top: 16px; }
             .cs-nodes { height: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 9px; width: min(560px, 92vw); margin-top: 34px; }
@@ -2428,7 +2453,8 @@
             .cs-hint { display: none; }
         }
         .chooser.hep .cs-stage { height: auto; padding: 88px 0 96px; display: flex; flex-direction: column; gap: 20px; }
-        .chooser.hep .cs-wrap, .chooser.hep .cs-nodes { grid-area: auto; }
+        .chooser.hep .cs-wrap, .chooser.hep .cs-nodes, .chooser.hep .cs-stage-brand { grid-area: auto; }
+        .chooser.hep .cs-stage-brand { align-self: center; margin-top: 0; font-size: 13px; order: -1; }
         .chooser.hep .cs-plate { width: min(44vw, 340px, 48svh); }
         .chooser.hep .cs-name { position: static; translate: none; margin-top: 16px; }
         .chooser.hep .cs-nodes { height: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: min(760px, 92vw); margin-top: 30px; }
@@ -2510,10 +2536,11 @@
     <header class="chooser" id="chon">
         <canvas class="cs-toc" id="cs-toc" aria-hidden="true"></canvas>
         <div class="cs-bar">
-            <div class="cs-brand" id="logo-chon"><span class="logo-chu">ROOT &amp; RISE LAB</span><small>HEALTHY SCALP · STRONGER HAIR</small></div>
+            <div class="cs-brand" id="logo-chon"><span class="logo-chu">SPT LAB</span></div>
             <div id="tieng-chon"></div>
         </div>
         <div class="cs-stage">
+            <div class="cs-stage-brand"><span class="logo-chu">ROOT &amp; RISE LAB</span><small>HEALTHY SCALP · STRONGER HAIR</small></div>
             <div class="cs-wrap">
                 <div class="cs-plate" id="cs-plate"><div class="cs-scan"></div></div>
                 <div class="cs-name" id="cs-name"></div>
@@ -2746,6 +2773,7 @@
         <!-- Khối pháp lý: pháp nhân, mã số thuế, số công bố mỹ phẩm, huy hiệu
              Bộ Công Thương, dòng miễn trừ. Ô nào để trống thì tự ẩn. -->
         <div class="foot-phap" data-list="phapLy"></div>
+        <div class="foot-social" data-list="social"></div>
         <div class="foot-bottom" data-c="footer.copyright">© 2026 ROOT &amp; RISE LAB</div>
     </footer>
 
@@ -3088,9 +3116,12 @@
                 if (q && COTIENG(q)) { localStorage.setItem('rootlab_lang', q); return q; }
                 const luu = localStorage.getItem('rootlab_lang');
                 if (luu && COTIENG(luu)) return luu;
+                /* Chưa từng chọn tay: dùng vị trí (quốc gia) do _middleware.js gắn sẵn ở
+                   đầu trang. Nước ngoài 4 vùng có bản dịch riêng thì mặc định tiếng Anh. */
+                if (window.ROOTLAB_GEO_LANG && COTIENG(window.ROOTLAB_GEO_LANG)) return window.ROOTLAB_GEO_LANG;
                 const may = (navigator.language || '').slice(0, 2).toLowerCase();
-                return COTIENG(may) ? may : 'vi';
-            } catch (e) { return 'vi'; }
+                return COTIENG(may) ? may : 'en';
+            } catch (e) { return 'en'; }
         })();
         /* Trộn bản dịch: mảng ghép theo VỊ TRÍ (không thay cả mảng như deepMerge),
            nhờ vậy bản dịch chỉ cần ghi câu nào đổi, phần còn lại giữ nguyên. */
@@ -3230,6 +3261,20 @@
                   (k.note ? `<div class="foot-note">${esc(k.note)}</div>` : '')
                 : '');
             fill('contactShop', kenh.length ? `<h4>${esc(k.shopLabel || U.kenhMua || 'Kênh mua hàng')}</h4>${kenh.join('')}` : '');
+
+            /* Mạng xã hội: icon + tên, hiện sẵn khung dù chưa có link thật (dùng '#' tạm),
+               chỉnh link thật trong trang quản trị (mục Liên hệ) khi có. */
+            const socRow = (ico, txt, href) => {
+                const link = String(href || '').trim() || '#';
+                const ext = /^https?:/i.test(link) ? ' target="_blank" rel="noopener"' : '';
+                return `<a class="foot-item" href="${esc(link)}"${ext}><span class="ico">${ico}</span><span>${esc(txt)}</span></a>`;
+            };
+            fill('social', [
+                socRow('f', 'Facebook', webHref(k.facebook, 'https://')),
+                socRow('IG', 'Instagram', webHref(k.instagram, 'https://')),
+                socRow('@', 'Threads', webHref(k.threads, 'https://')),
+                socRow('♪', 'TikTok', webHref(k.tiktokSocial, 'https://'))
+            ].join(''));
 
             /* ---------- KHỐI PHÁP LÝ ----------
                Mọi ô đều tuỳ chọn: chưa có thì không hiện dòng đó, không để lại
@@ -3466,7 +3511,9 @@
                 if (!o) return;
                 o.querySelector('.logo-anh')?.remove();
                 const hinh = o.querySelector('.logo-hinh'), chu = o.querySelector('.logo-chu');
-                if (chu && chu.dataset.c !== 'brand') chu.textContent = esc(C.brand || 'ROOT & RISE LAB');
+                /* logo-chon (màn chọn đầu tiên) cố định chữ "SPT LAB" — tên công ty mẹ,
+                   không lấy theo C.brand (đó là tên dòng Root & Rise Lab, hiện ở màn sau). */
+                if (chu && chu.dataset.c !== 'brand' && id !== 'logo-chon') chu.textContent = esc(C.brand || 'ROOT & RISE LAB');
                 if (anh) {
                     const img = document.createElement('img');
                     img.className = 'logo-anh'; img.src = anh; img.alt = esc(C.brand || 'ROOT & RISE LAB');

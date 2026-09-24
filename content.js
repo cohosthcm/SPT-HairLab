@@ -529,7 +529,7 @@ window.ROOTLAB_CONTENT = {
   },
   "howto": {
     "eyebrow": "CÁCH DÙNG",
-    "t1": "Hai",
+    "t1": "Ba",
     "t2": "bước",
     "lead": "Không phức tạp. Tẩy tế bào chết 1–2 lần mỗi tuần, xịt tinh chất mỗi ngày lên da đầu đã khô.",
     "steps": [
@@ -705,7 +705,7 @@ window.ROOTLAB_CONTENT = {
       },
       "howto": {
         "eyebrow": "HOW TO USE",
-        "t1": "Two",
+        "t1": "Three",
         "t2": "Steps",
         "lead": "Nothing complicated. Exfoliate once or twice a week, then spray the serum daily onto a dry scalp.",
         "steps": [
@@ -1035,6 +1035,7 @@ window.ROOTLAB_CONTENT = {
       ],
       "products": [
         {
+          "name": "Deep Cleanse",
           "cardSub": "Step 1 · Cleanse",
           "tag": "Step 1 · Cleanse the roots",
           "desc": "A deep cleansing gel for roots and follicles.<br>Lifts away the sebum, dirt and dead skin<br>clogging the pores on your scalp.",
@@ -1053,6 +1054,7 @@ window.ROOTLAB_CONTENT = {
           "use": "Use 1–2 times a week on DRY hair — do not wet it first. Apply a small amount to the roots, massage the area with a scalp comb for 2–3 minutes, then wash out with a light shampoo."
         },
         {
+          "name": "Growth Serum",
           "cardSub": "Step 2 · Nourish",
           "tag": "Step 2 · Nourish & stimulate growth",
           "desc": "A serum that feeds the follicle from within.<br>It sinks into the root, encourages new growth<br>and reduces breakage day by day.",
@@ -1071,6 +1073,7 @@ window.ROOTLAB_CONTENT = {
           "use": "Fast-absorbing and non-greasy, for daily use. After cleansing and drying the scalp, spray a small amount onto the roots, then dry with cool air only — do not rinse."
         },
         {
+          "name": "Shampoo",
           "cardSub": "Daily wash",
           "tag": "Gentle shampoo · sulfate-free",
           "desc": "A shampoo you can use every day.<br>Clean enough, while keeping the natural oil<br>that protects your scalp and roots.",
@@ -1087,6 +1090,7 @@ window.ROOTLAB_CONTENT = {
           "warn": "For external use only. Avoid contact with eyes — if contact occurs, rinse immediately with water. Stop use if scalp irritation occurs. Keep out of reach of children. Store in a cool, dry place away from direct sunlight."
         },
         {
+          "name": "Body Wash",
           "cardSub": "Daily wash",
           "tag": "Gentle body wash · sulfate-free",
           "desc": "A body wash built on the same base as the shampoo.<br>Clean and fresh without drying the skin,<br>good for itchy backs and shoulders.",
@@ -1178,7 +1182,7 @@ window.ROOTLAB_CONTENT = {
       },
       "howto": {
         "eyebrow": "UTILISATION",
-        "t1": "Deux",
+        "t1": "Trois",
         "t2": "gestes",
         "lead": "Rien de compliqué. Un gommage une à deux fois par semaine, puis le sérum chaque jour sur cuir chevelu sec.",
         "steps": [
@@ -1508,6 +1512,7 @@ window.ROOTLAB_CONTENT = {
       ],
       "products": [
         {
+          "name": "Deep Cleanse",
           "cardSub": "Étape 1 · Nettoyer",
           "tag": "Étape 1 · Nettoyer les racines",
           "desc": "Gel nettoyant pour racines et follicules.<br>Élimine sébum, impuretés et cellules mortes<br>qui obstruent les pores du cuir chevelu.",
@@ -1526,6 +1531,7 @@ window.ROOTLAB_CONTENT = {
           "use": "1 à 2 fois par semaine, sur cheveux SECS — ne pas les mouiller. Appliquer une petite quantité sur les racines, masser 2 à 3 minutes avec un peigne, puis laver avec un shampooing léger."
         },
         {
+          "name": "Growth Serum",
           "cardSub": "Étape 2 · Nourrir",
           "tag": "Étape 2 · Nourrir & stimuler la pousse",
           "desc": "Un sérum qui nourrit le follicule.<br>Il pénètre jusqu'à la racine, relance la pousse<br>et réduit la casse jour après jour.",
@@ -1544,6 +1550,7 @@ window.ROOTLAB_CONTENT = {
           "use": "Pénètre vite, ne graisse pas, usage quotidien. Après avoir lavé et séché le cuir chevelu, vaporiser une petite quantité sur les racines, puis sécher à l'air froid — ne pas rincer."
         },
         {
+          "name": "Shampooing",
           "cardSub": "Lavage quotidien",
           "tag": "Shampooing doux · sans sulfate",
           "desc": "Un shampooing pour tous les jours.<br>Assez nettoyant, il garde le film naturel<br>qui protège le cuir chevelu et les racines.",
@@ -1560,6 +1567,7 @@ window.ROOTLAB_CONTENT = {
           "warn": "Usage externe uniquement. Éviter le contact avec les yeux — en cas de contact, rincer immédiatement à l'eau. Cesser l'utilisation en cas d'irritation. Tenir hors de portée des enfants. Conserver dans un endroit frais et sec, à l'abri du soleil."
         },
         {
+          "name": "Gel douche",
           "cardSub": "Douche quotidienne",
           "tag": "Gel douche doux · sans sulfate",
           "desc": "Un gel douche sur la même base que le shampooing.<br>Propre et frais sans dessécher la peau,<br>idéal pour le dos et les épaules qui démangent.",
@@ -1651,7 +1659,7 @@ window.ROOTLAB_CONTENT = {
       },
       "howto": {
         "eyebrow": "COME SI USA",
-        "t1": "Due",
+        "t1": "Tre",
         "t2": "passaggi",
         "lead": "Niente di complicato. Scrub una o due volte a settimana, poi il siero ogni giorno sul cuoio capelluto asciutto.",
         "steps": [
@@ -1981,6 +1989,7 @@ window.ROOTLAB_CONTENT = {
       ],
       "products": [
         {
+          "name": "Deep Cleanse",
           "cardSub": "Passo 1 · Pulizia",
           "tag": "Passo 1 · Pulizia delle radici",
           "desc": "Gel detergente profondo per radici e follicoli.<br>Rimuove sebo, impurità e cellule morte<br>che ostruiscono i pori del cuoio capelluto.",
@@ -1999,6 +2008,7 @@ window.ROOTLAB_CONTENT = {
           "use": "1–2 volte a settimana su capelli ASCIUTTI — non bagnarli. Applicare poco prodotto sulle radici, massaggiare 2–3 minuti con un pettine, poi lavare con uno shampoo leggero."
         },
         {
+          "name": "Growth Serum",
           "cardSub": "Passo 2 · Nutrimento",
           "tag": "Passo 2 · Nutre & stimola la crescita",
           "desc": "Un siero che nutre il follicolo dall'interno.<br>Penetra fino alla radice, stimola la ricrescita<br>e riduce la rottura giorno dopo giorno.",
@@ -2017,6 +2027,7 @@ window.ROOTLAB_CONTENT = {
           "use": "Si assorbe in fretta, non unge, uso quotidiano. Dopo aver lavato e asciugato la cute, spruzzare poco prodotto sulle radici, poi asciugare solo con aria fredda — non risciacquare."
         },
         {
+          "name": "Shampoo",
           "cardSub": "Lavaggio quotidiano",
           "tag": "Shampoo delicato · senza solfati",
           "desc": "Uno shampoo che puoi usare ogni giorno.<br>Pulisce il giusto, mantenendo il film naturale<br>che protegge cuoio capelluto e radici.",
@@ -2033,6 +2044,7 @@ window.ROOTLAB_CONTENT = {
           "warn": "Solo per uso esterno. Evitare il contatto con gli occhi — in caso di contatto, sciacquare subito con acqua. Sospendere l'uso in caso di irritazione. Tenere fuori dalla portata dei bambini. Conservare in luogo fresco e asciutto, lontano dalla luce diretta del sole."
         },
         {
+          "name": "Bagnoschiuma",
           "cardSub": "Doccia quotidiana",
           "tag": "Bagnoschiuma delicato · senza solfati",
           "desc": "Un bagnoschiuma sulla stessa base dello shampoo.<br>Pulito e fresco senza seccare la pelle,<br>adatto a schiena e spalle che prudono.",
@@ -2124,7 +2136,7 @@ window.ROOTLAB_CONTENT = {
       },
       "howto": {
         "eyebrow": "使い方",
-        "t1": "二つ",
+        "t1": "三つ",
         "t2": "の手順",
         "lead": "手順はかんたん。週1〜2回の角質ケアと、乾いた頭皮への毎日のセラム。",
         "steps": [
@@ -2454,6 +2466,7 @@ window.ROOTLAB_CONTENT = {
       ],
       "products": [
         {
+          "name": "Deep Cleanse",
           "cardSub": "ステップ 1 · 洗う",
           "tag": "ステップ 1 · 根元を洗う",
           "desc": "根元と毛包のためのディープクレンジングジェル。<br>頭皮の毛穴をふさぐ皮脂・汚れ・古い角質を<br>やさしく取り除きます。",
@@ -2472,6 +2485,7 @@ window.ROOTLAB_CONTENT = {
           "use": "週1〜2回、乾いた髪のまま（濡らさずに）使用します。適量を根元につけ、専用コームで2〜3分マッサージしてから、軽めのシャンプーで洗い流します。"
         },
         {
+          "name": "Growth Serum",
           "cardSub": "ステップ 2 · 育てる",
           "tag": "ステップ 2 · 育毛と栄養",
           "desc": "毛包を内側から育てる美容液。<br>根元まで浸透して新しい髪の成長を促し、<br>切れ毛を日ごとに減らします。",
@@ -2490,6 +2504,7 @@ window.ROOTLAB_CONTENT = {
           "use": "すばやくなじみ、べたつかず、毎日使えます。洗髪し頭皮を乾かした後、適量を根元にスプレーし、冷風で乾かします。洗い流さないでください。"
         },
         {
+          "name": "シャンプー",
           "cardSub": "毎日のシャンプー",
           "tag": "やさしいシャンプー · サルフェート不使用",
           "desc": "毎日使えるシャンプーです。<br>必要なだけ洗い、頭皮と根元を守る<br>自然な皮脂は残します。",
@@ -2506,6 +2521,7 @@ window.ROOTLAB_CONTENT = {
           "warn": "外用のみ。目に入らないようにしてください。入った場合はすぐに水で洗い流してください。頭皮に異常が出たら使用を中止してください。お子様の手の届かない所に置いてください。直射日光を避け、涼しく乾燥した場所で保管してください。"
         },
         {
+          "name": "ボディソープ",
           "cardSub": "毎日のボディソープ",
           "tag": "やさしいボディソープ · サルフェート不使用",
           "desc": "シャンプーと同じ洗浄ベースのボディソープ。<br>さっぱり洗えて肌は乾かさず、<br>背中や肩がかゆくなりやすい方にも。",

@@ -2337,6 +2337,15 @@ h1{font-size:17px;margin:0 0 18px}
                     field('Messenger', 'contact.messenger', { hint: 'Tên trang hoặc link m.me đầy đủ' }),
                     field('Email', 'contact.email')
                 ]),
+                h('div', { class: 'hint', html: 'Hàng icon mạng xã hội ở cuối chân trang — để trống thì icon vẫn hiện nhưng bấm vào chưa đi đâu, điền link vào đây thì tự nối.' }),
+                h('div', { class: 'row' }, [
+                    field('Facebook', 'contact.facebook', { hint: 'Link trang Facebook đầy đủ' }),
+                    field('Instagram', 'contact.instagram', { hint: 'Link trang Instagram đầy đủ' })
+                ]),
+                h('div', { class: 'row' }, [
+                    field('Threads', 'contact.threads', { hint: 'Link trang Threads đầy đủ' }),
+                    field('TikTok (trang cá nhân)', 'contact.tiktokSocial', { hint: 'Link trang TikTok — khác với ô "TikTok Shop" ở trên' })
+                ]),
                 field('Địa chỉ', 'contact.address'),
                 field('Giờ làm việc', 'contact.hours'),
                 h('div', { class: 'row' }, [

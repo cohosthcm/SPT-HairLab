@@ -296,15 +296,14 @@
             /* v12: một khối ảnh lớn duy nhất tự đổi mặt — không còn dải chai chạy trang trí bên dưới nữa */
             const dau = `
                 <div class="rp-hero">
-                    ${pr.boxBadge ? medal(pr.boxBadge) : ''}
                     <div class="rp-hero-stage">
-                        <span class="rp-brand"><img src="r-logo.png" alt=""></span>
                         <div class="rp-hero-img">
                             <img class="hf" src="${h(hopMat1)}" alt="">
                             <img class="hb" src="${h(hopMat2)}" alt="">
                         </div>
                         <div class="rp-hero-dots"><i class="on"></i><i></i></div>
                     </div>
+                    ${pr.boxBadge ? `<img class="rp-bestseller" src="bestseller.png" alt="${h(pr.boxBadge)}">` : ''}
                 </div>
                 <span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>
                 <div class="rp-ten rp-ten-bo">
@@ -502,19 +501,8 @@
     .rp-hero-dots{position:absolute;bottom:9px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:2}
     .rp-hero-dots i{width:6px;height:6px;border-radius:50%;background:#d8c79a;transition:background .3s,transform .3s}
     .rp-hero-dots i.on{background:#5c3c0a;transform:scale(1.25)}
-    .rp-medal{position:absolute;top:8px;left:10px;z-index:4;width:64px;height:96px;filter:drop-shadow(0 6px 10px rgba(50,30,0,.4))}
-    .rp-medal-svg{width:100%;height:100%;display:block;overflow:visible}
-    .rp-spark{position:absolute;color:#fff9dd;font-size:9px;line-height:1;pointer-events:none;
-      text-shadow:0 0 4px #fff3c4,0 0 8px #ffd77a;animation:rpTwinkle 1.8s ease-in-out infinite}
-    .rp-spark.s1{top:-2px;right:-5px;animation-delay:0s;font-size:10px}
-    .rp-spark.s2{top:26%;left:-7px;animation-delay:.6s;font-size:7px}
-    .rp-spark.s3{top:48%;right:-6px;animation-delay:1.15s;font-size:8px}
-    @keyframes rpTwinkle{0%,100%{opacity:0;transform:scale(.3) rotate(0deg)}50%{opacity:1;transform:scale(1.15) rotate(25deg)}}
-    .rp-medal-sweep{animation:rpSweepMedal 2.8s ease-in-out infinite}
-    @keyframes rpSweepMedal{0%,20%{transform:translateX(-140%) rotate(18deg)}55%,100%{transform:translateX(140%) rotate(18deg)}}
-    .rp-brand{position:absolute;bottom:9px;right:10px;z-index:2;width:32px;height:32px;border-radius:50%;background:#fff;
-      display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(30,20,10,.18);overflow:hidden}
-    .rp-brand img{width:46%;height:64%;object-fit:contain}
+    .rp-bestseller{position:absolute;right:12px;bottom:-46px;z-index:5;width:84px;height:auto;
+      filter:drop-shadow(0 8px 12px rgba(50,30,0,.35));pointer-events:none}
     .rp-ten-bo{padding:14px 2px 0}
     .rp-ten h2{margin:0 0 4px;font-size:22px;line-height:1.25;letter-spacing:-.01em}
     .rp-ten p{margin:0;color:#6b6358;font-size:14px;line-height:1.45}
@@ -545,7 +533,10 @@
     .rp-than{padding:0 2px 14px;font-size:14.5px;line-height:1.65;color:#3b362f}
     .rp-than p{margin:0 0 8px}
     .rp-inci{font-size:12.5px!important;line-height:1.7!important;color:#6b6358}
-    .rp-doan-gop{margin-top:2px}
+    .rp-doan-gop{margin-top:8px;border:1px solid #e7ded1;border-radius:14px 14px 0 0;background:#fff;overflow:hidden}
+    .rp-doan-gop[open]{border-radius:14px}
+    .rp-doan-gop summary{padding:14px 14px}
+    .rp-doan-gop .rp-than{padding:0 14px 14px}
     .rp-buoc-nhan-gop{font-size:13.5px;font-weight:700;color:#23201b;margin:16px 0 8px;padding-top:14px;border-top:1px dashed #e7ded1}
     .rp-buoc-nhan-gop:first-child{margin-top:0;padding-top:0;border-top:0}
     .rp-sec{margin-bottom:4px}
@@ -604,13 +595,11 @@
       .rp-ten h2{font-size:19px}
       .rp-hero{margin:-22px -18px 16px}
       .rp-hero-stage{height:240px}
-      .rp-medal{width:52px;height:78px;top:6px;left:8px}
-      .rp-brand{width:28px;height:28px}
+      .rp-bestseller{width:66px;bottom:-36px;right:8px}
     }
     @media (prefers-reduced-motion:reduce){
       .rp-nen,.rp-hop{transition:none}
       .rp-hero-img img{transition:none}
-      .rp-spark,.rp-medal-sweep{animation:none;opacity:0}
     }
     `;
     css.textContent = CSS;
