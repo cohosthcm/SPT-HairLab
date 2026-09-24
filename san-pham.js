@@ -174,8 +174,8 @@
                 + doan(t.giayPhep, giayPhep(p), true, 'rp-gp')
                 + doan(t.tem, tem(p), true);
         }
-        const dauChai = p => `
-            <span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>
+        const dauChai = (p, nhan = true) => `
+            ${nhan ? `<span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>` : ''}
             <div class="rp-dau">
                 <div class="rp-anh">${p.photo ? `<img src="${h(p.photo)}" alt="${h(p.name)}">` : ''}</div>
                 <div class="rp-ten">
@@ -193,6 +193,7 @@
             if (k.loai === 'chai') return { tieuDe: k.sp.name, sanPham: tenGoc(k.sp.key), html: dauChai(k.sp) + khoiChai(k.sp), dich: k.sp.key };
             const d = k.dong, pr = Object.assign({}, Cx.pricing || {}, d.pricing || {});
             const dau = `
+                ${pr.boxBadge ? `<span class="rp-best">★ ${h(pr.boxBadge)}</span>` : ''}
                 <span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>
                 <div class="rp-dau rp-dau-bo">
                     <div class="rp-anh rp-anh-bo"><img src="bo-qua-tang.png" alt=""></div>
@@ -205,7 +206,8 @@
                 </div>`;
             const tab = `<div class="rp-tab" role="tablist">${k.ds.map((p, i) =>
                 `<button type="button" role="tab" data-i="${i}" aria-selected="${i === 0}">${h(t.buoc)} ${i + 1} · ${h(p.name)}</button>`).join('')}</div>`;
-            const than = k.ds.map((p, i) => `<div class="rp-buoc" data-i="${i}"${i ? ' hidden' : ''}>${dauChai(p).replace('id="rp-td"', '')}${khoiChai(p)}</div>`).join('');
+            /* nhãn "Chính hãng" đã hiện 1 lần ở đầu hộp — từng bước bên trong không lặp lại nữa */
+            const than = k.ds.map((p, i) => `<div class="rp-buoc" data-i="${i}"${i ? ' hidden' : ''}>${dauChai(p, false).replace('id="rp-td"', '')}${khoiChai(p)}</div>`).join('');
             return { tieuDe: t.hopQua, sanPham: T.vi.hopQua, html: dau + tab + than, dich: d.key };
         }
 
@@ -369,6 +371,9 @@
     .rp-nhan{display:inline-flex;align-items:center;gap:5px;max-width:100%;margin:0 46px 10px 0;
       font-size:10.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#1a4f8a;
       background:#e8f0fb;padding:4px 10px 4px 6px;border-radius:99px}
+    .rp-best{display:inline-flex;align-items:center;gap:5px;margin:0 8px 10px 0;font-size:10.5px;font-weight:800;
+      letter-spacing:.03em;text-transform:uppercase;color:#7a3b00;background:linear-gradient(135deg,#ffd77a,#ffb347);
+      padding:5px 12px;border-radius:99px;box-shadow:0 2px 6px rgba(255,150,20,.35)}
     /* một hàng, không ngắt dòng; khung hẹp quá thì tự thu chữ chứ không xuống dòng */
     .rp-nhan b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
     .rp-vr{width:15px;height:15px;flex:none;display:block}
