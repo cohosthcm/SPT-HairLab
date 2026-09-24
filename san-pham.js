@@ -28,7 +28,8 @@
             dongY: 'Tôi đồng ý để CÔNG TY TNHH SPT LAB lưu họ tên, số điện thoại của tôi để liên hệ tư vấn và gửi ưu đãi.',
             camOn: 'Cảm ơn bạn! Chúng tôi sẽ liên hệ sớm.', loi: 'Chưa gửi được. Bạn nhắn Zalo hoặc gọi giúp mình nhé:', thuLai: 'Chưa gửi được, bạn thử lại sau ít phút nhé.',
             loiTen: 'Bạn nhập họ tên giúp mình', loiSdt: 'Số điện thoại chưa đúng', loiDongY: 'Bạn cần tick đồng ý để gửi',
-            xemDayDu: 'Bấm vào để xem đầy đủ thông tin sản phẩm và chứng nhận', xemThem: 'Xem thêm' },
+            xemDayDu: 'Bấm vào để xem đầy đủ thông tin sản phẩm và chứng nhận', xemThem: 'Xem thêm',
+            btnUuDai: 'Nhấn vào đây nếu bạn muốn nhận ưu đãi và tư vấn miễn phí' },
         en: { chinhHang: 'Genuine ROOT & RISE LAB', congDung: 'Benefits', cachDung: 'How to use', thanhPhan: 'Full ingredient list',
             luuY: 'Precautions', giayPhep: 'Certificates & licences', tem: 'Anti-counterfeit & quality seals', soCongBo: 'Cosmetic notification no.',
             sanXuat: 'Manufactured at', phanPhoi: 'Responsible for placing on the market', mst: 'Business registration no.', bct: 'Registered with the Ministry of Industry and Trade',
@@ -38,7 +39,8 @@
             dongY: 'I agree that SPT LAB COMPANY LIMITED may store my name and phone number to contact me with advice and offers.',
             camOn: 'Thank you! We will contact you soon.', loi: 'Could not send. Please message or call us:', thuLai: 'Could not send, please try again in a few minutes.',
             loiTen: 'Please enter your name', loiSdt: 'Phone number looks wrong', loiDongY: 'Please tick to agree',
-            xemDayDu: 'Tap to see full product info & certificates', xemThem: 'See more' },
+            xemDayDu: 'Tap to see full product info & certificates', xemThem: 'See more',
+            btnUuDai: 'Tap here if you would like offers & free advice' },
         fr: { chinhHang: 'Authentique ROOT & RISE LAB', congDung: 'Bienfaits', cachDung: 'Utilisation', thanhPhan: 'Liste complète des ingrédients',
             luuY: 'Précautions', giayPhep: 'Certificats & autorisations', tem: 'Sceaux anti-contrefaçon & contrôle', soCongBo: 'N° de notification cosmétique',
             sanXuat: 'Fabriqué par', phanPhoi: 'Responsable de la mise sur le marché', mst: "N° d'immatriculation", bct: 'Déclaré au ministère de l’Industrie et du Commerce',
@@ -48,7 +50,8 @@
             dongY: 'J’accepte que SPT LAB COMPANY LIMITED conserve mon nom et mon numéro pour me conseiller et m’envoyer des offres.',
             camOn: 'Merci ! Nous vous contactons bientôt.', loi: 'Envoi impossible. Écrivez-nous ou appelez :', thuLai: 'Envoi impossible, réessayez dans quelques minutes.',
             loiTen: 'Indiquez votre nom', loiSdt: 'Numéro incorrect', loiDongY: 'Cochez la case pour accepter',
-            xemDayDu: 'Appuyez pour voir toutes les infos produit et les certificats', xemThem: 'Voir plus' },
+            xemDayDu: 'Appuyez pour voir toutes les infos produit et les certificats', xemThem: 'Voir plus',
+            btnUuDai: 'Appuyez ici pour recevoir des offres et un conseil gratuit' },
         it: { chinhHang: 'Originale ROOT & RISE LAB', congDung: 'Benefici', cachDung: 'Modo d’uso', thanhPhan: 'Elenco completo degli ingredienti',
             luuY: 'Avvertenze', giayPhep: 'Certificati e licenze', tem: 'Sigilli anticontraffazione e di controllo', soCongBo: 'N. di notifica cosmetica',
             sanXuat: 'Prodotto da', phanPhoi: 'Responsabile dell’immissione in commercio', mst: 'N. di registro imprese', bct: 'Registrato presso il Ministero dell’Industria e del Commercio',
@@ -58,7 +61,8 @@
             dongY: 'Acconsento che SPT LAB COMPANY LIMITED conservi nome e numero per contattarmi con consigli e offerte.',
             camOn: 'Grazie! Ti contatteremo presto.', loi: 'Invio non riuscito. Scrivici o chiamaci:', thuLai: 'Invio non riuscito, riprova tra qualche minuto.',
             loiTen: 'Inserisci il nome', loiSdt: 'Numero non valido', loiDongY: 'Spunta la casella per acconsentire',
-            xemDayDu: 'Tocca per vedere tutte le info sul prodotto e i certificati', xemThem: 'Vedi altro' },
+            xemDayDu: 'Tocca per vedere tutte le info sul prodotto e i certificati', xemThem: 'Vedi altro',
+            btnUuDai: 'Tocca qui per ricevere offerte e una consulenza gratuita' },
         ja: { chinhHang: 'ROOT & RISE LAB 正規品', congDung: '効果', cachDung: '使い方', thanhPhan: '全成分',
             luuY: '使用上の注意', giayPhep: '認証・許可', tem: '偽造防止・検査シール', soCongBo: '化粧品届出番号',
             sanXuat: '製造所', phanPhoi: '製造販売元', mst: '法人番号', bct: '商工省届出済み',
@@ -68,7 +72,8 @@
             dongY: 'SPT LAB COMPANY LIMITED が相談・特典のご連絡のため、氏名と電話番号を保存することに同意します。',
             camOn: 'ありがとうございます。まもなくご連絡します。', loi: '送信できませんでした。こちらからご連絡ください：', thuLai: '送信できませんでした。数分後にもう一度お試しください。',
             loiTen: 'お名前を入力してください', loiSdt: '電話番号が正しくありません', loiDongY: '同意にチェックしてください',
-            xemDayDu: 'タップして商品情報と認証をすべて見る', xemThem: 'もっと見る' }
+            xemDayDu: 'タップして商品情報と認証をすべて見る', xemThem: 'もっと見る',
+            btnUuDai: '特典・無料相談をご希望の方はこちらをタップ' }
     };
     const t = Object.assign({}, T.vi, T[L] || {});
 
@@ -323,17 +328,20 @@
                 lk.phone ? `<a href="tel:${h(String(lk.phone).replace(/[^\d+]/g, ''))}">${h(lk.phone)}</a>` : ''].filter(Boolean).join(' · ');
             return `
             <form class="rp-form" novalidate data-sp="${h(sanPham)}" data-lh="${h(lienHe)}">
+                <details class="rp-doan rp-uu-dai"><summary><span>${h(t.btnUuDai)}</span><i></i></summary>
+                <div class="rp-than">
                 <h3>${h(t.formTieuDe)}</h3><p class="rp-phu">${h(t.formPhu)}</p>
                 <div class="rp-chon">
                     <label><input type="radio" name="need" value="uu-dai" checked><span>${h(t.uuDai)}</span></label>
                     <label><input type="radio" name="need" value="tu-van"><span>${h(t.tuVan)}</span></label>
                 </div>
                 <label class="rp-o"><span>${h(t.ten)}</span><input name="name" autocomplete="name" maxlength="80" required></label>
-                <label class="rp-o"><span>${h(t.sdt)}</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="16" required></label>
+                <label class="rp-o"><span>${h(t.sdt)}</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="13" required></label>
                 <input class="rp-bay" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">
                 <label class="rp-dy"><input type="checkbox" name="consent"><span>${h(t.dongY)}</span></label>
                 <div class="rp-bao" role="status" aria-live="polite"></div>
                 <button type="submit" class="rp-gui">${h(t.gui)}</button>
+                </div></details>
             </form>`;
         }
         return { t, timMa, dung, form, khoiChai, dauChai };
@@ -430,9 +438,15 @@
         if (oDy) oDy.addEventListener('change', khoaNut);
         khoaNut();
 
-        /* số điện thoại: chỉ nhận chữ số khi gõ (giữ dấu + ở đầu nếu khách gõ dạng +84…) */
+        /* số điện thoại: chỉ nhận chữ số khi gõ (giữ dấu + ở đầu nếu khách gõ dạng +84…).
+           Bắt đầu bằng 0 → tối đa 10 số. Bắt đầu bằng + → tối đa 12 số (không tính dấu +). */
         const oSdt = o('phone');
-        if (oSdt) oSdt.addEventListener('input', () => { oSdt.value = oSdt.value.replace(/(?!^\+)[^\d]/g, ''); });
+        if (oSdt) oSdt.addEventListener('input', () => {
+            let v = oSdt.value.replace(/(?!^\+)[^\d]/g, '');
+            if (v[0] === '+') v = '+' + v.slice(1).replace(/\D/g, '').slice(0, 12);
+            else v = v.replace(/\D/g, '').slice(0, 10);
+            oSdt.value = v;
+        });
 
         f.addEventListener('submit', async e => {
             e.preventDefault();
@@ -560,6 +574,11 @@
     .rp-tem img{width:100%;border-radius:10px;border:1px solid #e7ded1;background:#fff}
     .rp-tem figcaption{font-size:12px;color:#6b6358;margin-top:4px}
     .rp-form{margin-top:10px;padding:18px;background:#fff;border:1px solid #e7ded1;border-radius:18px}
+    /* nút gọn "nhấn để nhận ưu đãi" — bấm mới hiện form đầy đủ, đỡ rối mắt */
+    .rp-uu-dai{border-top:0;border:1px solid #cfe4dc;border-radius:14px;background:#e3f1ed;overflow:hidden}
+    .rp-uu-dai summary{padding:14px;font-size:15px;color:#0f6b5c}
+    .rp-uu-dai[open]{background:none;border-color:#e7ded1}
+    .rp-uu-dai .rp-than{padding:0 2px 2px}
     .rp-form h3{margin:0 0 2px;font-size:17px}
     .rp-phu{margin:0 0 12px;color:#6b6358;font-size:13.5px}
     .rp-chon{display:flex;gap:8px;margin-bottom:12px}

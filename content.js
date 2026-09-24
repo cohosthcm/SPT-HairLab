@@ -737,15 +737,15 @@ window.ROOTLAB_CONTENT = {
         "weeks": [
           {
             "b": "Week 2",
-            "s": "Scalp clean, no more greasiness or itching"
+            "s": "Clean scalp, noticeably less grease and itch"
           },
           {
             "b": "Week 4",
-            "s": "Noticeably less hair falling out when you wash"
+            "s": "Noticeably less hair falling out when washing"
           },
           {
             "b": "Week 8",
-            "s": "Baby hairs appearing in the thin areas"
+            "s": "Baby hairs start appearing in thin areas"
           },
           {
             "b": "Week 12",
@@ -1076,7 +1076,7 @@ window.ROOTLAB_CONTENT = {
           "name": "Shampoo",
           "cardSub": "Daily wash",
           "tag": "Gentle shampoo · sulfate-free",
-          "desc": "A shampoo you can use every day.<br>Clean enough, while keeping the natural oil<br>that protects your scalp and roots.",
+          "desc": "A shampoo for everyday use.<br>Cleans strongly, while keeping the natural oil<br>that protects your scalp and roots.",
           "priceSub": "Gentle sulfate-free shampoo · 300ml",
           "buyBtn": "Buy shampoo",
           "features": [
