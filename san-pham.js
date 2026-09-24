@@ -293,14 +293,11 @@
             /* ảnh hộp: mặt có cửa sổ thấy sản phẩm ↔ góc nghiêng — tự đổi qua lại, không xoay ảnh phẳng
                (xem rootlab-landing/doi-chai-khong-duoc-xoay.md — lùi mờ ra xa rồi tiến rõ lại gần) */
             const hopMat1 = pr.boxPhoto || 'hop-qua-2buoc.webp', hopMat2 = pr.boxPhotoGoc || 'hop-qua-goc-nghieng.webp';
-            /* dải chai chạy trang trí — chỉ có ở hộp quà, không có khi xem riêng 1 chai qua mã QR */
-            const carDs = k.ds.concat(k.ds).map((p, i) => p.photo
-                ? `<img src="${h(p.photo)}" alt="" style="--nghieng:${(i % 2 ? -1 : 1) * (7 + (i * 5) % 10)}deg;--nhip:${9 + (i % 3) * 2}s;--tre:${(i * -1.4).toFixed(1)}s">`
-                : '').join('');
+            /* v12: một khối ảnh lớn duy nhất tự đổi mặt — không còn dải chai chạy trang trí bên dưới nữa */
             const dau = `
                 <div class="rp-hero">
+                    ${pr.boxBadge ? medal(pr.boxBadge) : ''}
                     <div class="rp-hero-stage">
-                        ${pr.boxBadge ? medal(pr.boxBadge) : ''}
                         <span class="rp-brand"><img src="r-logo.png" alt=""></span>
                         <div class="rp-hero-img">
                             <img class="hf" src="${h(hopMat1)}" alt="">
@@ -308,7 +305,6 @@
                         </div>
                         <div class="rp-hero-dots"><i class="on"></i><i></i></div>
                     </div>
-                    <div class="rp-carousel" aria-hidden="true"><div class="rp-car-track">${carDs}</div></div>
                 </div>
                 <span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>
                 <div class="rp-ten rp-ten-bo">
@@ -317,15 +313,9 @@
                     ${pr.comboNew ? `<div class="rp-gia">${h(pr.comboNew)}${pr.comboOld ? ` <s>${h(pr.comboOld)}</s>` : ''}</div>` : ''}
                     <p class="rp-tang">★ ${h(pr.boxGift || t.tang)}</p>
                 </div>`;
-            /* không còn tab Bước 1/Bước 2 — hiện luôn ảnh + tên từng chai nối tiếp nhau,
-               còn phần thông tin chi tiết (công dụng/cách dùng/thành phần/chứng nhận) gộp
-               chung vào một mục "xem đầy đủ" đóng sẵn, hé lộ vài dòng mờ dần bên dưới. */
-            const than = k.ds.map((p, i) => `
-                <div class="rp-buoc" data-i="${i}">
-                    <p class="rp-buoc-nhan">${h(t.buoc)} ${i + 1}</p>
-                    ${dauChai(p, false, false).replace('id="rp-td"', '')}
-                </div>`).join('') + khoiChaiGop(k.ds);
-            return { tieuDe: t.hopQua, sanPham: T.vi.hopQua, html: dau + than, dich: d.key };
+            /* v12: không còn tab Bước 1/Bước 2, không còn hiện riêng ảnh+tên từng chai nữa —
+               đi thẳng từ giá xuống một mục "xem đầy đủ" duy nhất, đóng sẵn, hé lộ vài dòng mờ dần. */
+            return { tieuDe: t.hopQua, sanPham: T.vi.hopQua, html: dau + khoiChaiGop(k.ds), dich: d.key };
         }
 
         function form(sanPham) {
@@ -498,21 +488,21 @@
     .rp-anh img{max-height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 10px 14px rgba(80,55,20,.25))}
     .rp-anh-bo{flex-basis:150px;height:130px;padding:0;background:none}
     .rp-anh-bo img{border-radius:12px;filter:drop-shadow(0 12px 18px rgba(80,55,20,.28))}
-    /* ---- khối ảnh lớn của hộp quà: hộp tự đổi mặt, dải chai chạy trang trí ---- */
-    .rp-hero{margin:-2px -2px 16px;border-radius:20px;overflow:hidden;background:radial-gradient(120% 130% at 50% 12%,#fff8ea 0%,#f6e9cc 55%,#ecdcb4 100%)}
-    .rp-hero-stage{position:relative;height:220px;display:flex;align-items:center;justify-content:center;perspective:1200px}
+    /* ---- khối ảnh lớn của hộp quà: hộp tự đổi mặt (v12) ---- */
+    .rp-hero{position:relative;margin:-26px -26px 16px}
+    .rp-hero-stage{position:relative;height:300px;border-radius:20px;overflow:hidden;background:radial-gradient(120% 130% at 50% 12%,#fff8ea 0%,#f6e9cc 55%,#ecdcb4 100%);display:flex;align-items:center;justify-content:center;perspective:1200px}
     .rp-hero-img{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
     .rp-hero-img img{position:absolute;max-height:82%;max-width:74%;object-fit:contain;
       filter:drop-shadow(0 16px 16px rgba(60,40,10,.25));will-change:transform,opacity;
       transition:transform 1.1s cubic-bezier(.45,0,.2,1),opacity 1.1s cubic-bezier(.45,0,.2,1)}
     .rp-hero-img img.hf{opacity:1;transform:translateZ(0) scale(1)}
-    .rp-hero-img img.hb{opacity:0;transform:translateZ(-220px) scale(.84)}
-    .rp-hero.lat .rp-hero-img img.hf{opacity:0;transform:translateZ(-220px) scale(.84)}
+    .rp-hero-img img.hb{opacity:0;transform:translateZ(-260px) scale(.82)}
+    .rp-hero.lat .rp-hero-img img.hf{opacity:0;transform:translateZ(-260px) scale(.82)}
     .rp-hero.lat .rp-hero-img img.hb{opacity:1;transform:translateZ(0) scale(1)}
     .rp-hero-dots{position:absolute;bottom:9px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:2}
     .rp-hero-dots i{width:6px;height:6px;border-radius:50%;background:#d8c79a;transition:background .3s,transform .3s}
     .rp-hero-dots i.on{background:#5c3c0a;transform:scale(1.25)}
-    .rp-medal{position:absolute;top:-6px;left:8px;z-index:3;width:46px;height:69px;filter:drop-shadow(0 6px 10px rgba(50,30,0,.4))}
+    .rp-medal{position:absolute;top:8px;left:10px;z-index:4;width:64px;height:96px;filter:drop-shadow(0 6px 10px rgba(50,30,0,.4))}
     .rp-medal-svg{width:100%;height:100%;display:block;overflow:visible}
     .rp-spark{position:absolute;color:#fff9dd;font-size:9px;line-height:1;pointer-events:none;
       text-shadow:0 0 4px #fff3c4,0 0 8px #ffd77a;animation:rpTwinkle 1.8s ease-in-out infinite}
@@ -525,13 +515,6 @@
     .rp-brand{position:absolute;bottom:9px;right:10px;z-index:2;width:32px;height:32px;border-radius:50%;background:#fff;
       display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(30,20,10,.18);overflow:hidden}
     .rp-brand img{width:46%;height:64%;object-fit:contain}
-    .rp-carousel{position:relative;height:64px;overflow:hidden;background:rgba(255,255,255,.35);border-top:1px solid rgba(140,105,40,.15)}
-    .rp-car-track{position:absolute;top:0;left:0;height:100%;display:flex;align-items:center;gap:34px;padding:0 17px;
-      animation:rpCarRun 16s linear infinite}
-    .rp-car-track img{height:52px;width:auto;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(60,40,10,.2));
-      transform:rotate(var(--nghieng,0deg));animation:rpCarXoay var(--nhip,10s) linear infinite;animation-delay:var(--tre,0s)}
-    @keyframes rpCarRun{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    @keyframes rpCarXoay{from{transform:rotate(var(--nghieng,0deg))}to{transform:rotate(calc(var(--nghieng,0deg) + 360deg))}}
     .rp-ten-bo{padding:14px 2px 0}
     .rp-ten h2{margin:0 0 4px;font-size:22px;line-height:1.25;letter-spacing:-.01em}
     .rp-ten p{margin:0;color:#6b6358;font-size:14px;line-height:1.45}
@@ -619,14 +602,14 @@
       .rp-anh{flex-basis:88px;height:140px}
       .rp-anh-bo{flex-basis:120px;height:104px}
       .rp-ten h2{font-size:19px}
-      .rp-hero-stage{height:180px}
-      .rp-medal{width:40px;height:60px;top:-4px;left:6px}
+      .rp-hero{margin:-22px -18px 16px}
+      .rp-hero-stage{height:240px}
+      .rp-medal{width:52px;height:78px;top:6px;left:8px}
       .rp-brand{width:28px;height:28px}
     }
     @media (prefers-reduced-motion:reduce){
       .rp-nen,.rp-hop{transition:none}
       .rp-hero-img img{transition:none}
-      .rp-car-track,.rp-car-track img{animation:none}
       .rp-spark,.rp-medal-sweep{animation:none;opacity:0}
     }
     `;
