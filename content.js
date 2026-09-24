@@ -1,10 +1,4 @@
-/* Nội dung trang ROOTLAB — sửa bằng trang quản trị rồi tải file này về, ghi đè lên đây.
-   lines   = các DÒNG SẢN PHẨM ở màn đầu. Mỗi dòng là một trang riêng.
-   products= các chai. Một dòng có thể gồm nhiều chai (trường "sp" của dòng).
-   i18n    = bản dịch. Khối nào không khai thì tự dùng bản tiếng Việt.
-   sanSang = false trên một dòng: dòng đó CHƯA có hàng, nút chọn ở màn đầu
-   bị khoá (không bấm/mua được) nhưng vẫn xem trước được (rê chuột/chạm),
-   để khách biết dòng đó sắp ra mắt. Bỏ trường này (hoặc true) là mở lại. */
+/* Nội dung trang ROOTLAB — xuất từ admin.html lúc 23:57:51 24/9/2026 */
 window.ROOTLAB_CONTENT = {
   "brand": "ROOT & RISE LAB",
   "contactBtn": "Liên hệ",
@@ -500,7 +494,7 @@ window.ROOTLAB_CONTENT = {
         "mid": "#044e3b",
         "outer": "#011411"
       },
-      "price": "390.000",
+      "price": "293.000",
       "priceSub": "Tẩy tế bào chết & làm sạch da đầu · 200ml",
       "features": [
         "Dùng 1–2 lần mỗi tuần",
@@ -541,7 +535,7 @@ window.ROOTLAB_CONTENT = {
         "mid": "#3a2606",
         "outer": "#120a01"
       },
-      "price": "690.000",
+      "price": "586.000",
       "priceSub": "Tinh chất nuôi dưỡng chân tóc · 100ml",
       "features": [
         "Dùng hằng ngày",
@@ -795,7 +789,7 @@ window.ROOTLAB_CONTENT = {
     "note": "Giá minh hoạ — thay bằng giá bán thật của bạn."
   },
   "footer": {
-    "tagline": "Tóc khoẻ tự nhiên",
+    "tagline": "Chăm sóc tóc từ chân tóc — làm sạch trước, nuôi dưỡng sau.",
     "copyright": "© 2026 ROOT & RISE LAB"
   },
   "i18n": {
