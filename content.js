@@ -1,7 +1,10 @@
 /* Nội dung trang ROOTLAB — sửa bằng trang quản trị rồi tải file này về, ghi đè lên đây.
    lines   = các DÒNG SẢN PHẨM ở màn đầu. Mỗi dòng là một trang riêng.
    products= các chai. Một dòng có thể gồm nhiều chai (trường "sp" của dòng).
-   i18n    = bản dịch. Khối nào không khai thì tự dùng bản tiếng Việt. */
+   i18n    = bản dịch. Khối nào không khai thì tự dùng bản tiếng Việt.
+   sanSang = false trên một dòng: dòng đó CHƯA có hàng, nút chọn ở màn đầu
+   bị khoá (không bấm/mua được) nhưng vẫn xem trước được (rê chuột/chạm),
+   để khách biết dòng đó sắp ra mắt. Bỏ trường này (hoặc true) là mở lại. */
 window.ROOTLAB_CONTENT = {
   "brand": "ROOT & RISE LAB",
   "contactBtn": "Liên hệ",
@@ -46,6 +49,7 @@ window.ROOTLAB_CONTENT = {
       "name": "Dầu gội dưỡng chân tóc",
       "navLabel": "Dầu gội",
       "navKicker": "Dòng 02",
+      "sanSang": false,
       "nguoi": "",
       "kieuToc": "ngang",
       "accent": "#12a2bd",
@@ -185,6 +189,7 @@ window.ROOTLAB_CONTENT = {
       "name": "Sữa tắm dưỡng da",
       "navLabel": "Sữa tắm",
       "navKicker": "Dòng 03",
+      "sanSang": false,
       "nguoi": "",
       "kieuToc": "lua",
       "accent": "#9068c4",
@@ -1111,7 +1116,8 @@ window.ROOTLAB_CONTENT = {
         "zalo": "Chat on Zalo",
         "goi": "Call",
         "lienHe": "Contact",
-        "kenhMua": "Where to buy"
+        "kenhMua": "Where to buy",
+        "sapCoHang": "Coming soon"
       },
       "contact": {
         "heading": "Order & advice",
@@ -1590,7 +1596,8 @@ window.ROOTLAB_CONTENT = {
         "zalo": "Écrire sur Zalo",
         "goi": "Appeler",
         "lienHe": "Contact",
-        "kenhMua": "Où acheter"
+        "kenhMua": "Où acheter",
+        "sapCoHang": "Bientôt disponible"
       },
       "contact": {
         "heading": "Commande & conseils",
@@ -2067,7 +2074,8 @@ window.ROOTLAB_CONTENT = {
         "zalo": "Scrivi su Zalo",
         "goi": "Chiama",
         "lienHe": "Contatti",
-        "kenhMua": "Dove acquistare"
+        "kenhMua": "Dove acquistare",
+        "sapCoHang": "Prossimamente"
       },
       "contact": {
         "heading": "Ordini & consulenza",
@@ -2544,7 +2552,8 @@ window.ROOTLAB_CONTENT = {
         "zalo": "Zaloで連絡",
         "goi": "電話",
         "lienHe": "お問い合わせ",
-        "kenhMua": "購入できる場所"
+        "kenhMua": "購入できる場所",
+        "sapCoHang": "近日公開"
       },
       "contact": {
         "heading": "ご注文・ご相談",
@@ -2558,7 +2567,8 @@ window.ROOTLAB_CONTENT = {
     "zalo": "Nhắn Zalo",
     "goi": "Gọi",
     "lienHe": "Liên hệ",
-    "kenhMua": "Kênh mua hàng"
+    "kenhMua": "Kênh mua hàng",
+    "sapCoHang": "Sắp có hàng"
   },
   "contact": {
     "company": "CÔNG TY TNHH SPT LAB",

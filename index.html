@@ -1534,6 +1534,36 @@
 
         .foot-social .foot-item {
             margin-bottom: 0;
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .14);
+            transition: background .25s ease, border-color .25s ease, transform .25s ease, color .25s ease;
+        }
+
+        .foot-social .foot-item .ico {
+            width: 19px;
+            height: 19px;
+            background: none;
+            border: none;
+            border-radius: 0;
+            color: #fff;
+        }
+
+        .foot-social .foot-item .ico svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .foot-social .foot-item:hover {
+            background: var(--d1);
+            border-color: var(--d1);
+            color: #fff;
+            transform: translateY(-3px);
         }
 
         .foot-social:empty {
@@ -2416,6 +2446,17 @@
         .cs-node[data-side="l"]:hover { transform: translateX(-9px); }
         .cs-node[data-side="r"]:hover { transform: translateX(9px); }
         .cs-node:hover .dot { scale: 1.5; }
+        /* Dòng chưa có hàng: vẫn rê chuột xem trước được, nhưng không bấm chọn
+           được — nhạt hơn, con trỏ thường, có nhãn nhỏ báo "sắp có hàng". */
+        .cs-node.khoa { cursor: default; opacity: .62; }
+        .cs-node.khoa .soon { display: block; }
+        .cs-node.khoa .dot { background: rgba(241,247,244,.4); box-shadow: none; }
+        .cs-node.khoa:hover, .cs-node.khoa:focus-visible {
+            background: rgba(255,255,255,.045); border-color: rgba(241,247,244,.14); box-shadow: none; }
+        .cs-node.khoa[data-side="l"]:hover, .cs-node.khoa[data-side="r"]:hover { transform: none; }
+        .cs-node.khoa:hover .dot { scale: 1; }
+        .cs-node .soon { display: none; font-size: 8px; letter-spacing: .14em; text-transform: uppercase;
+            opacity: .8; color: #f1f7f4; }
         .cs-hint { position: absolute; bottom: 22px; left: 50%; translate: -50% 0; z-index: 3; color: #f1f7f4;
             font-size: 9px; letter-spacing: .28em; text-transform: uppercase; opacity: .5;
             display: flex; flex-direction: column; align-items: center; gap: 9px; }
@@ -3257,18 +3298,24 @@
                 : '');
             fill('contactShop', kenh.length ? `<h4>${esc(k.shopLabel || U.kenhMua || 'Kênh mua hàng')}</h4>${kenh.join('')}` : '');
 
-            /* Mạng xã hội: icon + tên, hiện sẵn khung dù chưa có link thật (dùng '#' tạm),
-               chỉnh link thật trong trang quản trị (mục Liên hệ) khi có. */
-            const socRow = (ico, txt, href) => {
+            /* Mạng xã hội: nút tròn icon thật (SVG vẽ sẵn, không tải từ ngoài),
+               hiện sẵn khung dù chưa có link thật (dùng '#' tạm), tên nền tảng
+               nằm ở title/aria-label cho người dùng đọc màn hình. Chỉnh link
+               thật trong trang quản trị (mục Liên hệ) khi có. */
+            const SVG_FB = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 3h-2.6C10.02 3 8.5 4.79 8.5 7.5V10H6v3.5h2.5V21h3.6v-7.5H15l.6-3.5h-3.1V7.7c0-1 .27-1.7 1.7-1.7H15V3z"/></svg>';
+            const SVG_IG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>';
+            const SVG_THREADS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21c-4.6 0-7.3-2.9-7.3-8.9S7.4 3 12 3c3.9 0 6.5 1.9 7 5.2"/><path d="M9.6 13.4c0-2 1.5-3 3.8-3 2.6 0 4.3 1.3 4.3 3.6 0 3-2.3 4.7-5.2 4.7-2.1 0-3.4-1-3.4-2.5 0-1.8 1.9-2.7 4.6-2.7 1 0 1.9.1 2.6.3"/></svg>';
+            const SVG_TIKTOK = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.1 1.9 3.7 4 3.9v3.1c-1.5 0-2.9-.5-4-1.3v6.6c0 3.4-2.8 6.1-6.2 5.9-3.1-.2-5.6-2.8-5.7-5.9-.1-3.4 2.6-6.2 6-6.2.3 0 .6 0 .9.1v3.3a2.9 2.9 0 1 0 2.1 2.8V3h2.9z"/></svg>';
+            const socRow = (svg, txt, href) => {
                 const link = String(href || '').trim() || '#';
                 const ext = /^https?:/i.test(link) ? ' target="_blank" rel="noopener"' : '';
-                return `<a class="foot-item" href="${esc(link)}"${ext}><span class="ico">${ico}</span><span>${esc(txt)}</span></a>`;
+                return `<a class="foot-item" href="${esc(link)}"${ext} title="${esc(txt)}" aria-label="${esc(txt)}"><span class="ico">${svg}</span></a>`;
             };
             fill('social', [
-                socRow('f', 'Facebook', webHref(k.facebook, 'https://')),
-                socRow('IG', 'Instagram', webHref(k.instagram, 'https://')),
-                socRow('@', 'Threads', webHref(k.threads, 'https://')),
-                socRow('♪', 'TikTok', webHref(k.tiktokSocial, 'https://'))
+                socRow(SVG_FB, 'Facebook', webHref(k.facebook, 'https://')),
+                socRow(SVG_IG, 'Instagram', webHref(k.instagram, 'https://')),
+                socRow(SVG_THREADS, 'Threads', webHref(k.threads, 'https://')),
+                socRow(SVG_TIKTOK, 'TikTok', webHref(k.tiktokSocial, 'https://'))
             ].join(''));
 
             /* ---------- KHỐI PHÁP LÝ ----------
@@ -5296,11 +5343,14 @@
                 const dem = side === 'l' ? soTrai : soSP - soTrai;
                 const thu = side === 'l' ? i : i - soTrai;
                 const y = dem <= 1 ? 50 : 18 + (thu * 64) / (dem - 1);
+                const khoa = d.sanSang === false;
                 const b = document.createElement('button');
-                b.className = 'cs-node'; b.dataset.side = side; b.dataset.key = d.key;
+                b.className = 'cs-node' + (khoa ? ' khoa' : ''); b.dataset.side = side; b.dataset.key = d.key;
                 b.dataset.y = y;
+                if (khoa) b.setAttribute('aria-disabled', 'true');
                 b.style.setProperty('--c', mauNhan(d));
-                b.innerHTML = `<span class="l">${esc(d.navLabel || d.name)}</span><span class="dot"></span>`;
+                b.innerHTML = `<span class="l">${esc(d.navLabel || d.name)}</span>` +
+                    `<span class="soon">${esc((C.ui || {}).sapCoHang || 'Sắp có hàng')}</span><span class="dot"></span>`;
                 box.appendChild(b);
             });
 
@@ -5362,6 +5412,7 @@
                 nd.addEventListener('mouseenter', () => show(nd.dataset.key));
                 nd.addEventListener('focus', () => show(nd.dataset.key));
                 nd.addEventListener('click', () => {
+                    if (nd.classList.contains('khoa')) return; /* chưa có hàng — chỉ xem trước, không chọn */
                     const k = nd.dataset.key;
                     if (k !== DONG) switchLine(k);
                     document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
