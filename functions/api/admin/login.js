@@ -154,6 +154,7 @@ async function guiMa(env, db, khoaMay, gio, r, den) {
     const kq = await guiThu(env, {
         den,
         tu: env.SUPPORT_FROM || 'ROOT & RISE LAB <support@sptlab.co>',
+        loai: 'ma-dang-nhap',
         subject: 'Mã đăng nhập trang quản trị: ' + so,
         text: 'Ma dang nhap trang quan tri ROOT & RISE LAB: ' + so
             + '\nMa song ' + 10 + ' phut. Neu khong phai ban dang dang nhap, hay doi ngay ADMIN_PASSWORD trong Cloudflare.',
