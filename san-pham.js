@@ -29,7 +29,8 @@
             camOn: 'Cảm ơn bạn! Chúng tôi sẽ liên hệ sớm.', loi: 'Chưa gửi được. Bạn nhắn Zalo hoặc gọi giúp mình nhé:', thuLai: 'Chưa gửi được, bạn thử lại sau ít phút nhé.',
             loiTen: 'Bạn nhập họ tên giúp mình', loiSdt: 'Số điện thoại chưa đúng', loiDongY: 'Bạn cần tick đồng ý để gửi',
             xemDayDu: 'Bấm vào để xem đầy đủ thông tin sản phẩm và chứng nhận', xemThem: 'Xem thêm',
-            btnUuDai: 'Nhấn vào đây nếu bạn muốn nhận ưu đãi và tư vấn miễn phí' },
+            btnUuDai: 'Nhấn vào đây nếu bạn muốn nhận ưu đãi và tư vấn miễn phí',
+            loiNhieu: 'Bạn gửi hơi nhiều lần rồi, đợi vài phút rồi gửi lại giúp mình nhé.' },
         en: { chinhHang: 'Genuine ROOT & RISE LAB', congDung: 'Benefits', cachDung: 'How to use', thanhPhan: 'Full ingredient list',
             luuY: 'Precautions', giayPhep: 'Certificates & licences', tem: 'Anti-counterfeit & quality seals', soCongBo: 'Cosmetic notification no.',
             sanXuat: 'Manufactured at', phanPhoi: 'Responsible for placing on the market', mst: 'Business registration no.', bct: 'Registered with the Ministry of Industry and Trade',
@@ -40,7 +41,8 @@
             camOn: 'Thank you! We will contact you soon.', loi: 'Could not send. Please message or call us:', thuLai: 'Could not send, please try again in a few minutes.',
             loiTen: 'Please enter your name', loiSdt: 'Phone number looks wrong', loiDongY: 'Please tick to agree',
             xemDayDu: 'Tap to see full product info & certificates', xemThem: 'See more',
-            btnUuDai: 'Tap here if you would like offers & free advice' },
+            btnUuDai: 'Tap here if you would like offers & free advice',
+            loiNhieu: 'You have sent this a few times already — please wait a few minutes and try again.' },
         fr: { chinhHang: 'Authentique ROOT & RISE LAB', congDung: 'Bienfaits', cachDung: 'Utilisation', thanhPhan: 'Liste complète des ingrédients',
             luuY: 'Précautions', giayPhep: 'Certificats & autorisations', tem: 'Sceaux anti-contrefaçon & contrôle', soCongBo: 'N° de notification cosmétique',
             sanXuat: 'Fabriqué par', phanPhoi: 'Responsable de la mise sur le marché', mst: "N° d'immatriculation", bct: 'Déclaré au ministère de l’Industrie et du Commerce',
@@ -51,7 +53,8 @@
             camOn: 'Merci ! Nous vous contactons bientôt.', loi: 'Envoi impossible. Écrivez-nous ou appelez :', thuLai: 'Envoi impossible, réessayez dans quelques minutes.',
             loiTen: 'Indiquez votre nom', loiSdt: 'Numéro incorrect', loiDongY: 'Cochez la case pour accepter',
             xemDayDu: 'Appuyez pour voir toutes les infos produit et les certificats', xemThem: 'Voir plus',
-            btnUuDai: 'Appuyez ici pour recevoir des offres et un conseil gratuit' },
+            btnUuDai: 'Appuyez ici pour recevoir des offres et un conseil gratuit',
+            loiNhieu: 'Vous avez déjà envoyé plusieurs fois — patientez quelques minutes puis réessayez.' },
         it: { chinhHang: 'Originale ROOT & RISE LAB', congDung: 'Benefici', cachDung: 'Modo d’uso', thanhPhan: 'Elenco completo degli ingredienti',
             luuY: 'Avvertenze', giayPhep: 'Certificati e licenze', tem: 'Sigilli anticontraffazione e di controllo', soCongBo: 'N. di notifica cosmetica',
             sanXuat: 'Prodotto da', phanPhoi: 'Responsabile dell’immissione in commercio', mst: 'N. di registro imprese', bct: 'Registrato presso il Ministero dell’Industria e del Commercio',
@@ -62,7 +65,8 @@
             camOn: 'Grazie! Ti contatteremo presto.', loi: 'Invio non riuscito. Scrivici o chiamaci:', thuLai: 'Invio non riuscito, riprova tra qualche minuto.',
             loiTen: 'Inserisci il nome', loiSdt: 'Numero non valido', loiDongY: 'Spunta la casella per acconsentire',
             xemDayDu: 'Tocca per vedere tutte le info sul prodotto e i certificati', xemThem: 'Vedi altro',
-            btnUuDai: 'Tocca qui per ricevere offerte e una consulenza gratuita' },
+            btnUuDai: 'Tocca qui per ricevere offerte e una consulenza gratuita',
+            loiNhieu: 'Hai già inviato diverse volte — attendi qualche minuto e riprova.' },
         ja: { chinhHang: 'ROOT & RISE LAB 正規品', congDung: '効果', cachDung: '使い方', thanhPhan: '全成分',
             luuY: '使用上の注意', giayPhep: '認証・許可', tem: '偽造防止・検査シール', soCongBo: '化粧品届出番号',
             sanXuat: '製造所', phanPhoi: '製造販売元', mst: '法人番号', bct: '商工省届出済み',
@@ -73,7 +77,8 @@
             camOn: 'ありがとうございます。まもなくご連絡します。', loi: '送信できませんでした。こちらからご連絡ください：', thuLai: '送信できませんでした。数分後にもう一度お試しください。',
             loiTen: 'お名前を入力してください', loiSdt: '電話番号が正しくありません', loiDongY: '同意にチェックしてください',
             xemDayDu: 'タップして商品情報と認証をすべて見る', xemThem: 'もっと見る',
-            btnUuDai: '特典・無料相談をご希望の方はこちらをタップ' }
+            btnUuDai: '特典・無料相談をご希望の方はこちらをタップ',
+            loiNhieu: '送信回数が多いようです。数分後にもう一度お試しください。' }
     };
     const t = Object.assign({}, T.vi, T[L] || {});
 
@@ -464,6 +469,7 @@
                 const j = await r.json().catch(() => ({}));
                 ok = r.ok && j.ok;
                 if (!ok && j.err === 'sdt') { nut.disabled = false; nut.textContent = t.gui; return bao1(t.loiSdt); }
+                if (!ok && j.err === 'nhieu') { nut.disabled = false; nut.textContent = t.gui; return bao1(t.loiNhieu); }
                 loiMay = !ok;
             } catch (err) { loiMay = true; }
             if (ok) {

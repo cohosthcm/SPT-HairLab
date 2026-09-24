@@ -1117,7 +1117,9 @@ window.ROOTLAB_CONTENT = {
         "heading": "Order & advice",
         "note": "Message us on Zalo for free advice before you buy. Any field left blank is hidden automatically.",
         "hours": "8:00 – 21:00 · Monday – Sunday",
-        "shopLabel": "Where to buy"
+        "shopLabel": "Where to buy",
+        "addressFullEn": "Company address: L17-11, Floor 17, Vincom Centre, 72 Lê Thánh Tôn, Phường Sài Gòn, Ho Chi Minh City, Vietnam",
+        "disclaimerEn": "This product is a cosmetic, not a drug, and is not intended to replace medication for treating illness. Results may vary depending on each individual's body."
       }
     },
     "fr": {
@@ -2562,6 +2564,7 @@ window.ROOTLAB_CONTENT = {
     "company": "CÔNG TY TNHH SPT LAB",
     "companyEn": "SPT LAB COMPANY LIMITED",
     "addressFull": "L17-11, Tầng 17, Toà nhà Vincom Center, 72 Lê Thánh Tôn, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam",
+    "addressFullEn": "",
     "taxCode": "",
     "license": "",
     "factory": "",
@@ -2569,6 +2572,7 @@ window.ROOTLAB_CONTENT = {
     "moit": "",
     "moitLogo": "",
     "policies": [],
-    "disclaimer": "Sản phẩm này là mỹ phẩm, không phải là thuốc và không có tác dụng thay thế thuốc chữa bệnh. Hiệu quả có thể khác nhau tuỳ cơ địa từng người."
+    "disclaimer": "Sản phẩm này là mỹ phẩm, không phải là thuốc và không có tác dụng thay thế thuốc chữa bệnh. Hiệu quả có thể khác nhau tuỳ cơ địa từng người.",
+    "disclaimerEn": ""
   }
 };

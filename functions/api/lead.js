@@ -1,9 +1,10 @@
 /* Khách để lại thông tin trong popup → lưu lại + gửi thư báo cho Phil.
    Theo Luật Bảo vệ dữ liệu cá nhân 2025: bắt buộc khách tự tick đồng ý,
    và lưu lại thời điểm + nội dung câu đồng ý để chứng minh khi cần. */
-import { json, taoBang, gon, docMay, tenTinh, guiThu, esc, thieuDB } from '../../lib/server.js';
+import { json, taoBang, gon, docMay, tenTinh, guiThu, esc, thieuDB, bam } from '../../lib/server.js';
 
 const NHU_CAU = { 'uu-dai': 'Nhận ưu đãi', 'tu-van': 'Cần tư vấn' };
+const CUA_SO_GUI = 15 * 60 * 1000, GIOI_HAN_GUI = 5; // tối đa 5 lần gửi / 15 phút / IP
 
 export async function onRequestPost({ request, env, waitUntil }) {
     if (!env.DB) return thieuDB();
@@ -25,6 +26,21 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
     await taoBang(env.DB);
     const ts = Date.now();
+
+    /* chặn spam: 1 máy (IP) gửi quá 5 lần trong 15 phút thì tạm từ chối,
+       không lưu địa chỉ IP thật — chỉ băm một chiều như các bảng chan_* khác. */
+    const ip = request.headers.get('cf-connecting-ip') || '';
+    if (ip) {
+        const kIp = await bam('gui:' + ip);
+        const cuGui = await env.DB.prepare('SELECT dem, bat_dau FROM chan_gui WHERE k = ?').bind(kIp).first();
+        if (cuGui && ts - cuGui.bat_dau < CUA_SO_GUI) {
+            if (cuGui.dem >= GIOI_HAN_GUI) return json({ ok: false, err: 'nhieu' }, 429);
+            await env.DB.prepare('UPDATE chan_gui SET dem = dem + 1 WHERE k = ?').bind(kIp).run();
+        } else {
+            await env.DB.prepare(`INSERT INTO chan_gui (k, dem, bat_dau) VALUES (?, 1, ?)
+                ON CONFLICT(k) DO UPDATE SET dem = 1, bat_dau = excluded.bat_dau`).bind(kIp, ts).run();
+        }
+    }
 
     /* cùng số điện thoại gửi lại trong 10 phút → coi như một, không báo trùng */
     const cu = await env.DB.prepare('SELECT id FROM leads WHERE phone = ? AND ts > ?').bind(phone, ts - 10 * 60e3).first();

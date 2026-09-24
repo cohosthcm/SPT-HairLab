@@ -3281,6 +3281,7 @@
             if (k.company) P.push(`<span class="ten-cty">${esc(k.company)}</span>`);
             if (k.companyEn && k.companyEn !== k.company)
                 P.push(`<p class="dong">${esc(k.companyEn)}</p>`);
+            if (k.addressFullEn) P.push(`<p class="dong">${esc(k.addressFullEn)}</p>`);
             if (k.addressFull || k.address) P.push(nhan(U.diaChi || 'Địa chỉ trụ sở', k.addressFull || k.address));
             if (k.taxCode) P.push(nhan(U.mst || 'Mã số doanh nghiệp / MST', k.taxCode));
             if (k.license) P.push(nhan(U.gpkd || 'Giấy chứng nhận ĐKKD', k.license));
@@ -3306,6 +3307,7 @@
             if (cs.length) huy.push(`<div class="foot-chinhsach">${cs.join('')}</div>`);
             if (huy.length) P.push(`<div class="foot-huy">${huy.join('')}</div>`);
 
+            if (k.disclaimerEn) P.push(`<div class="foot-mientru">${esc(k.disclaimerEn)}</div>`);
             if (k.disclaimer) P.push(`<div class="foot-mientru">${esc(k.disclaimer)}</div>`);
 
             fill('phapLy', P.join(''));
