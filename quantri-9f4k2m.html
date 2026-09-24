@@ -347,12 +347,6 @@ table.bang .xoa:hover{background:var(--do-nhat)}
 .sheet button.pri:hover{background:var(--chinh-dam)}
 .sheet button.danger{color:var(--do);border-color:#e8c9c5}
 .sheet .foot{display:flex;gap:8px;margin-top:18px}
-.warn{background:var(--vang-nhat);border:1px solid #f0e0b8;color:#6b5310;
-  padding:12px 14px;border-radius:11px;font-size:12.5px;margin-top:10px;line-height:1.6}
-#ghLog{margin-top:14px;font-size:12.5px;color:var(--mo);white-space:pre-wrap;
-  max-height:180px;overflow-y:auto}
-#ghLog .good{color:var(--chinh-dam)}
-#ghLog .bad{color:var(--do)}
 
 /* ---------- BÁO NHANH ---------- */
 .toast{position:fixed;left:50%;bottom:26px;translate:-50% 0;z-index:300;background:#15201d;color:#fff;
@@ -450,45 +444,6 @@ table.bang .xoa:hover{background:var(--do-nhat)}
 
     <div class="toast" id="toast"></div>
     <input type="file" id="filepick" accept="application/json,text/javascript,.js,.json" hidden>
-
-    <!-- Hộp đẩy thẳng lên GitHub. Token nằm trong trình duyệt này, không gửi đi đâu khác
-         ngoài chính api.github.com. -->
-    <div class="modal" id="deployBox" hidden>
-        <div class="sheet">
-            <h2>Đẩy lên web</h2>
-            <div style="color:var(--mo);font-size:.82rem">Lưu thẳng lên GitHub, trang web tự dựng lại sau khoảng 1 phút.</div>
-
-            <div class="row">
-                <div><label>Chủ kho (owner)</label><input type="text" id="ghOwner" placeholder="cohosthcm"></div>
-                <div><label>Tên kho (repo)</label><input type="text" id="ghRepo" placeholder="SPT-HairLab"></div>
-                <div><label>Nhánh</label><input type="text" id="ghBranch" placeholder="main"></div>
-            </div>
-
-            <label>Token GitHub</label>
-            <input type="password" id="ghToken" placeholder="github_pat_..." autocomplete="off">
-            <div class="warn">Dùng token loại <b>Fine-grained</b>, chỉ chọn đúng kho này, quyền <b>Contents: Read and write</b>, có ngày hết hạn. Token chỉ nằm trong trình duyệt này — không hiện trong khung chat, không ai khác đọc được. Máy chung thì nhớ bấm “Xoá token khỏi máy” trước khi rời đi.</div>
-
-            <div class="row" style="margin-top:.9rem">
-                <button id="ghTest">Kiểm tra kết nối</button>
-                <button id="ghForget" class="danger">Xoá token khỏi máy</button>
-            </div>
-
-            <hr>
-
-            <button id="ghPushContent" class="pri" style="width:100%">Đẩy nội dung đang sửa (content.js)</button>
-
-            <label style="margin-top:1rem">Hoặc đẩy file bất kỳ từ máy (index.html, san-pham.js…)</label>
-            <input type="file" id="ghFiles" multiple>
-            <button id="ghPushFiles" style="margin-top:.6rem;width:100%">Đẩy các file đã chọn</button>
-
-            <div id="ghLog"></div>
-
-            <div class="foot">
-                <button id="ghOpenSite">Xem lịch sử trên GitHub</button>
-                <button id="ghClose" style="margin-left:auto">Đóng</button>
-            </div>
-        </div>
-    </div>
 
     <script>
         /* ---------- dữ liệu ---------- */
@@ -2430,194 +2385,28 @@ h1{font-size:17px;margin:0 0 18px}
         });
 
         /* ============================================================
-           ĐẨY THẲNG LÊN GITHUB
-           Trình duyệt gọi api.github.com bằng token của chủ trang.
-           Token lưu trong localStorage của đúng máy này, không gửi đi nơi nào khác.
-           ============================================================ */
-        const GH_KEY = 'rootlab_gh';
-        const ghDoc = id => document.getElementById(id);
-
-        const ghRead = () => {
-            try { return JSON.parse(localStorage.getItem(GH_KEY) || '{}'); } catch (e) { return {}; }
-        };
-        const ghWrite = o => localStorage.setItem(GH_KEY, JSON.stringify(o));
-
-        const ghForm = () => ({
-            owner: ghDoc('ghOwner').value.trim(),
-            repo: ghDoc('ghRepo').value.trim(),
-            branch: ghDoc('ghBranch').value.trim() || 'main',
-            token: ghDoc('ghToken').value.trim()
-        });
-
-        function ghFill() {
-            const s = ghRead();
-            ghDoc('ghOwner').value = s.owner || 'cohosthcm';
-            ghDoc('ghRepo').value = s.repo || 'SPT-HairLab';
-            ghDoc('ghBranch').value = s.branch || 'main';
-            ghDoc('ghToken').value = s.token || '';
-        }
-
-        function ghSay(msg, kind) {
-            const el = ghDoc('ghLog');
-            const d = document.createElement('div');
-            if (kind) d.className = kind;
-            d.textContent = msg;
-            el.appendChild(d);
-            el.scrollTop = el.scrollHeight;
-        }
-        const ghClear = () => { ghDoc('ghLog').innerHTML = ''; };
-
-        /* base64 cho cả chữ tiếng Việt lẫn file ảnh */
-        const bytesToB64 = bytes => {
-            let bin = ''; const CH = 0x8000;
-            for (let i = 0; i < bytes.length; i += CH)
-                bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CH));
-            return btoa(bin);
-        };
-        const textToB64 = s => bytesToB64(new TextEncoder().encode(s));
-
-        /* Lấy thiết lập: ưu tiên cái đang gõ trong bảng, không có thì lấy cái đã lưu.
-           Nhờ vậy đẩy thẳng được mà không cần mở bảng ra. */
-        const ghCauHinh = () => {
-            const f = ghForm(), l = ghRead();
-            return { owner: f.owner || l.owner, repo: f.repo || l.repo,
-                     branch: f.branch || l.branch || 'main', token: f.token || l.token };
-        };
-
-        async function ghApi(path, opt = {}) {
-            const s = opt.cauHinh || ghCauHinh();
-            if (!s.token) throw new Error('Chưa dán token GitHub');
-            if (!s.owner || !s.repo) throw new Error('Chưa điền chủ kho hoặc tên kho');
-            const r = await fetch('https://api.github.com' + path, {
-                method: opt.method || 'GET',
-                body: opt.body,
-                headers: {
-                    Authorization: 'Bearer ' + s.token,
-                    Accept: 'application/vnd.github+json',
-                    'X-GitHub-Api-Version': '2022-11-28',
-                    ...(opt.body ? { 'Content-Type': 'application/json' } : {})
-                }
-            });
-            const raw = await r.text();
-            let data = null;
-            try { data = JSON.parse(raw); } catch (e) { }
-            if (!r.ok) throw new Error(r.status + ' — ' + ((data && data.message) || raw.slice(0, 140)));
-            return data;
-        }
-
-        /* Ghi 1 file. Có sẵn thì phải kèm sha của bản cũ, chưa có thì tạo mới. */
-        async function ghPut(name, b64, message, cauHinh) {
-            const s = cauHinh || ghCauHinh();
-            const base = `/repos/${s.owner}/${s.repo}/contents/${name}`;
-            let sha = null;
-            try {
-                const cur = await ghApi(`${base}?ref=${encodeURIComponent(s.branch)}`, { cauHinh: s });
-                sha = cur && cur.sha;
-            } catch (e) {
-                if (!/^404/.test(e.message)) throw e;   // 404 = file mới, các lỗi khác thì dừng
-            }
-            const body = { message, content: b64, branch: s.branch };
-            if (sha) body.sha = sha;
-            await ghApi(base, { method: 'PUT', body: JSON.stringify(body), cauHinh: s });
-            return !!sha;
-        }
-
-        const ghBusy = on => ['ghTest', 'ghPushContent', 'ghPushFiles'].forEach(id => ghDoc(id).disabled = on);
-
-        /* Bấm "Đẩy lên web" là ĐẨY LUÔN nếu đã lưu token.
-           Trước đây nút này chỉ mở bảng cài đặt, phải bấm thêm một nút nữa bên trong
-           mới thật sự đẩy — nên sửa xong tưởng đã lên web mà thật ra chưa. */
-        ghDoc('deploy').onclick = async () => {
-            const s = ghRead();
-            if (!s.token || !s.owner || !s.repo) {
-                ghFill(); ghClear(); ghDoc('deployBox').hidden = false;
-                ghSay('Điền token GitHub một lần rồi bấm "Đẩy content.js". Lần sau chỉ cần bấm "Đẩy lên web" là xong.');
-                return;
-            }
-            const nut = ghDoc('deploy');
+           ĐẨY LÊN GITHUB — chạy Ở MÁY CHỦ (Cloudflare Function
+           functions/api/admin/push.js), dùng đúng phiên đăng nhập của
+           trang quản trị (goiAPI() đã tự đính token đăng nhập vào).
+           Không còn token GitHub nào trong trình duyệt nữa: ai đăng
+           nhập được vào trang quản trị (đúng mật khẩu) thì bấm là đẩy
+           được — bàn giao cho người khác chỉ cần đưa mật khẩu admin. */
+        document.getElementById('deploy').onclick = async () => {
+            const nut = document.getElementById('deploy');
             const chuCu = nut.textContent;
             nut.disabled = true; nut.textContent = 'Đang đẩy…';
             try {
                 const txt = contentJsText();
-                await ghPut('content.js', textToB64(txt), 'Cập nhật nội dung từ trang admin', s);
-                danhDauDaDay(txt);
+                await goiAPI('push', { method: 'POST', body: { name: 'content.js', content: txt } });
+                danhDauDaDay();
                 toast('Đã đẩy lên web — khoảng 1 phút nữa tải lại trang là thấy');
             } catch (e) {
-                ghFill(); ghClear(); ghDoc('deployBox').hidden = false;
-                ghSay('✗ Đẩy không được: ' + e.message, 'bad');
-                ghSay('Kiểm tra lại token bên dưới rồi bấm "Đẩy content.js".');
+                const msg = e.message === 'HET_VE' ? 'Phiên đăng nhập hết hạn — bấm Đăng xuất rồi vào lại.'
+                    : e.message === 'CHUA_CO' ? 'Chưa kết nối được máy chủ.'
+                    : e.message;
+                alert('Đẩy lên web không được: ' + msg);
             }
             nut.disabled = false; nut.textContent = chuCu;
-        };
-        ghDoc('ghClose').onclick = () => { ghWrite(ghForm()); ghDoc('deployBox').hidden = true; };
-        ghDoc('deployBox').addEventListener('click', e => {
-            if (e.target.id === 'deployBox') ghDoc('ghClose').click();
-        });
-        ghDoc('ghOpenSite').onclick = () => {
-            const s = ghForm();
-            window.open(`https://github.com/${s.owner}/${s.repo}/commits/${s.branch}`, '_blank', 'noopener');
-        };
-
-        ghDoc('ghForget').onclick = () => {
-            localStorage.removeItem(GH_KEY);
-            ghDoc('ghToken').value = '';
-            ghClear(); ghSay('Đã xoá token khỏi trình duyệt này.', 'good');
-        };
-
-        ghDoc('ghTest').onclick = async () => {
-            ghClear(); ghBusy(true);
-            try {
-                const s = ghForm();
-                const repo = await ghApi(`/repos/${s.owner}/${s.repo}`);
-                ghSay('✓ Đọc được kho: ' + repo.full_name, 'good');
-                const ghi = repo.permissions && repo.permissions.push;
-                ghSay(ghi ? '✓ Token có quyền ghi.' : '✗ Token KHÔNG có quyền ghi — vào GitHub sửa lại quyền Contents thành "Read and write".', ghi ? 'good' : 'bad');
-                try {
-                    await ghApi(`/repos/${s.owner}/${s.repo}/branches/${encodeURIComponent(s.branch)}`);
-                    ghSay('✓ Có nhánh "' + s.branch + '".', 'good');
-                } catch (e) { ghSay('✗ Không thấy nhánh "' + s.branch + '" — ' + e.message, 'bad'); }
-                ghWrite(s);
-            } catch (e) {
-                ghSay('✗ ' + e.message, 'bad');
-                ghSay('Gợi ý: 401 là token sai hoặc hết hạn; 404 thường là token chưa được cấp quyền cho đúng kho này.');
-            }
-            ghBusy(false);
-        };
-
-        ghDoc('ghPushContent').onclick = async () => {
-            ghClear(); ghBusy(true);
-            try {
-                const txt = contentJsText();
-                const kb = Math.round(txt.length / 1024);
-                ghSay('Đang đẩy content.js (' + kb + ' KB)…');
-                const thay = await ghPut('content.js', textToB64(txt), 'Cập nhật nội dung từ trang admin');
-                ghSay('✓ Xong — đã ' + (thay ? 'ghi đè' : 'tạo mới') + ' content.js.', 'good');
-                danhDauDaDay();
-                ghSay('Vercel đang dựng lại. Khoảng 1 phút nữa tải lại trang web là thấy.', 'good');
-                ghWrite(ghForm());
-                toast('Đã đẩy lên web');
-            } catch (e) { ghSay('✗ ' + e.message, 'bad'); }
-            ghBusy(false);
-        };
-
-        ghDoc('ghPushFiles').onclick = async () => {
-            const fs = [...ghDoc('ghFiles').files];
-            ghClear();
-            if (!fs.length) { ghSay('Chưa chọn file nào.', 'bad'); return; }
-            ghBusy(true);
-            let ok = 0;
-            for (const f of fs) {
-                try {
-                    ghSay('Đang đẩy ' + f.name + ' (' + Math.round(f.size / 1024) + ' KB)…');
-                    const buf = await f.arrayBuffer();
-                    const thay = await ghPut(f.name, bytesToB64(new Uint8Array(buf)), 'Cập nhật ' + f.name + ' từ trang admin');
-                    ghSay('✓ ' + f.name + ' — đã ' + (thay ? 'ghi đè' : 'tạo mới') + '.', 'good');
-                    ok++;
-                } catch (e) { ghSay('✗ ' + f.name + ' — ' + e.message, 'bad'); }
-            }
-            if (ok) ghSay('Xong ' + ok + '/' + fs.length + ' file. Vercel đang dựng lại, khoảng 1 phút.', 'good');
-            ghWrite(ghForm());
-            ghBusy(false);
         };
 
         /* Kiểm tra bản nháp cũ TRƯỚC khi save() — save() ghi lại vân tay của
