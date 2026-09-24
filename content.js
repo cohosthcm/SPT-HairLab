@@ -957,7 +957,139 @@ window.ROOTLAB_CONTENT = {
           "navLabel": "Recovery & Growth",
           "cta": "Buy the pair",
           "heroT1": "Awaken",
-          "heroT2": "Roots"
+          "heroT2": "Roots",
+          "ingredients": {
+            "eyebrow": "INGREDIENTS",
+            "t1": "What's",
+            "t2": "Inside",
+            "lead": "Two steps that work together. Step 1 clears away the dead skin and excess oil clogging the scalp. Step 2 delivers nourishment to the freshly cleared hair roots.",
+            "items": [
+              {
+                "name": "Glycolic acid & fruit AHAs",
+                "desc": "With apple, lemon, grape and wheat bran extracts — gently loosens the dead skin blocking the hair follicles."
+              },
+              {
+                "name": "Cocamidopropyl Betaine & Decyl Glucoside",
+                "desc": "A coconut-derived foaming duo. Rinses away excess oil and dirt without leaving the scalp tight and dry."
+              },
+              {
+                "name": "Allantoin, Roman chamomile & lavender",
+                "desc": "Soothes the scalp right after exfoliating. Menthol adds a light cooling feel."
+              },
+              {
+                "name": "Fo-ti (He Shou Wu) & Baikal skullcap",
+                "desc": "Two herbs long used in hair care, as extracts that go straight to the roots."
+              },
+              {
+                "name": "Panthenol B5, Niacinamide & Arginine",
+                "desc": "Hydrates the scalp, calms irritated areas and nourishes the hair strand."
+              },
+              {
+                "name": "Soybean & wheat germ",
+                "desc": "Nutrient-rich germ extracts that help nourish roots weakened by damage."
+              }
+            ],
+            "note": "Ingredients are listed exactly as on the product label. Tap \"Full ingredients\" to see the complete list.",
+            "inciLabel": "Full ingredients"
+          },
+          "howto": {
+            "eyebrow": "HOW TO USE",
+            "t1": "Three",
+            "t2": "Steps",
+            "lead": "Nothing complicated. Exfoliate 1–2 times a week, and spray the serum every day onto a dry scalp.",
+            "steps": [
+              {
+                "h": "Exfoliate the scalp",
+                "em": "1–2 TIMES / WEEK",
+                "p": "Keep hair DRY — do not wet it. Apply a suitable amount to the roots, massage with the scalp brush for 2–3 minutes, then wash out with a gentle shampoo."
+              },
+              {
+                "h": "Dry the scalp",
+                "em": "BEFORE SPRAYING",
+                "p": "After washing, blow-dry until the scalp is completely dry. The serum absorbs best on a dry scalp."
+              },
+              {
+                "h": "Spray the serum onto the roots",
+                "em": "EVERY DAY",
+                "p": "Part your hair and spray a suitable amount onto the roots, focusing on thinning areas. Then blow-dry on cool — do not rinse."
+              }
+            ]
+          },
+          "results": {
+            "eyebrow": "RESULTS",
+            "t1": "Week",
+            "t2": "by Week",
+            "lead": "Hair grows in cycles, not days. These are the realistic milestones to expect.",
+            "weeks": [
+              {
+                "b": "Week 2",
+                "s": "Clean scalp, no more greasiness or itching"
+              },
+              {
+                "b": "Week 4",
+                "s": "Noticeably less shedding when washing"
+              },
+              {
+                "b": "Week 8",
+                "s": "Baby hairs appear in thinning areas"
+              },
+              {
+                "b": "Week 12",
+                "s": "Visibly fuller hair"
+              }
+            ],
+            "tiles": [
+              {
+                "lbl": "Users saw less shedding after 8 weeks"
+              },
+              {
+                "lbl": "New baby hairs compared with before use"
+              },
+              {
+                "lbl": "Average weeks to see fuller hair"
+              }
+            ],
+            "note": "Illustrative figures — replace with your own survey results before publishing."
+          },
+          "reviews": {
+            "eyebrow": "REVIEWS",
+            "t1": "Real People",
+            "t2": "Real Results",
+            "items": [
+              {
+                "text": "My scalp was so oily my hair looked greasy the day after washing. Three weeks into step 1, it feels much lighter and the itching is gone.",
+                "name": "Minh Anh, 29",
+                "meta": "3 months of use"
+              },
+              {
+                "text": "I lost hair after giving birth and both temples got really thin. After two months of the serum I can see baby hairs coming in — sparse, but real.",
+                "name": "Thu Hà, 33",
+                "meta": "2 months of use"
+              },
+              {
+                "text": "The serum isn't greasy — I leave it on overnight and my hair is still dry in the morning. Half a star off because the rosemary scent is a bit strong for me.",
+                "name": "Đức Huy, 27",
+                "meta": "6 weeks of use"
+              },
+              {
+                "text": "Using the full duo is what made the difference. Before, I only sprayed serum on a dirty scalp and it barely did anything.",
+                "name": "Lan Phương, 41",
+                "meta": "4 months of use"
+              }
+            ],
+            "note": "Sample reviews — replace with real customer feedback."
+          },
+          "pricing": {
+            "eyebrow": "PRICING",
+            "t1": "Start",
+            "t2": "Today",
+            "comboLabel": "Get the full duo",
+            "comboBtn": "Buy the duo",
+            "boxEyebrow": "GIFT BOX · 2-STEP DEEP CARE",
+            "boxGift": "Free scalp massage brush included",
+            "boxBadge": "Best seller",
+            "note": "Illustrative prices — replace with your real prices."
+          }
         },
         {
           "name": "Root Care Shampoo",
@@ -1051,15 +1183,18 @@ window.ROOTLAB_CONTENT = {
             "items": [
               {
                 "text": "My hair got greasy so fast I had to wash it daily. With this I can go every other day and my scalp stopped itching.",
-                "meta": "2 months of use"
+                "meta": "2 months of use",
+                "name": "Khánh Vy, 26"
               },
               {
                 "text": "My hair is colour-treated so I worried shampoo would fade it. Nearly three months in and the colour holds far better than with my old one.",
-                "meta": "3 months of use"
+                "meta": "3 months of use",
+                "name": "Ngọc Trâm, 31"
               },
               {
                 "text": "It lathers less than regular shampoo, which felt odd at first, but once I got used to it my hair is softer and lighter. Half a star off because the bottle is hard to squeeze near the end.",
-                "meta": "6 weeks of use"
+                "meta": "6 weeks of use",
+                "name": "Trọng Nghĩa, 34"
               }
             ],
             "note": "Sample reviews — replace with real customer feedback."
@@ -1163,15 +1298,18 @@ window.ROOTLAB_CONTENT = {
             "items": [
               {
                 "text": "My back itches all through the dry season. Nearly two months on this and it has calmed right down — no tight skin after a shower.",
-                "meta": "2 months of use"
+                "meta": "2 months of use",
+                "name": "Hoàng Yến, 30"
               },
               {
                 "text": "I like that the scent is very light, so it doesn't fight my perfume. The whole family uses it.",
-                "meta": "3 months of use"
+                "meta": "3 months of use",
+                "name": "Anh Tuấn, 38"
               },
               {
                 "text": "It lathers less than my old one, which felt stingy at first, but my skin really is softer. Half a star off because the big bottle is slippery when wet.",
-                "meta": "6 weeks of use"
+                "meta": "6 weeks of use",
+                "name": "Mỹ Duyên, 25"
               }
             ],
             "note": "Sample reviews — replace with real customer feedback."
@@ -1437,7 +1575,139 @@ window.ROOTLAB_CONTENT = {
           "navLabel": "Réparation & Pousse",
           "cta": "Acheter le duo",
           "heroT1": "Racines",
-          "heroT2": "vivantes"
+          "heroT2": "vivantes",
+          "ingredients": {
+            "eyebrow": "INGRÉDIENTS",
+            "t1": "Au cœur",
+            "t2": "de la formule",
+            "lead": "Deux étapes complémentaires. L'étape 1 élimine les cellules mortes et l'excès de sébum qui obstruent le cuir chevelu. L'étape 2 apporte les actifs nourrissants aux racines ainsi dégagées.",
+            "items": [
+              {
+                "name": "Acide glycolique & AHA de fruits",
+                "desc": "Avec des extraits de pomme, citron, raisin et son de blé — décolle en douceur les cellules mortes qui obstruent les follicules."
+              },
+              {
+                "name": "Cocamidopropyl Betaine & Decyl Glucoside",
+                "desc": "Un duo moussant d'origine coco. Élimine l'excès de sébum et les impuretés sans assécher le cuir chevelu."
+              },
+              {
+                "name": "Allantoïne, camomille romaine & lavande",
+                "desc": "Apaise le cuir chevelu juste après l'exfoliation. Le menthol apporte une légère fraîcheur."
+              },
+              {
+                "name": "Renouée multiflore (He Shou Wu) & scutellaire du Baïkal",
+                "desc": "Deux plantes traditionnelles du soin capillaire, en extraits qui vont directement jusqu'aux racines."
+              },
+              {
+                "name": "Panthénol B5, niacinamide & arginine",
+                "desc": "Hydrate le cuir chevelu, apaise les zones irritées et nourrit la fibre."
+              },
+              {
+                "name": "Germe de soja & germe de blé",
+                "desc": "Des extraits de germes riches en nutriments, qui aident à nourrir les racines fragilisées."
+              }
+            ],
+            "note": "Ingrédients indiqués tels qu'ils figurent sur l'étiquette. Touchez « Liste complète des ingrédients » pour tout voir.",
+            "inciLabel": "Liste complète des ingrédients"
+          },
+          "howto": {
+            "eyebrow": "MODE D'EMPLOI",
+            "t1": "Trois",
+            "t2": "étapes",
+            "lead": "Rien de compliqué. Exfoliez 1 à 2 fois par semaine, vaporisez le sérum chaque jour sur un cuir chevelu sec.",
+            "steps": [
+              {
+                "h": "Exfolier le cuir chevelu",
+                "em": "1–2 FOIS / SEMAINE",
+                "p": "Cheveux SECS, ne pas mouiller. Appliquez une quantité suffisante sur les racines, massez 2 à 3 minutes avec la brosse dédiée, puis lavez avec un shampoing doux."
+              },
+              {
+                "h": "Sécher le cuir chevelu",
+                "em": "AVANT DE VAPORISER",
+                "p": "Après le lavage, séchez jusqu'à ce que le cuir chevelu soit bien sec. Le sérum pénètre mieux sur un cuir chevelu sec."
+              },
+              {
+                "h": "Vaporiser le sérum sur les racines",
+                "em": "CHAQUE JOUR",
+                "p": "Faites une raie et vaporisez une quantité suffisante sur les racines, en insistant sur les zones clairsemées. Séchez ensuite à l'air frais, sans rincer."
+              }
+            ]
+          },
+          "results": {
+            "eyebrow": "RÉSULTATS",
+            "t1": "Semaine",
+            "t2": "après semaine",
+            "lead": "Les cheveux poussent par cycles, pas en quelques jours. Voici les étapes réalistes à attendre.",
+            "weeks": [
+              {
+                "b": "Semaine 2",
+                "s": "Cuir chevelu propre, fini le gras et les démangeaisons"
+              },
+              {
+                "b": "Semaine 4",
+                "s": "Nettement moins de chute au lavage"
+              },
+              {
+                "b": "Semaine 8",
+                "s": "De petits cheveux apparaissent sur les zones clairsemées"
+              },
+              {
+                "b": "Semaine 12",
+                "s": "Des cheveux visiblement plus denses"
+              }
+            ],
+            "tiles": [
+              {
+                "lbl": "Des utilisateurs constatent moins de chute après 8 semaines"
+              },
+              {
+                "lbl": "De nouveaux petits cheveux par rapport à avant"
+              },
+              {
+                "lbl": "Semaines en moyenne pour voir plus de densité"
+              }
+            ],
+            "note": "Chiffres illustratifs — à remplacer par vos propres résultats d'enquête avant publication."
+          },
+          "reviews": {
+            "eyebrow": "AVIS",
+            "t1": "De vraies personnes",
+            "t2": "de vrais résultats",
+            "items": [
+              {
+                "text": "J'avais le cuir chevelu très gras, mes cheveux collaient dès le lendemain. Après trois semaines d'étape 1, ils sont bien plus légers et ça ne gratte plus.",
+                "name": "Minh Anh, 29 ans",
+                "meta": "3 mois d'utilisation"
+              },
+              {
+                "text": "J'ai perdu des cheveux après l'accouchement, mes tempes s'étaient bien dégarnies. Après deux mois de sérum, je vois de petits cheveux repousser — encore clairsemés, mais bien réels.",
+                "name": "Thu Hà, 33 ans",
+                "meta": "2 mois d'utilisation"
+              },
+              {
+                "text": "Le sérum ne graisse pas : je le laisse la nuit et mes cheveux sont secs au réveil. Une demi-étoile en moins car l'odeur de romarin est un peu forte pour moi.",
+                "name": "Đức Huy, 27 ans",
+                "meta": "6 semaines d'utilisation"
+              },
+              {
+                "text": "C'est avec le duo complet que j'ai vu la différence. Avant, je vaporisais seulement le sérum sur un cuir chevelu encore sale, sans grand effet.",
+                "name": "Lan Phương, 41 ans",
+                "meta": "4 mois d'utilisation"
+              }
+            ],
+            "note": "Avis d'exemple — à remplacer par de vrais retours clients."
+          },
+          "pricing": {
+            "eyebrow": "TARIFS",
+            "t1": "Commencez",
+            "t2": "aujourd'hui",
+            "comboLabel": "Le duo complet",
+            "comboBtn": "Acheter le duo",
+            "boxEyebrow": "COFFRET · SOIN EXPERT EN 2 ÉTAPES",
+            "boxGift": "Brosse de massage du cuir chevelu offerte",
+            "boxBadge": "Meilleure vente",
+            "note": "Prix indicatifs — à remplacer par vos prix réels."
+          }
         },
         {
           "name": "Shampooing Racines",
@@ -1531,15 +1801,18 @@ window.ROOTLAB_CONTENT = {
             "items": [
               {
                 "text": "Mes cheveux regraissaient si vite que je lavais tous les jours. Avec celui-ci je tiens un jour sur deux et mon cuir chevelu ne gratte plus.",
-                "meta": "2 mois d'utilisation"
+                "meta": "2 mois d'utilisation",
+                "name": "Khánh Vy, 26 ans"
               },
               {
                 "text": "Mes cheveux sont colorés et je craignais que le shampooing les délave. Presque trois mois plus tard, la couleur tient bien mieux qu'avec mon ancien.",
-                "meta": "3 mois d'utilisation"
+                "meta": "3 mois d'utilisation",
+                "name": "Ngọc Trâm, 31 ans"
               },
               {
                 "text": "Il mousse moins qu'un shampooing classique, déroutant au début, mais les cheveux sont plus souples et plus légers. Une demi-étoile en moins car le flacon est difficile à presser vers la fin.",
-                "meta": "6 semaines d'utilisation"
+                "meta": "6 semaines d'utilisation",
+                "name": "Trọng Nghĩa, 34 ans"
               }
             ],
             "note": "Avis d'exemple — remplacez-les par de vrais retours clients."
@@ -1643,15 +1916,18 @@ window.ROOTLAB_CONTENT = {
             "items": [
               {
                 "text": "En saison sèche, j'ai le dos qui démange en permanence. Près de deux mois avec ce gel et c'est nettement calmé, plus de peau qui tire après la douche.",
-                "meta": "2 mois d'utilisation"
+                "meta": "2 mois d'utilisation",
+                "name": "Hoàng Yến, 30 ans"
               },
               {
                 "text": "J'aime le parfum très léger, il ne couvre pas mon parfum. Toute la famille l'utilise.",
-                "meta": "3 mois d'utilisation"
+                "meta": "3 mois d'utilisation",
+                "name": "Anh Tuấn, 38 ans"
               },
               {
                 "text": "Il mousse moins que mon ancien, un peu frustrant au début, mais la peau est vraiment plus douce. Une demi-étoile en moins car le grand flacon glisse quand il est mouillé.",
-                "meta": "6 semaines d'utilisation"
+                "meta": "6 semaines d'utilisation",
+                "name": "Mỹ Duyên, 25 ans"
               }
             ],
             "note": "Avis d'exemple — remplacez-les par de vrais retours clients."
@@ -1749,7 +2025,8 @@ window.ROOTLAB_CONTENT = {
         "heading": "Commande & conseils",
         "note": "Écrivez-nous sur Zalo pour un conseil gratuit avant d'acheter. Tout champ laissé vide est masqué automatiquement.",
         "hours": "8h00 – 21h00 · Du lundi au dimanche",
-        "shopLabel": "Où acheter"
+        "shopLabel": "Où acheter",
+        "disclaimerEn": "Ce produit est un cosmétique, et non un médicament ; il ne remplace pas un traitement médical. Les résultats peuvent varier selon chaque personne."
       }
     },
     "it": {
@@ -1915,7 +2192,139 @@ window.ROOTLAB_CONTENT = {
           "navLabel": "Riparazione & Crescita",
           "cta": "Acquista il duo",
           "heroT1": "Radici",
-          "heroT2": "vive"
+          "heroT2": "vive",
+          "ingredients": {
+            "eyebrow": "INGREDIENTI",
+            "t1": "Cosa c'è",
+            "t2": "dentro",
+            "lead": "Due passaggi che si completano. Il passo 1 rimuove le cellule morte e il sebo in eccesso che ostruiscono il cuoio capelluto. Il passo 2 porta il nutrimento alle radici appena liberate.",
+            "items": [
+              {
+                "name": "Acido glicolico & AHA della frutta",
+                "desc": "Con estratti di mela, limone, uva e crusca di grano — scioglie delicatamente le cellule morte che ostruiscono i follicoli."
+              },
+              {
+                "name": "Cocamidopropyl Betaine & Decyl Glucoside",
+                "desc": "Una coppia schiumogena di origine cocco. Elimina sebo in eccesso e impurità senza seccare il cuoio capelluto."
+              },
+              {
+                "name": "Allantoina, camomilla romana & lavanda",
+                "desc": "Lenisce il cuoio capelluto subito dopo l'esfoliazione. Il mentolo dà una leggera sensazione di freschezza."
+              },
+              {
+                "name": "Poligono multifloro (He Shou Wu) & scutellaria del Baikal",
+                "desc": "Due erbe tradizionali nella cura dei capelli, in estratti che arrivano direttamente alle radici."
+              },
+              {
+                "name": "Pantenolo B5, niacinamide & arginina",
+                "desc": "Idrata il cuoio capelluto, calma le zone irritate e nutre la fibra."
+              },
+              {
+                "name": "Germe di soia & germe di grano",
+                "desc": "Estratti di germe ricchi di nutrienti, aiutano a nutrire le radici indebolite."
+              }
+            ],
+            "note": "Ingredienti riportati esattamente come in etichetta. Tocca «Ingredienti completi» per vedere l'elenco intero.",
+            "inciLabel": "Ingredienti completi"
+          },
+          "howto": {
+            "eyebrow": "COME SI USA",
+            "t1": "Tre",
+            "t2": "passaggi",
+            "lead": "Niente di complicato. Esfolia 1–2 volte a settimana e spruzza il siero ogni giorno sul cuoio capelluto asciutto.",
+            "steps": [
+              {
+                "h": "Esfoliare il cuoio capelluto",
+                "em": "1–2 VOLTE / SETTIMANA",
+                "p": "Capelli ASCIUTTI, non bagnarli. Applica una quantità adeguata sulle radici, massaggia 2–3 minuti con la spazzola apposita, poi lava con uno shampoo delicato."
+              },
+              {
+                "h": "Asciugare il cuoio capelluto",
+                "em": "PRIMA DI SPRUZZARE",
+                "p": "Dopo il lavaggio asciuga bene il cuoio capelluto. Il siero penetra meglio sul cuoio capelluto asciutto."
+              },
+              {
+                "h": "Spruzzare il siero sulle radici",
+                "em": "OGNI GIORNO",
+                "p": "Fai la riga e spruzza una quantità adeguata sulle radici, insistendo sulle zone diradate. Poi asciuga con aria fresca, senza risciacquare."
+              }
+            ]
+          },
+          "results": {
+            "eyebrow": "RISULTATI",
+            "t1": "Settimana",
+            "t2": "dopo settimana",
+            "lead": "I capelli crescono per cicli, non in pochi giorni. Ecco le tappe realistiche da aspettarsi.",
+            "weeks": [
+              {
+                "b": "Settimana 2",
+                "s": "Cuoio capelluto pulito, niente più unto e prurito"
+              },
+              {
+                "b": "Settimana 4",
+                "s": "Molta meno caduta durante il lavaggio"
+              },
+              {
+                "b": "Settimana 8",
+                "s": "Spuntano capelli nuovi nelle zone diradate"
+              },
+              {
+                "b": "Settimana 12",
+                "s": "Capelli visibilmente più folti"
+              }
+            ],
+            "tiles": [
+              {
+                "lbl": "Degli utenti nota meno caduta dopo 8 settimane"
+              },
+              {
+                "lbl": "Nuovi capelli rispetto a prima dell'uso"
+              },
+              {
+                "lbl": "Settimane in media per vedere capelli più folti"
+              }
+            ],
+            "note": "Dati illustrativi — sostituiscili con i risultati reali del tuo sondaggio prima di pubblicare."
+          },
+          "reviews": {
+            "eyebrow": "RECENSIONI",
+            "t1": "Persone vere",
+            "t2": "risultati veri",
+            "items": [
+              {
+                "text": "Avevo il cuoio capelluto grassissimo, i capelli erano unti già il giorno dopo. Dopo tre settimane di passo 1 sono molto più leggeri e il prurito è sparito.",
+                "name": "Minh Anh, 29 anni",
+                "meta": "3 mesi di utilizzo"
+              },
+              {
+                "text": "Ho perso capelli dopo il parto, le tempie si erano molto diradate. Dopo due mesi di siero vedo spuntare capelli nuovi — ancora radi, ma veri.",
+                "name": "Thu Hà, 33 anni",
+                "meta": "2 mesi di utilizzo"
+              },
+              {
+                "text": "Il siero non unge: lo lascio tutta la notte e al mattino i capelli sono asciutti. Mezza stella in meno perché il profumo di rosmarino per me è un po' forte.",
+                "name": "Đức Huy, 27 anni",
+                "meta": "6 settimane di utilizzo"
+              },
+              {
+                "text": "La differenza l'ho vista usando tutto il duo. Prima spruzzavo solo il siero su un cuoio capelluto ancora sporco e non serviva quasi a nulla.",
+                "name": "Lan Phương, 41 anni",
+                "meta": "4 mesi di utilizzo"
+              }
+            ],
+            "note": "Recensioni di esempio — sostituiscile con feedback reali dei clienti."
+          },
+          "pricing": {
+            "eyebrow": "PREZZI",
+            "t1": "Inizia",
+            "t2": "oggi",
+            "comboLabel": "Il duo completo",
+            "comboBtn": "Acquista il duo",
+            "boxEyebrow": "CONFEZIONE REGALO · CURA INTENSIVA IN 2 PASSAGGI",
+            "boxGift": "In omaggio la spazzola massaggiante per cuoio capelluto",
+            "boxBadge": "Più venduto",
+            "note": "Prezzi indicativi — sostituiscili con i tuoi prezzi reali."
+          }
         },
         {
           "name": "Shampoo Radici",
@@ -2009,15 +2418,18 @@ window.ROOTLAB_CONTENT = {
             "items": [
               {
                 "text": "I capelli mi si ungevano così in fretta che li lavavo ogni giorno. Con questo reggo a giorni alterni e il cuoio capelluto non prude più.",
-                "meta": "2 mesi di utilizzo"
+                "meta": "2 mesi di utilizzo",
+                "name": "Khánh Vy, 26 anni"
               },
               {
                 "text": "Ho i capelli colorati e temevo che lo shampoo li slavasse. Quasi tre mesi dopo, il colore tiene molto meglio del precedente.",
-                "meta": "3 mesi di utilizzo"
+                "meta": "3 mesi di utilizzo",
+                "name": "Ngọc Trâm, 31 anni"
               },
               {
                 "text": "Fa meno schiuma di uno shampoo normale, all'inizio strano, ma poi i capelli sono più morbidi e leggeri. Mezza stella in meno perché il flacone è scomodo da spremere verso la fine.",
-                "meta": "6 settimane di utilizzo"
+                "meta": "6 settimane di utilizzo",
+                "name": "Trọng Nghĩa, 34 anni"
               }
             ],
             "note": "Recensioni di esempio — sostituiscile con feedback reali dei clienti."
@@ -2121,15 +2533,18 @@ window.ROOTLAB_CONTENT = {
             "items": [
               {
                 "text": "Nella stagione secca la schiena mi prude in continuazione. Quasi due mesi con questo e si è calmata parecchio, niente pelle tirata dopo la doccia.",
-                "meta": "2 mesi di utilizzo"
+                "meta": "2 mesi di utilizzo",
+                "name": "Hoàng Yến, 30 anni"
               },
               {
                 "text": "Mi piace perché il profumo è molto leggero e non copre il mio profumo. Lo usa tutta la famiglia.",
-                "meta": "3 mesi di utilizzo"
+                "meta": "3 mesi di utilizzo",
+                "name": "Anh Tuấn, 38 anni"
               },
               {
                 "text": "Fa meno schiuma del precedente, all'inizio sembrava poco, ma la pelle è davvero più morbida. Mezza stella in meno perché il flacone grande scivola quando è bagnato.",
-                "meta": "6 settimane di utilizzo"
+                "meta": "6 settimane di utilizzo",
+                "name": "Mỹ Duyên, 25 anni"
               }
             ],
             "note": "Recensioni di esempio — sostituiscile con feedback reali dei clienti."
@@ -2227,7 +2642,8 @@ window.ROOTLAB_CONTENT = {
         "heading": "Ordini & consulenza",
         "note": "Scrivici su Zalo per una consulenza gratuita prima di acquistare. I campi lasciati vuoti vengono nascosti automaticamente.",
         "hours": "8:00 – 21:00 · Da lunedì a domenica",
-        "shopLabel": "Dove acquistare"
+        "shopLabel": "Dove acquistare",
+        "disclaimerEn": "Questo prodotto è un cosmetico, non un farmaco, e non sostituisce i medicinali per la cura delle malattie. I risultati possono variare da persona a persona."
       }
     },
     "ja": {
@@ -2393,7 +2809,139 @@ window.ROOTLAB_CONTENT = {
           "navLabel": "補修 & 育毛",
           "cta": "セットを購入",
           "heroT1": "根元から",
-          "heroT2": "目覚める"
+          "heroT2": "目覚める",
+          "ingredients": {
+            "eyebrow": "成分",
+            "t1": "中身を",
+            "t2": "知る",
+            "lead": "2つのステップが補い合います。ステップ1で頭皮をふさぐ古い角質と余分な皮脂を取り除き、ステップ2で清潔になった毛根へ栄養を届けます。",
+            "items": [
+              {
+                "name": "グリコール酸＆フルーツ由来AHA",
+                "desc": "リンゴ、レモン、ブドウ、小麦ふすまエキス配合。毛穴をふさぐ古い角質をやさしく浮かせます。"
+              },
+              {
+                "name": "コカミドプロピルベタイン＆デシルグルコシド",
+                "desc": "ココナッツ由来の洗浄成分コンビ。頭皮をつっぱらせずに余分な皮脂と汚れを洗い流します。"
+              },
+              {
+                "name": "アラントイン、ローマカミツレ＆ラベンダー",
+                "desc": "角質ケア直後の頭皮を落ち着かせます。メントールでほんのり清涼感。"
+              },
+              {
+                "name": "カシュウ（何首烏）＆オウゴン",
+                "desc": "ヘアケアで古くから親しまれてきた2つの植物を、毛根へ直接届くエキスで。"
+              },
+              {
+                "name": "パンテノール（B5）、ナイアシンアミド＆アルギニン",
+                "desc": "頭皮をうるおし、刺激を受けた部分を整え、髪に栄養を与えます。"
+              },
+              {
+                "name": "大豆胚芽＆小麦胚芽",
+                "desc": "栄養豊富な胚芽エキスが、ダメージで弱った毛根をサポートします。"
+              }
+            ],
+            "note": "成分は製品ラベルの表記どおりです。「全成分」をタップするとすべて表示されます。",
+            "inciLabel": "全成分"
+          },
+          "howto": {
+            "eyebrow": "使い方",
+            "t1": "3つの",
+            "t2": "ステップ",
+            "lead": "むずかしいことはありません。角質ケアは週1〜2回、美容液は毎日、乾いた頭皮にスプレーするだけ。",
+            "steps": [
+              {
+                "h": "頭皮の角質ケア",
+                "em": "週1〜2回",
+                "p": "髪は濡らさず乾いたまま。適量を根元に塗り、専用ブラシで2〜3分マッサージしてから、やさしいシャンプーで洗い流します。"
+              },
+              {
+                "h": "頭皮を乾かす",
+                "em": "スプレーの前に",
+                "p": "洗髪後は頭皮までしっかり乾かします。美容液は乾いた頭皮のほうがよくなじみます。"
+              },
+              {
+                "h": "美容液を根元にスプレー",
+                "em": "毎日",
+                "p": "分け目をつくり、薄くなりやすい部分を中心に根元へ適量をスプレー。その後は冷風で乾かし、洗い流しません。"
+              }
+            ]
+          },
+          "results": {
+            "eyebrow": "効果",
+            "t1": "1週ごとの",
+            "t2": "変化",
+            "lead": "髪は日単位ではなく、周期で生え変わります。現実的に期待できる目安はこちら。",
+            "weeks": [
+              {
+                "b": "2週目",
+                "s": "頭皮すっきり、べたつきやかゆみが気にならない"
+              },
+              {
+                "b": "4週目",
+                "s": "洗髪時の抜け毛がはっきり減る"
+              },
+              {
+                "b": "8週目",
+                "s": "薄い部分に産毛が生えはじめる"
+              },
+              {
+                "b": "12週目",
+                "s": "髪のボリュームが目に見えて増える"
+              }
+            ],
+            "tiles": [
+              {
+                "lbl": "8週間で抜け毛の減少を実感した人"
+              },
+              {
+                "lbl": "使用前と比べた新しい産毛の本数"
+              },
+              {
+                "lbl": "髪のボリュームを実感するまでの平均週数"
+              }
+            ],
+            "note": "数値はイメージです。公開前に実際の調査結果に差し替えてください。"
+          },
+          "reviews": {
+            "eyebrow": "レビュー",
+            "t1": "リアルな声、",
+            "t2": "リアルな変化",
+            "items": [
+              {
+                "text": "頭皮の皮脂がひどく、洗った翌日にはもうべたついていました。ステップ1を3週間続けたら髪が軽くなり、かゆみもなくなりました。",
+                "name": "Minh Anh（29歳）",
+                "meta": "3か月使用"
+              },
+              {
+                "text": "産後の抜け毛で両側のこめかみがかなり薄くなっていました。美容液を2か月使うと産毛が生えてきて、まだまばらですが確かに変化があります。",
+                "name": "Thu Hà（33歳）",
+                "meta": "2か月使用"
+              },
+              {
+                "text": "美容液はべたつかず、夜つけても朝には髪がさらっとしています。ローズマリーの香りが私には少し強いので星半分マイナス。",
+                "name": "Đức Huy（27歳）",
+                "meta": "6週間使用"
+              },
+              {
+                "text": "2本セットで使って初めて違いを感じました。以前は汚れた頭皮に美容液をスプレーするだけで、ほとんど効果がありませんでした。",
+                "name": "Lan Phương（41歳）",
+                "meta": "4か月使用"
+              }
+            ],
+            "note": "サンプルのレビューです。実際のお客様の声に差し替えてください。"
+          },
+          "pricing": {
+            "eyebrow": "価格",
+            "t1": "今日から",
+            "t2": "はじめる",
+            "comboLabel": "2本セットで購入",
+            "comboBtn": "セットを購入",
+            "boxEyebrow": "ギフトボックス・2ステップ集中ケア",
+            "boxGift": "頭皮マッサージブラシ付き",
+            "boxBadge": "ベストセラー",
+            "note": "価格はイメージです。実際の販売価格に差し替えてください。"
+          }
         },
         {
           "name": "根元ケアシャンプー",
@@ -2487,15 +3035,18 @@ window.ROOTLAB_CONTENT = {
             "items": [
               {
                 "text": "すぐ脂っぽくなるので毎日洗っていました。これに変えてから一日おきでも平気になり、頭皮のかゆみもなくなりました。",
-                "meta": "2か月使用"
+                "meta": "2か月使用",
+                "name": "Khánh Vy（26歳）"
               },
               {
                 "text": "カラーをしているので色落ちが心配でしたが、三か月近く使って以前のものよりずっと色もちが良いです。",
-                "meta": "3か月使用"
+                "meta": "3か月使用",
+                "name": "Ngọc Trâm（31歳）"
               },
               {
                 "text": "普通のシャンプーより泡立ちは控えめで最初は戸惑いましたが、慣れると髪がやわらかく軽くなりました。最後のほうはボトルが押しにくいので0.5減点。",
-                "meta": "6週間使用"
+                "meta": "6週間使用",
+                "name": "Trọng Nghĩa（34歳）"
               }
             ],
             "note": "サンプルのレビューです。実際のお客様の声に差し替えてください。"
@@ -2599,15 +3150,18 @@ window.ROOTLAB_CONTENT = {
             "items": [
               {
                 "text": "乾燥する季節は背中がずっとかゆかったのですが、二か月近く使ってかなり落ち着きました。お風呂上がりもつっぱりません。",
-                "meta": "2か月使用"
+                "meta": "2か月使用",
+                "name": "Hoàng Yến（30歳）"
               },
               {
                 "text": "香りがとても軽いので、香水の邪魔をしないのが気に入っています。家族みんなで使えます。",
-                "meta": "3か月使用"
+                "meta": "3か月使用",
+                "name": "Anh Tuấn（38歳）"
               },
               {
                 "text": "以前のものより泡立ちは控えめで最初は物足りなく感じましたが、肌は確かにやわらかくなりました。大きいボトルが濡れると滑るので0.5減点。",
-                "meta": "6週間使用"
+                "meta": "6週間使用",
+                "name": "Mỹ Duyên（25歳）"
               }
             ],
             "note": "サンプルのレビューです。実際のお客様の声に差し替えてください。"
@@ -2705,7 +3259,8 @@ window.ROOTLAB_CONTENT = {
         "heading": "ご注文・ご相談",
         "note": "ご購入前の無料相談はZaloからどうぞ。空欄の項目は自動的に非表示になります。",
         "hours": "8:00 – 21:00 · 月曜〜日曜",
-        "shopLabel": "購入できる場所"
+        "shopLabel": "購入できる場所",
+        "disclaimerEn": "本製品は化粧品であり、医薬品ではありません。病気の治療薬の代わりになるものではありません。効果には個人差があります。"
       }
     }
   },

@@ -2383,6 +2383,16 @@
         html[lang="ja"] .main-title, html[lang="ja"] .side-title { font-size: clamp(2.6rem, 6vw, 6.4rem); line-height: 1.06; }
         html[lang="vi"] .scene-title { font-size: clamp(2.4rem, 5.2vw, 5.4rem); line-height: .96; }
         html[lang="ja"] .scene-title { font-size: clamp(2rem, 4.2vw, 4.4rem); line-height: 1.1; }
+        /* Lưới an toàn (25/09): trang đang ở tiếng Anh/Pháp/Ý mà một tiêu đề lớn lại chứa
+           chữ tiếng Việt (câu chưa dịch trong content.js) thì Galada không có dấu → vỡ chữ
+           kiểu "Ngư ờ i thật". JS giuDauViet() gắn lớp .chu-viet cho tiêu đề đó để dùng
+           Playfair Display như bản tiếng Việt. */
+        .main-title.chu-viet, .side-title.chu-viet, .scene-title.chu-viet {
+            font-family: 'Playfair Display', 'Times New Roman', serif;
+            letter-spacing: -.005em;
+        }
+        .main-title.chu-viet, .side-title.chu-viet { font-size: clamp(3.4rem, 7.4vw, 8.4rem); line-height: .92; }
+        .scene-title.chu-viet { font-size: clamp(2.4rem, 5.2vw, 5.4rem); line-height: .96; }
 
         /* Chữ ký thương hiệu CHUẨN của cả web — lấy từ màn chọn (trang chính).
            Mọi nơi hiện chữ ROOTLAB đều dùng bộ này: màn chọn, thanh menu trang
@@ -2856,7 +2866,7 @@
     </svg>
 
     <!-- nội dung trang: sửa bằng admin.html rồi thay file này -->
-    <script src="content.js?v=8424e7af"></script>
+    <script src="content.js?v=7f9f7de7"></script>
     <script>
         /* ============================================================
            0. NỘI DUNG TRANG — mọi chữ và cấu hình chai nằm ở đây.
@@ -3369,8 +3379,11 @@
             if (cs.length) huy.push(`<div class="foot-chinhsach">${cs.join('')}</div>`);
             if (huy.length) P.push(`<div class="foot-huy">${huy.join('')}</div>`);
 
-            if (k.disclaimerEn) P.push(`<div class="foot-mientru">${esc(k.disclaimerEn)}</div>`);
-            if (k.disclaimer) P.push(`<div class="foot-mientru">${esc(k.disclaimer)}</div>`);
+            /* Câu miễn trừ "đây là mỹ phẩm, không phải thuốc" — chỉ hiện MỘT câu theo ngôn ngữ
+               đang xem (25/09: trước hiện cả tiếng Anh lẫn tiếng Việt, bị lặp). Trang tiếng
+               nước ngoài có bản tiếng Anh thì dùng bản đó, còn lại dùng bản tiếng Việt. */
+            const mienTru = (LANG !== 'vi' && k.disclaimerEn) ? k.disclaimerEn : (k.disclaimer || k.disclaimerEn);
+            if (mienTru) P.push(`<div class="foot-mientru">${esc(mienTru)}</div>`);
 
             fill('phapLy', P.join(''));
 
@@ -3587,6 +3600,22 @@
             });
         }
         applyContent();
+
+        /* Lưới an toàn font tiêu đề (xem CSS .chu-viet): chỉ cần ở tiếng Anh/Pháp/Ý — tiếng
+           Việt và tiếng Nhật đã dùng font có đủ dấu. Dò các chữ CHỈ tiếng Việt mới có
+           (ă đ ơ ư ĩ ũ và dải ạ…ỹ), không đụng chữ có dấu của tiếng Pháp/Ý (é, à, ç…).
+           Theo dõi luôn khi tiêu đề đổi chữ (chuyển dòng sản phẩm). */
+        (function giuDauViet() {
+            if (LANG === 'vi' || LANG === 'ja') return;
+            const VIET = /[ăđơưĩũĂĐƠƯĨŨẠ-ỹ]/;
+            const TD = document.querySelectorAll('.main-title, .side-title, .scene-title');
+            const soat = () => TD.forEach(el => el.classList.toggle('chu-viet', VIET.test(el.textContent || '')));
+            soat();
+            try {
+                const mo = new MutationObserver(soat);
+                TD.forEach(el => mo.observe(el, { childList: true, characterData: true, subtree: true }));
+            } catch (e) { }
+        })();
 
         /* Nút mua: ưu tiên link riêng của sản phẩm, không có thì rơi về Zalo / điện thoại,
            không có nữa thì cuộn xuống khối liên hệ — tuyệt đối không bấm rồi im lặng. */
