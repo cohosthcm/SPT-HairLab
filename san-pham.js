@@ -178,17 +178,27 @@
             if (!ds.length) return '';
             return `<div class="rp-tem">${ds.map(x => `<figure><img src="${h(x.img || x.src)}" alt="${h(x.label || '')}" loading="lazy"><figcaption>${h(x.label || '')}</figcaption></figure>`).join('')}</div>`;
         }
-        const dauChai = (p, nhan = true, gia = true) => `
-            ${nhan ? `<span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>` : ''}
-            <div class="rp-dau">
-                <div class="rp-anh">${p.photo ? `<img src="${h(p.photo)}" alt="${h(p.name)}">` : ''}</div>
-                <div class="rp-ten">
-                    <h2 id="rp-td">${h(p.name)}</h2>
-                    <p>${h(p.priceSub || '')}</p>
-                    ${p.vol && !(p.priceSub || '').includes(p.vol.replace(/\s/g, '')) && !(p.priceSub || '').includes(p.vol) ? `<p class="rp-vol">${h(p.vol)}</p>` : ''}
-                    ${gia && p.price ? `<div class="rp-gia">${h(p.price)}<small>đ</small></div>` : ''}
+        /* v13: chai lẻ dùng đúng khối "hero" ảnh lớn giống hộp quà (chỉ 1 mặt, không tự
+           đổi mặt vì chai lẻ chỉ có 1 ảnh) — để popup 1 chai và popup hộp quà giống hệt
+           nhau về bố cục, không chỉ giống mỗi khung "xem đầy đủ". Chưa có ảnh thì bỏ hẳn
+           khối hero, giữ bố cục cũ (không hụt khoảng trống). */
+        const dauChai = (p, nhan = true, gia = true) => {
+            const coAnh = !!p.photo;
+            return `
+            ${coAnh ? `
+            <div class="rp-hero rp-hero-1">
+                <div class="rp-hero-stage">
+                    <div class="rp-hero-img"><img class="hf" src="${h(p.photo)}" alt="${h(p.name)}"></div>
                 </div>
+            </div>` : ''}
+            ${nhan ? `<span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>` : ''}
+            <div class="rp-ten${coAnh ? ' rp-ten-bo' : ''}">
+                <h2 id="rp-td">${h(p.name)}</h2>
+                <p>${h(p.priceSub || '')}</p>
+                ${p.vol && !(p.priceSub || '').includes(p.vol.replace(/\s/g, '')) && !(p.priceSub || '').includes(p.vol) ? `<p class="rp-vol">${h(p.vol)}</p>` : ''}
+                ${gia && p.price ? `<div class="rp-gia">${h(p.price)}<small>đ</small></div>` : ''}
             </div>`;
+        };
 
         /* huy chương vàng "Bán chạy nhất" — vẽ bằng SVG riêng (không dùng ảnh stock có bản quyền):
            viền răng cưa kiểu con dấu vàng + vòng chữ R + 2 dải ruy băng đỏ + ánh sáng lướt qua. */
@@ -377,10 +387,12 @@
         ganForm($('.rp-form', lopPhu));
         setTimeout(() => $('.rp-x', lopPhu)?.focus(), 60);
 
-        /* hộp quà tự đổi mặt — chỉ chạy khi popup này có khối .rp-hero (không có ở popup xem 1 chai riêng) */
+        /* hộp quà tự đổi mặt — chỉ chạy khi có 2 ảnh thật để đổi qua lại (.hb); chai lẻ (v13)
+           cũng dùng khối .rp-hero nhưng chỉ có 1 ảnh (.hf), không có .hb nên không tự đổi mặt */
         const hero = $('.rp-hero', lopPhu);
+        const coMatSau = hero && $('.rp-hero-img .hb', hero);
         const chamMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (hero && !chamMotion) {
+        if (hero && coMatSau && !chamMotion) {
             const cham = [...lopPhu.querySelectorAll('.rp-hero-dots i')];
             heroTimer = setInterval(() => {
                 const lat = hero.classList.toggle('lat');
