@@ -186,23 +186,72 @@
                 </div>
             </div>`;
 
+        /* huy hiệu tròn vàng "Bán chạy nhất" — vẽ bằng SVG (không dùng ảnh stock có logo nhà bán ảnh) */
+        function vienRangCua(cx, cy, rNgoai, songs, rTrongTru) {
+            const rTrong = rNgoai - rTrongTru, n = songs * 2, ds = [];
+            for (let i = 0; i < n; i++) {
+                const r = i % 2 === 0 ? rNgoai : rTrong;
+                const goc = (Math.PI * 2 * i) / n - Math.PI / 2;
+                ds.push((i === 0 ? 'M' : 'L') + (cx + r * Math.cos(goc)).toFixed(2) + ',' + (cy + r * Math.sin(goc)).toFixed(2));
+            }
+            return ds.join(' ') + 'Z';
+        }
+        const ngoiSao = (cx, cy, r) => {
+            const ds = []; const rTrong = r * .42;
+            for (let i = 0; i < 10; i++) {
+                const rr = i % 2 === 0 ? r : rTrong;
+                const goc = (Math.PI * 2 * i) / 10 - Math.PI / 2;
+                ds.push((i === 0 ? 'M' : 'L') + (cx + rr * Math.cos(goc)).toFixed(2) + ',' + (cy + rr * Math.sin(goc)).toFixed(2));
+            }
+            return ds.join(' ') + 'Z';
+        };
+        function medal(text) {
+            return `<div class="rp-medal">
+                <svg viewBox="0 0 100 100" class="rp-medal-svg" aria-hidden="true" focusable="false">
+                    <defs><linearGradient id="rpGold" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#fff6d9"/><stop offset="45%" stop-color="#f0c14b"/><stop offset="100%" stop-color="#b9791a"/>
+                    </linearGradient></defs>
+                    <path fill="url(#rpGold)" stroke="#8a5a10" stroke-width="1.1" d="${vienRangCua(50, 50, 47, 17, 4.5)}"/>
+                    <circle cx="50" cy="50" r="37.5" fill="none" stroke="#5c3c0a" stroke-width="1.3" opacity=".55"/>
+                    <circle cx="50" cy="50" r="33.5" fill="none" stroke="#5c3c0a" stroke-width=".8" opacity=".4"/>
+                    <path fill="#5c3c0a" opacity=".82" d="${ngoiSao(31, 30, 4.6)}"/>
+                    <path fill="#5c3c0a" opacity=".82" d="${ngoiSao(69, 30, 4.6)}"/>
+                </svg>
+                <span class="rp-medal-txt">${h(text)}</span>
+            </div>`;
+        }
+
         /* tên tiếng Việt gốc — lưu vào danh sách khách cho Phil đọc, dù khách đang xem tiếng nào */
         const GOC = window.ROOTLAB_CONTENT || Cx;
         const tenGoc = key => ((GOC.products || []).find(p => p.key === key) || {}).name || key;
         function dung(k) {
             if (k.loai === 'chai') return { tieuDe: k.sp.name, sanPham: tenGoc(k.sp.key), html: dauChai(k.sp) + khoiChai(k.sp), dich: k.sp.key };
             const d = k.dong, pr = Object.assign({}, Cx.pricing || {}, d.pricing || {});
+            /* ảnh hộp: mặt có cửa sổ thấy sản phẩm ↔ góc nghiêng — tự đổi qua lại, không xoay ảnh phẳng
+               (xem rootlab-landing/doi-chai-khong-duoc-xoay.md — lùi mờ ra xa rồi tiến rõ lại gần) */
+            const hopMat1 = pr.boxPhoto || 'hop-qua-2buoc.webp', hopMat2 = pr.boxPhotoGoc || 'hop-qua-goc-nghieng.webp';
+            /* dải chai chạy trang trí — chỉ có ở hộp quà, không có khi xem riêng 1 chai qua mã QR */
+            const carDs = k.ds.concat(k.ds).map((p, i) => p.photo
+                ? `<img src="${h(p.photo)}" alt="" style="--nghieng:${(i % 2 ? -1 : 1) * (7 + (i * 5) % 10)}deg;--nhip:${9 + (i % 3) * 2}s;--tre:${(i * -1.4).toFixed(1)}s">`
+                : '').join('');
             const dau = `
-                ${pr.boxBadge ? `<span class="rp-best">★ ${h(pr.boxBadge)}</span>` : ''}
-                <span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>
-                <div class="rp-dau rp-dau-bo">
-                    <div class="rp-anh rp-anh-bo"><img src="bo-qua-tang.png" alt=""></div>
-                    <div class="rp-ten">
-                        <h2 id="rp-td">${h(pr.boxEyebrow ? t.hopQua : (d.name || t.hopQua))}</h2>
-                        <p>${h(k.ds.map(p => p.name).join(' + '))}</p>
-                        ${pr.comboNew ? `<div class="rp-gia">${h(pr.comboNew)}${pr.comboOld ? ` <s>${h(pr.comboOld)}</s>` : ''}</div>` : ''}
-                        <p class="rp-tang">★ ${h(pr.boxGift || t.tang)}</p>
+                <div class="rp-hero">
+                    <div class="rp-hero-stage">
+                        ${pr.boxBadge ? medal(pr.boxBadge) : ''}
+                        <div class="rp-hero-img">
+                            <img class="hf" src="${h(hopMat1)}" alt="">
+                            <img class="hb" src="${h(hopMat2)}" alt="">
+                        </div>
+                        <div class="rp-hero-dots"><i class="on"></i><i></i></div>
                     </div>
+                    <div class="rp-carousel" aria-hidden="true"><div class="rp-car-track">${carDs}</div></div>
+                </div>
+                <span class="rp-nhan"><svg class="rp-vr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#1877f2" d="M12.0 3.6Q15.5 -1.1 16.2 4.7Q21.6 2.4 19.3 7.8Q25.1 8.5 20.4 12.0Q25.1 15.5 19.3 16.2Q21.6 21.6 16.2 19.3Q15.5 25.1 12.0 20.4Q8.5 25.1 7.8 19.3Q2.4 21.6 4.7 16.2Q-1.1 15.5 3.6 12.0Q-1.1 8.5 4.7 7.8Q2.4 2.4 7.8 4.7Q8.5 -1.1 12.0 3.6Z"/><path fill="#fff" d="M10.6 15.4 7.4 12.2l1.5-1.5 1.7 1.7 4.5-4.5 1.5 1.5z"/></svg><b>${h(t.chinhHang)}</b></span>
+                <div class="rp-ten rp-ten-bo">
+                    <h2 id="rp-td">${h(pr.boxEyebrow ? t.hopQua : (d.name || t.hopQua))}</h2>
+                    <p>${h(k.ds.map(p => p.name).join(' + '))}</p>
+                    ${pr.comboNew ? `<div class="rp-gia">${h(pr.comboNew)}${pr.comboOld ? ` <s>${h(pr.comboOld)}</s>` : ''}</div>` : ''}
+                    <p class="rp-tang">★ ${h(pr.boxGift || t.tang)}</p>
                 </div>`;
             const tab = `<div class="rp-tab" role="tablist">${k.ds.map((p, i) =>
                 `<button type="button" role="tab" data-i="${i}" aria-selected="${i === 0}">${h(t.buoc)} ${i + 1} · ${h(p.name)}</button>`).join('')}</div>`;
@@ -236,7 +285,7 @@
     const BO = boDung(Cx, L);
     const { timMa, dung, form } = BO;
 
-    let lopPhu = null, truocDo = null;
+    let lopPhu = null, truocDo = null, heroTimer = null;
     function mo(ma) {
         const k = timMa(ma);
         if (!k) return false;
@@ -268,10 +317,23 @@
         }));
         ganForm($('.rp-form', lopPhu));
         setTimeout(() => $('.rp-x', lopPhu)?.focus(), 60);
+
+        /* hộp quà tự đổi mặt — chỉ chạy khi popup này có khối .rp-hero (không có ở popup xem 1 chai riêng) */
+        const hero = $('.rp-hero', lopPhu);
+        const chamMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (hero && !chamMotion) {
+            const cham = [...lopPhu.querySelectorAll('.rp-hero-dots i')];
+            heroTimer = setInterval(() => {
+                const lat = hero.classList.toggle('lat');
+                cham.forEach((c, i) => c.classList.toggle('on', (i === 1) === lat));
+            }, 3200);
+        }
+
         return true;
     }
     function dong() {
         if (!lopPhu) return;
+        if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
         const x = lopPhu; lopPhu = null;
         x.classList.remove('hien');
         document.body.classList.remove('pop-mo');
@@ -365,6 +427,32 @@
     .rp-anh img{max-height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 10px 14px rgba(80,55,20,.25))}
     .rp-anh-bo{flex-basis:150px;height:130px;padding:0;background:none}
     .rp-anh-bo img{border-radius:12px;filter:drop-shadow(0 12px 18px rgba(80,55,20,.28))}
+    /* ---- khối ảnh lớn của hộp quà: hộp tự đổi mặt, dải chai chạy trang trí ---- */
+    .rp-hero{margin:-2px -2px 16px;border-radius:20px;overflow:hidden;background:radial-gradient(120% 130% at 50% 12%,#fff8ea 0%,#f6e9cc 55%,#ecdcb4 100%)}
+    .rp-hero-stage{position:relative;height:220px;display:flex;align-items:center;justify-content:center;perspective:1200px}
+    .rp-hero-img{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+    .rp-hero-img img{position:absolute;max-height:82%;max-width:74%;object-fit:contain;
+      filter:drop-shadow(0 16px 16px rgba(60,40,10,.25));will-change:transform,opacity;
+      transition:transform 1.1s cubic-bezier(.45,0,.2,1),opacity 1.1s cubic-bezier(.45,0,.2,1)}
+    .rp-hero-img img.hf{opacity:1;transform:translateZ(0) scale(1)}
+    .rp-hero-img img.hb{opacity:0;transform:translateZ(-220px) scale(.84)}
+    .rp-hero.lat .rp-hero-img img.hf{opacity:0;transform:translateZ(-220px) scale(.84)}
+    .rp-hero.lat .rp-hero-img img.hb{opacity:1;transform:translateZ(0) scale(1)}
+    .rp-hero-dots{position:absolute;bottom:9px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:2}
+    .rp-hero-dots i{width:6px;height:6px;border-radius:50%;background:#d8c79a;transition:background .3s,transform .3s}
+    .rp-hero-dots i.on{background:#5c3c0a;transform:scale(1.25)}
+    .rp-medal{position:absolute;top:10px;left:10px;z-index:2;width:56px;height:56px;filter:drop-shadow(0 4px 8px rgba(120,70,10,.35))}
+    .rp-medal-svg{width:100%;height:100%;display:block}
+    .rp-medal-txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
+      padding:0 11px;font-size:8.6px;font-weight:800;line-height:1.15;letter-spacing:.01em;text-transform:uppercase;color:#4a2f08}
+    .rp-carousel{position:relative;height:64px;overflow:hidden;background:rgba(255,255,255,.35);border-top:1px solid rgba(140,105,40,.15)}
+    .rp-car-track{position:absolute;top:0;left:0;height:100%;display:flex;align-items:center;gap:34px;padding:0 17px;
+      animation:rpCarRun 16s linear infinite}
+    .rp-car-track img{height:52px;width:auto;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(60,40,10,.2));
+      transform:rotate(var(--nghieng,0deg));animation:rpCarXoay var(--nhip,10s) linear infinite;animation-delay:var(--tre,0s)}
+    @keyframes rpCarRun{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @keyframes rpCarXoay{from{transform:rotate(var(--nghieng,0deg))}to{transform:rotate(calc(var(--nghieng,0deg) + 360deg))}}
+    .rp-ten-bo{padding:14px 2px 0}
     .rp-ten h2{margin:0 0 4px;font-size:22px;line-height:1.25;letter-spacing:-.01em}
     .rp-ten p{margin:0;color:#6b6358;font-size:14px;line-height:1.45}
     .rp-vol{margin-top:2px!important}
@@ -439,8 +527,15 @@
       .rp-anh{flex-basis:88px;height:140px}
       .rp-anh-bo{flex-basis:120px;height:104px}
       .rp-ten h2{font-size:19px}
+      .rp-hero-stage{height:180px}
+      .rp-medal{width:48px;height:48px}
+      .rp-medal-txt{font-size:7.6px}
     }
-    @media (prefers-reduced-motion:reduce){.rp-nen,.rp-hop{transition:none}}
+    @media (prefers-reduced-motion:reduce){
+      .rp-nen,.rp-hop{transition:none}
+      .rp-hero-img img{transition:none}
+      .rp-car-track,.rp-car-track img{animation:none}
+    }
     `;
     css.textContent = CSS;
     document.head.appendChild(css);
