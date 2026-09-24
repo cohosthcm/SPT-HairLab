@@ -634,6 +634,7 @@ window.ROOTLAB_CONTENT = {
     "comboBtn": "Mua bộ đôi",
     "boxEyebrow": "HỘP QUÀ · 2 BƯỚC CHUYÊN SÂU",
     "boxGift": "Tặng kèm lược massage da đầu",
+    "boxBadge": "Bán chạy nhất",
     "comboLink": "",
     "note": "Giá minh hoạ — thay bằng giá bán thật của bạn."
   },
@@ -796,6 +797,7 @@ window.ROOTLAB_CONTENT = {
         "comboBtn": "Buy the pair",
         "boxEyebrow": "GIFT BOX · 2-STEP ROUTINE",
         "boxGift": "Free scalp massage brush included",
+        "boxBadge": "Best seller",
         "note": "Illustrative prices — replace with your real selling prices."
       },
       "lines": [
@@ -1268,6 +1270,7 @@ window.ROOTLAB_CONTENT = {
         "comboBtn": "Acheter le duo",
         "boxEyebrow": "COFFRET · RITUEL EN 2 ÉTAPES",
         "boxGift": "Brosse de massage du cuir chevelu offerte",
+        "boxBadge": "Meilleure vente",
         "note": "Prix indicatifs — remplacez-les par vos prix de vente réels."
       },
       "lines": [
@@ -1740,6 +1743,7 @@ window.ROOTLAB_CONTENT = {
         "comboBtn": "Acquista il duo",
         "boxEyebrow": "COFANETTO · RITUALE IN 2 FASI",
         "boxGift": "Spazzola massaggiante per cuoio capelluto in omaggio",
+        "boxBadge": "Più venduto",
         "note": "Prezzi indicativi — sostituiscili con i tuoi prezzi di vendita reali."
       },
       "lines": [
@@ -2212,6 +2216,7 @@ window.ROOTLAB_CONTENT = {
         "comboBtn": "セットを購入",
         "boxEyebrow": "ギフトボックス · 2ステップ",
         "boxGift": "頭皮マッサージブラシをプレゼント",
+        "boxBadge": "売れ筋No.1",
         "note": "参考価格です。実際の販売価格に差し替えてください。"
       },
       "lines": [
