@@ -1,4 +1,4 @@
-/* Nội dung trang ROOTLAB — xuất từ admin.html lúc 11:54:25 26/9/2026 */
+/* Nội dung trang ROOTLAB — xuất từ admin.html lúc 11:55:00 26/9/2026 */
 window.ROOTLAB_CONTENT = {
   "brand": "ROOT & RISE LAB",
   "contactBtn": "Liên hệ",
